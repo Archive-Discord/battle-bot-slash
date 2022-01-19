@@ -1,5 +1,5 @@
 {
-  "name": "BattleBot",
+  "name": "battlebot",
   "main": "src/index.js",
   "repository": "https://github.com/kiss8981/battle-bot-slash",
   "author": "Kisss",
