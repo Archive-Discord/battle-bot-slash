@@ -5,6 +5,7 @@ const { Warning } = require('../../schemas/warningSchemas')
 module.exports = {
   name: '경고목록',
   description : '유저의 경고목록을 확인합니다',
+  aliases: ['/경고목록', '/warns', '/rudrhahrfhr'],
   isSlash: true,
   data: new SlashCommandBuilder()
     .setName('경고목록')
