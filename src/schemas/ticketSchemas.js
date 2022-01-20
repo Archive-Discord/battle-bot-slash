@@ -1,7 +1,6 @@
 const { Schema, model } = require('mongoose')
 
 const ticketSchema = Schema({
-  _id: mongoose.Types.ObjectId,
   status: String,
   guildId: String,
   userId: String,
