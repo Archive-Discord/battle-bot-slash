@@ -18,14 +18,15 @@ module.exports = {
    * @param {CommandInteraction} interaction 
    */
   async execute(client, interaction) {
+    await interaction.deferReply();
     const member = interaction.member
-    if(!member?.permissions.has("MANAGE_CHANNELS")) return await interaction.reply('해당 명령어를 사용할 권한이 없습니다');
+    if(!member?.permissions.has("MANAGE_CHANNELS")) return interaction.editReply('해당 명령어를 사용할 권한이 없습니다');
     let user = interaction.options.getUser('유저');
-    if(!user) return await interaction.reply('유저를 선택해 주세요');
+    if(!user) return interaction.editReply('유저를 선택해 주세요');
     let guildUser = interaction.guild.members.cache.get(user.id)
-    if(!guildUser) return await interaction.reply('해당 서버에서 찾을 수 없는 유저입니다');
+    if(!guildUser) return interaction.editReply('해당 서버에서 찾을 수 없는 유저입니다');
     let insertRes = await Warning.find({userId: user.id, guildId: interaction.guild.id}).limit(10)
-    if(insertRes.length == 0) return await interaction.reply('해당 유저의 경고 기록이 없습니다');
+    if(insertRes.length == 0) return interaction.editReply('해당 유저의 경고 기록이 없습니다');
     let warns = new Array();
     insertRes.forEach((reasons) => (warns.push({name: "ID: " + reasons._id.toString(), value: "사유: " +reasons.reason})))
     const embed = new MessageEmbed()
@@ -33,6 +34,6 @@ module.exports = {
         .setTitle('경고')
         .setDescription(`${user.username}님의 최근 10개의 경고 기록입니다`)
         .addFields(warns)
-    await interaction.reply({ embeds: [embed]});
+    return interaction.editReply({ embeds: [embed]});
   }
 }
