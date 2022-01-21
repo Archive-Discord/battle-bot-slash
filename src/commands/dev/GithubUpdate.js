@@ -87,6 +87,7 @@ module.exports = {
                         if(err) {
                           interaction.reply('이런 오류가 발생했어요!\n' + err.message)
                         } else {
+                          client.command.reload()
                           await interaction.reply({
                             content: '업데이트가 완료되었습니다!',
                             ephemeral: true,
@@ -155,6 +156,7 @@ module.exports = {
                       collector.stop()
 
                       child.execSync(`git pull https://username:${client.config.githubToken}@github.com/${repo}`)
+                      client.command.reload()
                       await interaction.reply('업데이트가 완료되었습니다!')
                     } else if (interaction.user.id !== message.author.id) {
                       interaction.reply(`메세지를 작성한 **${interaction.user.username}**만 업데이트할 수 있습니다.`)
