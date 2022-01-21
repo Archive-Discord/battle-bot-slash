@@ -55,6 +55,7 @@ module.exports = {
 
 // Slash command
 const Discord = require('discord.js')
+const { SlashCommandBuilder } = require('@discordjs/builders')
 
 module.exports = {
   name: '',

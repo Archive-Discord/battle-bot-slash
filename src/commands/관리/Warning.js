@@ -10,11 +10,16 @@ String.prototype.toObjectId = function() {
 module.exports = {
   name: "경고",
   description: "경고 관련 명령어입니다",
-  aliases: ["/경고", "/warn", "/rudrh"],
   isSlash: true,
   data: new SlashCommandBuilder()
     .setName("경고")
     .setDescription("경고 관련 명령어 입니다")
+    //.addSubcommand(option =>
+    //  option
+    //    .setName('추가')
+    //    .setDescription('경고를 추가합니다')
+    //    .addUserOption(user => user.setName('유저').setDescription('유저를 적어주세요').setRequired(true))
+    //)
     .addStringOption(option =>
       option
         .setName("옵션")

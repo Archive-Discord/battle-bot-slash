@@ -100,7 +100,8 @@ function cmdFormat(cmds, client) {
   var array = new Array()
 
   Object.values(cmds).forEach(c => array.push(client.commands.get(c)))
-  array = array.map(r => r.aliases[0])
+  array = array.map(r => r.aliases ? r.aliases[0]: r.name)
+
   if (array.length === 0) return undefined
   else return '`' + array.join('`, `') + '`'
 }
