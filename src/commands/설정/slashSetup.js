@@ -16,7 +16,7 @@ module.exports = {
   async execute(client, message, args) {
     let commandManager = new CommandManager(client)
     let errorManager = new ErrorManager(client)
-		if(!message.member.permissions.has(Discord.Permissions.FLAGS.ADMINISTRATOR)) return message.reply("해당 명령어는 관리자 전용 명령어입니다.")
+		if(!message.member.permissions.has(Discord.Permissions.FLAGS.ADMINISTRATOR || Discord.Permissions.FLAGS.MANAGE_CHANNELS)) return message.reply("해당 명령어는 관리자 전용 명령어입니다.")
 		
     let row = new Discord.MessageActionRow().addComponents(
       new Discord.MessageButton()
