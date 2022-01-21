@@ -48,6 +48,7 @@ module.exports = {
    * @param {CommandInteraction} interaction
    */
   async execute(client, interaction) {
+    if (interaction.type === "DEFAULT" && interaction.content.startsWith(client.config.bot.prefix) + this.name) return interaction.reply('해당 명령어는 (/)커맨드만 사용 가능합니다')
     await interaction.deferReply();
     const member = interaction.member;
     if (!member?.permissions.has("MANAGE_CHANNELS"))
@@ -99,7 +100,7 @@ module.exports = {
           )
       return interaction.editReply({ embeds: [embedRemove]});
     } else if (option === 'list') {
-      let insertRes = await Warning.find({userId: user.id, guildId: interaction.guild.id}).sort({published_date: 1}).limit(5)
+      let insertRes = await Warning.find({userId: user.id, guildId: interaction.guild.id}).sort({published_date: -1}).limit(5)
       if(insertRes.length == 0) return interaction.editReply('해당 유저의 경고 기록이 없습니다');
       let warns = new Array();
       insertRes.forEach((reasons) => (warns.push({name: "ID: " + reasons._id.toString(), value: "사유: " +reasons.reason})))

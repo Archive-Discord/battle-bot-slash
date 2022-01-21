@@ -21,6 +21,7 @@ module.exports = {
    * @param {CommandInteraction} interaction
    */
   async execute(client, interaction) {
+    if (interaction.type === "DEFAULT" && interaction.content.startsWith(client.config.bot.prefix) + this.name) return interaction.reply('해당 명령어는 (/)커맨드만 사용 가능합니다')
     await interaction.deferReply();
     let user = interaction.options.getUser("유저");
     if (!user) return interaction.editReply("유저를 선택해 주세요");
