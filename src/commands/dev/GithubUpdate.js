@@ -1,3 +1,4 @@
+
 const Discord = require('discord.js')
 const Embed = require('../../utils/Embed')
 const fetch = require('node-fetch')
@@ -50,7 +51,7 @@ module.exports = {
               let SuccessEmbed = new Embed(client, 'success')
                 .setTitle('확인 완료!')
                 .setDescription('현재 최신 버전을 이용중입니다!')
-                .addField('현재 버전', `v${client.VERSION}`, true)
+                .addField('현재 버전', `${client.VERSION}`, true)
                 .addField('현재 빌드 번호', `${client.BUILD_NUMBER}`, true)
 
               return msg.edit({embeds: [SuccessEmbed]})
@@ -63,11 +64,11 @@ module.exports = {
                   let NewUpdateEmbed = new Embed(client, 'success')
                     .setTitle('최신 업데이트가 있습니다!')
                     .setDescription(`최신 업데이트된 ${count}개의 내용이 있습니다. 지금 업데이트 하시겠습니까?`)
-                    .addField('현재 버전', `v${client.VERSION}`, true)
+                    .addField('현재 버전', `${client.VERSION}`, true)
                     .addField('현재 빌드 번호', `${client.BUILD_NUMBER}`, true)
                     .addField('최신 빌드 번호', `${json[0].sha.trim().substring(0, 6)}`, true)
 
-                    let buttonData = new Discord.MessageButton()
+                  let buttonData = new Discord.MessageButton()
                     .setStyle('SUCCESS')
                     .setLabel('업데이트 하기')
                     .setEmoji('✅')
@@ -82,8 +83,16 @@ module.exports = {
                     if(interaction.customId === 'update.run') {
                       collector.stop()
 
-                      child.execSync(`git pull https://username:${client.config.githubToken}@github.com/${repo}`)
-                      await interaction.reply('업데이트가 완료되었습니다!')
+                      child.exec(`git pull https://username:${client.config.githubToken}@github.com/${repo}`, async (err, stdout, stderr) => {
+                        if(err) {
+                          interaction.reply('이런 오류가 발생했어요!\n' + err.message)
+                        } else {
+                          await interaction.reply({
+                            content: '업데이트가 완료되었습니다!',
+                            ephemeral: true,
+                          })
+                        }
+                      })
                     } else if (interaction.user.id !== message.author.id) {
                       interaction.reply(`메세지를 작성한 **${interaction.user.username}**만 업데이트할 수 있습니다.`)
                     }
@@ -93,7 +102,6 @@ module.exports = {
                   let BranchErrorEmbed = new Embed(client, 'error')
                     .setTitle('뭔가 잘못된거 같아요...')
                     .setDescription('업데이트를 정보를 찾을수 없습니다. 브랜치가 다른걸수도 있습니다.\n기본 브랜치를 바꿔보는건 어떨까요?')
-
                   msg.edit({embeds: [BranchErrorEmbed]})
                 }*/
               })
