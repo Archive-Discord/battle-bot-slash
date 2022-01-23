@@ -46,7 +46,7 @@ class ErrorManager extends BaseManager {
       .setDescription('명령어 실행 도중에 오류가 발생하였습니다. 개발자에게 오류코드를 보내 개발에 지원해주세요.')
       .addField('오류 코드', errorCode, true)
     let thisGuild = this.client.guilds.cache.get(user.guildId)
-    let thisChannel = thisGuild.channels.cache.get(user.channelId)
+    //let thisChannel = thisGuild.channels.cache.get(user.channelId)
     let reportEmbed = new Embed(this.client, 'error')
       .setTitle('오류가 발생했습니다.')
       .addField('요청서버 이름', user.guildId, true)

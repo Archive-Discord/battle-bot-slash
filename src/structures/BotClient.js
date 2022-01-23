@@ -6,11 +6,13 @@ const { config } = require('dotenv')
 const CommandManager = require('../managers/CommandManager')
 const EventManager = require('../managers/EventManager')
 const DatabaseManager = require('../managers/DatabaseManager')
+const ButtonManager = require('../managers/ButtonManager')
 
 const logger = new Logger('bot')
 
 /**
  * @typedef {Object} Command
+ * @typedef {Object} Button
  * @property {string} name
  * @property {string} description
  * @property {string} usage
@@ -65,6 +67,11 @@ class BotClient extends Client {
     this.categorys = new Collection()
 
     /**
+     * @type {Collection<string, Button>}
+     */
+    this.buttons = new Collection()
+
+    /**
      * @type {Collection<string, Event>}
      */
     this.events = new Collection()
@@ -94,6 +101,11 @@ class BotClient extends Client {
      * @type {CommandManager}
      */
     this.command = new CommandManager(this)
+
+    /**
+     * @type {ButtonManager}
+     */
+    this.button = new ButtonManager(this)
   
     /**
      * @type {EventManager}
@@ -114,6 +126,7 @@ class BotClient extends Client {
     logger.info('Logging in bot...')
 
     this.command.load()
+    this.button.load()
     this.event.load()
     this.database.load()
     await this.login(token)

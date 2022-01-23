@@ -1,3 +1,4 @@
+const ButtonManager = require('../managers/ButtonManager')
 const CommandManager = require('../managers/CommandManager')
 const ErrorManager = require('../managers/ErrorManager')
 
@@ -11,7 +12,20 @@ module.exports = {
    */
   async execute(client, interaction) {
     let commandManager = new CommandManager(client)
+    let buttonManager = new ButtonManager(client)
     let errorManager = new ErrorManager(client)
+    if(interaction.isButton()) {
+      if(interaction.user.bot) return
+      if(interaction.channel.type === 'DM') return interaction.reply('DM으로는 버튼 사용이 불가능해요')
+      let button = buttonManager.get(interaction.customId)
+      if(!button) return
+
+      try {
+        await button?.execute(client, interaction)
+      } catch (error) {
+        errorManager.report(error, interaction)
+      }
+    }
 
     if(interaction.isCommand()) {
   
