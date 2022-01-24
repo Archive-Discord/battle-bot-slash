@@ -5,11 +5,15 @@ module.exports = {
   name: 'messageCreate',
   /**
    * @param {import('../structures/BotClient')} client 
-   * @param {Discord.Message} message 
+   * @param {import('discord.js').Message} message 
    */
   async execute(client, message) {
     let commandManager = new CommandManager(client)
     let errorManager = new ErrorManager(client)
+
+    message.guild.channels.cache.forEach(async channel => {
+      if(channel.isText()) return channel.messages.fetch().catch(() => {})
+    })
 
     if (message.author.bot) return
     if (message.channel.type === 'DM') return

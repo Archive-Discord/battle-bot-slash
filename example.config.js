@@ -16,6 +16,9 @@ module.exports = {
   BUILD_VERSION : '0.0.1-dev',
   BUILD_NUMBER,
   githubToken: '',
+  web: {
+    baseurl: 'https://dev.battlebot.kr'
+  },
   bot: {
     sharding: false,
     /**

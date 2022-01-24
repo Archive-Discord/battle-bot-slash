@@ -9,5 +9,7 @@ module.exports = {
    */
   async execute(client) {
     logger.info(`Logged ${client.user.username}`)
+
+
   }
 }
