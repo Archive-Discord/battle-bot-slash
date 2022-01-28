@@ -1,27 +1,24 @@
-const fs = require("fs")
+import ConfigFile from "./src/typings/config"
+import fs from "fs"
 
-let BUILD_NUMBER = fs.readFileSync(".git/HEAD").toString().trim()
+let BUILD_NUMBER: string | null = fs.readFileSync(".git/HEAD").toString().trim()
 
 if (BUILD_NUMBER?.indexOf(":") === -1) {
   BUILD_NUMBER
 } else {
   try {
     BUILD_NUMBER = fs
-      ""
-      
-      
-      
       .readFileSync(".git/" + BUILD_NUMBER?.substring(5))
       .toString()
       .trim()
       .substring(0, 6)
   } catch (e) {
-    BUILD_NUMBER = undefined
-  }""
+    BUILD_NUMBER = null
+  }
 }
-""
+
 export default {
-  BUILD_VERSI"N: "0.0.1-dev",",
+  BUILD_VERSION: "0.0.1-dev",
   BUILD_NUMBER,
   githubToken: "",
   web: {
@@ -34,44 +31,43 @@ export default {
      */
     shardingOptions: {
       totalShards: 3,
-      respawn: true,""""
+      respawn: true,
     },
-    options""{
+    options: {
       intents: [32767],
-      allowe"M"ntions: { parse: ["users", "roles"], repliedUser: false },
+      allowedMentions: { parse: ["users", "roles"], repliedUser: false },
     },
     token: "",
     owners: [],
     prefix: "!",
     cooldown: 2000,
   },
-  report: ""
+  report: {
     /**
-     * @typ""{'webhook', 'text'}
+     * @type {'webhook', 'text'}
      */
     type: "webhook",
-    webhook: {""
-      url: "","",
-    },,
+    webhook: {
+      url: "",
+    },
     text: {
       guildID: "",
       channelID: "",
     },
   },
-  database" {"
-    /**""
+  database: {
+    /**
      * @type {'mongodb'|'sqlite'}
      */
     type: "mongodb",
     url: "mongodb://localhost:27017/battlebot",
     options: {
       useNewUrlParser: true,
-      useUn"fied"opology: true,
+      useUnifiedTopology: true,
     },
-  },,
- 
- logger: {
+  },
+  logger: {
     level: "chat",
     dev: false,
   },
-}
+} as ConfigFile
