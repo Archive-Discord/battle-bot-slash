@@ -2,7 +2,7 @@ const { SlashCommandBuilder } = require('@discordjs/builders')
 const Discord = require('discord.js')
 const Embed = require('../../utils/Embed')
 
-module.exports = {
+export default {
   name: 'clear',
   description: '메시지를 삭제합니다',
   aliases: ['청소', '삭제', 'delmsg', '클리어', 'cjdth'],

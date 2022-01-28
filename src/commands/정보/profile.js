@@ -1,7 +1,7 @@
 const { MessageEmbed, CommandInteraction } = require("discord.js");
 const { SlashCommandBuilder } = require("@discordjs/builders");
 
-module.exports = {
+export default {
   name: '프로필',
   description : '유저의 프로필을 확인합니다',
   isSlash: true,

@@ -1,6 +1,7 @@
+import ConfigFile from "./src/typings/config"
 import fs from "fs"
 
-let BUILD_NUMBER = fs.readFileSync(".git/HEAD").toString().trim()
+let BUILD_NUMBER: string | null = fs.readFileSync(".git/HEAD").toString().trim()
 
 if (BUILD_NUMBER?.indexOf(":") === -1) {
   BUILD_NUMBER
@@ -12,7 +13,7 @@ if (BUILD_NUMBER?.indexOf(":") === -1) {
       .trim()
       .substring(0, 6)
   } catch (e) {
-    BUILD_NUMBER = undefined
+    BUILD_NUMBER = null
   }
 }
 
@@ -36,7 +37,7 @@ export default {
       intents: [32767],
       allowedMentions: { parse: ["users", "roles"], repliedUser: false },
     },
-    token: "",
+    token: "ODQ2MzQ5MDkyNjkxMTE2MDMz.YKuOBA.7fqKtsbdnSd8H4GD27NjIebsEVo",
     owners: [],
     prefix: "!",
     cooldown: 2000,
@@ -69,4 +70,4 @@ export default {
     level: "chat",
     dev: false,
   },
-}
+} as ConfigFile

@@ -2,8 +2,8 @@ import Logger from "@utils/Logger"
 import { ShardingManager } from "discord.js"
 import chalk from "chalk"
 
-let config = require("../config")
-let logger = new Logger("main")
+import config from '@config'
+const logger = new Logger("main")
 
 console.log(
   chalk.cyanBright(`
@@ -17,7 +17,7 @@ console.log(
 )
 
 if (!config.bot.sharding) {
-  require("./bot.js") // ㅇㅋ 그냥 Node.gitignore 가지고옴 
+  require("./bot")
 } else {
   let manager = new ShardingManager("./src/bot.ts", config.bot.shardingOptions)
 

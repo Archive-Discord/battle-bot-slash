@@ -2,7 +2,7 @@ const { SlashCommandBuilder } = require('@discordjs/builders')
 const Discord = require('discord.js')
 const Embed = require('../../utils/Embed')
 
-module.exports = {
+export default {
   name: 'help',
   description: '봇의 도움말을 보여줍니다',
   aliases: ['도움말', 'ehdna', 'ehdnaakf', '도움'],

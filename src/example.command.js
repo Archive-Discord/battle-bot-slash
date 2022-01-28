@@ -4,7 +4,7 @@
 const { SlashCommandBuilder } = require('@discordjs/builders')
 const Discord = require('discord.js')
 
-module.exports = {
+export default {
   name: '',
   description : '',
   aliases: [],
@@ -39,7 +39,7 @@ module.exports = {
 const Discord = require('discord.js')
 const { SlashCommandBuilder } = require('@discordjs/builders')
 
-module.exports = {
+export default {
   name: '',
   description : '',
   aliases: [],
@@ -57,7 +57,7 @@ module.exports = {
 const Discord = require('discord.js')
 const { SlashCommandBuilder } = require('@discordjs/builders')
 
-module.exports = {
+export default {
   name: '',
   description : '',
   isSlash: true,

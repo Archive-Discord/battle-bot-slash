@@ -1,5 +1,6 @@
 import chalk from "chalk"
 import stripColor from "strip-ansi"
+import { ColorsType, LoggerClass } from "typings/utils/Logger"
 import winston, { createLogger, format, transports, addColors } from "winston"
 import config from "../../config"
 
@@ -16,7 +17,7 @@ const colors = {
 }
 
 const myFormat = printf(({ level, message, label, ms }) => {
-  const _level = stripColor(level)
+  const _level = stripColor(level) as ColorsType
   const colorizer = colors[_level]
   return `${chalk.grey(
     `[${
@@ -60,12 +61,12 @@ const myCustomLevels = {
 
 addColors(myCustomLevels.colors)
 
-export default class Logger {
+export default class Logger implements LoggerClass {
   public readonly scope: string
   private logger: winston.Logger
+
   constructor(scope: string) {
     this.scope = scope
-
     this.logger = createLogger({
       levels: myCustomLevels.levels,
       transports: [
@@ -98,6 +99,6 @@ export default class Logger {
 
   fatal(message: string, ...args: any[]) {
     this.logger.error(message, ...args, { label: this.scope })
-    process.exit(1)
+    return process.exit(1)
   }
 }

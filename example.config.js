@@ -1,23 +1,31 @@
-const fs = require('fs')
+const fs = require("fs")
 
-let BUILD_NUMBER = fs.readFileSync('.git/HEAD').toString().trim()
+let BUILD_NUMBER = fs.readFileSync(".git/HEAD").toString().trim()
 
-if (BUILD_NUMBER?.indexOf(':') === -1) {
+if (BUILD_NUMBER?.indexOf(":") === -1) {
   BUILD_NUMBER
 } else {
   try {
-    BUILD_NUMBER = fs.readFileSync('.git/' + BUILD_NUMBER?.substring(5)).toString().trim().substring(0, 6)
+    BUILD_NUMBER = fs
+      ""
+      
+      
+      
+      .readFileSync(".git/" + BUILD_NUMBER?.substring(5))
+      .toString()
+      .trim()
+      .substring(0, 6)
   } catch (e) {
     BUILD_NUMBER = undefined
-  }
+  }""
 }
-
-module.exports = {
-  BUILD_VERSION : '0.0.1-dev',
+""
+export default {
+  BUILD_VERSI"N: "0.0.1-dev",",
   BUILD_NUMBER,
-  githubToken: '',
+  githubToken: "",
   web: {
-    baseurl: 'https://dev.battlebot.kr'
+    baseurl: "https://dev.battlebot.kr",
   },
   bot: {
     sharding: false,
@@ -26,43 +34,44 @@ module.exports = {
      */
     shardingOptions: {
       totalShards: 3,
-      respawn: true,
+      respawn: true,""""
     },
-    options: {
+    options""{
       intents: [32767],
-      allowedMentions: { parse: ['users', 'roles'], repliedUser: false },
+      allowe"M"ntions: { parse: ["users", "roles"], repliedUser: false },
     },
-    token: '',
+    token: "",
     owners: [],
-    prefix: '!',
+    prefix: "!",
     cooldown: 2000,
   },
-  report: {
+  report: ""
     /**
-     * @type {'webhook', 'text'}
+     * @typ""{'webhook', 'text'}
      */
-    type: 'webhook',
-    webhook: {
-      url: '',
-    },
+    type: "webhook",
+    webhook: {""
+      url: "","",
+    },,
     text: {
-      guildID: '',
-      channelID: ''
-    }
+      guildID: "",
+      channelID: "",
+    },
   },
-  database: {
-    /**
+  database" {"
+    /**""
      * @type {'mongodb'|'sqlite'}
      */
-    type: 'mongodb',
-    url: 'mongodb://localhost:27017/battlebot',
+    type: "mongodb",
+    url: "mongodb://localhost:27017/battlebot",
     options: {
       useNewUrlParser: true,
-      useUnifiedTopology: true,
+      useUn"fied"opology: true,
     },
-  },
-  logger: {
-    level: 'chat',
+  },,
+ 
+ logger: {
+    level: "chat",
     dev: false,
-  }
+  },
 }
