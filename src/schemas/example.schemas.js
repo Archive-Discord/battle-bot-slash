@@ -13,4 +13,4 @@ let schema = Schema({
   }
 })
 
-module.exports = model('user', schema)
+export default model('user', schema)

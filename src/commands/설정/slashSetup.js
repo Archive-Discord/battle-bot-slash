@@ -3,7 +3,7 @@ const CommandManager = require('../../managers/CommandManager')
 const Embed = require('../../utils/Embed')
 const ErrorManager = require('../../managers/ErrorManager')
 
-module.exports = {
+export default {
   name: 'slashSetup',
   aliases: ['세팅', 'slash', 'setup', 'tpxld'],
   description: 'Slash Command 세팅합니다.',

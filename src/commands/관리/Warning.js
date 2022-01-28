@@ -8,7 +8,7 @@ String.prototype.toObjectId = function() {
   return new ObjectId(this.toString());
 };
 
-module.exports = {
+export default {
   name: "경고",
   description: "경고 관련 명령어입니다",
   isSlash: true,

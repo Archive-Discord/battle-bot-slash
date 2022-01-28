@@ -3,7 +3,7 @@ const Embed = require('../../utils/Embed')
 const { SlashCommandBuilder } = require('@discordjs/builders')
 const wait = require('node:util').promisify(setTimeout)
 
-module.exports = {
+export default {
   name: 'ping',
   description : '핑을 측정합니다.',
   aliases: ['핑', '측정', 'vld'],
