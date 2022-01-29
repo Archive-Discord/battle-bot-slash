@@ -2,6 +2,8 @@
 var nodemailer = require('nodemailer')
 var { email } = require('../../config')
 var { google } = require('googleapis')
+const Logger = require('./Logger')
+const logger = new Logger('mail')
 // 메일발송 객체
 // G suit
 const oAuth2Client = new google.auth.OAuth2(email.Google_Client_Id, email.Google_Client_Secret, email.Google_Redirect_Url)
@@ -271,13 +273,13 @@ var mailSender = {
       // 메일 발송    
       transporter.sendMail(mailOptions, function(error, info){
         if (error) {
-          console.log(error)
+          logger.error(error)
         } else {
-          console.log('Email sent: ' + info.response)
+          logger.log(info.response)
         }
       })
     } catch(e) {
-      console.log(e)
+      logger.error(e)
     }
   }
 }
