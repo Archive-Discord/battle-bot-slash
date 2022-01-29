@@ -1,17 +1,16 @@
-import CommandManagerClass from "@types/managers/CommandManager"
 import Logger from "@utils/Logger"
-import BaseManager from "@managers/BaseManager"
 import fs from "fs"
 import path from "path"
 import BotClient from "@client"
-import { ManagerClass } from "@types/managers/manager"
+import { Command } from "@types"
 
 
-export default class CommandManager implements ManagerClass {
-  public client: BotClient
-  public logger: Logger
+export default class CommandManager {
+  private client: BotClient
+  private logger: Logger
   public commands: BotClient["commands"]
   public categorys: BotClient["categorys"] // TODO: Fix categorys to categories
+
   constructor(client: BotClient) {
     this.client = client
     this.logger = new Logger("CommandManager")
@@ -19,11 +18,7 @@ export default class CommandManager implements ManagerClass {
     this.categorys = client.categorys
   }
 
-  /**
-   * Load commmands from a directory
-   * @param {string} commandPath commandPath is the path to the folder containing the commands
-   */
-  async load(commandPath = path.join(__dirname, "../commands")) {
+  public async load(commandPath = path.join(__dirname, "../commands")) {
     this.logger.debug("Loading commands...")
 
     const commandFolder = fs.readdirSync(commandPath)
@@ -43,8 +38,8 @@ export default class CommandManager implements ManagerClass {
                   `Not a TypeScript file ${commandFile}. Skipping.`
                 )
 
-              let command = require(`@command/${folder}/${commandFile}`)
-                
+              let { default: command } = require(`../commands/${folder}/${commandFile}`)
+
               if (!command.name)
                 return this.logger.debug(
                   `Command ${commandFile} has no name. Skipping.`
@@ -52,10 +47,10 @@ export default class CommandManager implements ManagerClass {
 
               this.commands.set(command.name, command)
 
-              this.categorys.get(folder).push(command.name)
+              this.categorys.get(folder)?.push(command.name)
 
               this.logger.debug(`Loaded command ${command.name}`)
-            } catch (error) {
+            } catch (error: any) {
               this.logger.error(
                 `Error loading command '${commandFile}'.\n` + error.stack
               )
@@ -65,13 +60,13 @@ export default class CommandManager implements ManagerClass {
               )
             }
           })
-        } catch (error) {
+        } catch (error: any) {
           this.logger.error(
             `Error loading command folder '${folder}'.\n` + error.stack
           )
         }
       })
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error("Error fetching folder list.\n" + error.stack)
     }
   }
@@ -81,7 +76,7 @@ export default class CommandManager implements ManagerClass {
    * @param {string} commandName
    * @returns {import('../structures/BotClient').Command}
    */
-  get(commandName) {
+  public get(commandName: string): Command | undefined {
     if (this.client.commands.has(commandName))
       return this.client.commands.get(commandName)
     else if (
@@ -94,12 +89,7 @@ export default class CommandManager implements ManagerClass {
       )
   }
 
-  /**
-   * reloading command
-   * @param {string} commandPath
-   * @return {string|Error}
-   */
-  reload(commandPath = path.join(__dirname, "../commands")) {
+  public reload(commandPath = path.join(__dirname, "../commands")) {
     this.logger.debug("Reloading commands...")
 
     this.commands.clear()
@@ -115,11 +105,11 @@ export default class CommandManager implements ManagerClass {
    * @param {import("discord.js").Snowflake} [guildID]
    * @returns {Promise<import('@discordjs/builders').SlashCommandBuilder[]>}
    */
-  async slashCommandSetup(guildID) {
+  public async slashCommandSetup(guildID?: string) {
     this.logger.scope = "CommandManager: SlashSetup"
 
     let slashCommands = []
-    for (let command of this.client.commands) {
+    for (let command of this.client.commands as any) {
       if (command[1].isSlash || command[1].slash) {
         slashCommands.push(
           command[1].isSlash ? command[1].data : command[1].slash?.data
@@ -140,11 +130,9 @@ export default class CommandManager implements ManagerClass {
 
       let guild = this.client.guilds.cache.get(guildID)
 
-      await guild.commands.set(slashCommands)
+      await guild?.commands.set(slashCommands)
 
       return slashCommands
     }
   }
 }
-
-export default CommandManager

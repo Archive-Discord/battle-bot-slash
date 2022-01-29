@@ -3,7 +3,7 @@ import { ShardingManager } from "discord.js"
 import chalk from "chalk"
 
 import config from '@config'
-const logger = new Logger("main")
+let logger = new Logger("main")
 
 console.log(
   chalk.cyanBright(`

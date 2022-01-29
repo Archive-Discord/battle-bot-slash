@@ -1,7 +1,8 @@
-import { Message } from"discord.js")
-import config from"../../config")
-import { LoggerSetting } from"../schemas/LogSettingSchema")
-import LogEmbed from"../utils/LogEmbed")
+import BotClient from "@client"
+import { Message } from "discord.js"
+import config from "../../config"
+import LoggerSetting from "../schemas/LogSettingSchema"
+import LogEmbed from "../utils/LogEmbed"
 
 export default {
   name: "messageDelete",
@@ -10,18 +11,18 @@ export default {
    * @param {import('../structures/BotClient')} client
    * @param {Message} message
    */
-  async execute(client, message) {
+  async execute(client: BotClient, message: Message) {
     if (message.content.startsWith(config.bot.prefix)) return
     if (message.author.id == client.user.id) return
     if (message.channel.type == "DM") return
     if (!message.content && message.attachments.size == 0 && message.embeds[0])
       return
     let LoggerSettingDB = await LoggerSetting.findOne({
-      guild_id: message.guild.id,
+      guild_id: message.guild?.id,
     })
     if (!LoggerSettingDB) return
     if (!LoggerSettingDB.useing.memberBan) return
-    let logChannel = message.guild.channels.cache.get(
+    let logChannel = message.guild?.channels.cache.get(
       LoggerSettingDB.guild_channel_id
     )
     if (!logChannel) return
@@ -44,6 +45,7 @@ export default {
         value: message.attachments
           .map((file) => `[링크](${file.url})`)
           .join("\n"),
+        inline: true,
       })
     }
 

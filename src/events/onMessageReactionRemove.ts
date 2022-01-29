@@ -1,6 +1,6 @@
-import { MessageAttachment, Collection, Message, MessageReaction, User } from'discord.js')
-import { LoggerSetting } from'../schemas/LogSettingSchema')
-import Embed from'../utils/LogEmbed')
+import { MessageAttachment, Collection, Message, MessageReaction, User } from'discord.js'
+import { LoggerSetting } from'../schemas/LogSettingSchema'
+import Embed from'../utils/LogEmbed'
 
 export default {
   name: 'messageReactionRemove',
@@ -10,7 +10,7 @@ export default {
    * @param {User} user
    */
   async execute(client, messageReaction, user) {
-    import { guild } = messageReaction.message;
+    let { guild } = messageReaction.message;
     if(user.bot) return
     if(!guild) return
     let LoggerSettingDB = await LoggerSetting.findOne({guild_id: messageReaction.message.guild.id})

@@ -1,23 +1,24 @@
-const Discord = require('discord.js')
-const CommandManager = require('../../managers/CommandManager')
-const Embed = require('../../utils/Embed')
-const ErrorManager = require('../../managers/ErrorManager')
+import Discord, { Message } from 'discord.js'
+import CommandManager from '../../managers/CommandManager'
+import Embed from '../../utils/Embed'
+import ErrorManager from '../../managers/ErrorManager'
+import BotClient from '@client'
 
 export default {
   name: 'slashSetup',
   aliases: ['세팅', 'slash', 'setup', 'tpxld'],
   description: 'Slash Command 세팅합니다.',
   /**
-	 * 
-	 * @param {import('../../structures/BotClient')} client 
-	 * @param {Discord.Message} message 
-	 * @param {string[]} args 
-	 */
-  async execute(client, message, args) {
+   * 
+   * @param {import('../../structures/BotClient')} client 
+   * @param {Discord.Message} message 
+   * @param {string[]} args 
+   */
+  async execute(client: BotClient, message: Message, args: string[]) {
     let commandManager = new CommandManager(client)
     let errorManager = new ErrorManager(client)
-		if(!message.member.permissions.has(Discord.Permissions.FLAGS.ADMINISTRATOR || Discord.Permissions.FLAGS.MANAGE_CHANNELS)) return message.reply("해당 명령어는 관리자 전용 명령어입니다.")
-		
+    if (!message.member?.permissions.has(Discord.Permissions.FLAGS.ADMINISTRATOR || Discord.Permissions.FLAGS.MANAGE_CHANNELS)) return message.reply("해당 명령어는 관리자 전용 명령어입니다.")
+
     let row = new Discord.MessageActionRow().addComponents(
       new Discord.MessageButton()
         .setCustomId('accept')
@@ -42,19 +43,19 @@ export default {
           .setTitle('잠시만 기다려 주세요...')
         await i.update({ embeds: [loading], components: [] })
 
-        commandManager.slashCommandSetup(message.guild.id).then((data) => {
+        commandManager.slashCommandSetup(message.guild?.id).then((data) => {
           m.delete()
           message.channel.send({
             embeds: [
               new Embed(client, 'success')
                 .setTitle('로딩완료!')
-                .setDescription(`${data.length}개의 (/) 명령어를 생성했어요!`),
+                .setDescription(`${data?.length}개의 (/) 명령어를 생성했어요!`),
             ],
           })
         }).catch((error) => {
-          
+
           m.delete()
-          if(error.code === Discord.Constants.APIErrors.MISSING_ACCESS) {
+          if (error.code === Discord.Constants.APIErrors.MISSING_ACCESS) {
             message.channel.send({
               embeds: [
                 new Embed(client, 'error')
@@ -65,7 +66,10 @@ export default {
               ],
             })
           } else {
-            errorManager.report(error, message, true)
+            errorManager.report(error, {
+              executer: message,
+              isSend: true,
+            })
           }
         })
       } else {

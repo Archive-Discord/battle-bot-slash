@@ -1,9 +1,10 @@
-const { MessageEmbed, CommandInteraction } = require("discord.js");
-const { SlashCommandBuilder } = require("@discordjs/builders");
+import { MessageEmbed, CommandInteraction } from "discord.js";
+import { SlashCommandBuilder } from "@discordjs/builders";
+import BotClient from "@client";
 
 export default {
   name: '프로필',
-  description : '유저의 프로필을 확인합니다',
+  description: '유저의 프로필을 확인합니다',
   isSlash: true,
   data: new SlashCommandBuilder()
     .setName('프로필')
@@ -20,14 +21,15 @@ export default {
    * @param {import('../../structures/BotClient')} client
    * @param {CommandInteraction} interaction
    */
-  async execute(client, interaction) {
-    if (interaction.type === "DEFAULT" && interaction.content.startsWith(client.config.bot.prefix) + this.name) return interaction.reply('해당 명령어는 (/)커맨드만 사용 가능합니다')
+  async execute(client: BotClient, interaction: CommandInteraction) {
+    if (interaction.type !== "APPLICATION_COMMAND" && interaction.content.startsWith(client.config.bot.prefix) + this.name) return interaction.reply('해당 명령어는 (/)커맨드만 사용 가능합니다')
+
     await interaction.deferReply();
     let user = interaction.options.getUser("유저");
     if (!user) return interaction.editReply("유저를 선택해 주세요");
-    const embed  = new MessageEmbed()
+    const embed = new MessageEmbed()
       .setTitle(`${user.username}님의 프로필 입니다`)
       .setImage(user.displayAvatarURL())
-    await interaction.editReply({embeds: [embed]})
+    await interaction.editReply({ embeds: [embed] })
   },
 };

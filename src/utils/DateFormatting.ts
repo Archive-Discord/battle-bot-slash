@@ -3,7 +3,7 @@ export default class DateFormatting {
     return `<t:${Math.floor(date / 1000)}` + (style ? `:${style}` : "") + ">"
   }
 
-  static relative(date: number) {
+  static relative(date: number): string|undefined {
     return this._format(date, "R")
   }
 

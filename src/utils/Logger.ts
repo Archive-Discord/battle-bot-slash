@@ -1,8 +1,8 @@
 import chalk from "chalk"
 import stripColor from "strip-ansi"
-import { ColorsType, LoggerClass } from "typings/utils/Logger"
 import winston, { createLogger, format, transports, addColors } from "winston"
 import config from "../../config"
+import { LevelType } from "@types"
 
 const { printf, splat, colorize, timestamp, ms, combine } = format
 
@@ -17,21 +17,20 @@ const colors = {
 }
 
 const myFormat = printf(({ level, message, label, ms }) => {
-  const _level = stripColor(level) as ColorsType
+  const _level = stripColor(level) as LevelType
   const colorizer = colors[_level]
   return `${chalk.grey(
-    `[${
-      new Date().getFullYear() +
-      "-" +
-      new Date().getMonth() +
-      "-" +
-      new Date().getDate() +
-      " " +
-      new Date().getHours() +
-      ":" +
-      new Date().getMinutes() +
-      ":" +
-      new Date().getSeconds()
+    `[${new Date().getFullYear() +
+    "-" +
+    new Date().getMonth() +
+    "-" +
+    new Date().getDate() +
+    " " +
+    new Date().getHours() +
+    ":" +
+    new Date().getMinutes() +
+    ":" +
+    new Date().getSeconds()
     }]`
   )} ${_level === "chat" ? "" : `[ ${label} ] `}${level} ${colorizer(
     message
@@ -61,8 +60,8 @@ const myCustomLevels = {
 
 addColors(myCustomLevels.colors)
 
-export default class Logger implements LoggerClass {
-  public readonly scope: string
+export default class Logger {
+  public scope: string
   private logger: winston.Logger
 
   constructor(scope: string) {

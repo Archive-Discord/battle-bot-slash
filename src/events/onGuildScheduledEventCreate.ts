@@ -1,9 +1,10 @@
-import { GuildMember, GuildScheduledEvent }fileURLToPath, 'discord.js'
+import { GuildMember, GuildScheduledEvent } from 'discord.js'
 import { value } from 'mongoose/lib/options/propertyOptions'
 import { LoggerSetting } from'../schemas/LogSettingSchema'
 import DateFormatting from'../utils/DateFormatting'
 import LogEmbed from'../utils/LogEmbed'
 import { fileURLToPath } from 'url'
+import BotClient from '@client'
 
 
 export default {
@@ -13,7 +14,8 @@ export default {
    * @param {import('../structures/BotClient')} client 
    * @param {GuildScheduledEvent} guildScheduledEvent 
    */
-  async execute(client, guildScheduledEvent) {
+  async execute(client: BotClient, guildScheduledEvent: GuildScheduledEvent<'CANCELED'>) {
+    
     let LoggerSettingDB = await LoggerSetting.findOne({guild_id: guildScheduledEvent.guild.id})
     if(!LoggerSettingDB) return
     if(!LoggerSettingDB.useing.memberJoin) return

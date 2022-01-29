@@ -1,7 +1,7 @@
-import { MessageAttachment, Collection, Message } = require("discord.js")
-import { LoggerSetting } from"../schemas/LogSettingSchema")
-import dateFormat from"../utils/DateFormatting")
-import Embed from"../utils/LogEmbed")
+import { MessageAttachment, Collection, Message } from "discord.js"
+import { LoggerSetting } from"../schemas/LogSettingSchema"
+import dateFormat from"../utils/DateFormatting"
+import Embed from"../utils/LogEmbed"
 
 export default {
   name: "messageDeleteBulk",

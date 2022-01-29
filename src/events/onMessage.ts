@@ -12,7 +12,7 @@ export default {
 
     message.guild.channels.cache.forEach(async (channel) => {
       if (channel.isText())
-        return channel.messages.fetch().catch(() => {})
+        return channel.messages.fetch().catch(() => { })
     })
 
     if (message.author.bot) return
@@ -24,7 +24,7 @@ export default {
       .trim()
       .split(/ +/g)
     let commandName = args.shift()?.toLowerCase()
-    let command = commandManager.get(commandName)
+    let command = commandManager.get(commandName as string)
 
     await client.dokdo.run(message)
 

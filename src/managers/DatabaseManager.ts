@@ -1,19 +1,15 @@
 import Logger from "@utils/Logger"
-import BaseManager from "./BaseManager"
 import mongoose from "mongoose"
 import path from "path"
 import fs from "fs"
-import ManagerClass from "@types/managers/manager"
 import BotClient from "@client"
-import { LoggerClass } from "@types/utils/Logger"
-
 /**
  * @extends {BaseManager}
  */
-export default class DatabaseManager implements ManagerClass {
-  public client: BotClient
-  public logger: LoggerClass
-  public type: "mongodb" | "sqlite"
+export default class DatabaseManager {
+  private client: BotClient
+  private logger: Logger
+  public readonly type: "mongodb" | "sqlite"
 
   constructor(client: BotClient) {
     this.client = client
@@ -21,7 +17,7 @@ export default class DatabaseManager implements ManagerClass {
     this.type = client.config.database.type
   }
 
-  load(schemaPath = path.join(__dirname, "../schemas")) {
+  public load(schemaPath = path.join(__dirname, "../schemas")) {
     switch (this.type) {
       case "mongodb": {
         this.logger.debug("Using MongoDB...")
@@ -63,13 +59,13 @@ export default class DatabaseManager implements ManagerClass {
           this.logger.error(
             `Error loading schema ${schemaFile}.\n` + error.stack
           )
-        } finally {
-          this.logger.debug(
-            `Succesfully loaded schemas. count: ${this.client.schemas.size}`
-          )
         }
+
       })
-    } catch (error) {
+      this.logger.debug(
+        `Succesfully loaded schemas. count: ${this.client.schemas.size}`
+      )
+    } catch (error: any) {
       this.logger.error("Error fetching folder list.\n" + error.stack)
     }
   }

@@ -1,5 +1,5 @@
 import Discord, { Client, MessageEmbedOptions } from "discord.js"
-import { EmbedType } from "typings/utils/LogEmbed"
+import { EmbedType } from "@types/utils/LogEmbed"
 
 class Embed extends Discord.MessageEmbed {
   public client: Client

@@ -1,3 +1,6 @@
+import BotClient from "@client"
+import { Message } from "discord.js"
+
 const { SlashCommandBuilder } = require('@discordjs/builders')
 const Discord = require('discord.js')
 const Embed = require('../../utils/Embed')
@@ -12,14 +15,16 @@ export default {
    * @param {Discord.Message} message 
    * @param {string[]} args 
    */
-  async execute(client, message, args) {
+  async execute(client: BotClient, message: Message, args: string[] | number[]) {
+    if (message.channel.type === 'DM') return message.reply('DM에서 사용할 수 없는 명령어입니다')
+
     let number = Number(args[0])
-    if(typeof number !== 'number')
+    if (typeof number !== 'number')
       return message.reply('삭제할 메시지의 번호를 입력해주세요')
-    
-    if(number <= 100) {
+
+    if (number <= 100) {
       message.delete()
-      message.channel.bulkDelete(args[0])
+      message.channel.bulkDelete(args[0] as number)
     } else {
       let fetched = await message.channel.messages.fetch({ limit: number })
 

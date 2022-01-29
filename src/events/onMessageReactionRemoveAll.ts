@@ -1,6 +1,6 @@
-import { MessageReaction, Collection, Message, reactions, User } from'discord.js')
-import { LoggerSetting } from'../schemas/LogSettingSchema')
-import Embed from'../utils/LogEmbed')
+import { MessageReaction, Collection, Message, reactions, User } from'discord.js'
+import { LoggerSetting } from'../schemas/LogSettingSchema'
+import Embed from'../utils/LogEmbed'
 
 export default {
   name: 'messageReactionRemoveAll',
@@ -10,7 +10,7 @@ export default {
    * @param {MessageReaction} reactions
    */
   async execute(client, message, reactions) {
-    import { guild } = message;
+    let { guild } = message;
     if(!guild) return
     if(message.partial) await message.fetch()
 

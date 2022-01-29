@@ -1,16 +1,11 @@
-import { GuildMember } from"discord.js")
-import { LoggerSetting } from"../schemas/LogSettingSchema"
-import LogEmbed from"../utils/LogEmbed"
+import BotClient from "@client"
+import { GuildMember, Client } from "discord.js"
+import LoggerSetting from "../schemas/LogSettingSchema"
+import LogEmbed from "../utils/LogEmbed"
 
 export default {
   name: "guildMemberUpdate",
-  /**
-   *
-   * @param {import('../structures/BotClient')} client
-   * @param {GuildMember} oldMember
-   * @param {GuildMember} newMember
-   */
-  async execute(client, oldMember, newMember) {
+  async execute(client: BotClient, oldMember: GuildMember, newMember: GuildMember) {
     if (oldMember.partial) return
     let LoggerSettingDB = await LoggerSetting.findOne({
       guild_id: newMember.guild.id,
@@ -21,7 +16,7 @@ export default {
       LoggerSettingDB.guild_channel_id
     )
     if (!logChannel) return
-    let embed = new LogEmbed(client, "warn").setDescription("멤버 수정")
+    let embed = new LogEmbed(client as Client<true>, "warn").setDescription("멤버 수정")
     if (oldMember.nickname !== newMember.nickname)
       embed.addField(
         "닉네임 수정",
@@ -31,19 +26,19 @@ export default {
       embed.addField(
         "서버 부스트",
         `<@${newMember.user.id}>` +
-          "(`" +
-          newMember.user.id +
-          "`)" +
-          " 님이 서버를 부스트 했습니다"
+        "(`" +
+        newMember.user.id +
+        "`)" +
+        " 님이 서버를 부스트 했습니다"
       )
     if (oldMember.premiumSince && !newMember.premiumSince)
       embed.addField(
         "서버 부스트",
         `<@${newMember.user.id}>` +
-          "(`" +
-          newMember.user.id +
-          "`)" +
-          " 님이 서버를 부스트 해제 했습니다"
+        "(`" +
+        newMember.user.id +
+        "`)" +
+        " 님이 서버를 부스트 해제 했습니다"
       )
     if (oldMember.roles.cache.size > newMember.roles.cache.size) {
       oldMember.roles.cache.forEach((role) => {

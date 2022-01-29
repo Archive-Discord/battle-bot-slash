@@ -1,10 +1,11 @@
 import Discord, { Client, MessageEmbedOptions } from "discord.js"
-import { EmbedType } from "typings/utils/LogEmbed"
+import { EmbedType } from "@types"
 
 class Embed extends Discord.MessageEmbed {
-  public client: Discord.Client<true>
+  public client!: Discord.Client;
 
-  constructor(client: Client<true>, type: EmbedType) {
+  constructor(client: Client, type: EmbedType) {
+    if (!client.isReady()) return;
     const EmbedJSON: MessageEmbedOptions = {
       timestamp: new Date(),
       title: "로그",

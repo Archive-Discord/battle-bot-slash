@@ -1,4 +1,5 @@
-import Logger from'../utils/Logger')
+import BotClient from '@client'
+import Logger from'@utils/Logger'
 let logger = new Logger('bot')
 
 export default {
@@ -7,9 +8,7 @@ export default {
   /**
    * @param {import('../structures/BotClient')} client 
    */
-  async execute(client) {
-    logger.info(`Logged ${client.user.username}`)
-
-
+  async execute(client: BotClient) {
+    logger.info(`Logged ${client.user?.username}`)
   }
 }

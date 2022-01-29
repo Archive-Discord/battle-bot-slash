@@ -25,4 +25,4 @@ const LoggerSettingSchema = new Schema(
 
 const LoggerSetting = model("LogChannel", LoggerSettingSchema, "LogChannel")
 
-export default { LoggerSetting }
+export default LoggerSetting

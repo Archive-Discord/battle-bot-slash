@@ -31,14 +31,15 @@ class ButtonManager implements ManagerClass {
 
   async load(buttonPath = path.join(__dirname, "../buttons")) {
     this.logger.debug("Loading buttons...")
-    import buttonFolder = fs.readdirSync(buttonPath)
+    
+    let buttonFolder = fs.readdirSync(buttonPath)
     try {
       buttonFolder.forEach((folder: any) => {
         // TODO: Fix any
         if (!fs.lstatSync(path.join(buttonPath, folder)).isDirectory()) return
 
         try {
-          import buttonFiles = fs.readdirSync(path.join(buttonPath, folder))
+          let buttonFiles = fs.readdirSync(path.join(buttonPath, folder))
 
           buttonFiles.forEach((buttonFile) => {
             try {

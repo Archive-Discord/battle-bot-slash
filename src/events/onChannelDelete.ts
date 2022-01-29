@@ -7,8 +7,8 @@ import Mongoose  from "mongoose"
 export default {
   name: "channelDelete",
   async execute(client: BotClient, channel: GuildChannel) {
-    // 이렇게 하는거임 loggerSetting은 collection이 아니라 model임
-    let LoggerSettingDB = await LoggerSetting.findOne({ // 근데 이오류는 머임? 그레서 어케해야함
+
+    let LoggerSettingDB = await LoggerSetting.findOne({
       guild_id: channel.guild.id,
     })
     if (!LoggerSettingDB) return

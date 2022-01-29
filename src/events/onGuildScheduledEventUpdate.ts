@@ -1,9 +1,10 @@
-import { GuildMember, GuildScheduledEvent } = require("discord.js")
-import { value } from"mongoose/lib/options/propertyOptions")
-import { LoggerSetting } from"../schemas/LogSettingSchema")
-import DateFormatting from"../utils/DateFormatting")
-import LogEmbed from"../utils/LogEmbed")
-// 제
+import { Client, GuildMember, GuildScheduledEvent } from "discord.js"
+import { value } from"mongoose/lib/options/propertyOptions"
+import LoggerSetting from "@schemas/LogSettingSchema"
+import DateFormatting from"@utils/DateFormatting"
+import LogEmbed from "@utils/LogEmbed"
+import BotClient from "@client"
+
 export default {
   name: "guildScheduledEventUpdate",
   /**
@@ -12,7 +13,7 @@ export default {
    * @param {GuildScheduledEvent} oldGuildEvent
    * @param {GuildScheduledEvent} newGuildEvent
    */
-  async execute(client, oldGuildEvent, newGuildEvent) {
+  async execute(client: BotClient, oldGuildEvent: GuildScheduledEvent, newGuildEvent: GuildScheduledEvent) {
     let LoggerSettingDB = await LoggerSetting.findOne({
       guild_id: newGuildEvent.guild.id,
     })
@@ -22,7 +23,7 @@ export default {
       LoggerSettingDB.guild_channel_id
     )
     if (!logChannel) return
-    let embed = new LogEmbed(client, "warn").setDescription("이벤트 수정")
+    let embed = new LogEmbed(client as Client<true>, "warn").setDescription("이벤트 수정")
     if (oldGuildEvent.name != newGuildEvent.name)
       embed.addField(
         "이름 수정",
@@ -73,12 +74,12 @@ export default {
           "`"
       )
     if (oldGuildEvent.entityType != newGuildEvent.entityType) {
-      import oldEntityType = ["STAGE_INSTANCE", "VOICE"].includes(
+      let oldEntityType = ["STAGE_INSTANCE", "VOICE"].includes(
         oldGuildEvent.entityType
       )
         ? oldGuildEvent.channel
         : oldGuildEvent.entityType
-      import newEntityType = ["STAGE_INSTANCE", "VOICE"].includes(
+      let newEntityType = ["STAGE_INSTANCE", "VOICE"].includes(
         newGuildEvent.entityType
       )
         ? newGuildEvent.channel
