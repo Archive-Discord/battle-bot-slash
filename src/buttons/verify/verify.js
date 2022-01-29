@@ -87,7 +87,8 @@ module.exports = {
       let captchaVerify = new Embed(client, 'success')
         .setTitle('인증')
         .setDescription('위 링크로 접속하여 인증을 진행해주세요')
-      await interaction.user.send({embeds: [captchaVerify], content: `${web.baseurl}/verify?token=${token}`})
+      await interaction.user.send({embeds: [captchaVerify]})
+      await interaction.user.send(`${web.baseurl}/verify?token=${token}`)
       return interaction.editReply('DM으로 인증정보를 보내드렸습니다 DM을 확인해주세요')
     } else if (VerifySettingDB.type === 'email') {
       let code = Math.random().toString(36).substr(2,7)
