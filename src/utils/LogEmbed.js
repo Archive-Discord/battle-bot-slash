@@ -16,7 +16,7 @@ class Embed extends Discord.MessageEmbed {
   constructor(client, type) {
     let EmbedJSON = {
       timestamp: new Date(),
-      title: "로그",
+      title: '로그',
       footer : {
         text: client.user.username,
         icon_url: client.user.avatarURL()

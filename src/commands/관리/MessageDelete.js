@@ -13,6 +13,7 @@ module.exports = {
    * @param {string[]} args 
    */
   async execute(client, message, args) {
+    if(!args[0]) return message.reply('삭제할 메시지의 번호를 입력해주세요')
     let number = Number(args[0])
     if(typeof number !== 'number')
       return message.reply('삭제할 메시지의 번호를 입력해주세요')
@@ -26,7 +27,7 @@ module.exports = {
       try {
         message.channel.bulkDelete(fetched)
       } finally {
-        message.channel.send('asdf')
+        message.channel.send(`${args[0]} 개의 메시지를 삭제했습니다`)
       }
     }
   }

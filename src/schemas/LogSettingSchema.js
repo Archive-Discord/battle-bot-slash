@@ -15,7 +15,13 @@ const LoggerSettingSchema = Schema({
     deleteChannel: {type: Boolean, default: false},
     editChannel: {type: Boolean, default: false},
     joinVoiceChannel: {type: Boolean, default: false},
-    leaveVoiceChannel:{type: Boolean, default: false}
+    leaveVoiceChannel:{type: Boolean, default: false},
+    inviteGuild:{type: Boolean, default: false},
+    serverSetting:{type: Boolean, default: false},
+    eventCreate:{type: Boolean, default: false},
+    eventEdit:{type: Boolean, default: false},
+    eventDelete:{type: Boolean, default: false},
+    memberUpdate: {type: Boolean, default: false}
   },
   published_date: { type: Date, default: Date.now }
 }, {collection: 'LogChannel'})

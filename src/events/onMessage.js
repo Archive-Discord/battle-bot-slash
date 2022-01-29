@@ -10,13 +10,11 @@ module.exports = {
   async execute(client, message) {
     let commandManager = new CommandManager(client)
     let errorManager = new ErrorManager(client)
-
+    if (message.channel.type === 'DM') return
     message.guild.channels.cache.forEach(async channel => {
       if(channel.isText()) return channel.messages.fetch().catch(() => {})
     })
-
     if (message.author.bot) return
-    if (message.channel.type === 'DM') return
     if (!message.content.startsWith(client.config.bot.prefix)) return
 
     let args = message.content.slice(client.config.bot.prefix.length).trim().split(/ +/g)

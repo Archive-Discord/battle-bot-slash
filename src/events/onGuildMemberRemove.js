@@ -1,4 +1,4 @@
-const { GuildMember } = require('discord.js')
+const { GuildMember } = require('discord.js') // eslint-disable-line no-unused-vars
 const { LoggerSetting } = require('../schemas/LogSettingSchema')
 const LogEmbed = require('../utils/LogEmbed')
 
@@ -17,12 +17,12 @@ module.exports = {
     let logChannel = member.guild.channels.cache.get(LoggerSettingDB.guild_channel_id)
     if(!logChannel) return
     let embed = new LogEmbed(client, 'error')
-        .setDescription('멤버 퇴장')
-        .setAuthor(member.user.username, member.user.displayAvatarURL())
-        .addFields({
-            name: "유저",
-            value: `<@${member.user.id}>` + "(`" + member.user.id + "`)"
-        })
+      .setDescription('멤버 퇴장')
+      .setAuthor(member.user.username, member.user.displayAvatarURL())
+      .addFields({
+        name: '유저',
+        value: `<@${member.user.id}>` + '(`' + member.user.id + '`)'
+      })
     return await logChannel.send({embeds: [embed]})
   }
 }
