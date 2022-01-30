@@ -71,7 +71,6 @@ module.exports = {
         { name: "경고 ID", value: insertRes[0]._id.toString() },
         { name: "유저", value: `<@${user.id}>` + "(" + "`" + user.id + "`" + ")", inline: true},
         { name: "사유", value: reason, inline: true })
-      console.log(embedAdd)
       return interaction.editReply({ embeds: [embedAdd] });
     } else if(subcommand === '차감') {
 

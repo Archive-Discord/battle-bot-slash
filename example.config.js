@@ -64,5 +64,12 @@ module.exports = {
   logger: {
     level: 'chat',
     dev: false,
+  },
+  email: {
+    Google_Email: '아메일',
+    Google_Client_Id:'',
+    Google_Client_Secret: '',
+    Google_Redirect_Url: 'https://developers.google.com/oauthplayground',
+    Google_Refresh_Token: ''
   }
 }
