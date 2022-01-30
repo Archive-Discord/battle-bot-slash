@@ -11,9 +11,9 @@ module.exports = {
     let commandManager = new CommandManager(client)
     let errorManager = new ErrorManager(client)
     if (message.channel.type === 'DM') return
-    message.guild.channels.cache.forEach(async channel => {
-      if(channel.isText()) return channel.messages.fetch().catch(() => {})
-    })
+    //message.guild.channels.cache.forEach(async channel => {
+    //  if(channel.isText()) return channel.messages.fetch().catch(() => {})
+    //})
     if (message.author.bot) return
     if (!message.content.startsWith(client.config.bot.prefix)) return
 
