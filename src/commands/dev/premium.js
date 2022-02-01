@@ -64,7 +64,7 @@ module.exports = {
         } catch(e) {
             log.error(e)
         }
-        log.info(`관리자 ${message.author.username}에 의하여 ${guild.name}서버의 프리미엄 만료일이 ${date.getFullYear() + '년 ' + date.getMonth() + 1 + '월 ' + date.getDate() + '일'} 로 설정되었습니다`)
+        log.info(`관리자 ${message.author.username}에 의하여 ${guild.name}서버의 프리미엄 만료일이 ${date.getFullYear() + '년 ' + (date.getMonth() + 1) + '월 ' + date.getDate() + '일'} 로 설정되었습니다`)
         return await msg.edit({embeds: [successEmbed]})
 
     }
