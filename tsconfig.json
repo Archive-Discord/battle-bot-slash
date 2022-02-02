@@ -50,6 +50,7 @@
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,
   },
-  "include": ["src/**/*.ts", "config.ts"],
+  "files": ["src/index.ts"],
+  "include": ["src/**/*.ts", "config.ts", ".git/*"],
   "exclude": ["node_modules", "build"]
 }
