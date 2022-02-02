@@ -1,6 +1,8 @@
-const { SlashCommandBuilder } = require('@discordjs/builders')
-const Discord = require('discord.js')
-const Embed = require('../../utils/Embed')
+import BotClient from "@client"
+
+import { SlashCommandBuilder } from '@discordjs/builders'
+import { CommandInteraction, Message } from 'discord.js'
+import Embed from '../../utils/Embed'
 
 export default {
   name: 'help',
@@ -12,7 +14,7 @@ export default {
    * @param {Discord.Message} message 
    * @param {string[]} args 
    */
-  async execute(client, message, args) {
+  async execute(client: BotClient, message: Message, args: string[]) {
     let embed = new Embed(client, 'success')
       .setTitle(`${client.user.username} 도움말`)
     if (!args[0]) {
@@ -52,12 +54,7 @@ export default {
       .setDescription('봇의 도움말을 보여줍니다.')
       .addStringOption(option => option.setName('category').setDescription('카테고리를 적어주세요').setRequired(false))
       .toJSON(),
-    /**
-     * 
-     * @param {import('../../structures/BotClient')} client 
-     * @param {Discord.CommandInteraction} interaction 
-     */
-    async execute(client, interaction) {
+    async execute(client: BotClient, interaction: CommandInteraction) {
       let embed = new Embed(client, 'success')
         .setTitle(`${client.user.username} 도움말`)
       if (!interaction.options.getString('category')) {
@@ -69,7 +66,7 @@ export default {
 
         interaction.reply({ embeds: [embed] })
       } else {
-        let category = interaction.options.getString('category').toLowerCase()
+        let category = interaction.options.getString('category')?.toLowerCase() as string
         if (!client.categorys.has(category)) {
           embed.setTitle('이런...')
             .setDescription(`존재하지 않는 카테고리입니다.`)
@@ -93,14 +90,13 @@ export default {
   }
 }
 
-function cmdFormat(cmds, client) {
-  /**
-   * @type {import('../../structures/BotClient').Command[]}
-   */
+function cmdFormat(cmds: string | string[] | undefined, client: BotClient): string | undefined {
   var array = new Array()
 
+  if (!cmds) return;
+
   Object.values(cmds).forEach(c => array.push(client.commands.get(c)))
-  array = array.map(r => r.aliases ? r.aliases[0]: r.name)
+  array = array.map(r => r.aliases ? r.aliases[0] : r.name)
 
   if (array.length === 0) return undefined
   else return '`' + array.join('`, `') + '`'

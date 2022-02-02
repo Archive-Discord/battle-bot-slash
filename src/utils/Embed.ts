@@ -1,14 +1,15 @@
-import Discord, { Client, MessageEmbedOptions } from "discord.js"
-import { EmbedType } from "@types/utils/LogEmbed"
+import { Client, MessageEmbedOptions, MessageEmbed } from "discord.js"
+import { EmbedType } from "@types"
 
-class Embed extends Discord.MessageEmbed {
-  public client: Client
+export default class Embed extends MessageEmbed {
 
-  constructor(client: Client<true>, type: EmbedType) {
+  constructor(client: Client, type: EmbedType) {
+    if (!client.isReady()) return
+
     const EmbedJSON: MessageEmbedOptions = {
       timestamp: new Date(),
       footer: {
-        text: client.user.username, // ㅎ오류떠서 바꿀려고 옴
+        text: client.user.username,
         icon_url: client.user.avatarURL() ?? undefined,
       },
     }
@@ -19,7 +20,6 @@ class Embed extends Discord.MessageEmbed {
     else if (type === "default") EmbedJSON.color = "#5865F2"
 
     super(EmbedJSON)
-    this.client = client
   }
 
   setType(type: EmbedType) {
@@ -31,4 +31,4 @@ class Embed extends Discord.MessageEmbed {
   }
 }
 
-export default Embed
+

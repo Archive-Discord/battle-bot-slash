@@ -1,5 +1,5 @@
 import BotClient from "@client"
-import { Message } from "discord.js"
+import { Message, TextChannel } from "discord.js"
 import config from "../../config"
 import LoggerSetting from "../schemas/LogSettingSchema"
 import LogEmbed from "../utils/LogEmbed"
@@ -24,7 +24,8 @@ export default {
     if (!LoggerSettingDB.useing.memberBan) return
     let logChannel = message.guild?.channels.cache.get(
       LoggerSettingDB.guild_channel_id
-    )
+    ) as TextChannel
+
     if (!logChannel) return
     if (message.content.length > 1024) {
       message.content = message.content.slice(0, 700) + "..."

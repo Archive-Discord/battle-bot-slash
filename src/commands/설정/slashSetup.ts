@@ -8,12 +8,6 @@ export default {
   name: 'slashSetup',
   aliases: ['세팅', 'slash', 'setup', 'tpxld'],
   description: 'Slash Command 세팅합니다.',
-  /**
-   * 
-   * @param {import('../../structures/BotClient')} client 
-   * @param {Discord.Message} message 
-   * @param {string[]} args 
-   */
   async execute(client: BotClient, message: Message, args: string[]) {
     let commandManager = new CommandManager(client)
     let errorManager = new ErrorManager(client)

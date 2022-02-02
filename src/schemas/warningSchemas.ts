@@ -6,8 +6,8 @@ const warningSchema = new Schema({
   reason: { type: String, default: '' },
   managerId: { type: String, default: '' },
   published_date: { type: Date, default: Date.now }
-}, {collection: 'warning'})
+}, { collection: 'warning' })
 
 const Warning = model('warning', warningSchema, 'warning')
 
-export default {Warning}
+export default Warning

@@ -1,5 +1,5 @@
 import { Client, GuildChannel } from "discord.js"
-import { LoggerSetting } from "@schemas/LogSettingSchema"
+import LoggerSetting from "@schemas/LogSettingSchema"
 import LogEmbed from "@utils/LogEmbed"
 import BotClient from "@client"
 

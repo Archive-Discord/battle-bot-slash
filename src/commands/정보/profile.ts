@@ -22,7 +22,7 @@ export default {
    * @param {CommandInteraction} interaction
    */
   async execute(client: BotClient, interaction: CommandInteraction) {
-    if (interaction.type !== "APPLICATION_COMMAND" && interaction.content.startsWith(client.config.bot.prefix) + this.name) return interaction.reply('해당 명령어는 (/)커맨드만 사용 가능합니다')
+    //if (interaction.type !== "APPLICATION_COMMAND" && interaction.content.startsWith(client.config.bot.prefix) + this.name) return interaction.reply('해당 명령어는 (/)커맨드만 사용 가능합니다')
 
     await interaction.deferReply();
     let user = interaction.options.getUser("유저");

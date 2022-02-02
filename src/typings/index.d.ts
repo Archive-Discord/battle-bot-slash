@@ -28,7 +28,7 @@ export type LevelType =
 
 export type EmbedType = 'default' | 'error' | 'success' | 'warn' | 'info'
 export interface ErrorExecuter {
-  executer: Message | CommandInteraction
+  executer: Message | CommandInteraction | undefined
   isSend?: boolean
 }
 export interface IConfig {

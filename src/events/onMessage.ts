@@ -10,10 +10,7 @@ export default {
     let commandManager = new CommandManager(client)
     let errorManager = new ErrorManager(client)
 
-    message.guild.channels.cache.forEach(async (channel) => {
-      if (channel.isText())
-        return channel.messages.fetch().catch(() => { })
-    })
+    message.channel.messages.fetch()
 
     if (message.author.bot) return
     if (message.channel.type === "DM") return
@@ -23,12 +20,15 @@ export default {
       .slice(client.config.bot.prefix.length)
       .trim()
       .split(/ +/g)
+
     let commandName = args.shift()?.toLowerCase()
     let command = commandManager.get(commandName as string)
 
     await client.dokdo.run(message)
 
     try {
+      if (command?.isSlash) return message.reply('해당 명령어는 (/)커맨드만 사용 가능합니다')
+
       await command?.execute(client, message, args)
     } catch (error: any) {
       errorManager.report(error, { executer: message })

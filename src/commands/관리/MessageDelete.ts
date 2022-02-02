@@ -1,9 +1,9 @@
 import BotClient from "@client"
 import { Message } from "discord.js"
 
-const { SlashCommandBuilder } = require('@discordjs/builders')
-const Discord = require('discord.js')
-const Embed = require('../../utils/Embed')
+import { SlashCommandBuilder } from '@discordjs/builders'
+import Discord from 'discord.js'
+import Embed from '../../utils/Embed'
 
 export default {
   name: 'clear',

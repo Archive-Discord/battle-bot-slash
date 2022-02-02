@@ -62,7 +62,7 @@ addColors(myCustomLevels.colors)
 
 export default class Logger {
   public scope: string
-  private logger: winston.Logger
+  private readonly logger: winston.Logger
 
   constructor(scope: string) {
     this.scope = scope
@@ -96,7 +96,7 @@ export default class Logger {
     this.logger.debug(message, ...args, { label: this.scope })
   }
 
-  fatal(message: string, ...args: any[]) {
+  fatal(message: string, ...args: any[]): never {
     this.logger.error(message, ...args, { label: this.scope })
     return process.exit(1)
   }

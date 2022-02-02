@@ -10,6 +10,7 @@ export default {
 		const commandManager = new CommandManager(client)
 		const buttonManager = new ButtonManager(client)
 		const errorManager = new ErrorManager(client)
+
 		if (interaction.isButton()) {
 			if (interaction.user.bot) return
 			if (!interaction.channel) return
@@ -19,9 +20,7 @@ export default {
 			try {
 				await button?.execute(client, interaction)
 			} catch (error) {
-				errorManager.report(error as Error, {
-					executer: interaction
-				})
+				errorManager.report(error as Error)
 			}
 		}
 
@@ -36,6 +35,7 @@ export default {
 				command?.isSlash
 					? await command.execute(client, interaction)
 					: await command?.slash.execute(client, interaction)
+
 			} catch (error: any) {
 				errorManager.report(error, {
 					executer: interaction,
