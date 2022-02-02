@@ -15,9 +15,14 @@ export default {
    * @param {Discord.Message} message 
    * @param {string[]} args 
    */
+<<<<<<< HEAD:src/commands/관리/MessageDelete.ts
   async execute(client: BotClient, message: Message, args: string[] | number[]) {
     if (message.channel.type === 'DM') return message.reply('DM에서 사용할 수 없는 명령어입니다')
 
+=======
+  async execute(client, message, args) {
+    if(!args[0]) return message.reply('삭제할 메시지의 번호를 입력해주세요')
+>>>>>>> origin/master:src/commands/관리/MessageDelete.js
     let number = Number(args[0])
     if (typeof number !== 'number')
       return message.reply('삭제할 메시지의 번호를 입력해주세요')
@@ -31,7 +36,7 @@ export default {
       try {
         message.channel.bulkDelete(fetched)
       } finally {
-        message.channel.send('asdf')
+        message.channel.send(`${args[0]} 개의 메시지를 삭제했습니다`)
       }
     }
   }

@@ -1,16 +1,10 @@
-<<<<<<< HEAD:src/events/onGuildBanAdd.ts
-import { GuildBan } from'discord.js'
-import LoggerSetting from'../schemas/LogSettingSchema'
-import LogEmbed from'../utils/LogEmbed'
-=======
 const { GuildBan } = require('discord.js') // eslint-disable-line no-unused-vars
 const { LoggerSetting } = require('../schemas/LogSettingSchema')
 const LogEmbed = require('../utils/LogEmbed')
->>>>>>> origin/master:src/events/onGuildBanAdd.js
 
 
-export default {
-  name: 'guildBanAdd',
+module.exports = {
+  name: 'guildBanRemove',
   /**
    * 
    * @param {import('../structures/BotClient')} client 
@@ -22,15 +16,12 @@ export default {
     if(!LoggerSettingDB.useing.memberBan) return
     let logChannel = ban.guild.channels.cache.get(LoggerSettingDB.guild_channel_id)
     if(!logChannel) return
-    let embed = new LogEmbed(client, 'error')
-      .setDescription('멤버 차단')
+    let embed = new LogEmbed(client, 'warn')
+      .setDescription('멤버 멤버 차단 해제')
       .setAuthor(ban.user.username, ban.user.displayAvatarURL())
       .addFields({
         name: '유저',
         value: `<@${ban.user.id}>` + '(`' + ban.user.id + '`)'
-      }, {
-        name: '사유',
-        value: ban.reason ? ban.reason : '없음'
       })
     return await logChannel.send({embeds: [embed]})
   }
