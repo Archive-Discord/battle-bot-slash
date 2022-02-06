@@ -53,4 +53,40 @@ export interface IConfig {
     level: LevelType
     dev: boolean
   }
+  email: {
+    Google_Email: string
+    Google_Client_Id: string
+    Google_Client_Secret: string
+    Google_Redirect_Url: string
+    Google_Refresh_Token: string
+  }
+}
+
+export interface logger {
+  memberJoin?: boolean
+  memberLeft?: boolean
+  memberKick?: boolean
+  memberBan?: boolean
+  deleteMessage?: boolean
+  editMessage?: boolean
+  reactMessage?: boolean
+  createChannel?: boolean
+  deleteChannel?: boolean
+  editChannel?: boolean
+  joinVoiceChannel?: boolean
+  leaveVoiceChannel?: boolean
+  inviteGuild?: boolean
+  serverSetting?: boolean
+  eventCreate?: boolean
+  eventEdit?: boolean
+  eventDelete?: boolean
+  memberUpdate?: boolean
+}
+
+export interface loggerDB {
+  _id: mongoTypes.ObjectId;
+  guild_id: string;
+  guild_channel_id: string;
+  useing: logger;
+  published_date: Date
 }

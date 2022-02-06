@@ -1,4 +1,5 @@
-import { Schema, model } from 'mongoose'
+import { Schema, model, Model } from 'mongoose'
+import { loggerDB } from 'typings'
 
 const LoggerSettingSchema = new Schema({
   guild_id: String,
@@ -26,6 +27,6 @@ const LoggerSettingSchema = new Schema({
   published_date: { type: Date, default: Date.now }
 }, { collection: 'LogChannel' })
 
-const LoggerSetting = model('LogChannel', LoggerSettingSchema, 'LogChannel')
+const LoggerSetting: Model<loggerDB> = model('LogChannel', LoggerSettingSchema, 'LogChannel')
 
 export default LoggerSetting

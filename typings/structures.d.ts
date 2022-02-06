@@ -57,7 +57,7 @@ export interface Event {
 export type EventFunction<E extends keyof ClientEvents> = (
   client: BotClient,
   ...args: ClientEvents[E]
-) => Awaitable<void>
+) =>  Promise<any>
 
 export interface EventOptions {
   once: boolean

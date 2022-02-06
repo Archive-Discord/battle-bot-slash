@@ -80,8 +80,8 @@ export default class CommandManager extends BaseManager {
     this.client.commands.forEach((cmd) => {
       if (this.isSlash(cmd) && cmd.data.name === commandName)
         return (command = cmd)
-
-      if (cmd.data.aliases.includes(commandName)) return (command = cmd)
+      // @ts-ignore 
+      if (cmd.data.aliases.includes(commandName)) return (command = cmd) 
     })
 
     return command

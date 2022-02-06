@@ -1,5 +1,5 @@
 import { MessageCommand } from "src/structures/Command";
-import { User } from 'discord.js';
+import { DiscordAPIError, User } from 'discord.js';
 import Embed from '../../utils/Embed';
 import Premium from '../../schemas/premiumSchemas';
 import Logger from '../../utils/Logger';
@@ -58,6 +58,7 @@ export default new MessageCommand({
       let owner = client.users.cache.get(guild.ownerId) as User
       await owner.send({ embeds: [successEmbed] })
     } catch (e) {
+      // @ts-ignore 
       logger.error(e)
     }
     logger.info(`관리자 ${message.author.username}에 의하여 ${guild.name}서버의 프리미엄 만료일이 ${date.getFullYear() + '년 ' + (date.getMonth() + 1) + '월 ' + date.getDate() + '일'} 로 설정되었습니다`)
