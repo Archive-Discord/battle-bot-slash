@@ -1,28 +1,33 @@
-import Logger from "@utils/Logger"
-import { ShardingManager } from "discord.js"
-import chalk from "chalk"
+import { ShardingManager } from 'discord.js'
+import config from '../config'
+import chalk from 'chalk'
+import { name } from '../package.json'
+import Logger from './utils/Logger'
 
-import config from '@config'
-let logger = new Logger("main")
+const logger = new Logger('shard')
 
 console.log(
   chalk.cyanBright(`
-=========================================================
+                  =========================================================
 
-            ${require("../package.json").name}@${config.BUILD_NUMBER}
-            Version : ${config.BUILD_VERSION}
 
-=========================================================
-`)
+                              ${name}@${config.BUILD_NUMBER}
+                            Version : ${config.BUILD_VERSION}
+
+
+                  =========================================================`)
 )
 
 if (!config.bot.sharding) {
-  require("./bot")
+  require('./bot.ts')
 } else {
-  let manager = new ShardingManager("./src/bot.ts", config.bot.shardingOptions)
+  const manager = new ShardingManager(
+    './src/bot.ts',
+    config.bot.shardingOptions
+  )
 
   manager.spawn()
-  manager.on("shardCreate", async (shard) => {
-    logger.debug(`Shard #${shard.id} created.`)
+  manager.on('shardCreate', async (shard) => {
+    logger.info(`Shard #${shard.id} created.`)
   })
 }

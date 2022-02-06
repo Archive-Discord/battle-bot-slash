@@ -1,110 +1,73 @@
-import Config from "@config"
-import Logger from "@utils/Logger"
-import { Client, ClientOptions, Collection } from "discord.js"
-import Dokdo from "dokdo"
-import { config } from "dotenv"
+import { Client, ClientOptions, Collection } from 'discord.js'
+import Dokdo from 'dokdo'
+import Logger from '../utils/Logger'
 
-import CommandManager from "@managers/CommandManager"
-import EventManager from "@managers/EventManager"
-import DatabaseManager from "@managers/DatabaseManager"
-//import ButtonManager from "@managers/ButtonManager"
-import {
-  Button,
-  Command,
-  Event,
-  IConfig
-} from "@types"
+import { BaseCommand, Event } from '../../typings/structures'
+import config from '../../config'
+import CommandManager from '../managers/CommandManager'
+import EventManager from '../managers/EventManager'
+import ErrorManager from '../managers/ErrorManager'
+import DatabaseManager from '../managers/DatabaseManager'
+import { Model } from 'mongoose'
+import { config as dotenvConfig } from 'dotenv'
 
-import Mongoose from "mongoose"
+const logger = new Logger('bot')
 
-let logger = new Logger("bot")
-
-export default class BotClient extends Client<true> {
-  public readonly config: IConfig
+export default class BotClient extends Client {
   public readonly VERSION: string
-  public readonly BUILD_NUMBER: string
-  public readonly _maxListeners: typeof Infinity
-  /**
-   * @deprecated
-   */
-  public readonly buttons!: Collection<string, Button>
+  public readonly BUILD_NUMBER: string | null
+  public readonly config = config
 
-  public commands: Collection<string, Command>
-  public categorys: Collection<string, string[]>
-  public events: Collection<string, Event | any>
-  public errors: Collection<string, string>
-  public schemas: Collection<string, Mongoose.Model<any, any, any, any>> // TODO: Fix any
-  public dokdo: Dokdo
-  public db!: Mongoose.Mongoose
-  public command: CommandManager
-  public event: EventManager
-  public database: DatabaseManager
+  public commands: Collection<string, BaseCommand> = new Collection()
+  public events: Collection<string, Event> = new Collection()
+  public errors: Collection<string, string> = new Collection()
+  public dokdo: Dokdo = new Dokdo(this, {
+    prefix: this.config.bot.prefix,
+    owners: config.bot.owners,
+    noPerm: (message) => message.reply('당신은 Dokdo 를 이용할수 없습니다.')
+  })
+  public db: any
+  public schemas: Collection<string, Model<any>> = new Collection()
+  public command: CommandManager = new CommandManager(this)
+  public event: EventManager = new EventManager(this)
+  public error: ErrorManager = new ErrorManager(this)
+  public database: DatabaseManager = new DatabaseManager(this)
 
-  constructor(options: ClientOptions = { intents: [32767], allowedMentions: { parse: ["users", "roles"], repliedUser: false }, }) {
+  public constructor(options: ClientOptions) {
     super(options)
-    config()
+    dotenvConfig()
 
-    this.config = Config
-    this.VERSION = this.config.BUILD_VERSION
-    this.BUILD_NUMBER = this.config.BUILD_NUMBER as string
+    logger.info('Loading config data...')
 
-    this.commands = new Collection()
-    this.categorys = new Collection()
-    //this.buttons = new Collection()
-    this.events = new Collection()
-    this.errors = new Collection()
-
-
-    this.dokdo = new Dokdo(this, {
-      prefix: this.config.bot.prefix,
-      owners: this.config.bot.owners,
-      noPerm: () => {
-        return
-      },
-    })
-
-    this.db
-    this.schemas = new Collection()
-    this.command = new CommandManager(this)
-    //this.button = new ButtonManager(this)
-    this.database = new DatabaseManager(this)
-    this.event = new EventManager(this)
-
-    this._maxListeners = Infinity
+    this.VERSION = config.BUILD_VERSION
+    this.BUILD_NUMBER = config.BUILD_NUMBER
   }
 
-  public async start(token = process.env.TOKEN as string) {
-    logger.info("Logging in bot...")
-
-    this.command.load()
-    //this.button.load()
-    this.event.load()
-    this.database.load()
+  public async start(token: string = config.bot.token): Promise<void> {
+    logger.info('Logging in bot...')
     await this.login(token)
   }
 
-  public async setStatus(status: "dev" | "online" = "online", name = "점검중...") {
-    if (status.includes("dev")) {
-      logger.warn("Changed status to Developent mode")
-
+  public async setStatus(
+    status: 'dev' | 'online' = 'online',
+    name = '점검중...'
+  ) {
+    if (status.includes('dev')) {
+      logger.warn('Changed status to Developent mode')
       this.user?.setPresence({
         activities: [
-          {
-            name: `${this.config.bot.prefix}help | ${this.VERSION}@${this.BUILD_NUMBER} : ${name}`,
-          },
+          { name: `${this.config.bot.prefix}help | ${this.VERSION} : ${name}` }
         ],
-        status: "dnd",
+        status: 'dnd'
       })
-    } else if (status.includes("online")) {
-      logger.info("Changed status to Online mode")
+    } else if (status.includes('online')) {
+      logger.info('Changed status to Online mode')
 
       this.user?.setPresence({
         activities: [
-          {
-            name: `${this.config.bot.prefix}help | ${this.VERSION}@${this.BUILD_NUMBER}`,
-          },
+          { name: `${this.config.bot.prefix}help | ${this.VERSION}` }
         ],
-        status: "online",
+        status: 'online'
       })
     }
   }

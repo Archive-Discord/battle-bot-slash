@@ -1,6 +1,6 @@
-const { Schema, model } = require("mongoose");
+import { Schema, model } from "mongoose";
 
-let schema = Schema({
+let schema = new Schema({
   user: {
     id: {
       type: String,
@@ -13,4 +13,4 @@ let schema = Schema({
   }
 })
 
-export default model('user', schema)
+export default model('user', schema, 'user')

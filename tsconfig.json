@@ -1,56 +1,16 @@
 {
   "compilerOptions": {
-    /* Basic Options */
-
-    "target": "ESNext" /* Specify ECMAScript target version: 'ES3' (default), 'ES5', 'ES2015', 'ES2016', 'ES2017', 'ES2018', 'ES2019', 'ES2020', or 'ESNEXT'. */,
-    "module": "CommonJS" /* Specify module code generation: 'none', 'commonjs', 'amd', 'system', 'umd', 'es2015', 'es2020', or 'ESNext'. */,
-    "lib": ["ESNext"],                                   /* Specify library files to be included in the compilation. */
-    "allowJs": true /* Allow javascript files to be compiled. */,
-    "outDir": "./build" /* Redirect output structure to the directory. */,
-    "rootDir": ".",                             /* Specify the root directory of input files. Use to control the output directory structure with --outDir. */
-
-    /* Strict Type-Checking Options */
-
-    "strict": true /* Enable all strict type-checking options. */,
-
-    /* Additional Checks */
-
-    /* Module Resolution Options */
-
-    "moduleResolution": "node",                  /* Specify module resolution strategy: 'node' (Node.js) or 'classic' (TypeScript pre-1.6). */
-    "baseUrl": "src" /* Base directory to resolve non-absolute module names. */,
-    "paths": {
-      "@utils/*": ["./utils/*"],
-      "@config": ["../config.ts"],
-      "@client": ["./structures/BotClient.ts"],
-      "@events/*": ["./events/*"],
-      "@commands/*": ["./commands/*"],
-      "@types": ["./typings/index.d.ts"],
-      "@managers/*": ["./managers/*"],
-      "@schemas/*": ["./schemas/*"]
-    } /* A series of entries which re-map imports to lookup locations relative to the 'baseUrl'. */,
-    "esModuleInterop": true /* Enables emit interoperability between CommonJS and ES Modules via creation of namespace objects for all imports. Implies 'allowSyntheticDefaultImports'. */,
+    "target": "ESNext",
+    "module": "CommonJS",
+    "allowJs": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "outDir": "./build",
+    "baseUrl": ".",
     "resolveJsonModule": true,
-      
-    /* Source Map Options */
-
-    // "sourceRoot": "",                            /* Specify the location where debugger should locate TypeScript files instead of source locations. */
-    // "mapRoot": "",                               /* Specify the location where debugger should locate map files instead of generated locations. */
-    // "inlineSourceMap": true,                     /* Emit a single file with source maps instead of having a separate file. */
-    // "inlineSources": true,                       /* Emit the source alongside the sourcemaps within a single file; requires '--inlineSourceMap' or '--sourceMap' to be set. */
-
-    /* Experimental Options */
-    // "experimentalDecorators": true,              /* Enables experimental support for ES7 decorators. */
-    // "emitDecoratorMetadata": true,               /* Enables experimental support for emitting type metadata for decorators. */
-
-    /* Advanced Options */
-    "pretty": true,
-    "skipLibCheck": true /* Skip type checking of declaration files. */,
-    "forceConsistentCasingInFileNames": true /* Disallow inconsistently-cased references to the same file. */,
-    "allowUnreachableCode": false,
-    "allowUnusedLabels": false,
   },
-  "files": ["src/index.ts"],
-  "include": ["src/**/*.ts", "config.ts", ".git/*"],
-  "exclude": ["node_modules", "build"]
+  "include": ["./typings/**/*.d.ts", "./src/**/*.ts", "./config.ts", ".git/*"],
+  "exclude": ["./node_modules/*", "./build/*"]
 }

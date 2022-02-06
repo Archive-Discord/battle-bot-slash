@@ -1,38 +1,50 @@
-import fs from 'fs'
-import path from 'path'
-import Logger from '@utils/Logger'
-import BotClient from '@client'
-import { Event } from '@types'
+import { Awaitable, ClientEvents } from 'discord.js'
+import { readdirSync } from 'fs'
+import { join } from 'path'
+import BotClient from '../structures/BotClient'
+import { Event } from '../structures/Event'
+import Logger from '../utils/Logger'
+import BaseManager from './BaseManager'
 
-export default class EventManager {
-  private client: BotClient
+/**
+ * @extends {BaseManager}
+ */
+export default class EventManager extends BaseManager {
   private logger: Logger
   private events: BotClient['events']
 
   constructor(client: BotClient) {
+    super(client)
 
     this.logger = new Logger('EventManager')
-    this.client = client
+
     this.events = client.events
   }
 
-  async load(eventPath = path.join(__dirname, '../events')) {
+  public async load(eventPath = join(__dirname, '../events')) {
     this.logger.debug('Loading events...')
 
-    const eventFiles = fs.readdirSync(eventPath)
+    const eventFiles = readdirSync(eventPath)
 
     eventFiles.forEach(async (eventFile) => {
       try {
-        if (!eventFile.endsWith('.ts')) return this.logger.warn(`Not a TypeScript file ${eventFile}. Skipping.`)
+        if (!eventFile.endsWith('.ts'))
+          return this.logger.debug(
+            `Not a TypeScript file ${eventFile}. Skipping.`
+          )
 
-        let { default: event } = require(`../events/${eventFile}`)
+        // eslint-disable-next-line @typescript-eslint/no-var-requires
+        const { default: event } = require(`../events/${eventFile}`)
 
-        if (!event?.name) return this.logger.warn(`Event ${eventFile} has no name. Skipping.`)
+        if (!event.name)
+          return this.logger.debug(`Event ${eventFile} has no name. Skipping.`)
 
         this.events.set(event.name, event)
         this.logger.debug(`Loaded event ${eventFile}`)
       } catch (error: any) {
-        this.logger.error(`Error loading events '${eventFile}'.\n` + error.stack)
+        this.logger.error(
+          `Error loading events '${eventFile}'.\n` + error.stack
+        )
       }
     })
     this.logger.debug(`Succesfully loaded events. count: ${this.events.size}`)
@@ -43,16 +55,19 @@ export default class EventManager {
   private async start() {
     this.logger.debug('Starting event files...')
 
-    //this.client.removeAllListeners()
     this.events.forEach((event, eventName) => {
-      if (event.once) {
+      if (!Event.isEvent(event)) return
+
+      if (event.options?.once) {
         this.client.once(eventName, (...args) => {
+          // @ts-ignore
           event.execute(this.client, ...args)
         })
 
         this.logger.debug(`Started event '${eventName}' once.`)
       } else {
         this.client.on(eventName, (...args) => {
+          // @ts-ignore
           event.execute(this.client, ...args)
         })
 
@@ -61,61 +76,38 @@ export default class EventManager {
     })
   }
 
-  /**
-   * @param {import('discord.js').ClientEvents} eventName
-   */
-  reload(eventName: string) {
-    if (!this.events.has(eventName)) {
-      return this.logger.warn(`Event '${eventName}' not found.`)
-    } else {
-      this.logger.debug(`Reloading ${eventName}...`)
-      this.events.delete(eventName)
-
-      const eventFiles = fs.readdirSync(path.join(__dirname, '../events'))
-
-      eventFiles.forEach(async (eventFile) => {
-        try {
-          let event = require(`../events/${eventFile}`)
-
-          if (event.name === eventName) {
-            this.client.removeListener(eventName, async (...args) => {
-              event.execute(this.client, ...args)
-            })
-            this.events.set(event.name, event)
-            this.logger.debug(`Loaded event ${eventName}`)
-          }
-
-        } catch (error) {
-          console.log(error)
-        }
-      })
-    }
-  }
-  /**
-   * @param {string} eventPath 
-   */
-  reloadAll(eventPath = path.join(__dirname, '../events')) {
+  public reload(eventPath = join(__dirname, '../events')) {
     this.logger.debug('Reloading events...')
 
     this.events.clear()
+
     this.load(eventPath)
   }
 
   /**
-   * @param {import('discord.js').ClientEvents} eventName 
-   * @param {Function} fn
    * @example EventManager.register('ready', (client) => {
    *  console.log(`${client.user.tag} is ready!`)
    * })
    */
-  register(eventName: string, fn: Function) {
-    this.events.set(eventName, fn)
+  public register(
+    eventName: keyof ClientEvents,
+    fn: (
+      client: BotClient,
+      ...args: ClientEvents[keyof ClientEvents]
+    ) => Awaitable<void>
+  ) {
+    const eventFuntion = {
+      name: eventName,
+      execute: fn,
+      options: {
+        once: true
+      }
+    }
+    this.events.set(eventName, eventFuntion)
 
-    this.client.addListener(eventName, (...args) => {
-      fn(this.client, ...args)
-    })
+    // @ts-ignore
+    this.client.on(eventName, fn)
 
     this.logger.debug(`Registered event '${eventName}'`)
   }
-
 }

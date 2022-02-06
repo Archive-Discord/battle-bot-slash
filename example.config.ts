@@ -1,4 +1,4 @@
-import ConfigFile from "./src/typings/config"
+import { IConfig } from "./typings"
 import fs from "fs"
 
 let BUILD_NUMBER: string | null = fs.readFileSync(".git/HEAD").toString().trim()
@@ -17,57 +17,49 @@ if (BUILD_NUMBER?.indexOf(":") === -1) {
   }
 }
 
-export default {
-  BUILD_VERSION: "0.0.1-dev",
+let config: IConfig = {
   BUILD_NUMBER,
+  BUILD_VERSION: "0.0.1-dev",
   githubToken: "",
-  web: {
-    baseurl: "https://dev.battlebot.kr",
-  },
   bot: {
     sharding: false,
-    /**
-     * @type {import('discord.js').ShardingManagerOptions}
-     */
-    shardingOptions: {
-      totalShards: 3,
-      respawn: true,
-    },
     options: {
       intents: [32767],
-      allowedMentions: { parse: ["users", "roles"], repliedUser: false },
+      allowedMentions: { parse: ['users', 'roles'], repliedUser: false },
     },
-    token: "",
+    token: '',
     owners: [],
-    prefix: "!",
+    prefix: '!',
     cooldown: 2000,
   },
   report: {
     /**
      * @type {'webhook', 'text'}
      */
-    type: "webhook",
+    type: 'webhook',
     webhook: {
-      url: "",
+      url: '',
     },
     text: {
-      guildID: "",
-      channelID: "",
-    },
+      guildID: '',
+      channelID: ''
+    }
   },
   database: {
     /**
-     * @type {'mongodb'|'sqlite'}
+     * @type {'mongodb'|'sqlite'|'quick.db'}
      */
-    type: "mongodb",
-    url: "mongodb://localhost:27017/battlebot",
+    type: 'mongodb',
+    url: 'mongodb://localhost:27017/',
     options: {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     },
   },
   logger: {
-    level: "chat",
+    level: 'chat',
     dev: false,
-  },
-} as ConfigFile
+  }
+}
+
+export default config

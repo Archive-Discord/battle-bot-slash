@@ -1,14 +1,11 @@
-import BotClient from '@client'
-import Logger from'@utils/Logger'
-let logger = new Logger('bot')
+import { Event } from '../structures/Event'
+import Logger from '../utils/Logger'
+const logger = new Logger('bot')
 
-export default {
-  name: 'ready',
-  once: true,
-  /**
-   * @param {import('../structures/BotClient')} client 
-   */
-  async execute(client: BotClient) {
+export default new Event(
+  'ready',
+  async (client) => {
     logger.info(`Logged ${client.user?.username}`)
-  }
-}
+  },
+  { once: true }
+)

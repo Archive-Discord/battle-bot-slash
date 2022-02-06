@@ -1,53 +1,52 @@
-import Logger from "@utils/Logger"
-import fs from "fs"
-import path from "path"
-import BotClient from "@client"
-import { Command } from "@types"
+import { ApplicationCommandDataResolvable } from 'discord.js'
+import { BaseCommand, Command, SlashCommand } from '../../typings/structures'
 
+import Logger from '../utils/Logger'
+import BaseManager from './BaseManager'
+import fs from 'fs'
+import path from 'path'
+import BotClient from '../structures/BotClient'
 
-export default class CommandManager {
-  private client: BotClient
-  private logger: Logger
-  public commands: BotClient["commands"]
-  public categorys: BotClient["categorys"] // TODO: Fix categorys to categories
+export default class CommandManager extends BaseManager {
+  private logger = new Logger('CommandManager')
+  private commands: BotClient['commands']
 
-  constructor(client: BotClient) {
-    this.client = client
-    this.logger = new Logger("CommandManager")
+  public constructor(client: BotClient) {
+    super(client)
+
     this.commands = client.commands
-    this.categorys = client.categorys
   }
 
-  public async load(commandPath = path.join(__dirname, "../commands")) {
-    this.logger.debug("Loading commands...")
+  public load(commandPath: string = path.join(__dirname, '../commands')): void {
+    this.logger.debug('Loading commands...')
 
     const commandFolder = fs.readdirSync(commandPath)
 
     try {
       commandFolder.forEach((folder) => {
         if (!fs.lstatSync(path.join(commandPath, folder)).isDirectory()) return
-        this.categorys.set(folder, new Array())
 
         try {
           const commandFiles = fs.readdirSync(path.join(commandPath, folder))
 
           commandFiles.forEach((commandFile) => {
             try {
-              if (!commandFile.endsWith(".ts"))
+              if (!commandFile.endsWith('.ts'))
                 return this.logger.warn(
                   `Not a TypeScript file ${commandFile}. Skipping.`
                 )
 
-              let { default: command } = require(`../commands/${folder}/${commandFile}`)
+              const {
+                default: command
+                // eslint-disable-next-line @typescript-eslint/no-var-requires
+              } = require(`../commands/${folder}/${commandFile}`)
 
-              if (!command.name)
+              if (!command.data.name ?? !command.name)
                 return this.logger.debug(
                   `Command ${commandFile} has no name. Skipping.`
                 )
 
-              this.commands.set(command.name, command)
-
-              this.categorys.get(folder)?.push(command.name)
+              this.commands.set(command.data.name ?? command.name, command)
 
               this.logger.debug(`Loaded command ${command.name}`)
             } catch (error: any) {
@@ -58,6 +57,8 @@ export default class CommandManager {
               this.logger.debug(
                 `Succesfully loaded commands. count: ${this.commands.size}`
               )
+              // eslint-disable-next-line no-unsafe-finally
+              return this.commands
             }
           })
         } catch (error: any) {
@@ -67,70 +68,96 @@ export default class CommandManager {
         }
       })
     } catch (error: any) {
-      this.logger.error("Error fetching folder list.\n" + error.stack)
+      this.logger.error('Error fetching folder list.\n' + error.stack)
     }
   }
 
-  /**
-   *
-   * @param {string} commandName
-   * @returns {import('../structures/BotClient').Command}
-   */
-  public get(commandName: string): Command | undefined {
+  public get(commandName: string): BaseCommand | undefined {
+    let command
     if (this.client.commands.has(commandName))
-      return this.client.commands.get(commandName)
-    else if (
-      this.client.commands.find(
-        (cmd) => cmd.aliases && cmd.aliases.includes(commandName)
-      )
-    )
-      return this.client.commands.find(
-        (cmd) => cmd.aliases && cmd.aliases.includes(commandName)
-      )
+      return (command = this.client.commands.get(commandName))
+
+    this.client.commands.forEach((cmd) => {
+      if (this.isSlash(cmd) && cmd.data.name === commandName)
+        return (command = cmd)
+
+      if (cmd.data.aliases.includes(commandName)) return (command = cmd)
+    })
+
+    return command
   }
 
-  public reload(commandPath = path.join(__dirname, "../commands")) {
-    this.logger.debug("Reloading commands...")
+  public reload(commandPath: string = path.join(__dirname, '../commands')) {
+    this.logger.debug('Reloading commands...')
 
     this.commands.clear()
-
-    this.load(commandPath).then(() => {
-      this.logger.debug("Succesfully reloaded commands.")
-      return "[200] Succesfully reloaded commands."
-    })
+    try {
+      this.load(commandPath)
+    } finally {
+      this.logger.debug('Succesfully reloaded commands.')
+      // eslint-disable-next-line no-unsafe-finally
+      return { message: '[200] Succesfully reloaded commands.' }
+    }
   }
 
-  /**
-   * Slash Command setup tool
-   * @param {import("discord.js").Snowflake} [guildID]
-   * @returns {Promise<import('@discordjs/builders').SlashCommandBuilder[]>}
-   */
-  public async slashCommandSetup(guildID?: string) {
-    this.logger.scope = "CommandManager: SlashSetup"
+  public isSlash(command: BaseCommand | undefined): command is SlashCommand {
+    //return command?.options.slash ?? false
+    return (command as Command)?.slash
+      ? true
+      : (command as SlashCommand)?.options?.isSlash
+      ? true
+      : false
+  }
 
-    let slashCommands = []
-    for (let command of this.client.commands as any) {
-      if (command[1].isSlash || command[1].slash) {
+  public async slashCommandSetup(
+    guildID: string
+  ): Promise<ApplicationCommandDataResolvable[] | undefined> {
+    this.logger.scope = 'CommandManager: SlashSetup'
+
+    const slashCommands: any[] = []
+    this.client.commands.forEach((command: BaseCommand) => {
+      if (this.isSlash(command)) {
         slashCommands.push(
-          command[1].isSlash ? command[1].data : command[1].slash?.data
+          command.slash ? command.slash?.data.toJSON() : command.data.toJSON()
         )
       }
-    }
+    })
 
     if (!guildID) {
-      this.logger.warn("guildID not gived switching global command...")
+      this.logger.warn('guildID not gived switching global command...')
       this.logger.debug(`Trying ${this.client.guilds.cache.size} guild(s)`)
 
-      // Todo command set to create and delete
-      this.client.application.commands.set(slashCommands).then((x) => {
-        this.logger.info(`Succesfully set ${x.size} guilds`)
-      })
+      for (const command of slashCommands) {
+        const commands = await this.client.application?.commands.fetch()
+        const cmd = commands?.find((cmd) => cmd.name === command.name)
+        if (!cmd) {
+          await this.client.application?.commands
+            .create(command)
+            .then((guilds) =>
+              this.logger.info(
+                `Succesfully created command ${command.name} at ${guilds.name}(${guilds.id}) guild`
+              )
+            )
+        }
+      }
     } else {
       this.logger.info(`Slash Command requesting ${guildID}`)
 
-      let guild = this.client.guilds.cache.get(guildID)
+      const guild = this.client.guilds.cache.get(guildID)
 
-      await guild?.commands.set(slashCommands)
+      for (const command of slashCommands) {
+        const commands = await guild?.commands.fetch()
+        const cmd = commands?.find((cmd) => cmd.name === command.name)
+        if (!cmd) {
+          await guild?.commands
+            .create(command)
+            .then((guild) =>
+              this.logger.info(
+                `Succesfully created command ${command.name} at ${guild.name} guild`
+              )
+            )
+        }
+      }
 
       return slashCommands
     }
