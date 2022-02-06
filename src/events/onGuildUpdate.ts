@@ -1,19 +1,16 @@
-import Discord ,{ GuildAuditLogs, GuildAuditLogsEntry, GuildChannel, TextChannel, User } from 'discord.js'
-import CommandManager from 'src/managers/CommandManager'
-import ErrorManager from 'src/managers/ErrorManager'
+import { TextChannel, } from 'discord.js'
 import LoggerSetting from 'src/schemas/LogSettingSchema'
 import Embed from 'src/utils/Embed'
-import Logger from 'src/utils/Logger'
 import { Event } from '../structures/Event'
-const log = new Logger('GuildCreateEvent')
+
 export default new Event('guildUpdate', async (client, oldGuild, newGuild) => {
-  let LoggerSettingDB = await LoggerSetting.findOne({guild_id: newGuild.id})
+  const LoggerSettingDB = await LoggerSetting.findOne({guild_id: newGuild.id})
   if(!LoggerSettingDB) return
   if(!LoggerSettingDB.useing.serverSetting) return
-  let logChannel = newGuild.channels.cache.get(LoggerSettingDB.guild_channel_id) as TextChannel
+  const logChannel = newGuild.channels.cache.get(LoggerSettingDB.guild_channel_id) as TextChannel
   if(!logChannel) return
   let update = false
-  let embed = new Embed(client, 'warn')
+  const embed = new Embed(client, 'warn')
     .setTitle('서버 수정')
   if(oldGuild.name != newGuild.name) {
     embed.addField('이름 수정', '`' + oldGuild.name + '`' + ' -> ' + '`' + newGuild.name + '`')

@@ -1,6 +1,4 @@
-import { DiscordAPIError, GuildMember, TextChannel } from 'discord.js'
-import CommandManager from 'src/managers/CommandManager'
-import ErrorManager from 'src/managers/ErrorManager'
+import { GuildMember, TextChannel } from 'discord.js'
 import Automod from 'src/schemas/autoModSchema'
 import Blacklist from 'src/schemas/blacklistSchemas'
 import LoggerSetting from 'src/schemas/LogSettingSchema'
@@ -20,24 +18,24 @@ export default new Event('guildMemberAdd', async (client, member) => {
 
 
 const WelecomEvent = async(client: BotClient, member: GuildMember) => {
-  let WelcomeSettingDB = await WelcomeSetting.findOne({guild_id: member.guild.id})
+  const WelcomeSettingDB = await WelcomeSetting.findOne({guild_id: member.guild.id})
   if(!WelcomeSettingDB) return
   if(!WelcomeSettingDB.welcome_message || WelcomeSettingDB.welcome_message == '') return
-  let WelcomeChannel = member.guild.channels.cache.get(WelcomeSettingDB.channel_id) as TextChannel
+  const WelcomeChannel = member.guild.channels.cache.get(WelcomeSettingDB.channel_id) as TextChannel
   if(!WelcomeChannel) return
-  let embed = new Embed(client, 'success')
+  const embed = new Embed(client, 'success')
   embed.setAuthor(member.user.username, member.user.displayAvatarURL())
   embed.setDescription(String(WelcomeSettingDB.welcome_message).replaceAll('${username}', member.user.username).replaceAll('${discriminator}', member.user.discriminator).replaceAll('${servername}', member.guild.name))
   return await WelcomeChannel.send({embeds: [embed]})
 }
 
 const WelecomLogEvent = async (client: BotClient, member: GuildMember) => {
-  let LoggerSettingDB = await LoggerSetting.findOne({guild_id: member.guild.id})
+  const LoggerSettingDB = await LoggerSetting.findOne({guild_id: member.guild.id})
   if(!LoggerSettingDB) return
   if(!LoggerSettingDB.useing.memberJoin) return
-  let logChannel = member.guild.channels.cache.get(LoggerSettingDB.guild_channel_id) as TextChannel
+  const logChannel = member.guild.channels.cache.get(LoggerSettingDB.guild_channel_id) as TextChannel
   if(!logChannel) return
-  let embed = new Embed(client, 'success')
+  const embed = new Embed(client, 'success')
     .setTitle('멤버 추가')
     .setAuthor(member.user.username, member.user.displayAvatarURL())
     .addFields({
@@ -48,13 +46,13 @@ const WelecomLogEvent = async (client: BotClient, member: GuildMember) => {
 }
 
 const AutoModEvent = async (client: BotClient, member: GuildMember) => {
-  let automodDB = await Automod.findOne({guild_id: member.guild.id})
+  const automodDB = await Automod.findOne({guild_id: member.guild.id})
   if(!automodDB) return
   if(automodDB.useing.useBlackList) {
-    let banlist =  await Blacklist.find({status: 'blocked'})
-    let isUser = banlist.some(user => user.user_id === member.id)
+    const banlist =  await Blacklist.find({status: 'blocked'})
+    const isUser = banlist.some(user => user.user_id === member.id)
     if(isUser) {
-      let user =  await Blacklist.findOne({user_id: member.id})
+      const user =  await Blacklist.findOne({user_id: member.id})
       return await member.ban({reason: `[배틀이 자동차단] ${user.reason}`})
     } else {
       return
@@ -65,14 +63,14 @@ const AutoModEvent = async (client: BotClient, member: GuildMember) => {
 }
 
 const AutoModCreateAtEvent = async (client: BotClient, member: GuildMember) => {
-  let automodDB = await Automod.findOne({guild_id: member.guild.id})
+  const automodDB = await Automod.findOne({guild_id: member.guild.id})
   if(!automodDB) return
   if(!automodDB.useing.useCreateAt || automodDB.useing.useCreateAt === 0) return
-  let now = new Date()
-  let elapsedDate = Math.round((Number(now) - Number(member.user.createdAt)) / 1000 / 60 / 60 / 24)
+  const now = new Date()
+  const elapsedDate = Math.round((Number(now) - Number(member.user.createdAt)) / 1000 / 60 / 60 / 24)
   if(elapsedDate < automodDB.useing.useCreateAt) {
     try {
-      let embed = new Embed(client, 'error')
+      const embed = new Embed(client, 'error')
         .setTitle('배틀이 자동 시스템')
         .setDescription(`해당 서버는 계정 생성후 ${automodDB.useing.useCreateAt}일이 지나야 입장이 가능합니다`)
       await member.send({embeds: [embed]})
@@ -86,10 +84,10 @@ const AutoModCreateAtEvent = async (client: BotClient, member: GuildMember) => {
 }
 
 const AutoModAutoRoleEvent = async (client: BotClient, member: GuildMember) => {
-  let automodDB = await Automod.findOne({guild_id: member.guild.id})
+  const automodDB = await Automod.findOne({guild_id: member.guild.id})
   if(!automodDB) return
   if(!automodDB.useing.useAutoRole) return
-  let role = member.guild.roles.cache.get(automodDB.useing.autoRoleId)
+  const role = member.guild.roles.cache.get(automodDB.useing.autoRoleId)
   if(!role) return
   try {
     return member.roles.add(role)

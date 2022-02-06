@@ -1,33 +1,26 @@
-import { DiscordAPIError, GuildMember, TextChannel, User } from 'discord.js'
-import CommandManager from 'src/managers/CommandManager'
-import ErrorManager from 'src/managers/ErrorManager'
-import Automod from 'src/schemas/autoModSchema'
-import Blacklist from 'src/schemas/blacklistSchemas'
+import { TextChannel, User } from 'discord.js'
 import LoggerSetting from 'src/schemas/LogSettingSchema'
-import WelcomeSetting from 'src/schemas/WelcomeSettingSchema'
-import BotClient from 'src/structures/BotClient'
 import Embed from 'src/utils/Embed'
 import { Event } from '../structures/Event'
-import Logger from "../utils/Logger"
 export default new Event('guildMemberUpdate', async (client, oldMember, newMember) => {
-  let LoggerSettingDB = await LoggerSetting.findOne({guild_id: newMember.guild.id})
+  const LoggerSettingDB = await LoggerSetting.findOne({guild_id: newMember.guild.id})
   if(!LoggerSettingDB) return
   if(!LoggerSettingDB.useing.memberUpdate) return
-  let logChannel = newMember.guild.channels.cache.get(LoggerSettingDB.guild_channel_id) as TextChannel
+  const logChannel = newMember.guild.channels.cache.get(LoggerSettingDB.guild_channel_id) as TextChannel
   if(!logChannel) return
   let update = false
-  let embed = new Embed(client, 'warn')
+  const embed = new Embed(client, 'warn')
   .setTitle('멤버 수정')
   .addField('유저', `<@${newMember.user.id}>` + '(`' + newMember.user.id + '`)')
   if(oldMember.nickname !== newMember.nickname) {
-    let fetchedLogs = await newMember.guild.fetchAuditLogs({
+    const fetchedLogs = await newMember.guild.fetchAuditLogs({
       limit: 1,
       type: 'MEMBER_UPDATE',
     })
-    let deletionLog = fetchedLogs.entries.first()
+    const deletionLog = fetchedLogs.entries.first()
     if(deletionLog) {
-      let executor = deletionLog.executor as User
-      let target = deletionLog.target as User
+      const executor = deletionLog.executor as User
+      const target = deletionLog.target as User
       if(target.id === newMember.id && executor.id !== newMember.id) embed.addField('수정유저', `<@${executor.id}>` + '(`' + executor.id + '`)')
     }
     embed.addField('닉네임 수정', '`' + (oldMember.nickname ? oldMember.nickname : oldMember.user.username) + '`' + ' ->' + '`' + (newMember.nickname ? newMember.nickname : newMember.user.username) + '`')
@@ -38,14 +31,14 @@ export default new Event('guildMemberUpdate', async (client, oldMember, newMembe
     update = true
   }
   if(oldMember.roles.cache.size !== newMember.roles.cache.size) {
-    let fetchedLogs = await newMember.guild.fetchAuditLogs({
+    const fetchedLogs = await newMember.guild.fetchAuditLogs({
       limit: 1,
       type: 'MEMBER_ROLE_UPDATE',
     })
-    let deletionLog = fetchedLogs.entries.first()
+    const deletionLog = fetchedLogs.entries.first()
     if(deletionLog) {
-      let executor = deletionLog.executor as User
-      let target = deletionLog.target as User
+      const executor = deletionLog.executor as User
+      const target = deletionLog.target as User
       if(target.id === newMember.id) embed.addField('수정유저', `<@${executor.id}>` + '(`' + executor.id + '`)')
     }
     if(oldMember.roles.cache.size > newMember.roles.cache.size) {

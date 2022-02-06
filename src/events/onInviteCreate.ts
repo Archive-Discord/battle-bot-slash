@@ -1,20 +1,16 @@
-import Discord ,{ Guild, GuildAuditLogs, GuildAuditLogsEntry, GuildChannel, TextChannel, User } from 'discord.js'
-import CommandManager from 'src/managers/CommandManager'
-import ErrorManager from 'src/managers/ErrorManager'
+import { Guild, TextChannel, User } from 'discord.js'
 import LoggerSetting from 'src/schemas/LogSettingSchema'
 import Embed from 'src/utils/Embed'
-import Logger from 'src/utils/Logger'
 import { Event } from '../structures/Event'
-const log = new Logger('GuildCreateEvent')
 export default new Event('inviteCreate', async (client, invite) => {
-  let guild = invite.guild as Guild
-  let inviter = invite.inviter as User
-  let LoggerSettingDB = await LoggerSetting.findOne({guild_id: guild.id})
+  const guild = invite.guild as Guild
+  const inviter = invite.inviter as User
+  const LoggerSettingDB = await LoggerSetting.findOne({guild_id: guild.id})
   if(!LoggerSettingDB) return
   if(!LoggerSettingDB.useing.inviteGuild) return
-  let logChannel = guild.channels.cache.get(LoggerSettingDB.guild_channel_id) as TextChannel
+  const logChannel = guild.channels.cache.get(LoggerSettingDB.guild_channel_id) as TextChannel
   if(!logChannel) return
-  let embed = new Embed(client, 'success')
+  const embed = new Embed(client, 'success')
     .setTitle('초대코드')
     .setDescription([
       `초대코드 생성 ${invite.channel ? `채널: ${invite.channel}` : ''}`,

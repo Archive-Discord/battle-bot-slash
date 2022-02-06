@@ -17,9 +17,9 @@ export default new Event(
 )
 
 async function StatusUpdate(client: BotClient) {
-  let totalShard = client.shard?.count
-  let shardInfo = await ShardInfo(client)
-  let status = new Status()
+  const totalShard = client.shard?.count
+  const shardInfo = await ShardInfo(client)
+  const status = new Status()
   status.build_number = client.BUILD_NUMBER
   status.commands = client.commands.size,
     status.totalShard = totalShard
@@ -31,13 +31,13 @@ async function StatusUpdate(client: BotClient) {
 }
 
 async function ShardInfo(client: BotClient) {
-  let shardInfo = new Array()
-  let totalShard = client.shard?.count as number
-  let wsping = await client.shard?.fetchClientValues('ws.ping') as number[]
-  let guilds = await client.shard?.fetchClientValues('guilds.cache.size') as number[]
-  let users = await client.shard?.fetchClientValues('users.cache.size') as number[]
-  let channels = await client.shard?.fetchClientValues('channels.cache.size') as number[]
-  let uptime = await client.shard?.fetchClientValues('uptime') as number[]
+  const shardInfo = []
+  const totalShard = client.shard?.count as number
+  const wsping = await client.shard?.fetchClientValues('ws.ping') as number[]
+  const guilds = await client.shard?.fetchClientValues('guilds.cache.size') as number[]
+  const users = await client.shard?.fetchClientValues('users.cache.size') as number[]
+  const channels = await client.shard?.fetchClientValues('channels.cache.size') as number[]
+  const uptime = await client.shard?.fetchClientValues('uptime') as number[]
 
   for (let i = 0; i < totalShard; i++) {
     shardInfo.push({
