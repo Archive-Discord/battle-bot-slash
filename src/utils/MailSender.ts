@@ -13,12 +13,12 @@ interface param {
 const oAuth2Client = new google.auth.OAuth2(config.email.Google_Client_Id, config.email.Google_Client_Secret, config.email.Google_Redirect_Url)
 oAuth2Client.setCredentials({ refresh_token: config.email.Google_Refresh_Token })
 
-var mailSender = {
+const mailSender = {
   // 메일발송 함수
   sendGmail : async function(param: param){
     try {
       const access_token = await oAuth2Client.getAccessToken()
-      let transporter = nodemailer.createTransport({
+      const transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
           type: 'oauth2',
@@ -30,7 +30,7 @@ var mailSender = {
         }
       });
       // 메일 옵션
-      var mailOptions = {
+      const mailOptions = {
         from: `"배틀이 인증" <${config.email.Google_Email}>`,
         to: param.email, // 수신할 이메일
         subject: `[배틀이] ${param.serverName} 서버 에서 인증을 요청합니다`, // 메일 제목

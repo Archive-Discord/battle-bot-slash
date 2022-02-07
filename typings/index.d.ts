@@ -2,8 +2,7 @@ import {
   ClientOptions,
   CommandInteraction,
   Message,
-  ShardingManagerOptions,
-  ButtonInteraction
+  ShardingManagerOptions
 } from 'discord.js'
 
 export type LevelType =

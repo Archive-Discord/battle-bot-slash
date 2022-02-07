@@ -8,14 +8,14 @@ export default new BaseButton({
   name: 'create'
 },async (client, interaction) => {
     await interaction.deferReply({ephemeral: true})
-    let ticketSetting = await TicketSetting.findOne({guildId: interaction.guild?.id})
-    let guildtickets = await Ticket.find({guildId: interaction.guild?.id})
+    const ticketSetting = await TicketSetting.findOne({guildId: interaction.guild?.id})
+    const guildtickets = await Ticket.find({guildId: interaction.guild?.id})
     if(!ticketSetting) {
       return interaction.editReply('이 서버는 티켓 생성 기능을 사용 중이지 않습니다')
     } else {
-      let ticketId = randomstring.generate({length: 25})
-      let count = guildtickets.length + 1
-      let categori = interaction.guild?.channels.cache.get(ticketSetting.categories)
+      const ticketId = randomstring.generate({length: 25})
+      const count = guildtickets.length + 1
+      const categori = interaction.guild?.channels.cache.get(ticketSetting.categories)
       await interaction.guild?.channels.create(`ticket-${count}-${interaction.user.discriminator}`, {
         type: 'GUILD_TEXT',
         permissionOverwrites: [{
@@ -29,7 +29,7 @@ export default new BaseButton({
         parent: categori ? categori.id : undefined,
         topic: `<@!${interaction.user.id}> 님의 티켓`
       }).then((channel) => {
-        let ticket = new Ticket()
+        const ticket = new Ticket()
         ticket.status = 'open'
         ticket.guildId = interaction.guild?.id
         ticket.userId = interaction.user.id
@@ -38,25 +38,25 @@ export default new BaseButton({
         ticket.save((err: any) => {
           if(err) return interaction.editReply('티켓을 생성하는 도중 오류가 발생했어요')
         })
-        let embed = new Embed(client, 'success')
+        const embed = new Embed(client, 'success')
           .setTitle('티켓')
           .setDescription(`<@${interaction.user.id}> 님의 티켓 \n 티켓 종료를 원하시면 🔒 닫기 버튼을 눌러주세요`)
-        let buttonSave = new MessageButton()
+        const buttonSave = new MessageButton()
           .setLabel('저장')
           .setStyle('SUCCESS')
           .setEmoji('💾')
           .setCustomId('save')
-        let buttonDelete = new MessageButton()
+        const buttonDelete = new MessageButton()
           .setLabel('삭제')
           .setStyle('DANGER')
           .setEmoji('❌')
           .setCustomId('delete')
-        let buttonClose = new MessageButton()
+        const buttonClose = new MessageButton()
           .setLabel('닫기')
           .setStyle('PRIMARY')
           .setEmoji('🔒')
           .setCustomId('close')
-        let componets = new MessageActionRow()
+        const componets = new MessageActionRow()
           .addComponents(buttonSave)
           .addComponents(buttonClose)
           .addComponents(buttonDelete)

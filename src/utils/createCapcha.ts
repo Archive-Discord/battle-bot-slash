@@ -2,10 +2,10 @@ import { CaptchaGenerator } from 'captcha-canvas'
 
 const captchaCreate = () => {
   function generateCaptcha() {
-    var length = 6,
-        charset = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890",
-        retVal = "";
-    for (var i = 0, n = charset.length; i < length; ++i) {
+    const length = 6
+    const charset = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
+    let retVal = "";
+    for (let i = 0, n = charset.length; i < length; ++i) {
         retVal += charset.charAt(Math.floor(Math.random() * n));
     }
     return retVal;

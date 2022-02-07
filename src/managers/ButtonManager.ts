@@ -1,6 +1,4 @@
-import { ApplicationCommandDataResolvable } from 'discord.js'
-import { BaseButton, BaseCommand, Command, SlashCommand } from '../../typings/structures'
-
+import { BaseButton } from '../../typings/structures'
 import Logger from '../utils/Logger'
 import BaseManager from './BaseManager'
 import fs from 'fs'
@@ -73,9 +71,8 @@ export default class ButtonManager extends BaseManager {
   }
 
   public get(commandName: string): BaseButton | undefined {
-    let button
     if (this.client.buttons.has(commandName))
-      return (button = this.client.buttons.get(commandName))
+      return this.client.buttons.get(commandName)
   }
 
   public reload(buttonPath: string = path.join(__dirname, '../buttons')) {
