@@ -27,7 +27,7 @@ export default class CommandManager extends BaseManager {
     try {
       commandFolder.forEach((folder) => {
         if (!fs.lstatSync(path.join(commandPath, folder)).isDirectory()) return
-        this.categorys.set(folder, new Array())
+        this.categorys.set(folder, [])
 
         try {
           const commandFiles = fs.readdirSync(path.join(commandPath, folder))
