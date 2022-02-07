@@ -51,7 +51,6 @@ export default  new BaseCommand({
     name: "경고",
     isSlash: true
   },
-  // @ts-ignore
  async execute(client, interaction) {
   await interaction.deferReply();
 

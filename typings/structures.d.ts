@@ -55,7 +55,7 @@ export type MessageCommandFuntion = (
 export type SlashCommandFunction = (
   client: BotClient,
   interaction: CommandInteraction
-) => Awaitable<void>
+) => Promise<any>
 
 export interface SlashCommandOptions {
   name: string
