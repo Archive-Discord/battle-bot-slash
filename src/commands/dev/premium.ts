@@ -6,9 +6,9 @@ import Logger from '../../utils/Logger';
 const logger = new Logger('premium')
 
 export default new MessageCommand({
-  name: '프리미엄추가',
+  name: 'addpremium',
   description: '서버에 프리미엄을 추가합니다',
-  aliases: ['addpremium']
+  aliases: ['프리미엄추가']
 }, async (client, message, args) => {
   // @ts-ignore
   if (!client.dokdo.owners.includes(message.author.id))

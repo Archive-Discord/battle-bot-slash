@@ -2,7 +2,7 @@ import { Client, ClientOptions, Collection } from 'discord.js'
 import Dokdo from 'dokdo'
 import Logger from '../utils/Logger'
 
-import { BaseButton, BaseCommand, Event } from '../../typings/structures'
+import { BaseButton, BaseCommand, Categorys, Event } from '../../typings/structures'
 import config from '../../config'
 import CommandManager from '../managers/CommandManager'
 import EventManager from '../managers/EventManager'
@@ -21,6 +21,7 @@ export default class BotClient extends Client {
 
   public commands: Collection<string, BaseCommand> = new Collection()
   public buttons: Collection<string, BaseButton> = new Collection()
+  public categorys: Collection<string, Categorys[]> = new Collection()
   public events: Collection<string, Event> = new Collection()
   public errors: Collection<string, string> = new Collection()
   public dokdo: Dokdo = new Dokdo(this, {

@@ -7,6 +7,7 @@ import { BaseCommand } from '../../structures/Command'
 export default new BaseCommand({
   name: 'slashSetup',
   aliases: ['slash', 'setup', 'tpxld', '세팅'],
+  description: "Slash Command를 세팅합니다"
 }, async (client, message, args) => {
   let commandManager = new CommandManager(client)
   let errorManager = new ErrorManager(client)

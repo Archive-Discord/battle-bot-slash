@@ -10,11 +10,13 @@ import BotClient from '../structures/BotClient'
 export default class CommandManager extends BaseManager {
   private logger = new Logger('CommandManager')
   private commands: BotClient['commands']
+  private categorys: BotClient['categorys']
 
   public constructor(client: BotClient) {
     super(client)
 
     this.commands = client.commands
+    this.categorys = client.categorys
   }
 
   public load(commandPath: string = path.join(__dirname, '../commands')): void {
@@ -25,6 +27,7 @@ export default class CommandManager extends BaseManager {
     try {
       commandFolder.forEach((folder) => {
         if (!fs.lstatSync(path.join(commandPath, folder)).isDirectory()) return
+        this.categorys.set(folder, new Array())
 
         try {
           const commandFiles = fs.readdirSync(path.join(commandPath, folder))
@@ -40,12 +43,15 @@ export default class CommandManager extends BaseManager {
                 default: command
                 // eslint-disable-next-line @typescript-eslint/no-var-requires
               } = require(`../commands/${folder}/${commandFile}`)
-
               if (!command.data.name ?? !command.name)
                 return this.logger.debug(
                   `Command ${commandFile} has no name. Skipping.`
                 )
-
+              this.categorys.get(folder)?.push({
+                name: command.data.aliases[0] ?? command.aliases[0],
+                description: command.data.description ?? command.description,
+                isSlash: (command as Command)?.slash ? true : (command as SlashCommand)?.options?.isSlash ? true : false
+              })
               this.commands.set(command.data.name ?? command.name, command)
 
               this.logger.debug(`Loaded command ${command.name}`)

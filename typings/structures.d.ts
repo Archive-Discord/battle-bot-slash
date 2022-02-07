@@ -26,7 +26,7 @@ export interface SlashCommand {
 
 export interface MessageCommandOptions {
   name: string
-  description?: string
+  description: string
   aliases: string[]
 }
 
@@ -79,6 +79,13 @@ export type EventFunction<E extends keyof ClientEvents> = (
 export interface EventOptions {
   once: boolean
 }
+
+export interface Categorys {
+  name: string
+  description: string
+  isSlash?: boolean
+}
+
 
 export type BaseCommand = MessageCommnad | SlashCommand | Command
 export type BaseButton = ButtonInteraction

@@ -26,10 +26,10 @@ export default new BaseCommand({
   })
 }, {
   data: new SlashCommandBuilder()
-    .setName('ping')
+    .setName('핑')
     .setDescription('핑을 측정합니다.'),
   options: {
-    name: 'ping',
+    name: '핑',
     isSlash: true
   },
   async execute(client, interaction) {
