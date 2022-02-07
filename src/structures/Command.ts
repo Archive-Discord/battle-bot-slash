@@ -3,7 +3,9 @@ import {
   MessageCommandFuntion,
   MessageCommandOptions,
   SlashCommandFunction,
-  SlashCommandOptions
+  SlashCommandOptions,
+  ButtonInteractionOptions,
+  ButtonInteractionFunction
 } from '../../typings/structures'
 
 export class SlashCommand {
@@ -26,6 +28,22 @@ export class BaseCommand extends MessageCommand {
     public data: MessageCommandOptions,
     public execute: MessageCommandFuntion,
     public slash?: SlashCommand | undefined
+  ) {
+    super(data, execute)
+  }
+}
+
+export class ButtonInteraction {
+  constructor(
+    public data: ButtonInteractionOptions,
+    public execute: ButtonInteractionFunction
+  ) {}
+}
+
+export class BaseButton extends ButtonInteraction {
+  constructor(
+    public data: ButtonInteractionOptions,
+    public execute: ButtonInteractionFunction
   ) {
     super(data, execute)
   }

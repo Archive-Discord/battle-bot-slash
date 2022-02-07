@@ -1,3 +1,4 @@
+import ButtonManager from 'src/managers/ButtonManager'
 import CommandManager from '../managers/CommandManager'
 import ErrorManager from '../managers/ErrorManager'
 import { Event } from '../structures/Event'
@@ -5,6 +6,18 @@ import { Event } from '../structures/Event'
 export default new Event('interactionCreate', async (client, interaction) => {
   const commandManager = new CommandManager(client)
   const errorManager = new ErrorManager(client)
+  const buttonManager = new ButtonManager(client)
+  if(interaction.isButton()) {
+    if(interaction.user.bot) return
+    if(interaction.channel?.type === 'DM') return interaction.reply('DM으로는 버튼 사용이 불가능해요')
+    const button = buttonManager.get(interaction.customId)
+    if(!button) return
+    try {
+      await button?.execute(client, interaction)
+    } catch (error: any) {
+      errorManager.report(error, {executer: undefined, isSend: false})
+    }
+  }
 
   if (interaction.isCommand()) {
     if (interaction.user.bot) return

@@ -2,7 +2,7 @@ import { Client, ClientOptions, Collection } from 'discord.js'
 import Dokdo from 'dokdo'
 import Logger from '../utils/Logger'
 
-import { BaseCommand, Event } from '../../typings/structures'
+import { BaseButton, BaseCommand, Event } from '../../typings/structures'
 import config from '../../config'
 import CommandManager from '../managers/CommandManager'
 import EventManager from '../managers/EventManager'
@@ -10,6 +10,7 @@ import ErrorManager from '../managers/ErrorManager'
 import DatabaseManager from '../managers/DatabaseManager'
 import { Model } from 'mongoose'
 import { config as dotenvConfig } from 'dotenv'
+import ButtonManager from 'src/managers/ButtonManager'
 
 const logger = new Logger('bot')
 
@@ -19,6 +20,7 @@ export default class BotClient extends Client {
   public readonly config = config
 
   public commands: Collection<string, BaseCommand> = new Collection()
+  public buttons: Collection<string, BaseButton> = new Collection()
   public events: Collection<string, Event> = new Collection()
   public errors: Collection<string, string> = new Collection()
   public dokdo: Dokdo = new Dokdo(this, {
@@ -29,6 +31,7 @@ export default class BotClient extends Client {
   public db: any
   public schemas: Collection<string, Model<any>> = new Collection()
   public command: CommandManager = new CommandManager(this)
+  public button: ButtonManager = new ButtonManager(this)
   public event: EventManager = new EventManager(this)
   public error: ErrorManager = new ErrorManager(this)
   public database: DatabaseManager = new DatabaseManager(this)

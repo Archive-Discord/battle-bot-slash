@@ -3,7 +3,8 @@ import {
   Message,
   ClientEvents,
   Awaitable,
-  CommandInteraction
+  CommandInteraction,
+  ButtonInteraction as ButtonInteractionType
 } from 'discord.js'
 import BotClient from 'src/structures/BotClient'
 
@@ -28,6 +29,22 @@ export interface MessageCommandOptions {
   description?: string
   aliases: string[]
 }
+
+export interface ButtonInteractionOptions {
+  name: string
+  description?: string
+}
+
+export interface ButtonInteraction {
+  data: SlashCommandBuilder
+  execute: ButtonInteractionFunction
+  options?: ButtonInteractionOptions
+}
+
+export type ButtonInteractionFunction = (
+  client: BotClient,
+  interaction: ButtonInteractionType
+) => Awaitable<void> | Promise<any>
 
 export type MessageCommandFuntion = (
   client: BotClient,
@@ -64,3 +81,4 @@ export interface EventOptions {
 }
 
 export type BaseCommand = MessageCommnad | SlashCommand | Command
+export type BaseButton = ButtonInteraction

@@ -2,7 +2,8 @@ import {
   ClientOptions,
   CommandInteraction,
   Message,
-  ShardingManagerOptions
+  ShardingManagerOptions,
+  ButtonInteraction
 } from 'discord.js'
 
 export type LevelType =
@@ -25,6 +26,9 @@ export interface IConfig {
   BUILD_VERSION: string
   BUILD_NUMBER: string | null
   githubToken?: string
+  web: {
+    baseurl: string
+  }
   bot: {
     sharding: boolean
     shardingOptions?: ShardingManagerOptions
@@ -90,3 +94,22 @@ export interface loggerDB {
   useing: logger;
   published_date: Date
 }
+
+
+export interface VerifySettingDB {
+  guild_id: string;
+  role_id: string;
+  type: verifyType;
+  published_date: Date;
+}
+
+export interface VerifyDB {
+  guild_id: string;
+  user_id: string;
+  token: string;
+  status: verifyStatusType;
+  published_date: Date;
+}
+
+export type verifyType = 'email' | 'captcha'| 'default'
+export type verifyStatusType = 'success' | 'pending'
