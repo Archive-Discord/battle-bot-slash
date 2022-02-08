@@ -108,7 +108,7 @@ const AutoModAutoRoleEvent = async (client: BotClient, member: GuildMember) => {
   const automodDB = await Automod.findOne({ guild_id: member.guild.id })
   if (!automodDB) return
   if (!automodDB.useing.useAutoRole) return
-  const role = member.guild.roles.cache.get(automodDB.useing.autoRoleId)
+  const role = member.guild.roles.cache.get(automodDB.useing.autoRoleId as string)
   if (!role) return
   try {
     return member.roles.add(role)

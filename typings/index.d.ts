@@ -2,6 +2,7 @@ import {
   ClientOptions,
   CommandInteraction,
   Message,
+  Role,
   ShardingManagerOptions
 } from 'discord.js'
 
@@ -109,5 +110,24 @@ export interface VerifyDB {
   published_date: Date
 }
 
+export interface AutoModDB {
+  guild_id: string;
+  useing: AutoModList;
+  published_date: Date;
+}
+
+export interface AutoModList {
+  useUrl?: boolean;
+  useCurse?: boolean;
+  useBlackList?: boolean;
+  useCreateAt?: number;
+  useAutoRole?: boolean
+  autoRoleId?: string
+  useCurseType?: useCurseType
+  role?: Role
+  useCurseIgnoreChannel?: string[]
+}
+
 export type verifyType = 'email' | 'captcha' | 'default'
 export type verifyStatusType = 'success' | 'pending'
+export type useCurseType = 'delete' | 'delete_kick' | 'delete_ban'
