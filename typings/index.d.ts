@@ -2,6 +2,7 @@ import {
   ClientOptions,
   CommandInteraction,
   Message,
+  Role,
   ShardingManagerOptions
 } from 'discord.js'
 
@@ -25,7 +26,7 @@ export interface IConfig {
   BUILD_VERSION: string
   BUILD_NUMBER: string | null
   githubToken?: string
-  web: {
+  web?: {
     baseurl: string
   }
   bot: {
@@ -87,28 +88,46 @@ export interface logger {
 }
 
 export interface loggerDB {
-  _id: mongoTypes.ObjectId;
-  guild_id: string;
-  guild_channel_id: string;
-  useing: logger;
+  _id: mongoTypes.ObjectId
+  guild_id: string
+  guild_channel_id: string
+  useing: logger
   published_date: Date
 }
 
-
 export interface VerifySettingDB {
-  guild_id: string;
-  role_id: string;
-  type: verifyType;
-  published_date: Date;
+  guild_id: string
+  role_id: string
+  type: verifyType
+  published_date: Date
 }
 
 export interface VerifyDB {
+  guild_id: string
+  user_id: string
+  token: string
+  status: verifyStatusType
+  published_date: Date
+}
+
+export interface AutoModDB {
   guild_id: string;
-  user_id: string;
-  token: string;
-  status: verifyStatusType;
+  useing: AutoModList;
   published_date: Date;
 }
 
-export type verifyType = 'email' | 'captcha'| 'default'
+export interface AutoModList {
+  useUrl?: boolean;
+  useCurse?: boolean;
+  useBlackList?: boolean;
+  useCreateAt?: number;
+  useAutoRole?: boolean
+  autoRoleId?: string
+  useCurseType?: useCurseType
+  role?: Role
+  useCurseIgnoreChannel?: string[]
+}
+
+export type verifyType = 'email' | 'captcha' | 'default'
 export type verifyStatusType = 'success' | 'pending'
+export type useCurseType = 'delete' | 'delete_kick' | 'delete_ban'

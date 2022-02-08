@@ -1,14 +1,14 @@
-import { IConfig } from "./typings"
-import fs from "fs"
+import { IConfig } from './typings'
+import fs from 'fs'
 
-let BUILD_NUMBER: string | null = fs.readFileSync(".git/HEAD").toString().trim()
+let BUILD_NUMBER: string | null = fs.readFileSync('.git/HEAD').toString().trim()
 
-if (BUILD_NUMBER?.indexOf(":") === -1) {
+if (BUILD_NUMBER?.indexOf(':') === -1) {
   BUILD_NUMBER
 } else {
   try {
     BUILD_NUMBER = fs
-      .readFileSync(".git/" + BUILD_NUMBER?.substring(5))
+      .readFileSync('.git/' + BUILD_NUMBER?.substring(5))
       .toString()
       .trim()
       .substring(0, 6)
@@ -19,18 +19,18 @@ if (BUILD_NUMBER?.indexOf(":") === -1) {
 
 let config: IConfig = {
   BUILD_NUMBER,
-  BUILD_VERSION: "0.0.1-dev",
-  githubToken: "",
+  BUILD_VERSION: '0.0.1-dev',
+  githubToken: '',
   bot: {
     sharding: false,
     options: {
       intents: [32767],
-      allowedMentions: { parse: ['users', 'roles'], repliedUser: false },
+      allowedMentions: { parse: ['users', 'roles'], repliedUser: false }
     },
     token: '',
     owners: [],
     prefix: '!',
-    cooldown: 2000,
+    cooldown: 2000
   },
   report: {
     /**
@@ -38,7 +38,7 @@ let config: IConfig = {
      */
     type: 'webhook',
     webhook: {
-      url: '',
+      url: ''
     },
     text: {
       guildID: '',
@@ -53,16 +53,16 @@ let config: IConfig = {
     url: 'mongodb://localhost:27017/',
     options: {
       useNewUrlParser: true,
-      useUnifiedTopology: true,
-    },
+      useUnifiedTopology: true
+    }
   },
   logger: {
     level: 'chat',
-    dev: false,
+    dev: false
   },
   email: {
     Google_Email: '',
-    Google_Client_Id:'',
+    Google_Client_Id: '',
     Google_Client_Secret: '',
     Google_Redirect_Url: '',
     Google_Refresh_Token: ''

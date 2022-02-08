@@ -34,10 +34,10 @@ export default class CommandManager extends BaseManager {
 
           commandFiles.forEach((commandFile) => {
             try {
-              if (!commandFile.endsWith('.ts'))
+              /*if (!commandFile.endsWith('.ts') || !commandFile.endsWith('.js'))
                 return this.logger.warn(
                   `Not a TypeScript file ${commandFile}. Skipping.`
-                )
+                )*/
 
               const {
                 default: command
@@ -50,7 +50,11 @@ export default class CommandManager extends BaseManager {
               this.categorys.get(folder)?.push({
                 name: command.data.aliases[0] ?? command.aliases[0],
                 description: command.data.description ?? command.description,
-                isSlash: (command as Command)?.slash ? true : (command as SlashCommand)?.options?.isSlash ? true : false
+                isSlash: (command as Command)?.slash
+                  ? true
+                  : (command as SlashCommand)?.options?.isSlash
+                  ? true
+                  : false
               })
               this.commands.set(command.data.name ?? command.name, command)
 
@@ -86,8 +90,8 @@ export default class CommandManager extends BaseManager {
     this.client.commands.forEach((cmd) => {
       if (this.isSlash(cmd) && cmd.data.name === commandName)
         return (command = cmd)
-      // @ts-ignore 
-      if (cmd.data.aliases.includes(commandName)) return (command = cmd) 
+      // @ts-ignore
+      if (cmd.data.aliases.includes(commandName)) return (command = cmd)
     })
 
     return command

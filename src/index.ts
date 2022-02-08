@@ -19,10 +19,10 @@ console.log(
 )
 
 if (!config.bot.sharding) {
-  require('./bot.ts')
+  require('./bot')
 } else {
   const manager = new ShardingManager(
-    './src/bot.ts',
+    './src/bot',
     config.bot.shardingOptions
   )
 

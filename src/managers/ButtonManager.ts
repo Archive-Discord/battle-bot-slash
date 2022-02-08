@@ -29,11 +29,7 @@ export default class ButtonManager extends BaseManager {
 
           buttonFiles.forEach((buttonFile) => {
             try {
-              if (!buttonFile.endsWith('.ts'))
-                return this.logger.warn(
-                  `Not a TypeScript file ${buttonFile}. Skipping.`
-                )
-
+              
               const {
                 default: button
                 // eslint-disable-next-line @typescript-eslint/no-var-requires

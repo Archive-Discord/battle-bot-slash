@@ -1,59 +1,53 @@
-/* eslint-disable no-unused-vars */
-// @ts-ignore
 // @ts-nocheck
+/* eslint-disable no-unused-vars */
 
 // Slash command and Message Command
 import { SlashCommandBuilder } from '@discordjs/builders'
 import { CommandInteraction, Message } from 'discord.js'
+import { BaseCommand } from './structures/Command'
 import BotClient from './structures/BotClient'
 
-
-export default {
+export default new BaseCommand({
   name: '',
   description: '',
   aliases: [],
-  isSlash: false,
+}, async (client, message, args) => {
 
-  async execute(client: BotClient, message: Message, args: string[]): Promise<any> {
-
+}, {
+  data: new SlashCommandBuilder()
+    .setName('')
+    .setDescription(''),
+  options: {
+    isSlash : true,
   },
-  slash: {
-    name: '',
-    data: new SlashCommandBuilder()
-      .setName('')
-      .setDescription('')
-      .toJSON(),
-    async execute(client: BotClient, interaction: CommandInteraction): Promise<any> {
+  async execute(client, interaction) {
 
-    }
   }
-}
+})
 
 // Message command
 
-import Discord from 'discord.js'
+import { MessageCommand } from './structures/Command'
 
-export default {
+export default new MessageCommand({
   name: '',
   description: '',
   aliases: [],
-  isSlash: false,
-  async execute(client: BotClient, message: Discord.Message, args: string[]): Promise<any> {
-  },
-}
+}, async (client, message, args) => {
+})
 
 // Slash command
-import Discord from 'discord.js'
 
-export default {
-  name: '',
-  description: '',
-  isSlash: true,
-  data: new SlashCommandBuilder()
-    .setName('')
-    .setDescription('')
-    .toJSON(),
-  async execute(client: BotClient, interaction: CommandInteraction): Promise<any> {
+import { SlashCommand } from './structures/Command'
 
+export default new SlashCommand(
+  
+  new SlashCommandBuilder()
+      .setName('')
+      .setDescription(''),
+  async (client, interaction) => {
+
+  }, {
+    isSlash: true,
   }
-}
+)

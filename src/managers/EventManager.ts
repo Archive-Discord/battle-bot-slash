@@ -28,10 +28,10 @@ export default class EventManager extends BaseManager {
 
     eventFiles.forEach(async (eventFile) => {
       try {
-        if (!eventFile.endsWith('.ts'))
+        /*if (!eventFile.endsWith('.ts') || !eventFile.endsWith('.js'))
           return this.logger.debug(
             `Not a TypeScript file ${eventFile}. Skipping.`
-          )
+          )*/
 
         // eslint-disable-next-line @typescript-eslint/no-var-requires
         const { default: event } = require(`../events/${eventFile}`)

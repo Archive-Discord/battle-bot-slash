@@ -1,0 +1,10 @@
+{
+  "apps": [
+    {
+      "name": "battlebot",
+      "script": "./build/src/index.js",
+      "node_args": "--enable-source-maps",
+      "restart_delay": 5000
+    }
+  ]
+}
