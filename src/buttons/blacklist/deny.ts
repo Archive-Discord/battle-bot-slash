@@ -4,7 +4,7 @@ import Embed from '../../utils/Embed'
 
 export default new ButtonInteraction(
   {
-    name: 'blacklist.accept'
+    name: 'blacklist.deny'
   },
   async (client, interaction) => {
     await interaction.deferReply({ ephemeral: true })
