@@ -2,7 +2,12 @@ import { Client, ClientOptions, Collection } from 'discord.js'
 import Dokdo from 'dokdo'
 import Logger from '../utils/Logger'
 
-import { BaseButton, BaseCommand, Categorys, Event } from '../../typings/structures'
+import {
+  BaseButton,
+  BaseCommand,
+  Categorys,
+  Event
+} from '../../typings/structures'
 import config from '../../config'
 import CommandManager from '../managers/CommandManager'
 import EventManager from '../managers/EventManager'
@@ -10,7 +15,7 @@ import ErrorManager from '../managers/ErrorManager'
 import DatabaseManager from '../managers/DatabaseManager'
 import { Model } from 'mongoose'
 import { config as dotenvConfig } from 'dotenv'
-import ButtonManager from 'src/managers/ButtonManager'
+import ButtonManager from '../managers/ButtonManager'
 
 const logger = new Logger('bot')
 

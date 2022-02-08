@@ -6,7 +6,7 @@ import {
   CommandInteraction,
   ButtonInteraction as ButtonInteractionType
 } from 'discord.js'
-import BotClient from 'src/structures/BotClient'
+import BotClient from '../src/structures/BotClient'
 
 export interface MessageCommnad {
   data: MessageCommandOptions
@@ -74,7 +74,7 @@ export interface Event {
 export type EventFunction<E extends keyof ClientEvents> = (
   client: BotClient,
   ...args: ClientEvents[E]
-) =>  Promise<any>
+) => Promise<any>
 
 export interface EventOptions {
   once: boolean
@@ -85,7 +85,6 @@ export interface Categorys {
   description: string
   isSlash?: boolean
 }
-
 
 export type BaseCommand = MessageCommnad | SlashCommand | Command
 export type BaseButton = ButtonInteraction

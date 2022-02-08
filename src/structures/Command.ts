@@ -39,12 +39,3 @@ export class ButtonInteraction {
     public execute: ButtonInteractionFunction
   ) {}
 }
-
-export class BaseButton extends ButtonInteraction {
-  constructor(
-    public data: ButtonInteractionOptions,
-    public execute: ButtonInteractionFunction
-  ) {
-    super(data, execute)
-  }
-}

@@ -1,0 +1,15 @@
+# Packages
+node_modules/
+.yarn/*
+
+# Miscellaneous
+.tmp/
+.idea/
+.DS_Store
+
+# IDE
+vscode/
+*.json
+
+# Build data
+build/

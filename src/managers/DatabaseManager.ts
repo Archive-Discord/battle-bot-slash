@@ -1,7 +1,6 @@
 import Logger from '../utils/Logger'
 import BaseManager from './BaseManager'
 import mongoose from 'mongoose'
-import quick from 'quick.db'
 import path from 'path'
 import fs from 'fs'
 import BotClient from '../structures/BotClient'
@@ -34,13 +33,13 @@ export default class DatabaseManager extends BaseManager {
         break
       }
 
-      case 'quick.db' || 'sqlite': {
+      /*case 'quick.db' || 'sqlite': {
         this.logger.debug('Using SQLite(quick.db)...')
         this.client.db = quick
 
         this.logger.info('Connected to SQLite!')
         break
-      }
+      }*/
       default:
         return this.logger.error('Invalid database type:' + this.type)
     }
@@ -57,10 +56,10 @@ export default class DatabaseManager extends BaseManager {
       schemaFolder.forEach((schemaFile) => {
         try {
           if (schemaFile.startsWith('example')) return
-          if (!schemaFile.endsWith('.ts'))
+          /*if (!schemaFile.endsWith('.ts') || !schemaFile.endsWith('.js'))
             return this.logger.warn(
               `Not a TypeScript file ${schemaFile}. Skipping.`
-            )
+            )*/
 
           // eslint-disable-next-line @typescript-eslint/no-var-requires
           const { default: schema } = require(`../schemas/${schemaFile}`) as {
