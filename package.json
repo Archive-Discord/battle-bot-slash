@@ -1,6 +1,6 @@
 {
   "name": "battlebot",
-  "main": "build/src/index.ts",
+  "main": "build/src/index.js",
   "repository": "https://github.com/MadeGOD/djs-template",
   "author": "kiss8981",
   "license": "MIT",
@@ -13,7 +13,7 @@
     "lint:fix": "eslint . --ext .ts --fix",
     "format": "prettier --check .",
     "format:fix": "prettier --write .",
-    "pm2:start": "pm2 start process.json",
+    "pm2:start": "cd build && pm2 start ../process.json",
     "pm2:stop": "pm2 stop process.json",
     "pm2:delete": "pm2 delete process.json"
   },
