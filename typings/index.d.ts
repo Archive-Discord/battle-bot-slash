@@ -127,7 +127,23 @@ export interface AutoModList {
   role?: Role
   useCurseIgnoreChannel?: string[]
 }
+export interface DataBaseUser { 
+  _id: string;
+  id: string;
+  email: string;
+  accessToken: string;
+  refreshToken: string;
+  naver_accessToken?: string;
+  naver_refreshToken?: string;
+  naver_email?: string;
+  naver_name?: string;
+  token: string;
+  tokenExp: number;
+  expires_in: number;
+  published_date: Date;
 
-export type verifyType = 'email' | 'captcha' | 'default'
+}
+
+export type verifyType = 'email' | 'captcha' | 'naver' |'default'
 export type verifyStatusType = 'success' | 'pending'
 export type useCurseType = 'delete' | 'delete_kick' | 'delete_ban'
