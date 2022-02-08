@@ -196,7 +196,7 @@ export default new ButtonInteraction(
           return interaction.editReply({ embeds: [captchaTimeout] })
         })
     } else if (VerifySettingDB.type === 'naver') {
-      let UserDB = await User.findOne({id: interaction.user.id})
+      const UserDB = await User.findOne({id: interaction.user.id})
       if(!UserDB || !UserDB.naver_name) {
         const Verify = new Embed(client, 'warn')
           .setTitle('인증')
