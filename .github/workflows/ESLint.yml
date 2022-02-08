@@ -21,6 +21,9 @@ jobs:
       - name: Run ESLint
         run: yarn lint --fix
 
+      - name: Copy config file
+        run: cp example.config.ts config.ts
+
       - name: Commit changes
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
