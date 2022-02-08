@@ -13,7 +13,7 @@ export default new Event('messageCreate', async (client, message) => {
 
   if (message.author.bot) return
   if (message.channel.type === 'DM') return
-  profanityFilter(client, message)
+  //profanityFilter(client, message)
   if (!message.content.startsWith(client.config.bot.prefix)) return
 
   const args = message.content
