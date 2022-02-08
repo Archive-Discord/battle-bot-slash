@@ -9,6 +9,7 @@ import config from '../../../config'
 import { guildProfileLink } from '../../utils/convert'
 import mailSender from '../../utils/MailSender'
 import checkPremium from '../../utils/checkPremium'
+import User from '../../schemas/userSchema'
 
 export default new ButtonInteraction(
   {
@@ -194,6 +195,30 @@ export default new ButtonInteraction(
             .setDescription('메일 입력시간이 초과되었습니다 다시 시도해주세요')
           return interaction.editReply({ embeds: [captchaTimeout] })
         })
+    } else if (VerifySettingDB.type === 'naver') {
+      let UserDB = await User.findOne({id: interaction.user.id})
+      if(!UserDB || !UserDB.naver_name) {
+        const Verify = new Embed(client, 'warn')
+          .setTitle('인증')
+          .setDescription(`인증을 진행하기 위해 [여기](${config.web?.baseurl}/me)에서 네이버 아이디 연동을 진행해 주세요 \n 연동 후 다시 인증 버튼을 눌러주세요`)
+        return interaction.editReply({ embeds: [Verify] })
+      }
+      try {
+        const member = interaction.member as GuildMember
+        await member.roles.add(VerifySettingDB?.role_id as string)
+      } catch (e) {
+        const captchaError = new Embed(client, 'error')
+          .setTitle('인증')
+          .setDescription(
+            '인증완료 역할 지급중 오류가 발생했습니다'
+          )
+        if (e)
+          return interaction.editReply({ embeds: [captchaError] })
+      }
+      const VerifySuccess = new Embed(client, 'success')
+        .setTitle('인증')
+        .setDescription(`${UserDB.naver_name}(\`${UserDB.naver_email}\`) 정보로 인증이 완료되었습니다`)
+      return interaction.editReply({ embeds: [VerifySuccess] })
     }
   }
 )
