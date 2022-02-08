@@ -8,6 +8,7 @@ import Verify from '../../schemas/verify'
 import config from '../../../config'
 import { guildProfileLink } from '../../utils/convert'
 import mailSender from '../../utils/MailSender'
+import checkPremium from '../../utils/checkPremium'
 
 export default new ButtonInteraction(
   {
@@ -104,6 +105,10 @@ export default new ButtonInteraction(
         'DM으로 인증정보를 보내드렸습니다 DM을 확인해주세요'
       )
     } else if (VerifySettingDB.type === 'email') {
+      const isPremium = await checkPremium(client, interaction.guild as Guild)
+      if(!isPremium) {
+        return interaction.editReply('프리미엄 기한 만료로 이메일 인증 기능이 비활성화되었습니다')
+      } 
       const code = Math.random().toString(36).substr(2, 7)
       const captchaEmail = new Embed(client, 'success')
         .setTitle('인증')
