@@ -81,11 +81,11 @@ const AutoModEvent = async (client: BotClient, member: GuildMember) => {
 
 const AutoModCreateAtEvent = async (client: BotClient, member: GuildMember) => {
   const automodDB = await Automod.findOne({ guild_id: member.guild.id })
-  let isPremium = await checkPremium(client, member.guild)
+  const isPremium = await checkPremium(client, member.guild)
   if(!isPremium) {
     const LoggerSettingDB = await LoggerSetting.findOne({ guild_id: member.guild.id })
     if(!LoggerSettingDB) return
-    let logChannel = member.guild.channels.cache.get(LoggerSettingDB.guild_channel_id) as TextChannel
+    const logChannel = member.guild.channels.cache.get(LoggerSettingDB.guild_channel_id) as TextChannel
     if(!logChannel) return
     return logChannel.send('프리미엄 기한 만료로 유저 생성일 제한 기능이 비활성화되었습니다')
   } 

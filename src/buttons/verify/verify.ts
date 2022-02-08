@@ -105,7 +105,7 @@ export default new ButtonInteraction(
         'DM으로 인증정보를 보내드렸습니다 DM을 확인해주세요'
       )
     } else if (VerifySettingDB.type === 'email') {
-      let isPremium = await checkPremium(client, interaction.guild as Guild)
+      const isPremium = await checkPremium(client, interaction.guild as Guild)
       if(!isPremium) {
         return interaction.editReply('프리미엄 기한 만료로 이메일 인증 기능이 비활성화되었습니다')
       } 
