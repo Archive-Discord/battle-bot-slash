@@ -196,6 +196,10 @@ export default new ButtonInteraction(
           return interaction.editReply({ embeds: [captchaTimeout] })
         })
     } else if (VerifySettingDB.type === 'naver') {
+      const isPremium = await checkPremium(client, interaction.guild as Guild)
+      if(!isPremium) {
+        return interaction.editReply('프리미엄 기한 만료로 네이버 인증 기능이 비활성화되었습니다')
+      } 
       let UserDB = await User.findOne({id: interaction.user.id})
       if(!UserDB || !UserDB.naver_name) {
         const Verify = new Embed(client, 'warn')

@@ -13,7 +13,7 @@ export default new Event('messageCreate', async (client, message) => {
 
   if (message.author.bot) return
   if (message.channel.type === 'DM') return
-  //profanityFilter(client, message)
+   profanityFilter(client, message)
   if (!message.content.startsWith(client.config.bot.prefix)) return
 
   const args = message.content
@@ -39,12 +39,11 @@ const profanityFilter = async(client: BotClient, message: Message) => {
   if(!automodDB.useing.useCurse) return
   if(!automodDB.useing.useCurseType) return
   if(automodDB.useing.useCurseIgnoreChannel?.includes(message.channel.id)) return
-  const isCurse = () => {
-    const regex = new RegExp(`\\b${profanitys.join("|")}\\b`, 'ig')
-    return regex.test(message.content)
+  let foundInText = false;
+  for (var i in profanitys) {
+    if (message.content.toLowerCase().includes(profanitys[i].toLowerCase())) foundInText = true;
   }
-
-  if (isCurse()) {
+  if (foundInText) {
     if(automodDB.useing.useCurseType === "delete") {
       await message.reply('욕설 사용으로 자동 삭제됩니다')
         .then((m) => {
@@ -61,7 +60,11 @@ const profanityFilter = async(client: BotClient, message: Message) => {
           }, 5000)
         })
       await message.delete()
-      return message.member?.kick()
+      try {
+        return message.member?.kick()
+      } catch(e) {
+        return 
+      }
     } else if (automodDB.useing.useCurseType === "delete_ban") {
       await message.reply('욕설 사용으로 자동 삭제 후 차단됩니다')
       .then((m) => {
@@ -70,7 +73,11 @@ const profanityFilter = async(client: BotClient, message: Message) => {
         }, 5000)
       })
       await message.delete()
-      return message.member?.ban({reason: '[배틀이] 욕설 사용으로 인한 자동차단'})
+      try {
+        return message.member?.ban({reason: '[배틀이] 욕설 사용 자동차단'})
+      } catch(e) {
+        return 
+      }
     } else {
       return
     }
