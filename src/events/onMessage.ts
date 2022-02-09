@@ -40,7 +40,7 @@ const profanityFilter = async(client: BotClient, message: Message) => {
   if(!automodDB.useing.useCurseType) return
   if(automodDB.useing.useCurseIgnoreChannel?.includes(message.channel.id)) return
   let foundInText = false;
-  for (var i in profanitys) {
+  for (const i in profanitys) {
     if (message.content.toLowerCase().includes(profanitys[i].toLowerCase())) foundInText = true;
   }
   if (foundInText) {
