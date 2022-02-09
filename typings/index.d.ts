@@ -144,6 +144,30 @@ export interface DataBaseUser {
 
 }
 
+export interface SchoolDataResponse {
+  error: boolean
+  schools: School[]
+}
+export interface School {
+  code: string
+  scCode: string
+  name: string
+  where: string
+  site: string
+}
+
+export interface SchoolMealResponse {
+  error: boolean
+  meals: Meals[]
+}
+
+export interface Meals {
+  date: string
+  type: string
+  meal: string[]
+  calories: string
+}
+
 export type verifyType = 'email' | 'captcha' | 'naver' |'default'
 export type verifyStatusType = 'success' | 'pending'
 export type useCurseType = 'delete' | 'delete_kick' | 'delete_ban'
