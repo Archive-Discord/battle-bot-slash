@@ -16,8 +16,8 @@ export default new Event(
     }, 60 * 1000 * 5)
     client.player.on('trackStart', (queue, track) => {
       //@ts-ignore
-      let channel = queue.metadata.channel as TextChannel
-      let embed = new Embed(client, 'info')
+      const channel = queue.metadata.channel as TextChannel
+      const embed = new Embed(client, 'info')
       embed.setTitle('재생 중인 노래 🎵')
       embed.setDescription(`${track.title} - ${track.author}`)
       embed.setThumbnail(track.thumbnail)
