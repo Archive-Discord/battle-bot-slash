@@ -168,6 +168,13 @@ export interface Meals {
   calories: string
 }
 
+
+export interface MusicDB {
+  guild_id: string,
+  channel_id: string,
+  message_id: string,
+  published_date: Date
+}
 export type verifyType = 'email' | 'captcha' | 'naver' |'default'
 export type verifyStatusType = 'success' | 'pending'
 export type useCurseType = 'delete' | 'delete_kick' | 'delete_ban'

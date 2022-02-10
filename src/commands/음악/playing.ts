@@ -3,6 +3,7 @@ import UserDB from '../../schemas/userSchema'
 import Embed from '../../utils/Embed'
 import { SlashCommandBuilder, userMention } from '@discordjs/builders'
 import DateFormatting from '../../utils/DateFormatting'
+import musicbuttonrow from '../../utils/musicbutton'
 
 export default new BaseCommand(
   {
@@ -24,10 +25,9 @@ export default new BaseCommand(
       return message.reply({embeds: [errembed]});
     }
 
-    sucessembed.setTitle('재생 중인 노래 🎵')
-    sucessembed.setDescription(`${queue.nowPlaying().title}`)
+    sucessembed.setAuthor('재생 중인 노래', 'https://cdn.discordapp.com/emojis/667750713698549781.gif?v=1', queue.nowPlaying().url)
+    sucessembed.setDescription(`[**${queue.nowPlaying().title} - ${queue.nowPlaying().author}**](${queue.nowPlaying().url}) ${queue.nowPlaying().duration} - ${queue.nowPlaying().requestedBy}`)
     sucessembed.setThumbnail(queue.nowPlaying().thumbnail)
-    sucessembed.addField('요청유저', userMention(queue.nowPlaying().requestedBy.id))
     return message.reply({embeds: [sucessembed]});
   },
   {
@@ -41,23 +41,20 @@ export default new BaseCommand(
     async execute(client, interaction) {
       await interaction.deferReply()
       let errembed = new Embed(client, 'error')
-        .setTitle('어라...')
       let sucessembed = new Embed(client, 'success')
       if(!interaction.guild) {
-        errembed.setDescription('이 명령어는 서버에서만 사용이 가능해요!')
+        errembed.setTitle('❌ 이 명령어는 서버에서만 사용이 가능해요!')
         return interaction.editReply({embeds: [errembed]})
       }
       const queue = client.player.getQueue(interaction.guild.id);
       if (!queue || !queue.playing) {
-        errembed.setDescription('노래가 재생 중이지 않아요!')
+        errembed.setTitle('❌ 노래가 재생 중이지 않아요!')
         return interaction.editReply({embeds: [errembed]});
       }
-      sucessembed.setTitle('재생 중인 노래 🎵')
-      sucessembed.setDescription(`${queue.nowPlaying().title}`)
+      sucessembed.setAuthor('재생 중인 노래', 'https://cdn.discordapp.com/emojis/667750713698549781.gif?v=1', queue.nowPlaying().url)
+      sucessembed.setDescription(`[**${queue.nowPlaying().title} - ${queue.nowPlaying().author}**](${queue.nowPlaying().url}) ${queue.nowPlaying().duration} - ${queue.nowPlaying().requestedBy}`)
       sucessembed.setThumbnail(queue.nowPlaying().thumbnail)
-      sucessembed.addField('길이', queue.nowPlaying().duration, true)
-      sucessembed.addField('요청유저', userMention(queue.nowPlaying().requestedBy.id), true)
-      return interaction.editReply({embeds: [sucessembed]});
+      return musicbuttonrow(interaction, sucessembed)
     }
   }
 )

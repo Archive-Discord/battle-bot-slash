@@ -12,20 +12,19 @@ export default new BaseCommand(
   },
   async (client, message, args) => {
     let errembed = new Embed(client, 'error')
-      .setTitle('어라...')
     let sucessembed = new Embed(client, 'success')
     if(!message.guild) {
-      errembed.setDescription('이 명령어는 서버에서만 사용이 가능해요!')
+      errembed.setTitle('이 명령어는 서버에서만 사용이 가능해요!')
       return message.reply({embeds: [errembed]})
     }
     const queue = client.player.getQueue(message.guild.id);
     if (!queue || !queue.playing) {
-      errembed.setDescription('노래가 재생 중이지 않아요!')
+      errembed.setTitle('노래가 재생 중이지 않아요!')
       return message.reply({embeds: [errembed]});
     }
 
     queue.stop()
-    sucessembed.setDescription(`${userMention(message.author.id)}님의 요청으로 노래 재생이 정지되었어요!`)
+    sucessembed.setTitle(`${userMention(message.author.id)}님의 요청으로 노래 재생이 정지되었어요!`)
     return message.reply({embeds: [sucessembed]});
   },
   {
@@ -39,15 +38,14 @@ export default new BaseCommand(
     async execute(client, interaction) {
       await interaction.deferReply()
       let errembed = new Embed(client, 'error')
-        .setTitle('어라...')
       let sucessembed = new Embed(client, 'success')
       if(!interaction.guild) {
-        errembed.setDescription('이 명령어는 서버에서만 사용이 가능해요!')
+        errembed.setTitle('이 명령어는 서버에서만 사용이 가능해요!')
         return interaction.editReply({embeds: [errembed]})
       }
       const queue = client.player.getQueue(interaction.guild.id);
       if (!queue || !queue.playing) {
-        errembed.setDescription('노래가 재생 중이지 않아요!')
+        errembed.setTitle('노래가 재생 중이지 않아요!')
         return interaction.editReply({embeds: [errembed]});
       }
 
