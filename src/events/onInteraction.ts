@@ -11,7 +11,10 @@ export default new Event('interactionCreate', async (client, interaction) => {
     if (interaction.user.bot) return
     if (interaction.channel?.type === 'DM')
       return interaction.reply('DM으로는 버튼 사용이 불가능해요')
-    const button = buttonManager.get(interaction.customId)
+    let button = buttonManager.get(interaction.customId)
+    if(interaction.customId.startsWith('role_')) {
+      button = buttonManager.get('autorole.add')
+    }
     if (!button) return
     try {
       await button?.execute(client, interaction)

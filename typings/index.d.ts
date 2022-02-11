@@ -168,6 +168,13 @@ export interface Meals {
   calories: string
 }
 
+export interface AutoTaskRoleDB {
+  published_date: Date;
+  token: string;
+  message_id: string;
+  isKeep:boolean;
+  guild_id: string;
+}
 export type verifyType = 'email' | 'captcha' | 'naver' |'default'
 export type verifyStatusType = 'success' | 'pending'
 export type useCurseType = 'delete' | 'delete_kick' | 'delete_ban'
