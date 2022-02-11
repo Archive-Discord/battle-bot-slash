@@ -173,6 +173,7 @@ export interface MusicDB {
   guild_id: string,
   channel_id: string,
   message_id: string,
+  process_message_id: string;
   published_date: Date
 }
 export type verifyType = 'email' | 'captcha' | 'naver' |'default'

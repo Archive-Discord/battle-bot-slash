@@ -10,7 +10,7 @@ export default new ButtonInteraction(
   },
   async (client, interaction) => {
     await interaction.deferReply({ephemeral: true})
-    let errembed = new Embed(client, 'error')
+    const errembed = new Embed(client, 'error')
     if(!interaction.guild) {
       errembed.setTitle('❌ 이 버튼은 서버에서만 사용이 가능해요!')
       return interaction.editReply({embeds: [errembed]})
@@ -32,7 +32,7 @@ export default new ButtonInteraction(
         return interaction.editReply({embeds: [errembed]})
       }
     }
-    let musicDB = await MusicSetting.findOne({guild_id: guildQueue.guild.id}) as MusicDB
+    const musicDB = await MusicSetting.findOne({guild_id: guildQueue.guild.id}) as MusicDB
     const sucessembed = new Embed(client, 'info')
     await guildQueue.shuffle();
     MusicTrackEvent(client, guildQueue, musicDB)

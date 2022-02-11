@@ -39,6 +39,8 @@
     "nodemailer": "^6.7.2",
     "opusscript": "^0.0.8",
     "randomstring": "^1.2.2",
+    "regex-parser": "^2.2.11",
+    "string-progressbar": "^1.0.4",
     "strip-ansi": "^5.2.0",
     "uuid": "^8.3.2",
     "winston": "^3.3.3"

@@ -3,10 +3,10 @@ import CommandManager from '../managers/CommandManager'
 import ErrorManager from '../managers/ErrorManager'
 import { MessageCommand } from '../structures/Command'
 import BotClient from '../structures/BotClient'
-import { Message, MessageActionRow, MessageSelectMenu } from 'discord.js'
+import { Constants, Message, MessageActionRow, MessageSelectMenu } from 'discord.js'
 import Automod from '../schemas/autoModSchema'
 import profanitys from '../contents/profanitys'
-import axios from 'axios'
+import regexparser from 'regex-parser'
 import MusicSetting from '../schemas/musicSchema'
 import Embed from '../utils/Embed'
 import { PlayerSearchResult, Queue } from 'discord-player'
@@ -32,6 +32,9 @@ export default new Event('messageCreate', async (client, message) => {
   try {
     await command?.execute(client, message, args)
   } catch (error: any) {
+    if(error?.code === Constants.APIErrors.MISSING_PERMISSIONS) {
+      return message.reply('해당 명령어를 실행하기 위한 권한이 부족합니다!')
+    }
     errorManager.report(error, { executer: message, isSend: true })
   }
 })
@@ -42,53 +45,18 @@ const profanityFilter = async (client: BotClient, message: Message) => {
   if (!automodDB) return
   if (!automodDB.useing.useCurse) return
   if (!automodDB.useing.useCurseType) return
-  if (automodDB.useing.useCurseIgnoreChannel?.includes(message.channel.id))
-    return
-  let regex = false
-  if (/(쌍)(년|놈)/.test(message.content)) regex = true
-  if (
-    !regex &&
-    /((씨|쓰|ㅅ|ㅆ|si)([0-9]+|\W+)(블|벌|발|빨|뻘|ㅂ|ㅃ|bal))/.test(
-      message.content
-    )
-  )
-    regex = true
-  if (
-    !regex &&
-    /((시발)(?!역)|((시|씨|쓰|ㅅ|ㅆ)([0-9]+|\W+|)(블|벌|발|빨|뻘|ㅂ|ㅃ))(!시발))/.test(
-      message.content
-    )
-  )
-    regex = true
-  if (
-    !regex &&
-    /((병|빙|븅|등|ㅂ)([0-9]+|\W+|)(신|싄|ㅅ)|ㅄ)/.test(message.content)
-  )
-    regex = true
-  if (
-    !regex &&
-    /((너|느(그|)|니)([0-9]+|\W+|)(금|애미|엄마|금마|검마))/.test(
-      message.content
-    )
-  )
-    regex = true
-  if (!regex && /(개|게)(같|갓|새|세|쉐)/.test(message.content)) regex = true
-  if (!regex && /(꼬|꽂|고)(추|츄)/.test(message.content)) regex = true
-  if (!regex && /(니|너)(어|엄|엠|애|m|M)/.test(message.content)) regex = true
-  if (!regex && /(노)(애|앰)/.test(message.content)) regex = true
-  if (!regex && /((뭔|)개(소리|솔))/.test(message.content)) regex = true
-  if (!regex && /(ㅅㅂ|ㅄ|ㄷㅊ)/.test(message.content)) regex = true
-  if (!regex && /(놈|년|새끼)/.test(message.content)) regex = true
-  if (!regex) {
-    for (const i in profanitys) {
-      if (message.content.toLowerCase().includes(profanitys[i].toLowerCase()))
-        regex = true
+  if (automodDB.useing.useCurseIgnoreChannel?.includes(message.channel.id)) return
+  for (const words of profanitys) {
+    if (isValidRegex(words)) {
+      const regex = regexparser(words)
+      if (regex.test(message.content)) {
+        return findCurse(automodDB, message)
+      }
+    } else {
+      if (message.content.toLowerCase().includes(words.toLowerCase())) {
+        return findCurse(automodDB, message)
+      }
     }
-  }
-  if (regex) {
-    findCurse(automodDB, message)
-  } else {
-    return
   }
 }
 
@@ -132,18 +100,18 @@ const findCurse = async (automodDB: any, message: Message) => {
 const MusicPlayer = async (client: BotClient, message: Message) => {
   if (!message.guild) return
   if (!message.content) return
-  const prefix = [client.config.bot.prefix, '!', '.', '$', '%', '&', '=']
-  for (const i in prefix) {
-    if (message.content.startsWith(prefix[i])) return
-  }
-  let musicDB = await MusicSetting.findOne({
+  const musicDB = await MusicSetting.findOne({
     channel_id: message.channel.id,
     guild_id: message.guild.id
   })
   if (!musicDB) return
+  const prefix = [client.config.bot.prefix, '!', '.', '$', '%', '&', '=']
+  for (const i in prefix) {
+    if (message.content.startsWith(prefix[i])) return message.delete()
+  }
   await message.delete()
-  let errembed = new Embed(client, 'error')
-  let sucessembed = new Embed(client, 'success')
+  const errembed = new Embed(client, 'error')
+  const sucessembed = new Embed(client, 'success')
   const user = message.guild?.members.cache.get(message.author.id)
   const channel = user?.voice.channel
   if (!channel) {
@@ -165,7 +133,7 @@ const MusicPlayer = async (client: BotClient, message: Message) => {
       })
     }
   }
-  let song = (await client.player
+  const song = (await client.player
     .search(message.content, { requestedBy: message.author })
     .catch((e) => {})) as PlayerSearchResult
   if (!song || !song.tracks.length) {
@@ -197,7 +165,7 @@ const MusicPlayer = async (client: BotClient, message: Message) => {
     })
   }
   if (song.playlist) {
-    let songs: String[] = []
+    const songs: string[] = []
     song.playlist.tracks.forEach((music) => {
       songs.push(music.title)
     })
@@ -226,5 +194,13 @@ const MusicPlayer = async (client: BotClient, message: Message) => {
         m.delete()
       }, 15000)
     })
+  }
+}
+const isValidRegex = (t: string) => {
+  try {
+      const msg = t.match(/^([/~@;%#'])(.*?)\1([gimsuy]*)$/)
+      return msg ? !!new RegExp(msg[2], msg[3]) : false
+  } catch (e) {
+      return false
   }
 }

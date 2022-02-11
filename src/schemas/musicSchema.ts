@@ -6,6 +6,7 @@ const MusicSettingSchema: Schema<MusicDB> = new Schema(
     guild_id: String,
     channel_id: String,
     message_id: String,
+    process_message_id: String,
     published_date: { type: Date, default: Date.now }
   },
   { collection: 'Music' }

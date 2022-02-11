@@ -1,7 +1,8 @@
 import { CommandInteraction, MessageActionRow, MessageButton, MessageEmbed } from "discord.js";
 
 const musicbuttonrow = async(interaction: CommandInteraction, embed: MessageEmbed) => {
-  const row = new MessageActionRow().addComponents(buttonList);
+  const row = new MessageActionRow()
+    .addComponents(buttonList)
   interaction.editReply({embeds: [embed], components: [row], content: " "})
 }
 
@@ -10,10 +11,10 @@ const buttonList: MessageButton[] = [
     .setCustomId('music.back')
     .setStyle("SECONDARY")
     .setEmoji('⬅️'),
-  new MessageButton()
-    .setCustomId('music.stop')
+    new MessageButton()
+    .setCustomId('music.repeat')
     .setStyle('SECONDARY')
-    .setEmoji('⏹️'),
+    .setEmoji('🔁'),
   new MessageButton()
     .setCustomId('music.shuffle')
     .setStyle('SECONDARY')

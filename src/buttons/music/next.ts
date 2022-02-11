@@ -7,7 +7,7 @@ export default new ButtonInteraction(
   },
   async (client, interaction) => {
     await interaction.deferReply({ephemeral: true})
-    let errembed = new Embed(client, 'error')
+    const errembed = new Embed(client, 'error')
     if(!interaction.guild) {
       errembed.setTitle('❌ 이 버튼은 서버에서만 사용이 가능해요!')
       return interaction.editReply({embeds: [errembed]})

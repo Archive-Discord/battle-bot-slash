@@ -800,6 +800,8 @@ __metadata:
     opusscript: ^0.0.8
     prettier: ^2.5.1
     randomstring: ^1.2.2
+    regex-parser: ^2.2.11
+    string-progressbar: ^1.0.4
     strip-ansi: ^5.2.0
     ts-node: ^10.4.0
     ts-node-dev: ^1.1.8
@@ -3513,6 +3515,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"regex-parser@npm:^2.2.11":
+  version: 2.2.11
+  resolution: "regex-parser@npm:2.2.11"
+  checksum: 78200331ec0cc372302d287a4946c38681eb5fe435453fca572cb53cac0ba579e5eb3b9e25eac24c0c80a555fb3ea7a637814a35da1e9bc88e8819110ae5de24
+  languageName: node
+  linkType: hard
+
 "regexp-clone@npm:1.0.0":
   version: 1.0.0
   resolution: "regexp-clone@npm:1.0.0"
@@ -3906,6 +3915,13 @@ __metadata:
   version: 0.0.10
   resolution: "stack-trace@npm:0.0.10"
   checksum: 473036ad32f8c00e889613153d6454f9be0536d430eb2358ca51cad6b95cea08a3cc33cc0e34de66b0dad221582b08ed2e61ef8e13f4087ab690f388362d6610
+  languageName: node
+  linkType: hard
+
+"string-progressbar@npm:^1.0.4":
+  version: 1.0.4
+  resolution: "string-progressbar@npm:1.0.4"
+  checksum: 3c1bd3adcb109d4f52daf4cf20cd12ae1dc6d91885a599447cb8768b23ea353b9c529566bf6e4d8403170e77f7455e1d5ff1391b0cb13b8a62ae4862e64db5b2
   languageName: node
   linkType: hard
 

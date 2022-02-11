@@ -2,10 +2,11 @@ import { BaseCommand, SlashCommand } from '../../structures/Command'
 import musicDB from '../../schemas/musicSchema'
 import Embed from '../../utils/Embed'
 import MusicEmbed from '../../utils/MusicEmbed'
-import { MessageActionRow, MessageButton } from 'discord.js'
+import { DiscordAPIError, MessageActionRow, MessageButton, Constants, TextChannel, MessageEmbed } from 'discord.js'
 import { channelMention, SlashCommandBuilder } from '@discordjs/builders'
 import { buttonList } from '../../utils/musicbutton'
 import config from '../../../config'
+import progressbar from "string-progressbar"
 
 export default new BaseCommand(
   {
@@ -20,15 +21,26 @@ export default new BaseCommand(
       errembed.setTitle('이 명령어는 서버에서만 사용이 가능해요!')
       return message.reply({embeds: [errembed]})
     }
+    if(!message.member?.permissions.has("MANAGE_CHANNELS")) {
+      errembed.setTitle('이 명령어를 사용할 권한이 없어요')
+      return message.reply({embeds: [errembed]})
+    }
     let db = await musicDB.findOne({guild_id: message.guild.id})
     if(!db) {
       let musicChannel = await message.guild.channels.create('battle-bot-music')
-      const row = new MessageActionRow().addComponents(buttonList);
+      const row = new MessageActionRow()
+        .addComponents(buttonList)
+      let processEmbed = new MessageEmbed()
+        .setColor('#2f3136')
+      //let progressbars = progressbar.splitBar(100, 0)
+      //processEmbed.setDescription("[" + progressbars[0] + "] [" + "0:00" + "]")
       let msg = await musicChannel.send({embeds: [musicEmbed], components: [row]})
+      //let process_message = await musicChannel.send({embeds: [processEmbed]})
       let musicdb = new musicDB()
       musicdb.guild_id = message.guild.id
       musicdb.channel_id = musicChannel.id
       musicdb.message_id = msg.id
+      //musicdb.process_message_id = process_message.id
       musicdb.save((err: any) => {
         if(err) {
           errembed.setTitle('뮤직기능 설정중 오류가 발생했어요!')
@@ -57,10 +69,15 @@ export default new BaseCommand(
         errembed.setTitle('이 명령어는 서버에서만 사용이 가능해요!')
         return interaction.editReply({embeds: [errembed]})
       }
+      if(interaction.guild.members.cache.get(interaction.user.id)?.permissions.has('MANAGE_CHANNELS')) {
+        errembed.setTitle('이 명령어를 사용할 권한이 없어요')
+        return interaction.editReply({embeds: [errembed]})
+      }
       let db = await musicDB.findOne({guild_id: interaction.guild.id})
       if(!db) {
         let musicChannel = await interaction.guild.channels.create('battle-bot-music')
-        const row = new MessageActionRow().addComponents(buttonList);
+        const row = new MessageActionRow()
+         .addComponents(buttonList)
         let msg = await musicChannel.send({embeds: [musicEmbed], components: [row]})
         let musicdb = new musicDB()
         musicdb.guild_id = interaction.guild.id

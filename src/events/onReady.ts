@@ -1,6 +1,6 @@
 import MusicEmbed from "../utils/MusicEmbed"
 import { Queue, Track } from 'discord-player'
-import { TextChannel } from 'discord.js'
+import { Message, MessageEmbed, TextChannel } from 'discord.js'
 import MusicSetting from '../schemas/musicSchema'
 import Status from '../schemas/statusSchema'
 import BotClient from '../structures/BotClient'
@@ -9,6 +9,7 @@ import Embed from '../utils/Embed'
 import Logger from '../utils/Logger'
 import { MusicDB } from "../../typings"
 import config from "../../config"
+import progressbar from "string-progressbar"
 
 const logger = new Logger('bot')
 
@@ -22,6 +23,7 @@ export default new Event(
       let musicDB = await MusicSetting.findOne({guild_id: queue.guild.id}) as MusicDB
       MusicAlert(client, track, queue, musicDB)
       MusicTrackEvent(client, queue, musicDB)
+      //MusicTrackStartEvent(client, queue, musicDB)
     })
     client.player.on('queueEnd', async(queue) => {
       let musicDB = await MusicSetting.findOne({guild_id: queue.guild.id}) as MusicDB
@@ -81,6 +83,36 @@ async function MusicTrackEvent(client: BotClient, queue: Queue, musicDB: MusicDB
   return message.edit({embeds: [embed]})
 }
 
+async function MusicTrackStartEvent(client: BotClient, queue: Queue, musicDB: MusicDB) {
+  if(!musicDB) return
+  let channel = queue.guild.channels.cache.get(musicDB.channel_id) as TextChannel
+  if(!channel) return
+  let process_message = channel.messages.cache.get(musicDB.process_message_id)
+  if(!process_message) process_message = await channel.messages.fetch(musicDB.process_message_id)
+  if(!process_message) return
+  let processEmbed = new MessageEmbed()
+  .setColor('#2f3136')
+  let progress = queue.getPlayerTimestamp()
+  let current = progress.current.replace(/[^0-9]/g,'');
+  let end = progress.end.replace(/[^0-9]/g,'');
+  let progressbars = progressbar.splitBar(100, Number(current)/Number(end)*100, 20)
+  processEmbed.setDescription("[" + progressbars[0] + "] [" + progress.current + "]")
+  process_message.edit({content: " " ,embeds: [processEmbed]})
+  let process_Interval = setInterval(() => {
+    progress = queue.getPlayerTimestamp()
+    current = progress.current?.replace(/[^0-9]/g,'');
+    end = progress.end?.replace(/[^0-9]/g,'');
+    progressbars = progressbar.splitBar(100, Number(current)/Number(end)*100, 20)
+    processEmbed = new MessageEmbed()
+      .setColor('#2f3136')
+    processEmbed.setDescription("[" + progressbars[0] + "] [" + progress.current + "/" + progress.end + "]")
+    if(!process_message) return
+    process_message.edit({content: " " ,embeds: [processEmbed]})
+    if(Number(current) > Number(end) - 5) {
+      clearInterval(process_Interval)
+    }
+  }, 5000)
+}
 
 async function MusicQueueEnd(client: BotClient, queue: Queue, musicDB: MusicDB) {
   if(!musicDB) return
@@ -95,14 +127,16 @@ async function MusicQueueEnd(client: BotClient, queue: Queue, musicDB: MusicDB) 
 async function MusicAlert(client: BotClient, track: Track, queue: Queue, musicDB: MusicDB) {
   //@ts-ignore
   let channel = queue.metadata.channel as TextChannel
-  if(channel.id === musicDB.channel_id) return
-  let embed = new Embed(client, 'info')
-  embed.setAuthor('재생 중인 노래', 'https://cdn.discordapp.com/emojis/667750713698549781.gif?v=1', track.url)
-  embed.setDescription(`[**${track.title} - ${track.author}**](${track.url}) ${track.duration} - ${track.requestedBy}`)
-  embed.setThumbnail(track.thumbnail)
-  return channel.send({embeds: [embed]})
+  if(!musicDB || channel.id !== musicDB.channel_id) {
+    let embed = new Embed(client, 'info')
+    embed.setAuthor('재생 중인 노래', 'https://cdn.discordapp.com/emojis/667750713698549781.gif?v=1', track.url)
+    embed.setDescription(`[**${track.title} - ${track.author}**](${track.url}) ${track.duration} - ${track.requestedBy}`)
+    embed.setThumbnail(track.thumbnail)
+    return channel.send({embeds: [embed]}).catch(e => {
+      if(e) console.log(e)
+    })
+  }
 }
-
 async function StatusUpdate(client: BotClient) {
   const totalShard = client.shard?.count
   const shardInfo = await ShardInfo(client)

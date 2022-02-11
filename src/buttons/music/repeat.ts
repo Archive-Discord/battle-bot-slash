@@ -3,7 +3,7 @@ import { ButtonInteraction } from '../../structures/Command'
 import Embed from '../../utils/Embed'
 export default new ButtonInteraction(
   {
-    name: 'music.back'
+    name: 'music.repeat'
   },
   async (client, interaction) => {
     await interaction.deferReply({ephemeral: true})
@@ -29,16 +29,23 @@ export default new ButtonInteraction(
         return interaction.editReply({embeds: [errembed]})
       }
     }
-    guildQueue.back()
-    .then(() => {
-      const sucessembed = new Embed(client, 'info')
-      .setDescription(`**${userMention(interaction.user.id)}님의 요청으로 이전곡을 재생합니다**`)
-      return interaction.editReply({ embeds: [sucessembed] })
-    })
-    .catch(e => {
-      errembed.setTitle('❌ 이전곡이 없어요!')
-      return interaction.editReply({embeds: [errembed]})
-    })
-    
+    const sucessembed = new Embed(client, 'info')
+    if(guildQueue.repeatMode === 0) {
+      guildQueue.setRepeatMode(1)
+      sucessembed.setTitle('현제 재생 중인 노래를 반복합니다')
+      return interaction.editReply({embeds: [sucessembed]})
+    } else if (guildQueue.repeatMode === 1) {
+      guildQueue.setRepeatMode(2)
+      sucessembed.setTitle('플레이리스트를 반복합니다')
+      return interaction.editReply({embeds: [sucessembed]})
+    } else if (guildQueue.repeatMode === 2) {
+      guildQueue.setRepeatMode(3)
+      sucessembed.setTitle('플레이리스트를 자동 재생 합니다')
+      return interaction.editReply({embeds: [sucessembed]})
+    } else if (guildQueue.repeatMode === 3) {
+      guildQueue.setRepeatMode(0)
+      sucessembed.setTitle('반복을 해제합니다')
+      return interaction.editReply({embeds: [sucessembed]})
+    }
   }
 )
