@@ -5,6 +5,8 @@ import {
   Role,
   ShardingManagerOptions
 } from 'discord.js'
+import { Request } from 'express'
+import BotClient from '../src/structures/BotClient'
 
 export type LevelType =
   | 'fatal'
@@ -176,6 +178,7 @@ export interface MusicDB {
   process_message_id: string;
   published_date: Date
 }
+
 export type verifyType = 'email' | 'captcha' | 'naver' |'default'
 export type verifyStatusType = 'success' | 'pending'
 export type useCurseType = 'delete' | 'delete_kick' | 'delete_ban'
