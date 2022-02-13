@@ -10,20 +10,20 @@ export default new ButtonInteraction(
   },
   async (client, interaction) => {
     await interaction.deferReply({ephemeral: true})
-    let role_id = interaction.customId.split("_")[1]
-    let ErrEmbed = new Embed(client, 'error')
-    let SuccessEmbed = new Embed(client, 'success')
-    let autoroleDB = await AutoRole.findOne({guild_id: interaction.guild?.id, message_id: interaction.message.id})
+    const role_id = interaction.customId.split("_")[1]
+    const ErrEmbed = new Embed(client, 'error')
+    const SuccessEmbed = new Embed(client, 'success')
+    const autoroleDB = await AutoRole.findOne({guild_id: interaction.guild?.id, message_id: interaction.message.id})
     if(!autoroleDB) {
       ErrEmbed.setTitle('이 서버에 자동역할 기능을 설정한 기록이 없어요!')
       return interaction.editReply({embeds: [ErrEmbed]})
     } else {
-      let role = interaction.guild?.roles.cache.get(role_id) as Role
+      const role = interaction.guild?.roles.cache.get(role_id) as Role
       if(!role) {
         ErrEmbed.setTitle('역할을 찾을 수 없어요!')
         return interaction.editReply({embeds: [ErrEmbed]})
       }
-      let user = interaction.guild?.members.cache.get(interaction.user.id)
+      const user = interaction.guild?.members.cache.get(interaction.user.id)
       if(autoroleDB.isKeep) {
         await user?.roles.add(role)
         .then((role) => {
@@ -40,10 +40,10 @@ export default new ButtonInteraction(
           }
         })
       } else {
-        let roles: string[] = []
+        const roles: string[] = []
         interaction.message.components?.forEach(x => {
           x.components.forEach((x2: any) => {
-            let role_id = x2.customId.split("_")[1]
+            const role_id = x2.customId.split("_")[1]
             roles.push(role_id)
           })
         })
