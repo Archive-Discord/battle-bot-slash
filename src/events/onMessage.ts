@@ -54,19 +54,8 @@ const profanityFilter = async(client: BotClient, message: Message) => {
   if(!regex && /((뭔|)개(소리|솔))/.test(message.content)) regex = true
   if(!regex && /(ㅅㅂ|ㅄ|ㄷㅊ)/.test(message.content)) regex = true
   if(!regex && /(놈|년|새끼)/.test(message.content)) regex = true
-  if(!regex) {
-    for (const i in profanitys) {
-      if (message.content.toLowerCase().includes(profanitys[i].toLowerCase())) regex = true;
-    }
-  }
   if(regex) {
-    await axios.post('http://localhost:5000/check', {
-    text: message.content
-    }).then(async(data) => {
-      if (data.data.check) {
-        findCurse(automodDB, message)
-      }
-    })
+    findCurse(automodDB, message)
   } else {
     return
   }
