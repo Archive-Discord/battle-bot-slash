@@ -14,6 +14,8 @@ const UserSchema: Schema<DataBaseUser> = new Schema({
   accessToken: String,
   refreshToken: String,
   expires_in: Number,
+  google_accessToken: String,
+  google_refreshToken: String,
   published_date: { type: Date, default: Date.now },
 }, {collection: 'userData'});
 
