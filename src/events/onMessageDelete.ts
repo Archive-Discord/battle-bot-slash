@@ -21,7 +21,7 @@ export default new Event('messageDelete', async (client, message) => {
   ) as TextChannel
   if (!logChannel) return
   if (message.partial) message = await message.fetch()
-
+  if(!message.author) return
   if (message.content.length > 1024) {
     message.content = message.content.slice(0, 700) + '...'
   }
