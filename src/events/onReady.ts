@@ -20,33 +20,33 @@ export default new Event(
       StatusUpdate(client)
     }, 60 * 1000 * 5)
     client.player.on('trackStart', async(queue, track) => {
-      let musicDB = await MusicSetting.findOne({guild_id: queue.guild.id}) as MusicDB
+      const musicDB = await MusicSetting.findOne({guild_id: queue.guild.id}) as MusicDB
       MusicAlert(client, track, queue, musicDB)
       MusicTrackEvent(client, queue, musicDB)
       //MusicTrackStartEvent(client, queue, musicDB)
     })
     client.player.on('queueEnd', async(queue) => {
-      let musicDB = await MusicSetting.findOne({guild_id: queue.guild.id}) as MusicDB
+      const musicDB = await MusicSetting.findOne({guild_id: queue.guild.id}) as MusicDB
       MusicQueueEnd(client, queue, musicDB)
     })
     client.player.on('connectionError', async(queue, error) => {
-      let musicDB = await MusicSetting.findOne({guild_id: queue.guild.id}) as MusicDB
+      const musicDB = await MusicSetting.findOne({guild_id: queue.guild.id}) as MusicDB
       MusicQueueEnd(client, queue, musicDB)
     })
     client.player.on('error', async(queue, error) => {
       if(error.name === "DestroyedQueue") {
-        let musicDB = await MusicSetting.findOne({guild_id: queue.guild.id}) as MusicDB
+        const musicDB = await MusicSetting.findOne({guild_id: queue.guild.id}) as MusicDB
         MusicQueueEnd(client, queue, musicDB)
       } else {
         console.log(error)
       }
     })
     client.player.on('trackAdd', async(queue, track) => {
-      let musicDB = await MusicSetting.findOne({guild_id: queue.guild.id}) as MusicDB
+      const musicDB = await MusicSetting.findOne({guild_id: queue.guild.id}) as MusicDB
       MusicTrackEvent(client, queue, musicDB)
     })
     client.player.on('tracksAdd', async(queue, track) => {
-      let musicDB = await MusicSetting.findOne({guild_id: queue.guild.id}) as MusicDB
+      const musicDB = await MusicSetting.findOne({guild_id: queue.guild.id}) as MusicDB
       MusicTrackEvent(client, queue, musicDB)
     })
     logger.info(`Logged ${client.user?.username}`)
@@ -56,7 +56,7 @@ export default new Event(
 
 async function MusicTrackEvent(client: BotClient, queue: Queue, musicDB: MusicDB) {
   if(!musicDB) return
-  let channel = queue.guild.channels.cache.get(musicDB.channel_id) as TextChannel
+  const channel = queue.guild.channels.cache.get(musicDB.channel_id) as TextChannel
   if(!channel) return
   let message = channel.messages.cache.get(musicDB.message_id)
   if(!message) message = await channel.messages.fetch(musicDB.message_id)
@@ -66,7 +66,7 @@ async function MusicTrackEvent(client: BotClient, queue: Queue, musicDB: MusicDB
   const tracks = queue.tracks.slice(pageStart, pageEnd).map((m, i) => {
     return `**${i + pageStart + 1}**. [${m.title}](${m.url}) ${m.duration} - ${m.requestedBy}`;
   });
-  let embed = new MusicEmbed(client, queue.nowPlaying())
+  const embed = new MusicEmbed(client, queue.nowPlaying())
   if(tracks.length === 0) {
     embed.setDescription(`
       [대시보드](${config.web?.baseurl}) | [서포트 서버](https://discord.gg/WtGq7D7BZm)
@@ -85,7 +85,7 @@ async function MusicTrackEvent(client: BotClient, queue: Queue, musicDB: MusicDB
 
 async function MusicTrackStartEvent(client: BotClient, queue: Queue, musicDB: MusicDB) {
   if(!musicDB) return
-  let channel = queue.guild.channels.cache.get(musicDB.channel_id) as TextChannel
+  const channel = queue.guild.channels.cache.get(musicDB.channel_id) as TextChannel
   if(!channel) return
   let process_message = channel.messages.cache.get(musicDB.process_message_id)
   if(!process_message) process_message = await channel.messages.fetch(musicDB.process_message_id)
@@ -98,7 +98,7 @@ async function MusicTrackStartEvent(client: BotClient, queue: Queue, musicDB: Mu
   let progressbars = progressbar.splitBar(100, Number(current)/Number(end)*100, 20)
   processEmbed.setDescription("[" + progressbars[0] + "] [" + progress.current + "]")
   process_message.edit({content: " " ,embeds: [processEmbed]})
-  let process_Interval = setInterval(() => {
+  const process_Interval = setInterval(() => {
     progress = queue.getPlayerTimestamp()
     current = progress.current?.replace(/[^0-9]/g,'');
     end = progress.end?.replace(/[^0-9]/g,'');
@@ -116,19 +116,19 @@ async function MusicTrackStartEvent(client: BotClient, queue: Queue, musicDB: Mu
 
 async function MusicQueueEnd(client: BotClient, queue: Queue, musicDB: MusicDB) {
   if(!musicDB) return
-  let channel = queue.guild.channels.cache.get(musicDB.channel_id) as TextChannel
+  const channel = queue.guild.channels.cache.get(musicDB.channel_id) as TextChannel
   if(!channel) return
   let message = channel.messages.cache.get(musicDB.message_id)
   if(!message) message = await channel.messages.fetch(musicDB.message_id)
   if(!message) return
-  let embed = new MusicEmbed(client)
+  const embed = new MusicEmbed(client)
   return message.edit({embeds: [embed]})
 }
 async function MusicAlert(client: BotClient, track: Track, queue: Queue, musicDB: MusicDB) {
   //@ts-ignore
-  let channel = queue.metadata.channel as TextChannel
+  const channel = queue.metadata.channel as TextChannel
   if(!musicDB || channel.id !== musicDB.channel_id) {
-    let embed = new Embed(client, 'info')
+    const embed = new Embed(client, 'info')
     embed.setAuthor('재생 중인 노래', 'https://cdn.discordapp.com/emojis/667750713698549781.gif?v=1', track.url)
     embed.setDescription(`[**${track.title} - ${track.author}**](${track.url}) ${track.duration} - ${track.requestedBy}`)
     embed.setThumbnail(track.thumbnail)

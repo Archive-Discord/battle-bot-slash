@@ -6,7 +6,7 @@ const app = express()
 app.post('/', async(req: any, res)=> {
   const guild = req.guild as Guild
   const client = req.client as BotClient
-  let queue = client.player.getQueue(guild.id)
+  const queue = client.player.getQueue(guild.id)
   if(!queue) return res.status(404).json({ status: 404, message: "재생중인 노래가 없습니다"})
   await queue.back().catch((e)=> {
     if(e) {

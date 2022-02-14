@@ -8,7 +8,7 @@ app.get('/', (req: any, res)=> {
   const guild = req.guild as Guild
   const auth = req.auth as DataBaseUser
   const client = req.client as BotClient
-  let queue = client.player.getQueue(guild.id)
+  const queue = client.player.getQueue(guild.id)
   if(!queue) return res.status(200).json({ status: 200, message: "재생중인 노래가 없습니다", data: {
     status: {
       isPause: true
