@@ -21,7 +21,7 @@ export default class Embed extends MessageEmbed {
       EmbedJSON.image = {url: 'https://cdn.discordapp.com/attachments/901745892418256910/941301364095586354/46144c4d9e1cf2e6.png'}
     } else {
       EmbedJSON.author = {name: '재생 중인 노래', iconURL: 'https://cdn.discordapp.com/emojis/667750713698549781.gif?v=1', url: track.url}
-      EmbedJSON.description = `[대시보드](${config.web?.baseurl}) | [서포트 서버](https://discord.gg/WtGq7D7BZm) | [뮤직 대시보드](${config.web?.baseurl}/guilds/${track.queue.guild.id}/music)`
+      EmbedJSON.description = `[대시보드](${config.web?.baseurl}) | [서포트 서버](https://discord.gg/WtGq7D7BZm)`
       EmbedJSON.title = `${track.title} - ${track.author} (${track.duration})`
       EmbedJSON.image = {url: 'https://cdn.discordapp.com/attachments/901745892418256910/941301364095586354/46144c4d9e1cf2e6.png'}
       EmbedJSON.thumbnail = {url: track.thumbnail ? track.thumbnail : 'https://cdn.discordapp.com/attachments/901745892418256910/941249525069262888/image0_1.png'}
