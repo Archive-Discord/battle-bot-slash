@@ -5,6 +5,7 @@ import Logger from '../utils/Logger'
 import Premium from '../schemas/premiumSchemas'
 import Embed from '../utils/Embed'
 import schedule from "node-schedule"
+import DateFormatting from '../utils/DateFormatting'
 
 const logger = new Logger('bot')
 
@@ -14,9 +15,12 @@ export default new Event(
     setInterval(async () => {
       StatusUpdate(client)
     }, 60 * 1000 * 5)
-    schedule.scheduleJob('0 0 12 * * *', () => {
+    //schedule.scheduleJob('0 0 12 * * *', () => {
+    //  PremiumAlert(client)
+    //});
+    setInterval(async () => {
       PremiumAlert(client)
-    });
+    }, 5000)
     logger.info(`Logged ${client.user?.username}`)
   },
   { once: true }
@@ -46,13 +50,12 @@ async function PremiumAlert(client: BotClient) {
     embed.setTitle(`${client.user?.username} 프리미엄`)
     const now = new Date()
     const lastDate = Math.round((Number(guild.nextpay_date) - Number(now))/ 1000 / 60 / 60 / 24)
-    console.log(lastDate)
     if(lastDate === 7) {
-      embed.setDescription(`${premiumguild.name} 서버의 프리미엄 만료일이 7일 남았습니다`)
+      embed.setDescription(`${premiumguild.name} 서버의 프리미엄 만료일이 7일 (${DateFormatting._format(guild.nextpay_date)}) 남았습니다`)
       return user.send({embeds: [embed]})
     }
     if(lastDate === 1) {
-      embed.setDescription(`${premiumguild.name} 서버의 프리미엄 만료일이 1일 남았습니다`)
+      embed.setDescription(`${premiumguild.name} 서버의 프리미엄 만료일이 1일 (${DateFormatting._format(guild.nextpay_date)}) 남았습니다`)
       return user.send({embeds: [embed]})
     }
     if(lastDate === 0) {
