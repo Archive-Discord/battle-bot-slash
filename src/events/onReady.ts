@@ -2,6 +2,9 @@ import Status from '../schemas/statusSchema'
 import BotClient from '../structures/BotClient'
 import { Event } from '../structures/Event'
 import Logger from '../utils/Logger'
+import Premium from '../schemas/premiumSchemas'
+import Embed from '../utils/Embed'
+import schedule from "node-schedule"
 
 const logger = new Logger('bot')
 
@@ -11,6 +14,9 @@ export default new Event(
     setInterval(async () => {
       StatusUpdate(client)
     }, 60 * 1000 * 5)
+    schedule.scheduleJob('0 0 12 * * *', () => {
+      PremiumAlert(client)
+    });
     logger.info(`Logged ${client.user?.username}`)
   },
   { once: true }
@@ -27,6 +33,33 @@ async function StatusUpdate(client: BotClient) {
     if (err) logger.error(`봇 상테 업데이트 오류: ${err}`)
   })
   logger.info('봇 상테 업데이트')
+}
+
+async function PremiumAlert(client: BotClient) {
+  let PremiumDB = await Premium.find({})
+  PremiumDB.forEach((guild) => {
+    let premiumguild = client.guilds.cache.get(guild.guild_id)
+    if(!premiumguild) return
+    let user = client.users.cache.get(premiumguild.ownerId)
+    if(!user) return
+    let embed = new Embed(client, 'info')
+    embed.setTitle(`${client.user?.username} 프리미엄`)
+    let now = new Date()
+    let lastDate = Math.round((Number(guild.nextpay_date) - Number(now))/ 1000 / 60 / 60 / 24)
+    console.log(lastDate)
+    if(lastDate === 7) {
+      embed.setDescription(`${premiumguild.name} 서버의 프리미엄 만료일이 7일 남았습니다`)
+      return user.send({embeds: [embed]})
+    }
+    if(lastDate === 1) {
+      embed.setDescription(`${premiumguild.name} 서버의 프리미엄 만료일이 1일 남았습니다`)
+      return user.send({embeds: [embed]})
+    }
+    if(lastDate === 0) {
+      embed.setDescription(`${premiumguild.name} 서버의 프리미엄이 만료되었습니다`)
+      return user.send({embeds: [embed]})
+    }
+  })
 }
 
 async function ShardInfo(client: BotClient) {

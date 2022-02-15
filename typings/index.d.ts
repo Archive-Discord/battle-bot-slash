@@ -202,6 +202,12 @@ export interface ResourceId {
   kind: string;
   channelId: string;
 }
+
+export interface PremiumDB {
+  guild_id: string;
+  nextpay_date: Date;
+  published_date: Date;
+}
 export type verifyType = 'email' | 'captcha' | 'naver' |'default'
 export type verifyStatusType = 'success' | 'pending'
 export type useCurseType = 'delete' | 'delete_kick' | 'delete_ban'
