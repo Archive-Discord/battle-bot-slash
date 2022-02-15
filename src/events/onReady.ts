@@ -15,12 +15,9 @@ export default new Event(
     setInterval(async () => {
       StatusUpdate(client)
     }, 60 * 1000 * 5)
-    //schedule.scheduleJob('0 0 12 * * *', () => {
-    //  PremiumAlert(client)
-    //});
-    setInterval(async () => {
+    schedule.scheduleJob('0 0 12 * * *', () => {
       PremiumAlert(client)
-    }, 5000)
+    });
     logger.info(`Logged ${client.user?.username}`)
   },
   { once: true }
