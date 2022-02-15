@@ -137,6 +137,8 @@ export interface DataBaseUser {
   naver_refreshToken?: string;
   naver_email?: string;
   naver_name?: string;
+  google_accessToken?: string;
+  google_refreshToken?: string;
   token: string;
   tokenExp: number;
   expires_in: number;
@@ -174,6 +176,37 @@ export interface AutoTaskRoleDB {
   message_id: string;
   isKeep:boolean;
   guild_id: string;
+}
+
+export interface YoutubeChannels {
+  kind: string
+  etag: string
+  pageInfo: {
+    totalResults: number
+    resultsPerPage: number
+  }
+  items: YoutubeChannel[]
+}
+export interface YoutubeChannel {
+  kind: string;
+  etag: string;
+  id: string;
+  snippet: {
+    title: string;
+    description: string;
+    resourceId: ResourceId;
+    channelId: string;
+  };
+}
+export interface ResourceId {
+  kind: string;
+  channelId: string;
+}
+
+export interface PremiumDB {
+  guild_id: string;
+  nextpay_date: Date;
+  published_date: Date;
 }
 export type verifyType = 'email' | 'captcha' | 'naver' |'default'
 export type verifyStatusType = 'success' | 'pending'

@@ -5,6 +5,7 @@ import Embed from '../utils/Embed'
 import { TextChannel, User } from 'discord.js'
 
 export default new Event('messageDelete', async (client, message) => {
+  if(!message) return
   if (!message.content) return
   if (message.content.startsWith(config.bot.prefix)) return
   if (message.author?.id == client.user?.id) return
