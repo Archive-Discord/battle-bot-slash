@@ -36,16 +36,16 @@ async function StatusUpdate(client: BotClient) {
 }
 
 async function PremiumAlert(client: BotClient) {
-  let PremiumDB = await Premium.find({})
+  const PremiumDB = await Premium.find({})
   PremiumDB.forEach((guild) => {
-    let premiumguild = client.guilds.cache.get(guild.guild_id)
+    const premiumguild = client.guilds.cache.get(guild.guild_id)
     if(!premiumguild) return
-    let user = client.users.cache.get(premiumguild.ownerId)
+    const user = client.users.cache.get(premiumguild.ownerId)
     if(!user) return
-    let embed = new Embed(client, 'info')
+    const embed = new Embed(client, 'info')
     embed.setTitle(`${client.user?.username} 프리미엄`)
-    let now = new Date()
-    let lastDate = Math.round((Number(guild.nextpay_date) - Number(now))/ 1000 / 60 / 60 / 24)
+    const now = new Date()
+    const lastDate = Math.round((Number(guild.nextpay_date) - Number(now))/ 1000 / 60 / 60 / 24)
     console.log(lastDate)
     if(lastDate === 7) {
       embed.setDescription(`${premiumguild.name} 서버의 프리미엄 만료일이 7일 남았습니다`)
