@@ -13,33 +13,33 @@ export default new ButtonInteraction(
   async (client, interaction) => {
     await interaction.deferReply({ ephemeral: true })
     if(!interaction.channel) return
-    let lodingEmbed = new Embed(client, 'info')
-    let errorEmbed = new Embed(client, 'error')
-    let successEmbed = new Embed(client, 'success')
+    const lodingEmbed = new Embed(client, 'info')
+    const errorEmbed = new Embed(client, 'error')
+    const successEmbed = new Embed(client, 'success')
     lodingEmbed.setDescription('**유튜브에서 정보를 찾아보는 중이에요!**')
     await interaction.editReply({embeds: [lodingEmbed]})
-    let userdb = await UserDB.findOne({id: interaction.user.id})
+    const userdb = await UserDB.findOne({id: interaction.user.id})
     if(!userdb || !userdb.google_accessToken) {
       errorEmbed.setDescription(`**[여기](${config.web?.baseurl}/api/auth/google)에서 로그인후 다시 진행해주세요!**`)
       return await interaction.editReply({embeds: [errorEmbed]})
     } else {
-      let chnnel_id = "UCE9Wv-adygeb6PYcqLeRqbA"
+      const chnnel_id = "UCE9Wv-adygeb6PYcqLeRqbA"
       axios.get(`https://www.googleapis.com/youtube/v3/subscriptions?part=snippet&mine=true&forChannelId=${chnnel_id}`,{
         headers: {
           "authorization": "Bearer " + userdb.google_accessToken
         }
       }).then(async(data) => {
-        let youtubeData: YoutubeChannels = data.data
+        const youtubeData: YoutubeChannels = data.data
         if(youtubeData.pageInfo.totalResults === 0) {
-          let button1 = new MessageButton()
+          const button1 = new MessageButton()
             .setCustomId('youtube.subscription')
             .setLabel('네')
             .setStyle('PRIMARY')
-          let button2 = new MessageButton()
+          const button2 = new MessageButton()
             .setCustomId('youtube.nosubscription')
             .setLabel('아니요')
             .setStyle('DANGER')
-          let row = new MessageActionRow()
+          const row = new MessageActionRow()
             .addComponents([button1,button2])
           errorEmbed.setDescription(`**구독이 되어있지 않은 거 같아요!** \n 직접 구독해 드릴까요?`)
           await interaction.editReply({embeds: [errorEmbed], components: [row]})
