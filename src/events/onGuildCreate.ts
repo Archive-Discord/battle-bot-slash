@@ -30,9 +30,9 @@ export default new Event('guildCreate', async (client, guild) => {
       log.error(error)
     }
   })
-  let supprotguild = client.guilds.cache.get(config.guildAddAlert.guildID)
+  const supprotguild = client.guilds.cache.get(config.guildAddAlert.guildID)
   if(!supprotguild) return
-  let supportAlertChannel = supprotguild.channels.cache.get(config.guildAddAlert.channelID) as TextChannel
+  const supportAlertChannel = supprotguild.channels.cache.get(config.guildAddAlert.channelID) as TextChannel
   if(!supportAlertChannel) return
   const res = await client.shard?.fetchClientValues("guilds.cache.size")
   return supportAlertChannel.send(`새로운 서버에 추가되었습니다. **(현재 서버수 : ${res?.reduce((acc, guilds) => Number(acc) + Number(guilds), 0)})**`)
