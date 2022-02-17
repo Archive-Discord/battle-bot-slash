@@ -195,16 +195,16 @@ export default new ButtonInteraction(
             .setDescription('메일 입력시간이 초과되었습니다 다시 시도해주세요')
           return interaction.editReply({ embeds: [captchaTimeout] })
         })
-    } else if (VerifySettingDB.type === 'naver') {
+    } else if (VerifySettingDB.type === 'kakao') {
       const isPremium = await checkPremium(client, interaction.guild as Guild)
       if(!isPremium) {
-        return interaction.editReply('프리미엄 기한 만료로 네이버 인증 기능이 비활성화되었습니다')
+        return interaction.editReply('프리미엄 기한 만료로 카카오 인증 기능이 비활성화되었습니다')
       } 
       const UserDB = await User.findOne({id: interaction.user.id})
-      if(!UserDB || !UserDB.naver_name) {
+      if(!UserDB || !UserDB.kakao_name) {
         const Verify = new Embed(client, 'warn')
           .setTitle('인증')
-          .setDescription(`인증을 진행하기 위해 [여기](${config.web?.baseurl}/me)에서 네이버 아이디 연동을 진행해 주세요 \n 연동 후 다시 인증 버튼을 눌러주세요`)
+          .setDescription(`인증을 진행하기 위해 [여기](${config.web?.baseurl}/me)에서 카카오 아이디 연동을 진행해 주세요 \n 연동 후 다시 인증 버튼을 눌러주세요`)
         return interaction.editReply({ embeds: [Verify] })
       }
       try {
@@ -221,7 +221,7 @@ export default new ButtonInteraction(
       }
       const VerifySuccess = new Embed(client, 'success')
         .setTitle('인증')
-        .setDescription(`${UserDB.naver_name}(\`${UserDB.naver_email}\`) 정보로 인증이 완료되었습니다`)
+        .setDescription(`${UserDB.kakao_name}(\`${UserDB.kakao_email}\`) 정보로 인증이 완료되었습니다`)
       return interaction.editReply({ embeds: [VerifySuccess] })
     }
   }

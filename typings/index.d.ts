@@ -26,7 +26,7 @@ export interface IConfig {
   BUILD_VERSION: string
   BUILD_NUMBER: string | null
   githubToken?: string
-  web?: {
+  web: {
     baseurl: string
   }
   bot: {
@@ -47,6 +47,11 @@ export interface IConfig {
       guildID: string
       channelID: string
     }
+  }
+
+  guildAddAlert: {
+    guildID: string
+    channelID: string
   }
   database: {
     type: 'mongodb' | 'sqlite'
@@ -133,10 +138,10 @@ export interface DataBaseUser {
   email: string;
   accessToken: string;
   refreshToken: string;
-  naver_accessToken?: string;
-  naver_refreshToken?: string;
-  naver_email?: string;
-  naver_name?: string;
+  kakao_accessToken?: string;
+  kakao_refreshToken?: string;
+  kakao_email?: string;
+  kakao_name?: string;
   google_accessToken?: string;
   google_refreshToken?: string;
   token: string;
@@ -208,6 +213,6 @@ export interface PremiumDB {
   nextpay_date: Date;
   published_date: Date;
 }
-export type verifyType = 'email' | 'captcha' | 'naver' |'default'
+export type verifyType = 'email' | 'captcha' | 'kakao' |'default'
 export type verifyStatusType = 'success' | 'pending'
 export type useCurseType = 'delete' | 'delete_kick' | 'delete_ban'
