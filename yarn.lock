@@ -699,6 +699,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"axios@npm:^0.22.0":
+  version: 0.22.0
+  resolution: "axios@npm:0.22.0"
+  dependencies:
+    follow-redirects: ^1.14.4
+  checksum: 83dc4d02e180f69aa9f0d1d0d50b84ec3603517230d58b4c3720ebd440c7e64ea86c5e892dc6e19061608e8e1103504a709d8baa4051c4b7652101b523d04b63
+  languageName: node
+  linkType: hard
+
 "axios@npm:^0.25.0":
   version: 0.25.0
   resolution: "axios@npm:0.25.0"
@@ -763,6 +772,7 @@ __metadata:
     nodemailer: ^6.7.2
     nodemon: ^2.0.14
     prettier: ^2.5.1
+    pubg.ts: ^0.1.7
     randomstring: ^1.2.2
     strip-ansi: ^5.2.0
     ts-node: ^10.4.0
@@ -1731,6 +1741,16 @@ __metadata:
   version: 1.1.0
   resolution: "fn.name@npm:1.1.0"
   checksum: e357144f48cfc9a7f52a82bbc6c23df7c8de639fce049cac41d41d62cabb740cdb9f14eddc6485e29c933104455bdd7a69bb14a9012cef9cd4fa252a4d0cf293
+  languageName: node
+  linkType: hard
+
+"follow-redirects@npm:^1.14.4":
+  version: 1.14.9
+  resolution: "follow-redirects@npm:1.14.9"
+  peerDependenciesMeta:
+    debug:
+      optional: true
+  checksum: f5982e0eb481818642492d3ca35a86989c98af1128b8e1a62911a3410621bc15d2b079e8170b35b19d3bdee770b73ed431a257ed86195af773771145baa57845
   languageName: node
   linkType: hard
 
@@ -3192,6 +3212,15 @@ __metadata:
   version: 1.1.8
   resolution: "pstree.remy@npm:1.1.8"
   checksum: 5cb53698d6bb34dfb278c8a26957964aecfff3e161af5fbf7cee00bbe9d8547c7aced4bd9cb193bce15fb56e9e4220fc02a5bf9c14345ffb13a36b858701ec2d
+  languageName: node
+  linkType: hard
+
+"pubg.ts@npm:^0.1.7":
+  version: 0.1.7
+  resolution: "pubg.ts@npm:0.1.7"
+  dependencies:
+    axios: ^0.22.0
+  checksum: 110c14793d68cf67a1e90a1f44721a9192b421bfbf2a1b385b4e2261541521a0a5523da8d285bdddae42ca869fdcfcffd60f640fd6798466efdcdf01a81fee7f
   languageName: node
   linkType: hard
 

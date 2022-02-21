@@ -21,6 +21,7 @@ let config: IConfig = {
   BUILD_NUMBER,
   BUILD_VERSION: '0.0.1-dev',
   githubToken: '',
+  pubgapikey: "",
   web: {
     baseurl: ""
   },

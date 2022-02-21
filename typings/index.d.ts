@@ -5,6 +5,7 @@ import {
   Role,
   ShardingManagerOptions
 } from 'discord.js'
+import { type } from 'os'
 
 export type LevelType =
   | 'fatal'
@@ -26,6 +27,7 @@ export interface IConfig {
   BUILD_VERSION: string
   BUILD_NUMBER: string | null
   githubToken?: string
+  pubgapikey: string
   web: {
     baseurl: string
   }
@@ -183,6 +185,26 @@ export interface AutoTaskRoleDB {
   guild_id: string;
 }
 
+export interface PubgDB {
+  published_date: Date;
+  last_update: Date;
+  user_id: string;
+  nickname: string;
+  platform: pubgPlatformeType
+  stats: {
+    rankSoloTpp: RankedGameModeStats
+    rankSoloFpp: RankedGameModeStats
+    rankSquardTpp: RankedGameModeStats
+    rankSquardFpp: RankedGameModeStats
+    soloFpp: GameModeStat
+    soloTpp: GameModeStat
+    duoFpp: GameModeStat
+    duoTpp: GameModeStat
+    SquardFpp: GameModeStat
+    SquardTpp: GameModeStat
+  }
+}
+
 export interface YoutubeChannels {
   kind: string
   etag: string
@@ -213,6 +235,82 @@ export interface PremiumDB {
   nextpay_date: Date;
   published_date: Date;
 }
+
+export interface GameModeStat {
+  assists: number;
+  boosts: number;
+  dailyKills: number;
+  dailyWins: number;
+  damageDealt: number;
+  days: number;
+  dBNOs: number;
+  headshotKills: number;
+  heals: number;
+  killPoints: number;
+  kills: number;
+  longestKill: number;
+  longestTimeSurvived: number;
+  losses: number;
+  maxKillStreaks: number;
+  mostSurvivalTime: number;
+  rankPoints: number;
+  rankPointsTitle: string;
+  revives: number;
+  rideDistance: number;
+  roadKills: number;
+  roundMostKills: number;
+  roundsPlayed: number;
+  suicides: number;
+  swimDistance: number;
+  teamKills: number;
+  timeSurvived: number;
+  top10s: number;
+  vehicleDestroys: number;
+  walkDistance: number;
+  weaponsAcquired: 12;
+  weeklyKills: number;
+  weeklyWins: number;
+  winPoints: number;
+  wins: number;
+}
+export interface RankedGameModeStats {
+  assists: number;
+  avgRank: number;
+  avgSurvivalTime: number;
+  bestRankPoint: number;
+  bestTier: {
+      tier: string;
+      subTier: string;
+  };
+  boosts: number;
+  currentRankPoint: number;
+  currentTier: {
+      tier: string;
+      subTier: string;
+  };
+  dBNOs: number;
+  damageDealt: number;
+  deaths: number;
+  headshotKillRatio: number;
+  headshotKills: number;
+  heals: number;
+  kda: number;
+  kdr: number;
+  killStreak: number;
+  kills: number;
+  longestKill: number;
+  playTime: number;
+  reviveRatio: number;
+  revives: number;
+  roundMostKills: number;
+  roundsPlayed: number;
+  teamKills: number;
+  top10Ratio: number;
+  weaponsAcquired: number;
+  winRatio: number;
+  wins: number;
+}
 export type verifyType = 'email' | 'captcha' | 'kakao' |'default'
 export type verifyStatusType = 'success' | 'pending'
 export type useCurseType = 'delete' | 'delete_kick' | 'delete_ban'
+export type pubgPlatformeType = 'steam' | 'kakao'
