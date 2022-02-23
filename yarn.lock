@@ -640,6 +640,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"archive-pubg-ts@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "archive-pubg-ts@npm:1.0.0"
+  dependencies:
+    axios: ^0.22.0
+  checksum: 76b0ba69d2ca5ff34f0275e4cb18f0796d882ed840843ddf2d37ac26bcad52e32b1a564e7e22002322bf5ae93ada76941376e8aa3e5f83e42c237aaf774c595e
+  languageName: node
+  linkType: hard
+
 "are-we-there-yet@npm:^2.0.0":
   version: 2.0.0
   resolution: "are-we-there-yet@npm:2.0.0"
@@ -699,6 +708,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"axios@npm:^0.22.0":
+  version: 0.22.0
+  resolution: "axios@npm:0.22.0"
+  dependencies:
+    follow-redirects: ^1.14.4
+  checksum: 83dc4d02e180f69aa9f0d1d0d50b84ec3603517230d58b4c3720ebd440c7e64ea86c5e892dc6e19061608e8e1103504a709d8baa4051c4b7652101b523d04b63
+  languageName: node
+  linkType: hard
+
 "axios@npm:^0.25.0":
   version: 0.25.0
   resolution: "axios@npm:0.25.0"
@@ -746,9 +764,11 @@ __metadata:
     "@typescript-eslint/eslint-plugin": ^5.10.2
     "@typescript-eslint/parser": ^5.10.2
     anyid: ^1.0.7
+    archive-pubg-ts: ^1.0.0
     axios: ^0.25.0
     captcha-canvas: ^3.1.0
     chalk: ^3.0.0
+    dayjs: ^1.10.7
     discord-api-types: ^0.26.1
     discord.js: 13.3.1
     dokdo: ^0.5.1
@@ -1162,6 +1182,13 @@ __metadata:
   version: 2.0.0
   resolution: "crypto-random-string@npm:2.0.0"
   checksum: 0283879f55e7c16fdceacc181f87a0a65c53bc16ffe1d58b9d19a6277adcd71900d02bb2c4843dd55e78c51e30e89b0fec618a7f170ebcc95b33182c28f05fd6
+  languageName: node
+  linkType: hard
+
+"dayjs@npm:^1.10.7":
+  version: 1.10.7
+  resolution: "dayjs@npm:1.10.7"
+  checksum: a0a4ca95abaa03d0702161dc2c35d16121188e342f5052b9c61cdf784dab68af766f477c04f87f71c6af666fd4d13db9b9853b87265850d6093b7b04e1bb1cd7
   languageName: node
   linkType: hard
 
@@ -1731,6 +1758,16 @@ __metadata:
   version: 1.1.0
   resolution: "fn.name@npm:1.1.0"
   checksum: e357144f48cfc9a7f52a82bbc6c23df7c8de639fce049cac41d41d62cabb740cdb9f14eddc6485e29c933104455bdd7a69bb14a9012cef9cd4fa252a4d0cf293
+  languageName: node
+  linkType: hard
+
+"follow-redirects@npm:^1.14.4":
+  version: 1.14.9
+  resolution: "follow-redirects@npm:1.14.9"
+  peerDependenciesMeta:
+    debug:
+      optional: true
+  checksum: f5982e0eb481818642492d3ca35a86989c98af1128b8e1a62911a3410621bc15d2b079e8170b35b19d3bdee770b73ed431a257ed86195af773771145baa57845
   languageName: node
   linkType: hard
 
