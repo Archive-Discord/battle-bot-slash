@@ -1,5 +1,5 @@
 import { CommandInteraction, MessageActionRow, MessageButton, MessageEmbed } from "discord.js";
-import { Client as PUBGClient, GameModeStatGamemode, Season, Shard } from "pubg.ts";
+import { Client as PUBGClient, GameModeStatGamemode, Season, Shard } from "archive-pubg-ts";
 import config from "../../config";
 import { RankedGameModeStats, GameModeStat, PubgDB } from "../../typings";
 import PubgStats from "../schemas/PubgStatsSchema";

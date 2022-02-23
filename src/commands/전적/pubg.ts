@@ -1,10 +1,6 @@
-import { BaseCommand, SlashCommand } from '../../structures/Command'
-import { Client as PUBGClient, Shard } from "pubg.ts";
+import { BaseCommand } from '../../structures/Command'
 import { playerStats } from '../../utils/pubg'
-import { SlashCommandBuilder, userMention } from '@discordjs/builders'
-import DateFormatting from '../../utils/DateFormatting'
-import config from '../../../config';
-import PubgStats from '../../schemas/PubgStatsSchema';
+import { SlashCommandBuilder } from '@discordjs/builders'
 
 export default new BaseCommand(
   {

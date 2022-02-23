@@ -640,6 +640,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"archive-pubg-ts@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "archive-pubg-ts@npm:1.0.0"
+  dependencies:
+    axios: ^0.22.0
+  checksum: 76b0ba69d2ca5ff34f0275e4cb18f0796d882ed840843ddf2d37ac26bcad52e32b1a564e7e22002322bf5ae93ada76941376e8aa3e5f83e42c237aaf774c595e
+  languageName: node
+  linkType: hard
+
 "are-we-there-yet@npm:^2.0.0":
   version: 2.0.0
   resolution: "are-we-there-yet@npm:2.0.0"
@@ -755,6 +764,7 @@ __metadata:
     "@typescript-eslint/eslint-plugin": ^5.10.2
     "@typescript-eslint/parser": ^5.10.2
     anyid: ^1.0.7
+    archive-pubg-ts: ^1.0.0
     axios: ^0.25.0
     captcha-canvas: ^3.1.0
     chalk: ^3.0.0
@@ -773,7 +783,6 @@ __metadata:
     nodemailer: ^6.7.2
     nodemon: ^2.0.14
     prettier: ^2.5.1
-    pubg.ts: ^0.1.7
     randomstring: ^1.2.2
     strip-ansi: ^5.2.0
     ts-node: ^10.4.0
@@ -3220,15 +3229,6 @@ __metadata:
   version: 1.1.8
   resolution: "pstree.remy@npm:1.1.8"
   checksum: 5cb53698d6bb34dfb278c8a26957964aecfff3e161af5fbf7cee00bbe9d8547c7aced4bd9cb193bce15fb56e9e4220fc02a5bf9c14345ffb13a36b858701ec2d
-  languageName: node
-  linkType: hard
-
-"pubg.ts@npm:^0.1.7":
-  version: 0.1.7
-  resolution: "pubg.ts@npm:0.1.7"
-  dependencies:
-    axios: ^0.22.0
-  checksum: 110c14793d68cf67a1e90a1f44721a9192b421bfbf2a1b385b4e2261541521a0a5523da8d285bdddae42ca869fdcfcffd60f640fd6798466efdcdf01a81fee7f
   languageName: node
   linkType: hard
 
