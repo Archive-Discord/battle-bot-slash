@@ -27,6 +27,7 @@
     "axios": "^0.25.0",
     "captcha-canvas": "^3.1.0",
     "chalk": "^3.0.0",
+    "dayjs": "^1.10.7",
     "discord-api-types": "^0.26.1",
     "discord.js": "13.3.1",
     "dokdo": "^0.5.1",

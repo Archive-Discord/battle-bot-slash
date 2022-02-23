@@ -13,7 +13,7 @@ export default new BaseCommand(
     aliases: ['전적배그', 'pubgstat']
   },
   async (client, message, args) => {
-    const pubg = new PUBGClient({ apiKey: config.pubgapikey, shard: Shard.STEAM });
+    return message.reply(`해당 명령어는 (/)커멘드로만 사용가능합니다`)
   },
   {
     data: new SlashCommandBuilder()
@@ -32,7 +32,7 @@ export default new BaseCommand(
         .setRequired(true)
         .addChoice('3인칭', 'tpp')
         .addChoice('1인칭', 'fpp')
-        .addChoice('3인칭 (경쟁)', 'fpprank')
+        .addChoice('3인칭 (경쟁)', 'tpprank')
         .addChoice('1인칭 (경쟁)', 'fpprank'),
   ),
     options: {
@@ -43,7 +43,7 @@ export default new BaseCommand(
       await interaction.deferReply()
       let nickname = interaction.options.getString('user', true)
       let mode = interaction.options.getString('mode', true)
-      await playerStats(nickname, mode, interaction)
+      return await playerStats(nickname, mode, interaction)
     }
   }
 )
