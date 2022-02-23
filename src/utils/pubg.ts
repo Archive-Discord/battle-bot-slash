@@ -64,42 +64,42 @@ export const playerStats = async(nickname: string, mode: string, interaction: Co
   } else {
     const date = new Date()
     if((Math.round(Number(date) - (Number(pubgUser.last_update))) / 1000 / 60) < 10) {
-      if(!pubgUser.stats) {
-        await updateStats(pubgUser, mode, interaction)
-      } else {
-        if(mode === 'fpprank') {
-          const squadFppStats = pubgUser.stats.rankSquardFpp
-          if(!squadFppStats) {
-            embed.setDescription(`\`${pubgUser.nickname}\`님의 1인칭 스쿼드 경쟁전 전적을 찾을 수 없습니다`)
-            return interaction.editReply({embeds: [embed]})
-          }
-          return interaction.editReply({embeds: [rankStatEmbed(squadFppStats, pubgUser.nickname, '1인칭 경쟁전', pubgUser.last_update)]})
-        } else if(mode === 'tpprank') {
-          const squadTppStats = pubgUser.stats.rankSquardTpp
-          if(!squadTppStats) {
-            embed.setDescription(`\`${pubgUser.nickname}\`님의 3인칭 스쿼드 경쟁전 전적을 찾을 수 없습니다`)
-            return interaction.editReply({embeds: [embed]})
-          }
-          return interaction.editReply({embeds: [rankStatEmbed(squadTppStats, pubgUser.nickname, '3인칭 경쟁전', pubgUser.last_update)]})
-        } else if(mode === 'tpp') {
-          const squadTppStats: GameModeStat = pubgUser.stats.SquardTpp
-          if(!squadTppStats) {
-            embed.setDescription(`\`${pubgUser.nickname}\`님의 3인칭 스쿼드 전적을 찾을 수 없습니다`)
-            return interaction.editReply({embeds: [embed]})
-          }
-          return interaction.editReply({embeds: [statEmbed(squadTppStats, pubgUser.nickname, '3인칭 일반전', pubgUser.last_update)]})
-        } else if (mode == 'fpp') {
-          const squadFppStats = pubgUser.stats.SquardFpp
-          if(!squadFppStats) {
-            embed.setDescription(`\`${pubgUser.nickname}\`님의 1인칭 스쿼드 전적을 찾을 수 없습니다`)
-            return interaction.editReply({embeds: [embed]})
-          }
-          return interaction.editReply({embeds: [statEmbed(squadFppStats, pubgUser.nickname, '1인칭 일반전', pubgUser.last_update)]})
+      if(mode === 'fpprank') {
+        if(!pubgUser.stats.rankSquardFpp) return await updateStats(pubgUser, mode, interaction)
+        const squadFppStats = pubgUser.stats.rankSquardFpp
+        if(!squadFppStats) {
+          embed.setDescription(`\`${pubgUser.nickname}\`님의 1인칭 스쿼드 경쟁전 전적을 찾을 수 없습니다`)
+          return interaction.editReply({embeds: [embed]})
         }
+        return interaction.editReply({embeds: [rankStatEmbed(squadFppStats, pubgUser.nickname, '1인칭 경쟁전', pubgUser.last_update)]})
+      } else if(mode === 'tpprank') {
+        if(!pubgUser.stats.rankSquardTpp) return await updateStats(pubgUser, mode, interaction)
+        const squadTppStats = pubgUser.stats.rankSquardTpp
+        if(!squadTppStats) {
+          embed.setDescription(`\`${pubgUser.nickname}\`님의 3인칭 스쿼드 경쟁전 전적을 찾을 수 없습니다`)
+          return interaction.editReply({embeds: [embed]})
+        }
+        return interaction.editReply({embeds: [rankStatEmbed(squadTppStats, pubgUser.nickname, '3인칭 경쟁전', pubgUser.last_update)]})
+      } else if(mode === 'tpp') {
+        if(!pubgUser.stats.SquardTpp) return await updateStats(pubgUser, mode, interaction)
+        const squadTppStats: GameModeStat = pubgUser.stats.SquardTpp
+        if(!squadTppStats) {
+          embed.setDescription(`\`${pubgUser.nickname}\`님의 3인칭 스쿼드 전적을 찾을 수 없습니다`)
+          return interaction.editReply({embeds: [embed]})
+        }
+        return interaction.editReply({embeds: [statEmbed(squadTppStats, pubgUser.nickname, '3인칭 일반전', pubgUser.last_update)]})
+      } else if (mode == 'fpp') {
+        if(!pubgUser.stats.SquardFpp) return await updateStats(pubgUser, mode, interaction)
+        const squadFppStats = pubgUser.stats.SquardFpp
+        if(!squadFppStats) {
+          embed.setDescription(`\`${pubgUser.nickname}\`님의 1인칭 스쿼드 전적을 찾을 수 없습니다`)
+          return interaction.editReply({embeds: [embed]})
+        }
+        return interaction.editReply({embeds: [statEmbed(squadFppStats, pubgUser.nickname, '1인칭 일반전', pubgUser.last_update)]})
       }
     } else {
-    await updateStats(pubgUser, mode, interaction)
-  }
+      return await updateStats(pubgUser, mode, interaction)
+    }
 }
 
 async function updateStats(pubgUser: PubgDB, mode: string, interaction: CommandInteraction) {
