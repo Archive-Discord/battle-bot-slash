@@ -185,9 +185,14 @@ async function updateStats(pubgUser: PubgDB, mode: string, interaction: CommandI
 
 const rankStatEmbed = (stats: RankedGameModeStats, nickname: string, mode: string, last_update: Date) => {
   const embed = new MessageEmbed()
-    .setColor('BLUE')
+  if(!stats) {
+    embed.setDescription(`\`${nickname}\`님의 ${mode} 스쿼드 전적을 찾을 수 없습니다`)
+    .setFooter(`마지막 업데이트: ${Day(last_update).fromNow(false)}`)
+    return embed
+  }
+  embed.setColor('BLUE')
     .setAuthor(`${nickname}님의 ${mode} 전적`)
-    .setTitle(`${stats.currentTier.tier} ${stats.currentTier.subTier}`)
+    .setTitle(stats.currentTier ? `${stats.currentTier.tier} ${stats.currentTier.subTier}` : "언랭크")
     .setThumbnail(`https://dak.gg/pubg/images/tiers/s7/rankicon_${stats.currentTier.tier.toLowerCase() + stats.currentTier.subTier}.png`)
     .addField('KDA', stats.kda.toFixed(2), true)
     .addField('승률', (stats.winRatio * 100).toFixed(1)+"%", true)
