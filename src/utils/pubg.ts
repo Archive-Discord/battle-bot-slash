@@ -68,28 +68,28 @@ export const playerStats = async(nickname: string, mode: string, interaction: Co
         await updateStats(pubgUser, mode, interaction)
       } else {
         if(mode === 'fpprank') {
-          let squadFppStats = pubgUser.stats.rankSquardFpp
+          const squadFppStats = pubgUser.stats.rankSquardFpp
           if(!squadFppStats) {
             embed.setDescription(`\`${pubgUser.nickname}\`님의 1인칭 스쿼드 경쟁전 전적을 찾을 수 없습니다`)
             return interaction.editReply({embeds: [embed]})
           }
           return interaction.editReply({embeds: [rankStatEmbed(squadFppStats, pubgUser.nickname, '1인칭 경쟁전', pubgUser.last_update)]})
         } else if(mode === 'tpprank') {
-          let squadTppStats = pubgUser.stats.rankSquardTpp
+          const squadTppStats = pubgUser.stats.rankSquardTpp
           if(!squadTppStats) {
             embed.setDescription(`\`${pubgUser.nickname}\`님의 3인칭 스쿼드 경쟁전 전적을 찾을 수 없습니다`)
             return interaction.editReply({embeds: [embed]})
           }
           return interaction.editReply({embeds: [rankStatEmbed(squadTppStats, pubgUser.nickname, '3인칭 경쟁전', pubgUser.last_update)]})
         } else if(mode === 'tpp') {
-          let squadTppStats: GameModeStat = pubgUser.stats.SquardTpp
+          const squadTppStats: GameModeStat = pubgUser.stats.SquardTpp
           if(!squadTppStats) {
             embed.setDescription(`\`${pubgUser.nickname}\`님의 3인칭 스쿼드 전적을 찾을 수 없습니다`)
             return interaction.editReply({embeds: [embed]})
           }
           return interaction.editReply({embeds: [statEmbed(squadTppStats, pubgUser.nickname, '3인칭 일반전', pubgUser.last_update)]})
         } else if (mode == 'fpp') {
-          let squadFppStats = pubgUser.stats.SquardFpp
+          const squadFppStats = pubgUser.stats.SquardFpp
           if(!squadFppStats) {
             embed.setDescription(`\`${pubgUser.nickname}\`님의 1인칭 스쿼드 전적을 찾을 수 없습니다`)
             return interaction.editReply({embeds: [embed]})
@@ -103,11 +103,11 @@ export const playerStats = async(nickname: string, mode: string, interaction: Co
 }
 
 async function updateStats(pubgUser: PubgDB, mode: string, interaction: CommandInteraction) {
-  let embed = new Embed(interaction.client, 'success')
+  const embed = new Embed(interaction.client, 'success')
   if(mode === 'fpprank') {
-    let pubg = new PUBGClient({apiKey: config.pubgapikey, shard: pubgUser.platform as Shard})
-    let { data: activeSeason } = await pubg.getSeason();
-    let { data: SeasonsStats, error: error } = await pubg.getPlayerSeason({
+    const pubg = new PUBGClient({apiKey: config.pubgapikey, shard: pubgUser.platform as Shard})
+    const { data: activeSeason } = await pubg.getSeason();
+    const { data: SeasonsStats, error: error } = await pubg.getPlayerSeason({
       player: pubgUser.user_id,
       season: activeSeason as Season,
       ranked: true,
@@ -117,14 +117,14 @@ async function updateStats(pubgUser: PubgDB, mode: string, interaction: CommandI
       console.log(error)
     }
     // @ts-ignore
-    let squadFppStats: RankedGameModeStats = SeasonsStats.rankedGameModeStats['squad-fpp']
+    const squadFppStats: RankedGameModeStats = SeasonsStats.rankedGameModeStats['squad-fpp']
     // @ts-ignore
     await PubgStats.updateOne({user_id: pubgUser.user_id}, {$set: {stats: {rankSquardTpp: SeasonsStats.rankedGameModeStats.squad, rankSquardFpp: SeasonsStats.rankedGameModeStats['squad-fpp']}, last_update: new Date()}})
     return interaction.editReply({embeds: [rankStatEmbed(squadFppStats, pubgUser.nickname, '1인칭 경쟁전', new Date())]})
   } else if (mode === 'tpprank') {
-    let pubg = new PUBGClient({apiKey: config.pubgapikey, shard: pubgUser.platform as Shard})
-    let { data: activeSeason } = await pubg.getSeason();
-    let { data: SeasonsStats, error: error } = await pubg.getPlayerSeason({
+    const pubg = new PUBGClient({apiKey: config.pubgapikey, shard: pubgUser.platform as Shard})
+    const { data: activeSeason } = await pubg.getSeason();
+    const { data: SeasonsStats, error: error } = await pubg.getPlayerSeason({
       player: pubgUser.user_id,
       season: activeSeason as Season,
       ranked: true,
@@ -134,7 +134,7 @@ async function updateStats(pubgUser: PubgDB, mode: string, interaction: CommandI
       console.log(error)
     }
     // @ts-ignore
-    let squadTppStats: RankedGameModeStats = SeasonsStats.rankedGameModeStats.squad
+    const squadTppStats: RankedGameModeStats = SeasonsStats.rankedGameModeStats.squad
     // @ts-ignore
     await PubgStats.updateOne({user_id: pubgUser.user_id}, {$set: {stats: {rankSquardTpp: SeasonsStats.rankedGameModeStats.squad, rankSquardFpp: SeasonsStats.rankedGameModeStats['squad-fpp']}, last_update: new Date()}})
     if(!squadTppStats) {
@@ -143,9 +143,9 @@ async function updateStats(pubgUser: PubgDB, mode: string, interaction: CommandI
     }
     return interaction.editReply({embeds: [rankStatEmbed(squadTppStats, pubgUser.nickname, '3인칭 경쟁전', new Date())]})
   } else if (mode === 'tpp') {
-    let pubg = new PUBGClient({apiKey: config.pubgapikey, shard: pubgUser.platform as Shard})
-    let { data: activeSeason } = await pubg.getSeason();
-    let { data: SeasonsStats, error: error } = await pubg.getPlayerSeason({
+    const pubg = new PUBGClient({apiKey: config.pubgapikey, shard: pubgUser.platform as Shard})
+    const { data: activeSeason } = await pubg.getSeason();
+    const { data: SeasonsStats, error: error } = await pubg.getPlayerSeason({
       player: pubgUser.user_id,
       season: activeSeason as Season,
       gamemode: GameModeStatGamemode.SQUAD
@@ -154,7 +154,7 @@ async function updateStats(pubgUser: PubgDB, mode: string, interaction: CommandI
       console.log(error)
     }
     // @ts-ignore
-    let squadTppStats: GameModeStat = SeasonsStats.gamemodeStats.squad
+    const squadTppStats: GameModeStat = SeasonsStats.gamemodeStats.squad
     // @ts-ignore
     await PubgStats.updateOne({user_id: pubgUser.user_id}, {$set: {stats: {SquardTpp: SeasonsStats.gamemodeStats.squad, SquardFpp: SeasonsStats.gamemodeStats['squad-fpp']}, last_update: new Date()}})
     if(!squadTppStats) {
@@ -163,15 +163,15 @@ async function updateStats(pubgUser: PubgDB, mode: string, interaction: CommandI
     }
     return interaction.editReply({embeds: [statEmbed(squadTppStats, pubgUser.nickname, '3인칭 일반전', new Date())]})
   } else if (mode == 'fpp') {
-    let pubg = new PUBGClient({apiKey: config.pubgapikey, shard: pubgUser.platform as Shard})
-    let { data: activeSeason } = await pubg.getSeason();
-    let { data: SeasonsStats, error: error } = await pubg.getPlayerSeason({
+    const pubg = new PUBGClient({apiKey: config.pubgapikey, shard: pubgUser.platform as Shard})
+    const { data: activeSeason } = await pubg.getSeason();
+    const { data: SeasonsStats, error: error } = await pubg.getPlayerSeason({
       player: pubgUser.user_id,
       season: activeSeason as Season,
       gamemode: GameModeStatGamemode.SQUAD_FPP
     })
     // @ts-ignore
-    let squadFppStats: GameModeStat = SeasonsStats.gamemodeStats['squad-fpp']
+    const squadFppStats: GameModeStat = SeasonsStats.gamemodeStats['squad-fpp']
     // @ts-ignore
     await PubgStats.updateOne({user_id: pubgUser.user_id}, {$set: {stats: {SquardTpp: SeasonsStats.gamemodeStats.squad, SquardFpp: SeasonsStats.gamemodeStats['squad-fpp']}, last_update: new Date()}})
     if(!squadFppStats) {
@@ -184,7 +184,7 @@ async function updateStats(pubgUser: PubgDB, mode: string, interaction: CommandI
 }
 
 const rankStatEmbed = (stats: RankedGameModeStats, nickname: string, mode: string, last_update: Date) => {
-  let embed = new MessageEmbed()
+  const embed = new MessageEmbed()
     .setColor('BLUE')
     .setAuthor(`${nickname}님의 ${mode} 전적`)
     .setTitle(`${stats.currentTier.tier} ${stats.currentTier.subTier}`)
@@ -200,9 +200,9 @@ const rankStatEmbed = (stats: RankedGameModeStats, nickname: string, mode: strin
 }
 
 const statEmbed = (stats: GameModeStat, nickname: string, mode: string,  last_update: Date) => {
-  let winGamePercent = (stats.wins/stats.roundsPlayed * 100);
-  let top10GamePercent = (stats.top10s/stats.roundsPlayed * 100);
-  let embed = new MessageEmbed()
+  const winGamePercent = (stats.wins/stats.roundsPlayed * 100);
+  const top10GamePercent = (stats.top10s/stats.roundsPlayed * 100);
+  const embed = new MessageEmbed()
     .setColor('BLUE')
     .setAuthor(`${nickname}님의 ${mode} 전적`)
     .addField('KDA', ((stats.kills + stats.assists) / stats.losses).toFixed(2), true)
