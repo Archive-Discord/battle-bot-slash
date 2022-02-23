@@ -7,11 +7,11 @@ import { Day } from "./DateFormatting";
 import Embed from "./Embed";
 
 export const playerStats = async(nickname: string, mode: string, interaction: CommandInteraction) => {
-  let pubgUser = await PubgStats.findOne({nickname: nickname})
-  let embed = new Embed(interaction.client, 'success')
-  let embedError = new Embed(interaction.client, 'info')
+  const pubgUser = await PubgStats.findOne({nickname: nickname})
+  const embed = new Embed(interaction.client, 'success')
+  const embedError = new Embed(interaction.client, 'info')
   if(!pubgUser) {
-    let buttons = [
+    const buttons = [
       new MessageButton()
         .setLabel('스팀')
         .setCustomId('pubg.steam')
@@ -23,15 +23,15 @@ export const playerStats = async(nickname: string, mode: string, interaction: Co
     ]
     embedError.setDescription('처음으로 전적을 검색하는 닉네임 같아요! \n 서버를 선택해 주세요! 다음부터는 선택 없이 검색이 가능해요!')
     await interaction.editReply({embeds: [embedError], components: [new MessageActionRow().addComponents(buttons)]})
-    let collector = interaction.channel?.createMessageComponentCollector({
+    const collector = interaction.channel?.createMessageComponentCollector({
       time: 30 * 1000
     })  
     collector?.on('collect', async (collector_interaction) => {
       if (collector_interaction.customId === 'pubg.kakao') {
-        let pubg = new PUBGClient({apiKey: config.pubgapikey, shard: Shard.KAKAO})
-        let { data: player } = await pubg.getPlayer({skipFailed: false, value: nickname})
+        const pubg = new PUBGClient({apiKey: config.pubgapikey, shard: Shard.KAKAO})
+        const { data: player } = await pubg.getPlayer({skipFailed: false, value: nickname})
         if(!player || player.length === 0) return collector_interaction.reply('유저 정보를 찾지 못했습니다! \n 대소문자 구별 필수')
-        let pubgDB = new PubgStats
+        const pubgDB = new PubgStats
         pubgDB.user_id = player[0].id
         pubgDB.nickname = nickname
         pubgDB.platform = Shard.KAKAO
@@ -42,10 +42,10 @@ export const playerStats = async(nickname: string, mode: string, interaction: Co
         collector?.stop()
         return collector_interaction.reply(`\`${nickname}\`유저가 \`카카오\` 서버로 설정이 완료되었습니다`)
       } else if (collector_interaction.customId === 'pubg.steam') {
-        let pubg = new PUBGClient({apiKey: config.pubgapikey, shard: Shard.STEAM})
-        let { data: player } = await pubg.getPlayer({skipFailed: false, value: nickname})
+        const pubg = new PUBGClient({apiKey: config.pubgapikey, shard: Shard.STEAM})
+        const { data: player } = await pubg.getPlayer({skipFailed: false, value: nickname})
         if(!player || player.length === 0) return collector_interaction.reply('유저 정보를 찾지 못했습니다! \n 대소문자 구별 필수')
-        let pubgDB = new PubgStats
+        const pubgDB = new PubgStats
         pubgDB.user_id = player[0].id
         pubgDB.nickname = nickname
         pubgDB.platform = Shard.STEAM
@@ -62,7 +62,7 @@ export const playerStats = async(nickname: string, mode: string, interaction: Co
       }
     })
   } else {
-    let date = new Date()
+    const date = new Date()
     if((Math.round(Number(date) - (Number(pubgUser.last_update))) / 1000 / 60) < 10) {
       if(!pubgUser.stats) {
         await updateStats(pubgUser, mode, interaction)

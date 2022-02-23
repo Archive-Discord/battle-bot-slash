@@ -16,6 +16,7 @@ export default new BaseCommand(
     return message.reply(`해당 명령어는 (/)커멘드로만 사용가능합니다`)
   },
   {
+    // @ts-ignore
     data: new SlashCommandBuilder()
     .setName('배그전적')
     .setDescription('유저의 배틀그라운드 전적을 확인합니다')
