@@ -22,7 +22,7 @@ if (!config.bot.sharding) {
   require('./bot')
 } else {
   const manager = new ShardingManager(
-    './src/bot',
+    './src/bot.js',
     config.bot.shardingOptions
   )
 
