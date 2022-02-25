@@ -778,6 +778,7 @@ __metadata:
     eslint-plugin-prettier: ^4.0.0
     fs: ^0.0.1-security
     googleapis: ^95.0.0
+    hcs.js: ^2.0.5
     mongoose: ^6.1.2
     node-schedule: ^2.1.0
     nodemailer: ^6.7.2
@@ -1175,6 +1176,13 @@ __metadata:
     shebang-command: ^2.0.0
     which: ^2.0.1
   checksum: 671cc7c7288c3a8406f3c69a3ae2fc85555c04169e9d611def9a675635472614f1c0ed0ef80955d5b6d4e724f6ced67f0ad1bb006c2ea643488fcfef994d7f52
+  languageName: node
+  linkType: hard
+
+"crypto-js@npm:^4.1.1":
+  version: 4.1.1
+  resolution: "crypto-js@npm:4.1.1"
+  checksum: b3747c12ee3a7632fab3b3e171ea50f78b182545f0714f6d3e7e2858385f0f4101a15f2517e033802ce9d12ba50a391575ff4638c9de3dd9b2c4bc47768d5425
   languageName: node
   linkType: hard
 
@@ -1719,6 +1727,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"fetch-cookie@npm:^1.0.0":
+  version: 1.0.1
+  resolution: "fetch-cookie@npm:1.0.1"
+  dependencies:
+    tough-cookie: ^2.3.3 || ^3.0.1 || ^4.0.0
+  checksum: d87aed2e8f748644a0ed55f2925e3166d7be6284b47a18bfef5e78540f5d184544a2f53c375cbc79e230e2cb1ae6ce6262d83b0e63275975a822e83bb837e34a
+  languageName: node
+  linkType: hard
+
 "file-entry-cache@npm:^6.0.1":
   version: 6.0.1
   resolution: "file-entry-cache@npm:6.0.1"
@@ -2131,6 +2148,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"hcs.js@npm:^2.0.5":
+  version: 2.0.5
+  resolution: "hcs.js@npm:2.0.5"
+  dependencies:
+    crypto-js: ^4.1.1
+    fetch-cookie: ^1.0.0
+    jsbn: ^1.1.0
+    jsencrypt: 3.0.0-rc.1
+    node-fetch: ^2.6.1
+  checksum: 5d4524f79bb1a57e4a499d02bda923ac4cdd6c6be4021bae204a90b4253c3df5ba0208370d3180bf48346548ec389773d66ada6e6b94c9211d78241f4d635e03
+  languageName: node
+  linkType: hard
+
 "http-cache-semantics@npm:^4.0.0, http-cache-semantics@npm:^4.1.0":
   version: 4.1.0
   resolution: "http-cache-semantics@npm:4.1.0"
@@ -2431,6 +2461,20 @@ __metadata:
   bin:
     js-yaml: bin/js-yaml.js
   checksum: c7830dfd456c3ef2c6e355cc5a92e6700ceafa1d14bba54497b34a99f0376cecbb3e9ac14d3e5849b426d5a5140709a66237a8c991c675431271c4ce5504151a
+  languageName: node
+  linkType: hard
+
+"jsbn@npm:^1.1.0":
+  version: 1.1.0
+  resolution: "jsbn@npm:1.1.0"
+  checksum: 944f924f2bd67ad533b3850eee47603eed0f6ae425fd1ee8c760f477e8c34a05f144c1bd4f5a5dd1963141dc79a2c55f89ccc5ab77d039e7077f3ad196b64965
+  languageName: node
+  linkType: hard
+
+"jsencrypt@npm:3.0.0-rc.1":
+  version: 3.0.0-rc.1
+  resolution: "jsencrypt@npm:3.0.0-rc.1"
+  checksum: b47edcabe1984efa5f52a50b3736b53a5527956113056fed08ebbf767b42f523e905c3e5d81d1c8bf87f9ff6f81d26dc4343b66104e2af8fa3273fb4e5fd609b
   languageName: node
   linkType: hard
 
@@ -3225,6 +3269,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"psl@npm:^1.1.33":
+  version: 1.8.0
+  resolution: "psl@npm:1.8.0"
+  checksum: 6150048ed2da3f919478bee8a82f3828303bc0fc730fb015a48f83c9977682c7b28c60ab01425a72d82a2891a1681627aa530a991d50c086b48a3be27744bde7
+  languageName: node
+  linkType: hard
+
 "pstree.remy@npm:^1.1.8":
   version: 1.1.8
   resolution: "pstree.remy@npm:1.1.8"
@@ -3842,6 +3893,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"tough-cookie@npm:^2.3.3 || ^3.0.1 || ^4.0.0":
+  version: 4.0.0
+  resolution: "tough-cookie@npm:4.0.0"
+  dependencies:
+    psl: ^1.1.33
+    punycode: ^2.1.1
+    universalify: ^0.1.2
+  checksum: 0891b37eb7d17faa3479d47f0dce2e3007f2583094ad272f2670d120fbcc3df3b0b0a631ba96ecad49f9e2297d93ff8995ce0d3292d08dd7eabe162f5b224d69
+  languageName: node
+  linkType: hard
+
 "tr46@npm:^3.0.0":
   version: 3.0.0
   resolution: "tr46@npm:3.0.0"
@@ -4097,6 +4159,13 @@ __metadata:
   dependencies:
     crypto-random-string: ^2.0.0
   checksum: ef68f639136bcfe040cf7e3cd7a8dff076a665288122855148a6f7134092e6ed33bf83a7f3a9185e46c98dddc445a0da6ac25612afa1a7c38b8b654d6c02498e
+  languageName: node
+  linkType: hard
+
+"universalify@npm:^0.1.2":
+  version: 0.1.2
+  resolution: "universalify@npm:0.1.2"
+  checksum: 40cdc60f6e61070fe658ca36016a8f4ec216b29bf04a55dce14e3710cc84c7448538ef4dad3728d0bfe29975ccd7bfb5f414c45e7b78883567fb31b246f02dff
   languageName: node
   linkType: hard
 

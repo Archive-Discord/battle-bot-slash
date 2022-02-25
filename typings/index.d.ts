@@ -123,6 +123,16 @@ export interface AutoModDB {
   published_date: Date;
 }
 
+export interface HcsDB {
+  user_id: string;
+  school: string;
+  birthday: string;
+  schoolEndponints: string;
+  password: string;
+  name: string;
+  published_date: Date;
+}
+
 export interface AutoModList {
   useUrl?: boolean;
   useCurse?: boolean;
