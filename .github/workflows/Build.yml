@@ -1,4 +1,4 @@
-name: Typescript type check
+name: Build and Test
 on: [push, pull_request]
 
 jobs:
@@ -14,9 +14,12 @@ jobs:
         with:
           node-version: 17
           cache: yarn
-
+          
+      - name: Copy config file
+        run: cp example.config.ts config.ts
+        
       - name: Install dependencies
         run: yarn install --frozen-lockfile
 
-      - name: Typecheck
-        uses: andoshin11/typescript-error-reporter-action@v1.0.2
+      - name: Build
+        run: yarn build
