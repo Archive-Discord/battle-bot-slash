@@ -39,7 +39,7 @@
     "dotenv": "^16.0.0",
     "fs": "^0.0.1-security",
     "googleapis": "^95.0.0",
-    "hcs.js": "^2.0.5",
+    "hcs.js": "^2.0.6",
     "mongoose": "^6.1.2",
     "node-schedule": "^2.1.0",
     "nodemailer": "^6.7.2",

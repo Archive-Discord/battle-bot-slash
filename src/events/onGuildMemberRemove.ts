@@ -6,13 +6,8 @@ import Embed from '../utils/Embed'
 import { Event } from '../structures/Event'
 
 export default new Event('guildMemberRemove', async (client, member) => {
-  if (!member.partial) {
-    member = await member.fetch()
-  }
-
   GreetingEvent(client, member)
   LoggerEvent(client, member)
-
 })
 
 const GreetingEvent = async (client: BotClient, member: GuildMember | PartialGuildMember) => {
