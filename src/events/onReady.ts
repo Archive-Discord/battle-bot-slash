@@ -96,17 +96,17 @@ async function ShardInfo(client: BotClient) {
 
 
 async function automodResetChannel(client: BotClient) {
-  let automod = await Automod.find()
+  const automod = await Automod.find()
   automod.forEach(async({useing, guild_id}) => {
     if(!useing.useResetChannel) return
     if(!useing.useResetChannels || useing.useResetChannels.length === 0) return
-    let guild = client.guilds.cache.get(guild_id)
+    const guild = client.guilds.cache.get(guild_id)
     if(!guild) return
-    let newChannels: string[] = []
+    const newChannels: string[] = []
     for await (const resetchannel of useing.useResetChannels) {
-      let channel = guild?.channels.cache.get(resetchannel) as GuildChannel
+      const channel = guild?.channels.cache.get(resetchannel) as GuildChannel
       if(!channel) return
-      let newchannel = await guild?.channels.create(channel.name, {type: 'GUILD_TEXT', parent: channel.parent ? channel.parent.id : undefined, permissionOverwrites: channel.permissionOverwrites.cache, position: channel.position})
+      const newchannel = await guild?.channels.create(channel.name, {type: 'GUILD_TEXT', parent: channel.parent ? channel.parent.id : undefined, permissionOverwrites: channel.permissionOverwrites.cache, position: channel.position})
       if(!newchannel) return
       await newchannel.send({embeds: [new Embed(client, 'info').setTitle('채널 초기화').setDescription('채널 초기화가 완료되었습니다.')]})
       await channel.delete()
