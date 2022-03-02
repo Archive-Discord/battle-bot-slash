@@ -6,6 +6,9 @@ import Premium from '../schemas/premiumSchemas'
 import Embed from '../utils/Embed'
 import schedule from "node-schedule"
 import DateFormatting from '../utils/DateFormatting'
+import Automod from '../schemas/autoModSchema'
+import { Guild, GuildChannel } from 'discord.js'
+import { AutoModList } from '../../typings'
 
 const logger = new Logger('bot')
 
@@ -17,6 +20,7 @@ export default new Event(
     }, 60 * 1000 * 5)
     schedule.scheduleJob('0 0 12 * * *', () => {
       PremiumAlert(client)
+      automodResetChannel(client)
     });
     logger.info(`Logged ${client.user?.username}`)
   },
@@ -88,4 +92,26 @@ async function ShardInfo(client: BotClient) {
     })
   }
   return shardInfo
+}
+
+
+async function automodResetChannel(client: BotClient) {
+  const automod = await Automod.find()
+  automod.forEach(async({useing, guild_id}) => {
+    if(!useing.useResetChannel) return
+    if(!useing.useResetChannels || useing.useResetChannels.length === 0) return
+    const guild = client.guilds.cache.get(guild_id)
+    if(!guild) return
+    const newChannels: string[] = []
+    for await (const resetchannel of useing.useResetChannels) {
+      const channel = guild?.channels.cache.get(resetchannel) as GuildChannel
+      if(!channel) return
+      const newchannel = await guild?.channels.create(channel.name, {type: 'GUILD_TEXT', parent: channel.parent ? channel.parent.id : undefined, permissionOverwrites: channel.permissionOverwrites.cache, position: channel.position})
+      if(!newchannel) return
+      await newchannel.send({embeds: [new Embed(client, 'info').setTitle('채널 초기화').setDescription('채널 초기화가 완료되었습니다.')]})
+      await channel.delete()
+      newChannels.push(newchannel.id)
+    }
+    return await Automod.updateOne({guild_id: guild_id}, {$set: {'useing.useResetChannels': newChannels}})
+  })
 }
