@@ -142,7 +142,9 @@ export interface AutoModList {
   autoRoleId?: string
   useCurseType?: useCurseType
   role?: Role
-  useCurseIgnoreChannel?: string[]
+  useCurseIgnoreChannel?: string[],
+  useResetChannel?: boolean,
+  useResetChannels?: string[],
 }
 export interface DataBaseUser { 
   _id: string;
