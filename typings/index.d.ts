@@ -105,6 +105,7 @@ export interface loggerDB {
 export interface VerifySettingDB {
   guild_id: string
   role_id: string
+  del_role_id: string
   type: verifyType
   published_date: Date
 }

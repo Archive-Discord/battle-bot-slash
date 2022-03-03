@@ -49,8 +49,13 @@ export default new ButtonInteraction(
             const captchaSuccess = new Embed(client, 'success')
               .setTitle('인증')
               .setDescription('인증을 성공했습니다')
+            const member = interaction.member as GuildMember
             try {
-              const member = interaction.member as GuildMember
+              await member.roles.remove(VerifySettingDB.del_role_id)
+            } catch(e) {
+              console.log(e)
+            }
+            try {
               await member.roles.add(VerifySettingDB?.role_id as string)
             } catch (e) {
               const captchaError = new Embed(client, 'error')
@@ -156,8 +161,13 @@ export default new ButtonInteraction(
                   const captchaSuccess = new Embed(client, 'success')
                     .setTitle('인증')
                     .setDescription('인증을 성공했습니다')
+                  const member = interaction.member as GuildMember
                   try {
-                    const member = interaction.member as GuildMember
+                    await member.roles.remove(VerifySettingDB.del_role_id)
+                  } catch(e) {
+                    console.log(e)
+                  }
+                  try {
                     await member.roles.add(VerifySettingDB?.role_id as string)
                   } catch (e) {
                     const captchaError = new Embed(client, 'error')
@@ -207,8 +217,13 @@ export default new ButtonInteraction(
           .setDescription(`인증을 진행하기 위해 [여기](${config.web?.baseurl}/me)에서 카카오 아이디 연동을 진행해 주세요 \n 연동 후 다시 인증 버튼을 눌러주세요`)
         return interaction.editReply({ embeds: [Verify] })
       }
+      const member = interaction.member as GuildMember
       try {
-        const member = interaction.member as GuildMember
+        await member.roles.remove(VerifySettingDB.del_role_id)
+      } catch(e) {
+        console.log(e)
+      }
+      try {
         await member.roles.add(VerifySettingDB?.role_id as string)
       } catch (e) {
         const captchaError = new Embed(client, 'error')
