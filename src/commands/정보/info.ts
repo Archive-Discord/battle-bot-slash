@@ -26,7 +26,7 @@ export default new BaseCommand(
     embed.addField('유저 수', `${client.guilds.cache.reduce((a,b) => a + b.memberCount, 0)}명`, true)
     embed.addField('업타임', `${DateFormatting.relative(new Date(Date.now() - process.uptime() * 1000))}`, true)
     embed.addField('시스템정보', `\`\`\`diff\n- Discord.js: ${version} \n- Node.js: ${process.version}\n- OS: ${process.platform} - Memory: ${memory()} \`\`\``)
-    embed.addField('유용한 링크', `[서포트 서버](https://discord.gg/WtGq7D7BZm) | [웹 대시보드](${config.web.baseurl}) | [깃허브](${repository})`)
+    embed.addField('유용한 링크', `[서포트 서버](https://discord.gg/WtGq7D7BZm) | [웹 대시보드](${config.web.baseurl}) | [깃허브](${repository}) | [개인정보처리방침](${config.web.baseurl}/help/privacy) | [상태](${config.web.baseurl}/status)`)
     return message.reply({embeds: [embed]})
   },
   {
@@ -48,7 +48,7 @@ export default new BaseCommand(
       embed.addField('유저 수', `${client.guilds.cache.reduce((a,b) => a + b.memberCount, 0)}명`, true)
       embed.addField('업타임', `${DateFormatting.relative(new Date(Date.now() - process.uptime() * 1000))}`, true)
       embed.addField('시스템정보', `\`\`\`diff\n- Discord.js: ${version} \n- Node.js: ${process.version}\n- OS: ${process.platform} - Memory: ${memory()} \`\`\``)
-      embed.addField('유용한 링크', `[서포트 서버](https://discord.gg/WtGq7D7BZm) | [웹 대시보드](${config.web.baseurl}) | [깃허브](${repository})`)
+      embed.addField('유용한 링크', `[서포트 서버](https://discord.gg/WtGq7D7BZm) | [웹 대시보드](${config.web.baseurl}) | [깃허브](${repository}) | [개인정보처리방침](${config.web.baseurl}/help/privacy) | [상태](${config.web.baseurl}/status)`)
       return interaction.reply({embeds: [embed]})
     }
   }
