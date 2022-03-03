@@ -6,6 +6,7 @@ const VerifySettingSchema: Schema<VerifySettingDB> = new Schema(
     guild_id: String,
     role_id: String,
     type: String,
+    del_role_id: String,
     published_date: { type: Date, default: Date.now }
   },
   { collection: 'VerifySetting' }
