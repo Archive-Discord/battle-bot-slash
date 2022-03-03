@@ -62,7 +62,7 @@ async function MusicTrackEvent(client: BotClient, queue: Queue, musicDB: MusicDB
   if(!message) message = await channel.messages.fetch(musicDB.message_id)
   if(!message) return
   const pageStart = 0
-  const pageEnd = pageStart + 10;
+  const pageEnd = pageStart + 5;
   const tracks = queue.tracks.slice(pageStart, pageEnd).map((m, i) => {
     return `**${i + pageStart + 1}**. [${m.title}](${m.url}) ${m.duration} - ${m.requestedBy}`;
   });
