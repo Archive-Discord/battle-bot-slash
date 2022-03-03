@@ -52,7 +52,9 @@ export default new ButtonInteraction(
             const member = interaction.member as GuildMember
             try {
               await member.roles.remove(VerifySettingDB.del_role_id)
-            } catch(e) {}
+            } catch(e) {
+              console.log(e)
+            }
             try {
               await member.roles.add(VerifySettingDB?.role_id as string)
             } catch (e) {
@@ -162,7 +164,9 @@ export default new ButtonInteraction(
                   const member = interaction.member as GuildMember
                   try {
                     await member.roles.remove(VerifySettingDB.del_role_id)
-                  } catch(e) {}
+                  } catch(e) {
+                    console.log(e)
+                  }
                   try {
                     await member.roles.add(VerifySettingDB?.role_id as string)
                   } catch (e) {
@@ -216,7 +220,9 @@ export default new ButtonInteraction(
       const member = interaction.member as GuildMember
       try {
         await member.roles.remove(VerifySettingDB.del_role_id)
-      } catch(e) {}
+      } catch(e) {
+        console.log(e)
+      }
       try {
         await member.roles.add(VerifySettingDB?.role_id as string)
       } catch (e) {
