@@ -8,7 +8,6 @@ import schedule from "node-schedule"
 import DateFormatting from '../utils/DateFormatting'
 import Automod from '../schemas/autoModSchema'
 import { Guild, GuildChannel } from 'discord.js'
-import { AutoModList } from '../../typings'
 
 const logger = new Logger('bot')
 
