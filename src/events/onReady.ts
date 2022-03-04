@@ -17,7 +17,7 @@ export default new Event(
     setInterval(async () => {
       StatusUpdate(client)
     }, 60 * 1000 * 5)
-    schedule.scheduleJob('0 0 12 * * *', () => {
+    schedule.scheduleJob('0 0 0 * * *', () => {
       PremiumAlert(client)
       automodResetChannel(client)
     });
