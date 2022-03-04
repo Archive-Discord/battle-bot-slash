@@ -27,10 +27,11 @@ const GreetingEvent = async (client: BotClient, member: GuildMember | PartialGui
   const embed = new Embed(client, 'warn')
   embed.setAuthor(member.user.username, member.user.displayAvatarURL())
   embed.setDescription(
-    String(WelcomeSettingDB.outting_message)
+    new String(WelcomeSettingDB.outting_message)
       .replaceAll('${username}', member.user.username)
       .replaceAll('${discriminator}', member.user.discriminator)
       .replaceAll('${servername}', member.guild.name)
+      .replaceAll('${memberCount}', member.guild.memberCount.toString())
   )
   return await WelcomeChannel.send({ embeds: [embed] })
 }
