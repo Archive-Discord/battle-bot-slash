@@ -323,6 +323,14 @@ export interface RankedGameModeStats {
   winRatio: number;
   wins: number;
 }
+
+export interface nftVerifyUserDB {
+  guild_id: string;
+  user_id: string;
+  token: string;
+  process: string;
+  published_date: Date;
+}
 export type verifyType = 'email' | 'captcha' | 'kakao' |'default'
 export type verifyStatusType = 'success' | 'pending'
 export type useCurseType = 'delete' | 'delete_kick' | 'delete_ban'
