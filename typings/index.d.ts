@@ -28,6 +28,7 @@ export interface IConfig {
   BUILD_NUMBER: string | null
   githubToken?: string
   pubgapikey: string
+  klaytnapikey: string
   web: {
     baseurl: string
   }
