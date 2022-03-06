@@ -1,4 +1,4 @@
-import { Guild, GuildMember, Message } from 'discord.js'
+import { DiscordAPIError, Guild, GuildMember, Message } from 'discord.js'
 import VerifySetting from '../../schemas/verifySetting'
 import { ButtonInteraction } from '../../structures/Command'
 import captchaCreate from '../../utils/createCapcha'
@@ -105,8 +105,12 @@ export default new ButtonInteraction(
         `${interaction.guild?.name}서버에서 ${interaction.user.username}님에게 인증을 요청합니다`
       )
       captchaGuildEmbed.setURL(`${config.web?.baseurl}/verify?token=${token}`)
-      await interaction.user.send({ embeds: [captchaVerify] })
-      await interaction.user.send({ embeds: [captchaGuildEmbed] })
+      try {
+        await interaction.user.send({ embeds: [captchaVerify] })
+        await interaction.user.send({ embeds: [captchaGuildEmbed] })
+      } catch(e) {
+        if(e) return interaction.editReply('서버 멤버가 보내는 다이렉트 메시지 허용하기가 꺼저있는지 확인해주세요')
+      }
       return interaction.editReply(
         'DM으로 인증정보를 보내드렸습니다 DM을 확인해주세요'
       )
