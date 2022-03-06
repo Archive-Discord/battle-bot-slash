@@ -24,8 +24,8 @@ export default new Event(
     schedule.scheduleJob('0 0 0 * * *', () => {
       PremiumAlert(client)
       automodResetChannel(client)
+      nftChecker(client)
     });
-    nftChecker(client)
     logger.info(`Logged ${client.user?.username}`)
   },
   { once: true }
