@@ -22,6 +22,7 @@ let config: IConfig = {
   BUILD_VERSION: '0.0.1-dev',
   githubToken: '',
   pubgapikey: "",
+  klaytnapikey: "",
   web: {
     baseurl: ""
   },
