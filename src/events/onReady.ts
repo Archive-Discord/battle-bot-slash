@@ -121,8 +121,8 @@ async function automodResetChannel(client: BotClient) {
 }
 
 async function nftChecker(client: BotClient) {
-  let wallet_list = await NFTUserWallet.find()
-  let guild_list = await NFTGuildVerify.find()
+  const wallet_list = await NFTUserWallet.find()
+  const guild_list = await NFTGuildVerify.find()
   wallet_list.forEach(async(user_wallet) => {
     await axios.get(`https://th-api.klaytnapi.com/v2/account/${user_wallet.wallet_address}/token?kind=nft`, {
       headers: {
@@ -131,11 +131,11 @@ async function nftChecker(client: BotClient) {
       }
     }).then((data) => {
       guild_list.forEach(async(guild_data) => {
-        let result = data.data.items.filter((x: any) => x.contractAddress === guild_data.wallet);
+        const result = data.data.items.filter((x: any) => x.contractAddress === guild_data.wallet);
         if(result.length === 0) {
-          let guild = client.guilds.cache.get(guild_data.guild_id)
+          const guild = client.guilds.cache.get(guild_data.guild_id)
           if(!guild) return
-          let member = guild.members.cache.get(user_wallet.user_id)
+          const member = guild.members.cache.get(user_wallet.user_id)
           if(!member) return
           try {
             await member.roles.remove(guild_data.role_id)
