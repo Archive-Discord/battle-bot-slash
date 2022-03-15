@@ -172,4 +172,32 @@ export default class CommandManager extends BaseManager {
       return slashCommands
     }
   }
+
+  public async slashGlobalCommandSetup(): Promise<void> {
+    this.logger.scope = 'CommandManager: SlashGlobalSetup'
+
+    const slashCommands: any[] = []
+    this.client.commands.forEach((command: BaseCommand) => {
+      if (this.isSlash(command)) {
+        slashCommands.push(
+          command.slash ? command.slash?.data.toJSON() : command.data.toJSON()
+        )
+      }
+    })
+    this.logger.warn('guildID not gived switching global command...')
+    this.logger.debug(`Trying ${this.client.guilds.cache.size} guild(s)`)
+    for (const command of slashCommands) {
+      const commands = await this.client.application?.commands.fetch()
+      const cmd = commands?.find((cmd) => cmd.name === command.name)
+      if (!cmd) {
+        await this.client.application?.commands
+          .create(command)
+          .then((guilds) =>
+            this.logger.info(
+              `Succesfully created command ${command.name} at ${guilds.name}(${guilds.id}) guild`
+            )
+          )
+      }
+    }
+  }
 }
