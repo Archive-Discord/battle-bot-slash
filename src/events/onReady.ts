@@ -19,12 +19,14 @@ import NFTGuildVerify from '../schemas/NFTGuildVerifySchema'
 import axios from 'axios'
 import config from '../../config'
 import CommandManager from "../managers/CommandManager"
+import web from "../server/index"
 
 const logger = new Logger('bot')
 
 export default new Event(
   'ready',
   async (client) => {
+    web(client)
     setInterval(async () => {
       StatusUpdate(client)
     }, 60 * 1000 * 5)
