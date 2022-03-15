@@ -1,5 +1,10 @@
+import Day from 'dayjs'
+import 'dayjs/locale/ko'
+import relativeTime from 'dayjs/plugin/relativeTime'
+import localizedFormat from 'dayjs/plugin/localizedFormat'
+
 class DateFormatting {
-  static _format(date: number | string | Date, style: string) {
+  static _format(date: number | string | Date, style?: string) {
     return (
       `<t:${Math.floor(Number(date) / 1000)}` + (style ? `:${style}` : '') + '>'
     )
@@ -20,3 +25,8 @@ class DateFormatting {
   }
 }
 export default DateFormatting
+
+Day.extend(relativeTime)
+Day.extend(localizedFormat)
+Day.locale('ko')
+export { Day }

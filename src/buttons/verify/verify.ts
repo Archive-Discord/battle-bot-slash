@@ -1,4 +1,4 @@
-import { Guild, GuildMember, Message } from 'discord.js'
+import { DiscordAPIError, Guild, GuildMember, Message } from 'discord.js'
 import VerifySetting from '../../schemas/verifySetting'
 import { ButtonInteraction } from '../../structures/Command'
 import captchaCreate from '../../utils/createCapcha'
@@ -49,8 +49,13 @@ export default new ButtonInteraction(
             const captchaSuccess = new Embed(client, 'success')
               .setTitle('인증')
               .setDescription('인증을 성공했습니다')
+            const member = interaction.member as GuildMember
             try {
-              const member = interaction.member as GuildMember
+              await member.roles.remove(VerifySettingDB.del_role_id)
+            } catch(e) {
+              console.log(e)
+            }
+            try {
               await member.roles.add(VerifySettingDB?.role_id as string)
             } catch (e) {
               const captchaError = new Embed(client, 'error')
@@ -100,8 +105,12 @@ export default new ButtonInteraction(
         `${interaction.guild?.name}서버에서 ${interaction.user.username}님에게 인증을 요청합니다`
       )
       captchaGuildEmbed.setURL(`${config.web?.baseurl}/verify?token=${token}`)
-      await interaction.user.send({ embeds: [captchaVerify] })
-      await interaction.user.send({ embeds: [captchaGuildEmbed] })
+      try {
+        await interaction.user.send({ embeds: [captchaVerify] })
+        await interaction.user.send({ embeds: [captchaGuildEmbed] })
+      } catch(e) {
+        if(e) return interaction.editReply('서버 멤버가 보내는 다이렉트 메시지 허용하기가 꺼저있는지 확인해주세요')
+      }
       return interaction.editReply(
         'DM으로 인증정보를 보내드렸습니다 DM을 확인해주세요'
       )
@@ -156,8 +165,13 @@ export default new ButtonInteraction(
                   const captchaSuccess = new Embed(client, 'success')
                     .setTitle('인증')
                     .setDescription('인증을 성공했습니다')
+                  const member = interaction.member as GuildMember
                   try {
-                    const member = interaction.member as GuildMember
+                    await member.roles.remove(VerifySettingDB.del_role_id)
+                  } catch(e) {
+                    console.log(e)
+                  }
+                  try {
                     await member.roles.add(VerifySettingDB?.role_id as string)
                   } catch (e) {
                     const captchaError = new Embed(client, 'error')
@@ -195,20 +209,25 @@ export default new ButtonInteraction(
             .setDescription('메일 입력시간이 초과되었습니다 다시 시도해주세요')
           return interaction.editReply({ embeds: [captchaTimeout] })
         })
-    } else if (VerifySettingDB.type === 'naver') {
+    } else if (VerifySettingDB.type === 'kakao') {
       const isPremium = await checkPremium(client, interaction.guild as Guild)
       if(!isPremium) {
-        return interaction.editReply('프리미엄 기한 만료로 네이버 인증 기능이 비활성화되었습니다')
+        return interaction.editReply('프리미엄 기한 만료로 카카오 인증 기능이 비활성화되었습니다')
       } 
       const UserDB = await User.findOne({id: interaction.user.id})
-      if(!UserDB || !UserDB.naver_name) {
+      if(!UserDB || !UserDB.kakao_name) {
         const Verify = new Embed(client, 'warn')
           .setTitle('인증')
-          .setDescription(`인증을 진행하기 위해 [여기](${config.web?.baseurl}/me)에서 네이버 아이디 연동을 진행해 주세요 \n 연동 후 다시 인증 버튼을 눌러주세요`)
+          .setDescription(`인증을 진행하기 위해 [여기](${config.web?.baseurl}/me)에서 카카오 아이디 연동을 진행해 주세요 \n 연동 후 다시 인증 버튼을 눌러주세요`)
         return interaction.editReply({ embeds: [Verify] })
       }
+      const member = interaction.member as GuildMember
       try {
-        const member = interaction.member as GuildMember
+        await member.roles.remove(VerifySettingDB.del_role_id)
+      } catch(e) {
+        console.log(e)
+      }
+      try {
         await member.roles.add(VerifySettingDB?.role_id as string)
       } catch (e) {
         const captchaError = new Embed(client, 'error')
@@ -221,7 +240,7 @@ export default new ButtonInteraction(
       }
       const VerifySuccess = new Embed(client, 'success')
         .setTitle('인증')
-        .setDescription(`${UserDB.naver_name}(\`${UserDB.naver_email}\`) 정보로 인증이 완료되었습니다`)
+        .setDescription(`${UserDB.kakao_name}(\`${UserDB.kakao_email}\`) 정보로 인증이 완료되었습니다`)
       return interaction.editReply({ embeds: [VerifySuccess] })
     }
   }

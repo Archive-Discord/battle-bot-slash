@@ -6,13 +6,8 @@ import Embed from '../utils/Embed'
 import { Event } from '../structures/Event'
 
 export default new Event('guildMemberRemove', async (client, member) => {
-  if (!member.partial) {
-    member = await member.fetch()
-  }
-
   GreetingEvent(client, member)
   LoggerEvent(client, member)
-
 })
 
 const GreetingEvent = async (client: BotClient, member: GuildMember | PartialGuildMember) => {
@@ -32,10 +27,12 @@ const GreetingEvent = async (client: BotClient, member: GuildMember | PartialGui
   const embed = new Embed(client, 'warn')
   embed.setAuthor(member.user.username, member.user.displayAvatarURL())
   embed.setDescription(
-    String(WelcomeSettingDB.outting_message)
+    new String(WelcomeSettingDB.outting_message)
       .replaceAll('${username}', member.user.username)
       .replaceAll('${discriminator}', member.user.discriminator)
       .replaceAll('${servername}', member.guild.name)
+      .replaceAll('${memberCount}', member.guild.memberCount.toString()
+      .replaceAll('${줄바꿈}', '\n'))
   )
   return await WelcomeChannel.send({ embeds: [embed] })
 }

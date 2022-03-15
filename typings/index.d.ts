@@ -7,6 +7,7 @@ import {
 } from 'discord.js'
 import { Request } from 'express'
 import BotClient from '../src/structures/BotClient'
+import { type } from 'os'
 
 export type LevelType =
   | 'fatal'
@@ -28,7 +29,9 @@ export interface IConfig {
   BUILD_VERSION: string
   BUILD_NUMBER: string | null
   githubToken?: string
-  web?: {
+  pubgapikey: string
+  klaytnapikey: string
+  web: {
     baseurl: string
   }
   bot: {
@@ -49,6 +52,11 @@ export interface IConfig {
       guildID: string
       channelID: string
     }
+  }
+
+  guildAddAlert: {
+    guildID: string
+    channelID: string
   }
   database: {
     type: 'mongodb' | 'sqlite'
@@ -100,6 +108,7 @@ export interface loggerDB {
 export interface VerifySettingDB {
   guild_id: string
   role_id: string
+  del_role_id: string
   type: verifyType
   published_date: Date
 }
@@ -118,6 +127,16 @@ export interface AutoModDB {
   published_date: Date;
 }
 
+export interface HcsDB {
+  user_id: string;
+  school: string;
+  birthday: string;
+  schoolEndponints: string;
+  password: string;
+  name: string;
+  published_date: Date;
+}
+
 export interface AutoModList {
   useUrl?: boolean;
   useCurse?: boolean;
@@ -127,7 +146,9 @@ export interface AutoModList {
   autoRoleId?: string
   useCurseType?: useCurseType
   role?: Role
-  useCurseIgnoreChannel?: string[]
+  useCurseIgnoreChannel?: string[],
+  useResetChannel?: boolean,
+  useResetChannels?: string[],
 }
 export interface DataBaseUser { 
   _id: string;
@@ -135,10 +156,12 @@ export interface DataBaseUser {
   email: string;
   accessToken: string;
   refreshToken: string;
-  naver_accessToken?: string;
-  naver_refreshToken?: string;
-  naver_email?: string;
-  naver_name?: string;
+  kakao_accessToken?: string;
+  kakao_refreshToken?: string;
+  kakao_email?: string;
+  kakao_name?: string;
+  google_accessToken?: string;
+  google_refreshToken?: string;
   token: string;
   tokenExp: number;
   expires_in: number;
@@ -169,8 +192,6 @@ export interface Meals {
   meal: string[]
   calories: string
 }
-
-
 export interface MusicDB {
   guild_id: string,
   channel_id: string,
@@ -179,6 +200,148 @@ export interface MusicDB {
   published_date: Date
 }
 
-export type verifyType = 'email' | 'captcha' | 'naver' |'default'
+export interface AutoTaskRoleDB {
+  published_date: Date;
+  token: string;
+  message_id: string;
+  isKeep:boolean;
+  guild_id: string;
+}
+
+export interface PubgDB {
+  published_date: Date;
+  last_update: Date;
+  user_id: string;
+  nickname: string;
+  platform: pubgPlatformeType
+  stats: {
+    rankSoloTpp: RankedGameModeStats
+    rankSoloFpp: RankedGameModeStats
+    rankSquardTpp: RankedGameModeStats
+    rankSquardFpp: RankedGameModeStats
+    soloFpp: GameModeStat
+    soloTpp: GameModeStat
+    duoFpp: GameModeStat
+    duoTpp: GameModeStat
+    SquardFpp: GameModeStat
+    SquardTpp: GameModeStat
+  }
+}
+
+export interface YoutubeChannels {
+  kind: string
+  etag: string
+  pageInfo: {
+    totalResults: number
+    resultsPerPage: number
+  }
+  items: YoutubeChannel[]
+}
+export interface YoutubeChannel {
+  kind: string;
+  etag: string;
+  id: string;
+  snippet: {
+    title: string;
+    description: string;
+    resourceId: ResourceId;
+    channelId: string;
+  };
+}
+export interface ResourceId {
+  kind: string;
+  channelId: string;
+}
+
+export interface PremiumDB {
+  guild_id: string;
+  nextpay_date: Date;
+  published_date: Date;
+}
+
+export interface GameModeStat {
+  assists: number;
+  boosts: number;
+  dailyKills: number;
+  dailyWins: number;
+  damageDealt: number;
+  days: number;
+  dBNOs: number;
+  headshotKills: number;
+  heals: number;
+  killPoints: number;
+  kills: number;
+  longestKill: number;
+  longestTimeSurvived: number;
+  losses: number;
+  maxKillStreaks: number;
+  mostSurvivalTime: number;
+  rankPoints: number;
+  rankPointsTitle: string;
+  revives: number;
+  rideDistance: number;
+  roadKills: number;
+  roundMostKills: number;
+  roundsPlayed: number;
+  suicides: number;
+  swimDistance: number;
+  teamKills: number;
+  timeSurvived: number;
+  top10s: number;
+  vehicleDestroys: number;
+  walkDistance: number;
+  weaponsAcquired: 12;
+  weeklyKills: number;
+  weeklyWins: number;
+  winPoints: number;
+  wins: number;
+}
+export interface RankedGameModeStats {
+  assists: number;
+  avgRank: number;
+  avgSurvivalTime: number;
+  bestRankPoint: number;
+  bestTier: {
+      tier: string;
+      subTier: string;
+  };
+  boosts: number;
+  currentRankPoint: number;
+  currentTier: {
+      tier: string;
+      subTier: string;
+  };
+  dBNOs: number;
+  damageDealt: number;
+  deaths: number;
+  headshotKillRatio: number;
+  headshotKills: number;
+  heals: number;
+  kda: number;
+  kdr: number;
+  killStreak: number;
+  kills: number;
+  longestKill: number;
+  playTime: number;
+  reviveRatio: number;
+  revives: number;
+  roundMostKills: number;
+  roundsPlayed: number;
+  teamKills: number;
+  top10Ratio: number;
+  weaponsAcquired: number;
+  winRatio: number;
+  wins: number;
+}
+
+export interface nftVerifyUserDB {
+  guild_id: string;
+  user_id: string;
+  token: string;
+  process: string;
+  published_date: Date;
+}
+export type verifyType = 'email' | 'captcha' | 'kakao' |'default'
 export type verifyStatusType = 'success' | 'pending'
 export type useCurseType = 'delete' | 'delete_kick' | 'delete_ban'
+export type pubgPlatformeType = 'steam' | 'kakao'

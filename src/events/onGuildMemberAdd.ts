@@ -33,12 +33,12 @@ const WelecomEvent = async (client: BotClient, member: GuildMember) => {
   if (!WelcomeChannel) return
   const embed = new Embed(client, 'success')
   embed.setAuthor(member.user.username, member.user.displayAvatarURL())
-  embed.setDescription(
-    String(WelcomeSettingDB.welcome_message)
-      .replaceAll('${username}', member.user.username)
-      .replaceAll('${discriminator}', member.user.discriminator)
-      .replaceAll('${servername}', member.guild.name)
-  )
+  embed.setDescription(new String(WelcomeSettingDB.welcome_message)
+  .replaceAll('${username}', member.user.username)
+  .replaceAll('${discriminator}', member.user.discriminator)
+  .replaceAll('${servername}', member.guild.name)
+  .replaceAll('${memberCount}', member.guild.memberCount.toString())
+  .replaceAll('${줄바꿈}', '\n'))
   return await WelcomeChannel.send({ embeds: [embed] })
 }
 
