@@ -8,10 +8,8 @@ import { Event } from '../structures/Event'
 import Embed from '../utils/Embed'
 import Logger from '../utils/Logger'
 import { MusicDB } from "../../typings"
-import config from "../../config"
 import progressbar from "string-progressbar"
 import Premium from '../schemas/premiumSchemas'
-import Embed from '../utils/Embed'
 import schedule from "node-schedule"
 import DateFormatting from '../utils/DateFormatting'
 import Automod from '../schemas/autoModSchema'
@@ -20,6 +18,7 @@ import NFTUserWallet from '../schemas/NFTUserWalletSchema'
 import NFTGuildVerify from '../schemas/NFTGuildVerifySchema'
 import axios from 'axios'
 import config from '../../config'
+import CommandManager from "../managers/CommandManager"
 
 const logger = new Logger('bot')
 
@@ -65,6 +64,8 @@ export default new Event(
       nftChecker(client)
     });
     logger.info(`Logged ${client.user?.username}`)
+    const commandManager = new CommandManager(client)
+    await commandManager.slashGlobalCommandSetup()
   },
   { once: true }
 )
@@ -96,37 +97,6 @@ async function MusicTrackEvent(client: BotClient, queue: Queue, musicDB: MusicDB
     }`);
   }
   return message.edit({embeds: [embed]})
-}
-
-async function MusicTrackStartEvent(client: BotClient, queue: Queue, musicDB: MusicDB) {
-  if(!musicDB) return
-  const channel = queue.guild.channels.cache.get(musicDB.channel_id) as TextChannel
-  if(!channel) return
-  let process_message = channel.messages.cache.get(musicDB.process_message_id)
-  if(!process_message) process_message = await channel.messages.fetch(musicDB.process_message_id)
-  if(!process_message) return
-  let processEmbed = new MessageEmbed()
-  .setColor('#2f3136')
-  let progress = queue.getPlayerTimestamp()
-  let current = progress.current.replace(/[^0-9]/g,'');
-  let end = progress.end.replace(/[^0-9]/g,'');
-  let progressbars = progressbar.splitBar(100, Number(current)/Number(end)*100, 20)
-  processEmbed.setDescription("[" + progressbars[0] + "] [" + progress.current + "]")
-  process_message.edit({content: " " ,embeds: [processEmbed]})
-  const process_Interval = setInterval(() => {
-    progress = queue.getPlayerTimestamp()
-    current = progress.current?.replace(/[^0-9]/g,'');
-    end = progress.end?.replace(/[^0-9]/g,'');
-    progressbars = progressbar.splitBar(100, Number(current)/Number(end)*100, 20)
-    processEmbed = new MessageEmbed()
-      .setColor('#2f3136')
-    processEmbed.setDescription("[" + progressbars[0] + "] [" + progress.current + "/" + progress.end + "]")
-    if(!process_message) return
-    process_message.edit({content: " " ,embeds: [processEmbed]})
-    if(Number(current) > Number(end) - 5) {
-      clearInterval(process_Interval)
-    }
-  }, 5000)
 }
 
 async function MusicQueueEnd(client: BotClient, queue: Queue, musicDB: MusicDB) {
