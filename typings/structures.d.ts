@@ -7,6 +7,7 @@ import {
   ButtonInteraction as ButtonInteractionType
 } from 'discord.js'
 import BotClient from '../src/structures/BotClient'
+import { PlayerEvents } from "discord-player"
 
 export interface MessageCommnad {
   data: MessageCommandOptions
@@ -68,6 +69,14 @@ export interface Event {
   execute: (
     client: BotClient,
     ...args: ClientEvents[keyof ClientEvents]
+  ) => Awaitable<void>
+}
+
+export interface MusicEvent {
+  name: keyof PlayerEvents
+  execute: (
+    client: BotClient,
+    ...args: PlayerEvents[keyof PlayerEvents]
   ) => Awaitable<void>
 }
 

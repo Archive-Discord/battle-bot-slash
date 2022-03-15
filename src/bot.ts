@@ -1,12 +1,12 @@
 import path from 'path'
 import Logger from './utils/Logger'
 import config from '../config'
-
 import BotClient from './structures/BotClient'
 import CommandManager from './managers/CommandManager'
 import EventManager from './managers/EventManager'
 import DatabaseManager from './managers/DatabaseManager'
 import ButtonManager from './managers/ButtonManager'
+import web from "./server/index"
 
 const logger = new Logger('main')
 
@@ -27,3 +27,4 @@ button.load(path.join(__dirname, 'buttons'))
 database.load()
 
 client.start(config.bot.token)
+web(client)

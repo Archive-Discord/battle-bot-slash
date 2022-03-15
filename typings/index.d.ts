@@ -5,6 +5,8 @@ import {
   Role,
   ShardingManagerOptions
 } from 'discord.js'
+import { Request } from 'express'
+import BotClient from '../src/structures/BotClient'
 import { type } from 'os'
 
 export type LevelType =
@@ -189,6 +191,13 @@ export interface Meals {
   type: string
   meal: string[]
   calories: string
+}
+export interface MusicDB {
+  guild_id: string,
+  channel_id: string,
+  message_id: string,
+  process_message_id: string;
+  published_date: Date
 }
 
 export interface AutoTaskRoleDB {
