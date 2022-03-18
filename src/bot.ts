@@ -6,7 +6,6 @@ import CommandManager from './managers/CommandManager'
 import EventManager from './managers/EventManager'
 import DatabaseManager from './managers/DatabaseManager'
 import ButtonManager from './managers/ButtonManager'
-import web from './server'
 
 const logger = new Logger('main')
 
@@ -15,7 +14,7 @@ logger.log('Starting up...')
 process.on('uncaughtException', (e) => logger.error(e.stack as string))
 process.on('unhandledRejection', (e: Error) => logger.error(e.stack as string))
 
-const client = new BotClient(config.bot.options)
+export const client = new BotClient(config.bot.options)
 const command = new CommandManager(client)
 const event = new EventManager(client)
 const database = new DatabaseManager(client)
@@ -27,4 +26,3 @@ button.load(path.join(__dirname, 'buttons'))
 database.load()
 
 client.start(config.bot.token)
-web(client)
