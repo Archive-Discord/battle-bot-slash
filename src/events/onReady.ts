@@ -26,7 +26,6 @@ const logger = new Logger('bot')
 export default new Event(
   'ready',
   async (client) => {
-    web(client)
     setInterval(async () => {
       StatusUpdate(client)
     }, 60 * 1000 * 5)
