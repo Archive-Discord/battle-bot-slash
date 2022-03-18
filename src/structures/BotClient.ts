@@ -18,8 +18,10 @@ import DatabaseManager from '../managers/DatabaseManager'
 import { Model } from 'mongoose'
 import { config as dotenvConfig } from 'dotenv'
 import ButtonManager from '../managers/ButtonManager'
+import web from '../server'
 
 const logger = new Logger('bot')
+const loggerWeb = new Logger('web')
 
 export default class BotClient extends Client {
   public readonly VERSION: string
@@ -41,6 +43,7 @@ export default class BotClient extends Client {
   public db: any
   public schemas: Collection<string, Model<any>> = new Collection()
   public command: CommandManager = new CommandManager(this)
+  public web: any = web(this)
   public button: ButtonManager = new ButtonManager(this)
   public event: EventManager = new EventManager(this)
   public error: ErrorManager = new ErrorManager(this)
