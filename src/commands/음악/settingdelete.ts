@@ -10,8 +10,8 @@ import config from '../../../config'
 export default new BaseCommand(
   {
     name: 'musicsettingdelete',
-    description: '노래 기능 세팅을 헤제합니다',
-    aliases: ['뮤직설정헤제', '노래세팅헤제', 'musicsetdel']
+    description: '노래 기능 세팅을 해제합니다',
+    aliases: ['뮤직설정해제', '노래세팅해제', 'musicsetdel']
   },
   async (client, message, args) => {
     let errembed = new Embed(client, 'error')
@@ -37,10 +37,10 @@ export default new BaseCommand(
   },
   {
     data: new SlashCommandBuilder()
-    .setName('뮤직설정헤제')
+    .setName('뮤직설정해제')
     .setDescription('설정하신 뮤직 기능을 해제합니다!'),
     options: {
-      name: '뮤직설정헤제',
+      name: '뮤직설정해제',
       isSlash: true
     },
     async execute(client, interaction) {
