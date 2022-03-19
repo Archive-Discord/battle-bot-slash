@@ -1,6 +1,4 @@
-import { WebSocketServer } from 'ws'
-import http from 'http'
-import express, { Request } from 'express'
+import express from 'express'
 import cors from "cors"
 import Logger from '../utils/Logger'
 import BotClient from '../structures/BotClient'
@@ -18,11 +16,11 @@ app.listen(3001, () => {
   logger.log('web started')
 })
 
-const web = (clinet: BotClient) => {
+const web = (client: BotClient) => {
   app.use(cookieParser())
   app.use(cors({credentials: true, origin: ['http://localhost:3000', 'http://localhost:3001']}));
   app.use((req: any, res, next) => {
-    req.client = clinet
+    req.client = client
     next()
   })
   app.use('/:guild/playlist', authGuild, playlist)

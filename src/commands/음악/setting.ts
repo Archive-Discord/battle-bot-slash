@@ -12,7 +12,7 @@ export default new BaseCommand(
   {
     name: 'musicsetting',
     description: '노래 기능을 세팅합니다',
-    aliases: ['뮤직세팅', '노래세팅', 'musicset']
+    aliases: ['뮤직세팅', '노래세팅', 'musicset', '음악세팅']
   },
   async (client, message, args) => {
     let errembed = new Embed(client, 'error')
