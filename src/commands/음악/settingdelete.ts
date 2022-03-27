@@ -51,7 +51,7 @@ export default new BaseCommand(
         errembed.setTitle('이 명령어는 서버에서만 사용이 가능해요!')
         return interaction.editReply({embeds: [errembed]})
       }
-      if(interaction.guild.members.cache.get(interaction.user.id)?.permissions.has('MANAGE_CHANNELS')) {
+      if(!interaction.guild.members.cache.get(interaction.user.id)?.permissions.has('MANAGE_CHANNELS')) {
         errembed.setTitle('이 명령어를 사용할 권한이 없어요')
         return interaction.editReply({embeds: [errembed]})
       }
