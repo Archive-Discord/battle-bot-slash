@@ -24,6 +24,7 @@ export default new BaseCommand(
     }
 
     queue.stop()
+    queue.destroy()
     sucessembed.setDescription(`${userMention(message.author.id)}님의 요청으로 노래 재생이 정지되었어요!`)
     return message.reply({embeds: [sucessembed]});
   },
@@ -48,8 +49,8 @@ export default new BaseCommand(
         errembed.setTitle('노래가 재생 중이지 않아요!')
         return interaction.editReply({embeds: [errembed]});
       }
-
       queue.stop()
+      queue.destroy()
       sucessembed.setDescription(`${userMention(interaction.user.id)}님의 요청으로 노래 재생이 정지되었어요!`)
       return interaction.editReply({embeds: [sucessembed]});
     }

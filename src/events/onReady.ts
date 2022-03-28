@@ -51,6 +51,11 @@ export default new Event(
         console.log(error)
       }
     })
+    client.player.on('botDisconnect', async(queue) => {
+      const musicDB = await MusicSetting.findOne({guild_id: queue.guild.id}) as MusicDB
+      queue.destroy()
+      MusicQueueEnd(client, queue, musicDB)
+    })
     client.player.on('trackAdd', async(queue, track) => {
       const musicDB = await MusicSetting.findOne({guild_id: queue.guild.id}) as MusicDB
       MusicTrackEvent(client, queue, musicDB)
