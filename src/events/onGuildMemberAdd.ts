@@ -82,6 +82,8 @@ const AutoModEvent = async (client: BotClient, member: GuildMember) => {
 const AutoModCreateAtEvent = async (client: BotClient, member: GuildMember) => {
   const automodDB = await Automod.findOne({ guild_id: member.guild.id })
   const isPremium = await checkPremium(client, member.guild)
+  if (!automodDB) return
+  if (!automodDB.useing.useCreateAt || automodDB.useing.useCreateAt === 0) return
   if(!isPremium) {
     const LoggerSettingDB = await LoggerSetting.findOne({ guild_id: member.guild.id })
     if(!LoggerSettingDB) return
@@ -89,9 +91,6 @@ const AutoModCreateAtEvent = async (client: BotClient, member: GuildMember) => {
     if(!logChannel) return
     return logChannel.send('프리미엄 기한 만료로 유저 생성일 제한 기능이 비활성화되었습니다')
   } 
-  if (!automodDB) return
-  if (!automodDB.useing.useCreateAt || automodDB.useing.useCreateAt === 0)
-    return
   const now = new Date()
   const elapsedDate = Math.round(
     (Number(now) - Number(member.user.createdAt)) / 1000 / 60 / 60 / 24
