@@ -5,11 +5,12 @@ import { MessageCommand } from '../structures/Command'
 import BotClient from '../structures/BotClient'
 import { Constants, Message, MessageActionRow, MessageSelectMenu } from 'discord.js'
 import Automod from '../schemas/autoModSchema'
-import profanitys from '../contents/profanitys'
-import regexparser from 'regex-parser'
 import MusicSetting from '../schemas/musicSchema'
 import Embed from '../utils/Embed'
 import { PlayerSearchResult, Queue } from 'discord-player'
+import Level from '../schemas/levelSchema'
+import LevelSetting from '../schemas/levelSettingSchema'
+const LevelCooldown = new Map();
 
 export default new Event('messageCreate', async (client, message) => {
   const commandManager = new CommandManager(client)
@@ -19,6 +20,7 @@ export default new Event('messageCreate', async (client, message) => {
   if (message.channel.type === 'DM') return
   profanityFilter(client, message)
   MusicPlayer(client, message)
+  LevelSystem(client, message)
   if (!message.content.startsWith(client.config.bot.prefix)) return
 
   const args = message.content
@@ -201,11 +203,30 @@ const MusicPlayer = async (client: BotClient, message: Message) => {
     })
   }
 }
-const isValidRegex = (t: string) => {
-  try {
-      const msg = t.match(/^([/~@;%#'])(.*?)\1([gimsuy]*)$/)
-      return msg ? !!new RegExp(msg[2], msg[3]) : false
-  } catch (e) {
-      return false
+
+
+const LevelSystem = async (client: BotClient, message: Message) => {
+  if(!message.guild) return
+  if([client.config.bot.prefix, '!', '.', '$', '%', '&', '=', ';;'].find((x) => message.content.toLowerCase().startsWith(x))) return;
+  const levelSetting = await LevelSetting.findOne({guild_id: message.guild.id})
+  if(!levelSetting) return
+  if(!levelSetting.useage) return
+  if(!LevelCooldown.has(`${message.guild.id}_${message.author.id}`)) LevelCooldown.set(`${message.guild.id}_${message.author.id}`, Date.now())
+  const cooldown = LevelCooldown.get(`${message.guild.id}_${message.author.id}`);
+  if (cooldown && (Date.now() - cooldown) > 1000) {
+    LevelCooldown.set(`${message.guild.id}_${message.author.id}`, Date.now())
+    const levelData = await Level.findOne({guild_id: message.guild.id, user_id: message.author.id})
+    const level = levelData ? levelData.level : 1;
+    const nextLevelXP = (!level ? 1 : level + 1) * 10;
+    const xpPerLevel = "1".toString().includes("-") ? "1".split("-") : "1";
+    const min = parseInt(xpPerLevel[0]);
+    const max = parseInt(xpPerLevel[1]);
+    const xpToAdd = Array.isArray(xpPerLevel) ? min + Math.floor((max - min) * Math.random()) : xpPerLevel;
+    if (!levelData ||levelData && levelData.currentXP < nextLevelXP) return await Level.findOneAndUpdate({ guild_id: message.guild.id, user_id: message.author.id }, { $inc: { totalXP: xpToAdd, currentXP: xpToAdd } }, { upsert: true });
+    const newData = await Level.findOneAndUpdate({ guild_id: message.guild.id, user_id: message.author.id }, { $inc: { level: 1 }, $set: { currentXP: 0} }, { upsert: true, new: true });
+    const levelEmbed = new Embed(client, 'info')
+    levelEmbed.setTitle(`${message.author.username}님의 레벨이 올랐어요!`)
+    levelEmbed.setDescription(`레벨이 \`LV.${level ? level : 0} -> LV.${newData.level}\`로 올랐어요!`)
+    return message.reply({ embeds: [levelEmbed] })
   }
 }

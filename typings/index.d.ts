@@ -341,6 +341,21 @@ export interface nftVerifyUserDB {
   process: string;
   published_date: Date;
 }
+
+export interface LevelDB {
+  user_id: string;
+  guild_id: string;
+  currentXP: number;
+  level: number;
+  published_date: Date;
+}
+
+export interface LevelGuildDB {
+  guild_id: string;
+  useage: boolean;
+  published_date: Date;
+}
+
 export type verifyType = 'email' | 'captcha' | 'kakao' |'default'
 export type verifyStatusType = 'success' | 'pending'
 export type useCurseType = 'delete' | 'delete_kick' | 'delete_ban'
