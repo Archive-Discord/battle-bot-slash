@@ -145,7 +145,7 @@ export default class CommandManager extends BaseManager {
             .create(command)
             .then((guilds) =>
               this.logger.info(
-                `Succesfully created command ${command.name} at ${guilds.name}(${guilds.id}) guild`
+                `Succesfully created command ${command.name} at guild`
               )
             )
         }
