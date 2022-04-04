@@ -23,6 +23,10 @@ let config: IConfig = {
   githubToken: '',
   pubgapikey: "",
   klaytnapikey: "",
+  updateServer: {
+    koreanbots: "", // https://koreanbots.dev
+    archive: "" // https://archiver.me
+  },
   web: {
     baseurl: ""
   },

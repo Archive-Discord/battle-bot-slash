@@ -33,6 +33,10 @@ export interface IConfig {
   klaytnapikey: string
   web: {
     baseurl: string
+  },
+  updateServer: {
+    koreanbots: string,
+    archive: string
   }
   bot: {
     sharding: boolean

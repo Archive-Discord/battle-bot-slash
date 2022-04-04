@@ -10,6 +10,7 @@ import Embed from '../utils/Embed'
 import { PlayerSearchResult, Queue } from 'discord-player'
 import Level from '../schemas/levelSchema'
 import LevelSetting from '../schemas/levelSettingSchema'
+import config from '../../config'
 const LevelCooldown = new Map();
 
 export default new Event('messageCreate', async (client, message) => {
@@ -217,7 +218,7 @@ const LevelSystem = async (client: BotClient, message: Message) => {
     LevelCooldown.set(`${message.guild.id}_${message.author.id}`, Date.now())
     const levelData = await Level.findOne({guild_id: message.guild.id, user_id: message.author.id})
     const level = levelData ? levelData.level : 1;
-    const nextLevelXP = (!level ? 1 : level + 1) * 10;
+    const nextLevelXP = (!level ? 1 : level + 1) * 13;
     const xpPerLevel = "1".toString().includes("-") ? "1".split("-") : "1";
     const min = parseInt(xpPerLevel[0]);
     const max = parseInt(xpPerLevel[1]);

@@ -16,7 +16,7 @@ import Automod from '../schemas/autoModSchema'
 import { Guild, GuildChannel } from 'discord.js'
 import NFTUserWallet from '../schemas/NFTUserWalletSchema'
 import NFTGuildVerify from '../schemas/NFTGuildVerifySchema'
-import axios from 'axios'
+import axios, { AxiosError } from 'axios'
 import config from '../../config'
 import CommandManager from "../managers/CommandManager"
 import web from "../server/index"
@@ -29,6 +29,9 @@ export default new Event(
     setInterval(async () => {
       StatusUpdate(client)
     }, 60 * 1000 * 5)
+    setInterval(async () => {
+      ServerCountUpdate(client)
+    }, 60 * 1000 * 10)
     client.player.on('trackStart', async(queue, track) => {
       const musicDB = await MusicSetting.findOne({guild_id: queue.guild.id}) as MusicDB
       MusicAlert(client, track, queue, musicDB)
@@ -245,6 +248,21 @@ async function nftChecker(client: BotClient) {
     }).catch((e) => {
       return
     })
+  })
+}
+
+async function ServerCountUpdate(client: BotClient) {
+  const res = await client.shard?.fetchClientValues("guilds.cache.size")
+  axios.post(`https://api.archiver.me/bots/${client.user?.id}/server`, {
+    "servers": res?.reduce((acc, guilds) => Number(acc) + Number(guilds), 0)
+  },{
+    headers: {
+      "Authorization": "Bearer " + config.updateServer.archive
+    },
+  }).then((data) => {
+    logger.info('아카이브: 서버 수 업데이트 완료')
+  }).catch((e: AxiosError) => {
+    logger.error(`아카이브: 서버 수 업데이트 오류: ${e.response?.data.message}`)
   })
 }
 
