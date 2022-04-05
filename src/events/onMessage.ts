@@ -11,6 +11,7 @@ import { PlayerSearchResult, Queue } from 'discord-player'
 import Level from '../schemas/levelSchema'
 import LevelSetting from '../schemas/levelSettingSchema'
 import config from '../../config'
+import { checkUserPremium } from '../utils/checkPremium'
 const LevelCooldown = new Map();
 
 export default new Event('messageCreate', async (client, message) => {
@@ -215,6 +216,7 @@ const LevelSystem = async (client: BotClient, message: Message) => {
   if(!LevelCooldown.has(`${message.guild.id}_${message.author.id}`)) LevelCooldown.set(`${message.guild.id}_${message.author.id}`, Date.now())
   const cooldown = LevelCooldown.get(`${message.guild.id}_${message.author.id}`);
   if (cooldown && (Date.now() - cooldown) > 1000) {
+    const isPremium = await checkUserPremium(client, message.author)
     LevelCooldown.set(`${message.guild.id}_${message.author.id}`, Date.now())
     const levelData = await Level.findOne({guild_id: message.guild.id, user_id: message.author.id})
     const level = levelData ? levelData.level : 1;
@@ -222,7 +224,8 @@ const LevelSystem = async (client: BotClient, message: Message) => {
     const xpPerLevel = "1".toString().includes("-") ? "1".split("-") : "1";
     const min = parseInt(xpPerLevel[0]);
     const max = parseInt(xpPerLevel[1]);
-    const xpToAdd = Array.isArray(xpPerLevel) ? min + Math.floor((max - min) * Math.random()) : xpPerLevel;
+    let xpToAdd = Array.isArray(xpPerLevel) ? min + Math.floor((max - min) * Math.random()) : xpPerLevel;
+    if(isPremium) xpToAdd = Number(xpToAdd) * 1.3
     if (!levelData ||levelData && levelData.currentXP < nextLevelXP) return await Level.findOneAndUpdate({ guild_id: message.guild.id, user_id: message.author.id }, { $inc: { totalXP: xpToAdd, currentXP: xpToAdd } }, { upsert: true });
     const newData = await Level.findOneAndUpdate({ guild_id: message.guild.id, user_id: message.author.id }, { $inc: { level: 1 }, $set: { currentXP: 0} }, { upsert: true, new: true });
     const levelEmbed = new Embed(client, 'info')
