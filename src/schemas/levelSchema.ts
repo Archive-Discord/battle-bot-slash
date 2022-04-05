@@ -7,6 +7,7 @@ const LevelSchema: Schema<LevelDB> = new Schema(
     guild_id: String,
     level: Number,
     currentXP: Number,
+    totalXP: Number,
     published_date: { type: Date, default: Date.now }
   },
   { collection: 'userlevel' }

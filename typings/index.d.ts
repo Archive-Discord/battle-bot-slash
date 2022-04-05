@@ -263,6 +263,13 @@ export interface PremiumDB {
   published_date: Date;
 }
 
+export interface PremiumUserDB {
+  user_id: string;
+  nextpay_date: Date;
+  published_date: Date;
+}
+
+
 export interface GameModeStat {
   assists: number;
   boosts: number;
@@ -351,6 +358,7 @@ export interface LevelDB {
   guild_id: string;
   currentXP: number;
   level: number;
+  totalXP:number;
   published_date: Date;
 }
 
