@@ -362,6 +362,21 @@ export interface LevelDB {
   published_date: Date;
 }
 
+export interface VoteItem {
+  item_id: string;
+  item_name: string
+  vote: number;
+  voted: [String]
+}
+
+export interface VoteDB {
+  published_date: Date;
+  guild_id: string;
+  message_id: string;
+  vote_items: VoteItem[];
+  status: voteStatus
+}
+
 export interface LevelGuildDB {
   guild_id: string;
   useage: boolean;
@@ -372,3 +387,4 @@ export type verifyType = 'email' | 'captcha' | 'kakao' |'default'
 export type verifyStatusType = 'success' | 'pending'
 export type useCurseType = 'delete' | 'delete_kick' | 'delete_ban'
 export type pubgPlatformeType = 'steam' | 'kakao'
+export type voteStatus = 'open' | 'close'

@@ -15,6 +15,9 @@ export default new Event('interactionCreate', async (client, interaction) => {
     if(interaction.customId.startsWith('role_')) {
       button = buttonManager.get('autorole.add')
     }
+    if(interaction.customId.startsWith('vote_')) {
+      button = buttonManager.get('vote.select')
+    }
     if (!button) return
     try {
       await button?.execute(client, interaction)
