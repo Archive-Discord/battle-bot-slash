@@ -366,7 +366,7 @@ export interface VoteItem {
   item_id: string;
   item_name: string
   vote: number;
-  voted: [String]
+  voted: [string]
 }
 
 export interface VoteDB {
