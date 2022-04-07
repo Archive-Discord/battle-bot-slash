@@ -29,7 +29,7 @@ export default new ButtonInteraction(
         ErrEmbed.setTitle('이미 종료된 투표에요!')
         return interaction.editReply({embeds: [ErrEmbed]})
       }
-      if(!VoteCooldown.has(`vote_${interaction.guild.id}_${interaction.user.id}_${interaction.message.id}`)) VoteCooldown.set(`vote_${interaction.guild.id}_${interaction.user.id}_${interaction.message.id}`, Date.now())
+      if(!VoteCooldown.has(`vote_${interaction.guild.id}_${interaction.user.id}_${interaction.message.id}`)) VoteCooldown.set(`vote_${interaction.guild.id}_${interaction.user.id}_${interaction.message.id}`, Date.now() - 6000)
       const cooldown = VoteCooldown.get(`vote_${interaction.guild.id}_${interaction.user.id}_${interaction.message.id}`)
       if (cooldown && (Date.now() - cooldown) > 5000) {
         const channel = interaction.channel as TextChannel
