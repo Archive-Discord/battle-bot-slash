@@ -70,19 +70,14 @@ async function getStat(args: string) {
   let data = JSON.parse($(`#__NEXT_DATA__`).contents()[0].data).props.pageProps.data
   // @ts-ignore
   let lastMatch = JSON.parse($(`#__NEXT_DATA__`).contents()[0].data).props.pageProps.games.data
-  let champions: [] = data.champions
+  let champions: [] = data.championsById
   let matchinfo: string[] = []
   lastMatch.forEach((match: any) => {
-    function champion(element: any)  {
-      if(element.id === match.myData.champion_id)  {
-        return true;
-      }
-    }
-    let championRes: any[] = champions.filter(champion)
+    let championRes: any = champions[match.myData.champion_id]
     if(match.myData.stats.result === "LOSE") {
       matchinfo.push(`- 패배 / ${match.queue_info.queue_translate} / <KDA ${match.myData.stats.kill}/${match.myData.stats.death}/${match.myData.stats.assist}> ${match.myData.position ? "/ " +match.myData.position : ''}`)
     } else {
-      matchinfo.push(`+ 승리 / ${match.queue_info.queue_translate} / ${championRes[0].name} / <KDA ${match.myData.stats.kill}/${match.myData.stats.death}/${match.myData.stats.assist}> ${match.myData.position ? "/ " +match.myData.position : ''}`)
+      matchinfo.push(`+ 승리 / ${match.queue_info.queue_translate} / ${championRes.name} / <KDA ${match.myData.stats.kill}/${match.myData.stats.death}/${match.myData.stats.assist}> ${match.myData.position ? "/ " +match.myData.position : ''}`)
     }
   })
   let embed = new MessageEmbed()
