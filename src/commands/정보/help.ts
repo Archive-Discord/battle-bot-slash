@@ -19,7 +19,8 @@ export default new BaseCommand(
         embed.setDescription(`아래에 있는 명령어들을 이용해 도움말을 보세요!`)
         embed.addField(
           `\`${config.bot.prefix}도움말 ${command}\``,
-          `> ${command}관련 명령어들을 보내드려요!`
+          `> ${command}관련 명령어들을 보내드려요!`,
+          true
         )
       })
       return message.reply({ embeds: [embed] })
@@ -46,7 +47,8 @@ export default new BaseCommand(
       commands.forEach((command) => {
         embed.addField(
           `\`${config.bot.prefix}${command.name}\``,
-          `> ${command.description}`
+          `> ${command.description}`,
+          true
         )
       })
       return message.reply({ embeds: [embed] })
@@ -76,7 +78,8 @@ export default new BaseCommand(
           embed.setDescription(`아래에 있는 명령어들을 이용해 도움말을 보세요!`)
           embed.addField(
             `\`/도움말 ${command}\``,
-            `> ${command}관련 명령어들을 보내드려요!`
+            `> ${command}관련 명령어들을 보내드려요!`,
+            true
           )
         })
         return interaction.reply({ embeds: [embed] })

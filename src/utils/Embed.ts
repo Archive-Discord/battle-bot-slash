@@ -13,7 +13,13 @@ export default class Embed extends MessageEmbed {
       }
     }
     if (type === 'success') EmbedJSON.color = '#57F287'
-    else if (type === 'error') EmbedJSON.color = '#ED4245'
+    else if (type === 'error') {
+      EmbedJSON.color = '#ED4245'
+      EmbedJSON.footer = {
+        text: '오류라고 생각되면 서포트 서버로 문의해 주세요!',
+        icon_url: client.user.avatarURL() ?? undefined
+      }
+    }
     else if (type === 'warn') EmbedJSON.color = '#FEE75C'
     else if (type === 'info') EmbedJSON.color = '#5865F2'
     else if (type === 'default') EmbedJSON.color = '#5865F2'

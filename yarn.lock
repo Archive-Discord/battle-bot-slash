@@ -59,6 +59,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@discordjs/collection@npm:^0.4.0":
+  version: 0.4.0
+  resolution: "@discordjs/collection@npm:0.4.0"
+  checksum: fa8fc4246921f3230eb6c5d6d4dc0caf9dd659fcc903175944edf4fb0a9ed9913fdf164733d3f1e644ef469bc79b0d38a526ee620b92169cb40e79b40b0c716b
+  languageName: node
+  linkType: hard
+
 "@discordjs/form-data@npm:^3.0.1":
   version: 3.0.1
   resolution: "@discordjs/form-data@npm:3.0.1"
@@ -96,6 +103,21 @@ __metadata:
     "@discordjs/node-pre-gyp": ^0.4.2
     node-addon-api: ^4.2.0
   checksum: ed26a46eb050e2e6a09cf37bd4e747240df946e2bee0ed6ee61150e8d9e678c6eac87b1a9affba3d3f5b9c52ed312ec1d517f09a728ee8842a805bee5ae7d6f4
+  languageName: node
+  linkType: hard
+
+"@discordjs/rest@npm:^0.3.0":
+  version: 0.3.0
+  resolution: "@discordjs/rest@npm:0.3.0"
+  dependencies:
+    "@discordjs/collection": ^0.4.0
+    "@sapphire/async-queue": ^1.1.9
+    "@sapphire/snowflake": ^3.0.1
+    discord-api-types: ^0.26.1
+    form-data: ^4.0.0
+    node-fetch: ^2.6.5
+    tslib: ^2.3.1
+  checksum: 0e5724156e0375b2181036d25d8847c5b7d8ab46a3409a19dad57ec9b3301d9127917a52558d3daa7e2b513804d4de9fcd5f6d56e056cc48dd567ebf26548c6d
   languageName: node
   linkType: hard
 
@@ -225,6 +247,20 @@ __metadata:
   version: 1.3.0
   resolution: "@sapphire/async-queue@npm:1.3.0"
   checksum: 267a3970ac93aaffc9886582c39ca23a345e8d472042200635044d7e5c48f615d389623de5e6679c4fa335b554357faf872e1e32098b33e5d700099345d29559
+  languageName: node
+  linkType: hard
+
+"@sapphire/async-queue@npm:^1.1.9":
+  version: 1.3.1
+  resolution: "@sapphire/async-queue@npm:1.3.1"
+  checksum: 4016010a8b6f2896ce7694eb04c1839b613387cbfb104028a4a1bea471afb1dc4d569b66d3c9770319c47be55035dc786c072c32656d467fc2cded4347055d92
+  languageName: node
+  linkType: hard
+
+"@sapphire/snowflake@npm:^3.0.1":
+  version: 3.2.1
+  resolution: "@sapphire/snowflake@npm:3.2.1"
+  checksum: 90b876f836de74e1d5b6c90ebd6ca2d4825057471017d70b6170e1d143375365d23691f64843b465ca17174a5c638d6e83b51d53bf0dcbd2fc33ca0d6e1e7187
   languageName: node
   linkType: hard
 
@@ -1031,6 +1067,7 @@ __metadata:
   dependencies:
     "@discordjs/builders": ^0.8.2
     "@discordjs/opus": ^0.7.0
+    "@discordjs/rest": ^0.3.0
     "@discordjs/voice": ^0.8.0
     "@sapphire/ts-config": ^3.1.6
     "@types/cheerio": ^0.22.31
@@ -2512,6 +2549,17 @@ __metadata:
     combined-stream: ^1.0.8
     mime-types: ^2.1.12
   checksum: b019e8d35c8afc14a2bd8a7a92fa4f525a4726b6d5a9740e8d2623c30e308fbb58dc8469f90415a856698933c8479b01646a9dff33c87cc4e76d72aedbbf860d
+  languageName: node
+  linkType: hard
+
+"form-data@npm:^4.0.0":
+  version: 4.0.0
+  resolution: "form-data@npm:4.0.0"
+  dependencies:
+    asynckit: ^0.4.0
+    combined-stream: ^1.0.8
+    mime-types: ^2.1.12
+  checksum: 01135bf8675f9d5c61ff18e2e2932f719ca4de964e3be90ef4c36aacfc7b9cb2fceb5eca0b7e0190e3383fe51c5b37f4cb80b62ca06a99aaabfcfd6ac7c9328c
   languageName: node
   linkType: hard
 
