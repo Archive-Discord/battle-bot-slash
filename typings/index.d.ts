@@ -62,6 +62,10 @@ export interface IConfig {
     guildID: string
     channelID: string
   }
+  devGuild: {
+    guildID: string
+    channelID: string
+  }
   database: {
     type: 'mongodb' | 'sqlite'
     url: string

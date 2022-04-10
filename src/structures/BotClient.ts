@@ -2,7 +2,7 @@ import { Client, ClientOptions, Collection } from 'discord.js'
 import { Player, PlayerEvents } from "discord-player"
 import Dokdo from 'dokdo'
 import Logger from '../utils/Logger'
-
+import DiscordModal from 'discord-modals'
 import {
   BaseButton,
   BaseCommand,
@@ -60,6 +60,7 @@ export default class BotClient extends Client {
   public async start(token: string = config.bot.token): Promise<void> {
     logger.info('Logging in bot...')
     await this.login(token)
+    DiscordModal(this)
   }
 
   public async setStatus(

@@ -6,6 +6,7 @@ import BaseManager from './BaseManager'
 import fs from 'fs'
 import path from 'path'
 import BotClient from '../structures/BotClient'
+import config from '../../config'
 
 export default class CommandManager extends BaseManager {
   private logger = new Logger('CommandManager')
@@ -184,17 +185,31 @@ export default class CommandManager extends BaseManager {
         )
       }
     })
-    this.logger.warn('guildID not gived switching global command...')
     this.logger.debug(`Trying ${this.client.guilds.cache.size} guild(s)`)
     for (const command of slashCommands) {
       const commands = await this.client.application?.commands.fetch()
       const cmd = commands?.find((cmd) => cmd.name === command.name)
+      const category = this.categorys.get('dev')
+      if(category?.find((c) => c.name === command.name)) {
+        const supportGuild = this.client.guilds.cache.get(config.devGuild.guildID)
+        await supportGuild?.commands.create(command).then(() => {
+          this.logger.info(
+            `Succesfully created Developer command ${command.name} at ${supportGuild.name} guild`
+          )
+        }).catch((e) => {
+          console.log(e)
+          this.logger.error(
+            `Error created Developer command ${command.name} at ${supportGuild.name} guild`
+          )
+        })
+        return
+      }
       if (!cmd) {
         await this.client.application?.commands
           .create(command)
           .then((guilds) =>
             this.logger.info(
-              `Succesfully created command ${command.name} at ${guilds.name}(${guilds.id}) guild`
+              `Succesfully created command ${command.name} at ${guilds} guild`
             )
           )
       }
