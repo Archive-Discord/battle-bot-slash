@@ -58,6 +58,10 @@ let config: IConfig = {
     guildID: '',
     channelID: ''
   },
+  devGuild: {
+    guildID: "",
+    channelID: ""
+  },
   database: {
     /**
      * @type {'mongodb'|'sqlite'|'quick.db'}
