@@ -50,11 +50,11 @@ export default new ButtonInteraction(
       const channel = interaction.guild?.channels.cache.get(
         interaction.channel?.id as string
       ) as GuildChannel
-      await channel.permissionOverwrites.edit(interaction.user.id, {
+      await channel.permissionOverwrites.edit(ticketDB.userId, {
         VIEW_CHANNEL: false,
         SEND_MESSAGES: false
       })
-      channel.setName(`closed-ticket-${interaction.user.discriminator}`)
+      channel.setName(`closed-ticket-${ticketDB.ticketId.slice(0, 5)}`)
       interaction.channel?.send({
         embeds: [replyCloseTicket],
         components: [componets]
