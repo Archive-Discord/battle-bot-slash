@@ -5,8 +5,6 @@
     "lib": [
       "es2021"
     ],
-    //"declaration": false,
-    //"sourceMap": false,
     "outDir": "./build",
     "rootDir": ".",
     "strict": true,

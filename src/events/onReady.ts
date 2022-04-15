@@ -20,6 +20,7 @@ import axios, { AxiosError } from 'axios'
 import config from '../../config'
 import CommandManager from "../managers/CommandManager"
 import web from "../server/index"
+import PremiumUser from "../schemas/premiumUserSchemas"
 
 const logger = new Logger('bot')
 
@@ -72,9 +73,10 @@ export default new Event(
       automodResetChannel(client)
       nftChecker(client)
     });
-    logger.info(`Logged ${client.user?.username}`)
+    
     const commandManager = new CommandManager(client)
     await commandManager.slashGlobalCommandSetup()
+    logger.info(`Logged ${client.user?.username}`)
   },
   { once: true }
 )
@@ -167,6 +169,34 @@ async function PremiumAlert(client: BotClient) {
       embed.setDescription(`${premiumguild.name} 서버의 프리미엄이 만료되었습니다`)
       return user.send({embeds: [embed]})
     }
+  })
+}
+
+async function PremiumPersonAlert(client: BotClient) {
+  const PremiumDB = await PremiumUser.find({})
+  PremiumDB.forEach((user) => {
+    const users = client.users.cache.get(user.user_id)
+    if(!users) return
+    const embed = new Embed(client, 'info')
+    embed.setTitle(`${client.user?.username} 프리미엄`)
+    const now = new Date()
+    const lastDate = Math.round((Number(user.nextpay_date) - Number(now))/ 1000 / 60 / 60 / 24)
+    try {
+      if(lastDate === 7) {
+        embed.setDescription(`${users.username}님의 프리미엄 만료일이 7일 (${DateFormatting._format(user.nextpay_date)}) 남았습니다`)
+        return users.send({embeds: [embed]})
+      }
+      if(lastDate === 1) {
+        embed.setDescription(`${users.username} 서버의 프리미엄 만료일이 1일 (${DateFormatting._format(user.nextpay_date)}) 남았습니다`)
+        return users.send({embeds: [embed]})
+      }
+      if(lastDate === 0) {
+        embed.setDescription(`${users.username} 서버의 프리미엄이 만료되었습니다`)
+        return users.send({embeds: [embed]})
+      }
+    } catch(e) {
+      logger.error(e as unknown as string)
+    }  
   })
 }
 
