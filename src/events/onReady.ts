@@ -72,6 +72,7 @@ export default new Event(
       PremiumAlert(client)
       automodResetChannel(client)
       nftChecker(client)
+      PremiumPersonAlert(client)
     });
     
     const commandManager = new CommandManager(client)
