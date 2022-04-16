@@ -24,11 +24,8 @@ jobs:
       - name: Build
         run: yarn build
 
-      - name: cd to build directory
-        run: cd build
-
       - name: Remove fake config.js
-        run: rm config.js
+        run: rm build/config.js
 
       - name: Deploy with gh-pages
         run: |
