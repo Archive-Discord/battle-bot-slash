@@ -221,16 +221,18 @@ export const playerStats = async (
       if (error) {
         console.log(error)
       }
-      // @ts-ignore
       const squadFppStats: RankedGameModeStats =
+        // @ts-ignore
         SeasonsStats.rankedGameModeStats['squad-fpp']
-      // @ts-ignore
+
       await PubgStats.updateOne(
         { user_id: pubgUser.user_id },
         {
           $set: {
             stats: {
+              // @ts-ignore
               rankSquardTpp: SeasonsStats.rankedGameModeStats.squad,
+              // @ts-ignore
               rankSquardFpp: SeasonsStats.rankedGameModeStats['squad-fpp']
             },
             last_update: new Date()
@@ -262,16 +264,17 @@ export const playerStats = async (
       if (error) {
         console.log(error)
       }
-      // @ts-ignore
       const squadTppStats: RankedGameModeStats =
+        // @ts-ignore
         SeasonsStats.rankedGameModeStats.squad
-      // @ts-ignore
       await PubgStats.updateOne(
         { user_id: pubgUser.user_id },
         {
           $set: {
             stats: {
+              // @ts-ignore
               rankSquardTpp: SeasonsStats.rankedGameModeStats.squad,
+              // @ts-ignore
               rankSquardFpp: SeasonsStats.rankedGameModeStats['squad-fpp']
             },
             last_update: new Date()
@@ -310,13 +313,14 @@ export const playerStats = async (
       }
       // @ts-ignore
       const squadTppStats: GameModeStat = SeasonsStats.gamemodeStats.squad
-      // @ts-ignore
       await PubgStats.updateOne(
         { user_id: pubgUser.user_id },
         {
           $set: {
             stats: {
+              // @ts-ignore
               SquardTpp: SeasonsStats.gamemodeStats.squad,
+              // @ts-ignore
               SquardFpp: SeasonsStats.gamemodeStats['squad-fpp']
             },
             last_update: new Date()
@@ -350,16 +354,17 @@ export const playerStats = async (
         season: activeSeason as Season,
         gamemode: GameModeStatGamemode.SQUAD_FPP
       })
-      // @ts-ignore
       const squadFppStats: GameModeStat =
+        // @ts-ignore
         SeasonsStats.gamemodeStats['squad-fpp']
-      // @ts-ignore
       await PubgStats.updateOne(
         { user_id: pubgUser.user_id },
         {
           $set: {
             stats: {
+              // @ts-ignore
               SquardTpp: SeasonsStats.gamemodeStats.squad,
+              // @ts-ignore
               SquardFpp: SeasonsStats.gamemodeStats['squad-fpp']
             },
             last_update: new Date()
