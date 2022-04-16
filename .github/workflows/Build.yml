@@ -27,9 +27,6 @@ jobs:
       - name: cd to build directory
         run: cd build
 
-      - name: clone in .git directory
-        run: cp ../.git .git -r
-
       - name: Commit changes
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
