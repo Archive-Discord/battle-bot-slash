@@ -2,7 +2,7 @@ import Discord, { Guild } from 'discord.js'
 import BaseManager from './BaseManager'
 import Embed from '../utils/Embed'
 import Logger from '../utils/Logger'
-import { v4 as uuid} from 'uuid'
+import { v4 as uuid } from 'uuid'
 import { ErrorReportOptions } from '../../typings'
 import BotClient from '../structures/BotClient'
 

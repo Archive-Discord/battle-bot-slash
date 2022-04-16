@@ -12,10 +12,6 @@ const MusicSettingSchema: Schema<MusicDB> = new Schema(
   { collection: 'Music' }
 )
 
-const MusicSetting: Model<MusicDB> = model(
-  'Music',
-  MusicSettingSchema,
-  'Music'
-)
+const MusicSetting: Model<MusicDB> = model('Music', MusicSettingSchema, 'Music')
 
 export default MusicSetting

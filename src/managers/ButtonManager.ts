@@ -29,7 +29,6 @@ export default class ButtonManager extends BaseManager {
 
           buttonFiles.forEach((buttonFile) => {
             try {
-              
               const {
                 default: button
                 // eslint-disable-next-line @typescript-eslint/no-var-requires

@@ -12,8 +12,12 @@ export default new ButtonInteraction(
     name: 'nft.verify'
   },
   async (client, interaction) => {
-    await interaction.deferReply({ephemeral: true})
-    const token = anyid().encode('Aa0').bits(48 * 8).random().id()
+    await interaction.deferReply({ ephemeral: true })
+    const token = anyid()
+      .encode('Aa0')
+      .bits(48 * 8)
+      .random()
+      .id()
     const verify = new NFTUserVerify()
     verify.guild_id = interaction.guild?.id as string
     verify.user_id = interaction.user.id

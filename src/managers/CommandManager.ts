@@ -190,18 +190,23 @@ export default class CommandManager extends BaseManager {
       const commands = await this.client.application?.commands.fetch()
       const cmd = commands?.find((cmd) => cmd.name === command.name)
       const category = this.categorys.get('dev')
-      if(category?.find((c) => c.name === command.name)) {
-        const supportGuild = this.client.guilds.cache.get(config.devGuild.guildID)
-        await supportGuild?.commands.create(command).then(() => {
-          this.logger.info(
-            `Succesfully created Developer command ${command.name} at ${supportGuild.name} guild`
-          )
-        }).catch((e) => {
-          console.log(e)
-          this.logger.error(
-            `Error created Developer command ${command.name} at ${supportGuild.name} guild`
-          )
-        })
+      if (category?.find((c) => c.name === command.name)) {
+        const supportGuild = this.client.guilds.cache.get(
+          config.devGuild.guildID
+        )
+        await supportGuild?.commands
+          .create(command)
+          .then(() => {
+            this.logger.info(
+              `Succesfully created Developer command ${command.name} at ${supportGuild.name} guild`
+            )
+          })
+          .catch((e) => {
+            console.log(e)
+            this.logger.error(
+              `Error created Developer command ${command.name} at ${supportGuild.name} guild`
+            )
+          })
         return
       }
       if (!cmd) {

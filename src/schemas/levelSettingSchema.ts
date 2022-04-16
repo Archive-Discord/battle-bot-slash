@@ -10,6 +10,10 @@ const LevelSettingSchema: Schema<LevelGuildDB> = new Schema(
   { collection: 'levelsetting' }
 )
 
-const Level: Model<LevelGuildDB> = model('levelsetting', LevelSettingSchema, 'levelsetting')
+const Level: Model<LevelGuildDB> = model(
+  'levelsetting',
+  LevelSettingSchema,
+  'levelsetting'
+)
 
-export default Level;
+export default Level

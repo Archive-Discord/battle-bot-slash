@@ -10,6 +10,10 @@ const premiumSchema = new Schema(
   { collection: 'premiumGuild' }
 )
 
-const Premium: Model<PremiumDB> = model('premiumGuild', premiumSchema, 'premiumGuild')
+const Premium: Model<PremiumDB> = model(
+  'premiumGuild',
+  premiumSchema,
+  'premiumGuild'
+)
 
 export default Premium
