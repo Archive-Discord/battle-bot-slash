@@ -24,10 +24,15 @@ jobs:
       - name: Build
         run: yarn build
 
+      - name: cd to build directory
+        run: cd build
+
+      - name: clone in .git directory
+        run: cp ../.git .git
+
       - name: Commit changes
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
           branch: build
           create_branch: true
-          commit_message: "build: Build and tested"
-          repository: './build'
+          commit_message: "build: Build data uploaded"
