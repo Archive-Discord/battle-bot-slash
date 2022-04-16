@@ -1,5 +1,5 @@
 import { Client, ClientOptions, Collection } from 'discord.js'
-import { Player, PlayerEvents } from "discord-player"
+import { Player, PlayerEvents } from 'discord-player'
 import Dokdo from 'dokdo'
 import Logger from '../utils/Logger'
 import DiscordModal from 'discord-modals'

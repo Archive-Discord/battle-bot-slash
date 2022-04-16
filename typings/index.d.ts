@@ -33,9 +33,9 @@ export interface IConfig {
   klaytnapikey: string
   web: {
     baseurl: string
-  },
+  }
   updateServer: {
-    koreanbots: string,
+    koreanbots: string
     archive: string
   }
   bot: {
@@ -130,51 +130,50 @@ export interface VerifyDB {
 }
 
 export interface AutoModDB {
-  guild_id: string;
-  useing: AutoModList;
-  published_date: Date;
+  guild_id: string
+  useing: AutoModList
+  published_date: Date
 }
 
 export interface HcsDB {
-  user_id: string;
-  school: string;
-  birthday: string;
-  schoolEndponints: string;
-  password: string;
-  name: string;
-  published_date: Date;
+  user_id: string
+  school: string
+  birthday: string
+  schoolEndponints: string
+  password: string
+  name: string
+  published_date: Date
 }
 
 export interface AutoModList {
-  useUrl?: boolean;
-  useCurse?: boolean;
-  useBlackList?: boolean;
-  useCreateAt?: number;
+  useUrl?: boolean
+  useCurse?: boolean
+  useBlackList?: boolean
+  useCreateAt?: number
   useAutoRole?: boolean
   autoRoleId?: string
   useCurseType?: useCurseType
   role?: Role
-  useCurseIgnoreChannel?: string[],
-  useResetChannel?: boolean,
-  useResetChannels?: string[],
+  useCurseIgnoreChannel?: string[]
+  useResetChannel?: boolean
+  useResetChannels?: string[]
 }
-export interface DataBaseUser { 
-  _id: string;
-  id: string;
-  email: string;
-  accessToken: string;
-  refreshToken: string;
-  kakao_accessToken?: string;
-  kakao_refreshToken?: string;
-  kakao_email?: string;
-  kakao_name?: string;
-  google_accessToken?: string;
-  google_refreshToken?: string;
-  token: string;
-  tokenExp: number;
-  expires_in: number;
-  published_date: Date;
-
+export interface DataBaseUser {
+  _id: string
+  id: string
+  email: string
+  accessToken: string
+  refreshToken: string
+  kakao_accessToken?: string
+  kakao_refreshToken?: string
+  kakao_email?: string
+  kakao_name?: string
+  google_accessToken?: string
+  google_refreshToken?: string
+  token: string
+  tokenExp: number
+  expires_in: number
+  published_date: Date
 }
 
 export interface SchoolDataResponse {
@@ -201,26 +200,26 @@ export interface Meals {
   calories: string
 }
 export interface MusicDB {
-  guild_id: string,
-  channel_id: string,
-  message_id: string,
-  process_message_id: string;
+  guild_id: string
+  channel_id: string
+  message_id: string
+  process_message_id: string
   published_date: Date
 }
 
 export interface AutoTaskRoleDB {
-  published_date: Date;
-  token: string;
-  message_id: string;
-  isKeep:boolean;
-  guild_id: string;
+  published_date: Date
+  token: string
+  message_id: string
+  isKeep: boolean
+  guild_id: string
 }
 
 export interface PubgDB {
-  published_date: Date;
-  last_update: Date;
-  user_id: string;
-  nickname: string;
+  published_date: Date
+  last_update: Date
+  user_id: string
+  nickname: string
   platform: pubgPlatformeType
   stats: {
     rankSoloTpp: RankedGameModeStats
@@ -246,148 +245,147 @@ export interface YoutubeChannels {
   items: YoutubeChannel[]
 }
 export interface YoutubeChannel {
-  kind: string;
-  etag: string;
-  id: string;
+  kind: string
+  etag: string
+  id: string
   snippet: {
-    title: string;
-    description: string;
-    resourceId: ResourceId;
-    channelId: string;
-  };
+    title: string
+    description: string
+    resourceId: ResourceId
+    channelId: string
+  }
 }
 export interface ResourceId {
-  kind: string;
-  channelId: string;
+  kind: string
+  channelId: string
 }
 
 export interface PremiumDB {
-  guild_id: string;
-  nextpay_date: Date;
-  published_date: Date;
+  guild_id: string
+  nextpay_date: Date
+  published_date: Date
 }
 
 export interface PremiumUserDB {
-  user_id: string;
-  nextpay_date: Date;
-  published_date: Date;
+  user_id: string
+  nextpay_date: Date
+  published_date: Date
 }
-
 
 export interface GameModeStat {
-  assists: number;
-  boosts: number;
-  dailyKills: number;
-  dailyWins: number;
-  damageDealt: number;
-  days: number;
-  dBNOs: number;
-  headshotKills: number;
-  heals: number;
-  killPoints: number;
-  kills: number;
-  longestKill: number;
-  longestTimeSurvived: number;
-  losses: number;
-  maxKillStreaks: number;
-  mostSurvivalTime: number;
-  rankPoints: number;
-  rankPointsTitle: string;
-  revives: number;
-  rideDistance: number;
-  roadKills: number;
-  roundMostKills: number;
-  roundsPlayed: number;
-  suicides: number;
-  swimDistance: number;
-  teamKills: number;
-  timeSurvived: number;
-  top10s: number;
-  vehicleDestroys: number;
-  walkDistance: number;
-  weaponsAcquired: 12;
-  weeklyKills: number;
-  weeklyWins: number;
-  winPoints: number;
-  wins: number;
+  assists: number
+  boosts: number
+  dailyKills: number
+  dailyWins: number
+  damageDealt: number
+  days: number
+  dBNOs: number
+  headshotKills: number
+  heals: number
+  killPoints: number
+  kills: number
+  longestKill: number
+  longestTimeSurvived: number
+  losses: number
+  maxKillStreaks: number
+  mostSurvivalTime: number
+  rankPoints: number
+  rankPointsTitle: string
+  revives: number
+  rideDistance: number
+  roadKills: number
+  roundMostKills: number
+  roundsPlayed: number
+  suicides: number
+  swimDistance: number
+  teamKills: number
+  timeSurvived: number
+  top10s: number
+  vehicleDestroys: number
+  walkDistance: number
+  weaponsAcquired: 12
+  weeklyKills: number
+  weeklyWins: number
+  winPoints: number
+  wins: number
 }
 export interface RankedGameModeStats {
-  assists: number;
-  avgRank: number;
-  avgSurvivalTime: number;
-  bestRankPoint: number;
+  assists: number
+  avgRank: number
+  avgSurvivalTime: number
+  bestRankPoint: number
   bestTier: {
-      tier: string;
-      subTier: string;
-  };
-  boosts: number;
-  currentRankPoint: number;
+    tier: string
+    subTier: string
+  }
+  boosts: number
+  currentRankPoint: number
   currentTier: {
-      tier: string;
-      subTier: string;
-  };
-  dBNOs: number;
-  damageDealt: number;
-  deaths: number;
-  headshotKillRatio: number;
-  headshotKills: number;
-  heals: number;
-  kda: number;
-  kdr: number;
-  killStreak: number;
-  kills: number;
-  longestKill: number;
-  playTime: number;
-  reviveRatio: number;
-  revives: number;
-  roundMostKills: number;
-  roundsPlayed: number;
-  teamKills: number;
-  top10Ratio: number;
-  weaponsAcquired: number;
-  winRatio: number;
-  wins: number;
+    tier: string
+    subTier: string
+  }
+  dBNOs: number
+  damageDealt: number
+  deaths: number
+  headshotKillRatio: number
+  headshotKills: number
+  heals: number
+  kda: number
+  kdr: number
+  killStreak: number
+  kills: number
+  longestKill: number
+  playTime: number
+  reviveRatio: number
+  revives: number
+  roundMostKills: number
+  roundsPlayed: number
+  teamKills: number
+  top10Ratio: number
+  weaponsAcquired: number
+  winRatio: number
+  wins: number
 }
 
 export interface nftVerifyUserDB {
-  guild_id: string;
-  user_id: string;
-  token: string;
-  process: string;
-  published_date: Date;
+  guild_id: string
+  user_id: string
+  token: string
+  process: string
+  published_date: Date
 }
 
 export interface LevelDB {
-  user_id: string;
-  guild_id: string;
-  currentXP: number;
-  level: number;
-  totalXP:number;
-  published_date: Date;
+  user_id: string
+  guild_id: string
+  currentXP: number
+  level: number
+  totalXP: number
+  published_date: Date
 }
 
 export interface VoteItem {
-  item_id: string;
+  item_id: string
   item_name: string
-  vote: number;
+  vote: number
   voted: [string]
 }
 
 export interface VoteDB {
-  published_date: Date;
-  guild_id: string;
-  message_id: string;
-  vote_items: VoteItem[];
+  published_date: Date
+  guild_id: string
+  message_id: string
+  vote_items: VoteItem[]
   status: voteStatus
 }
 
 export interface LevelGuildDB {
-  guild_id: string;
-  useage: boolean;
-  published_date: Date;
+  guild_id: string
+  useage: boolean
+  published_date: Date
 }
 
-export type verifyType = 'email' | 'captcha' | 'kakao' |'default'
+export type verifyType = 'email' | 'captcha' | 'kakao' | 'default'
 export type verifyStatusType = 'success' | 'pending'
 export type useCurseType = 'delete' | 'delete_kick' | 'delete_ban'
 export type pubgPlatformeType = 'steam' | 'kakao'

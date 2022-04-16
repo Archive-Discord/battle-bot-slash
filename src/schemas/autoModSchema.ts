@@ -12,9 +12,9 @@ const automodSchema: Schema<AutoModDB> = new Schema(
       useAutoRole: { type: Boolean, default: false },
       autoRoleId: { type: String, default: '' },
       useCurseType: String,
-      useCurseIgnoreChannel: {type: Array, default: []},
-      useResetChannel: {type: Boolean, default: false},
-      useResetChannels: {type: Array, default: []}
+      useCurseIgnoreChannel: { type: Array, default: [] },
+      useResetChannel: { type: Boolean, default: false },
+      useResetChannels: { type: Array, default: [] }
     },
     published_date: { type: Date, default: Date.now }
   },

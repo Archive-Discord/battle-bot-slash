@@ -7,7 +7,7 @@ import {
   ButtonInteraction as ButtonInteractionType
 } from 'discord.js'
 import BotClient from '../src/structures/BotClient'
-import { PlayerEvents } from "discord-player"
+import { PlayerEvents } from 'discord-player'
 
 export interface MessageCommnad {
   data: MessageCommandOptions

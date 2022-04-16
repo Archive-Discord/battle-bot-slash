@@ -5,7 +5,7 @@ import Embed from '../utils/Embed'
 import { TextChannel, User } from 'discord.js'
 
 export default new Event('messageDelete', async (client, message) => {
-  if(!message) return
+  if (!message) return
   if (!message.content) return
   if (message.content.startsWith(config.bot.prefix)) return
   if (message.author?.id == client.user?.id) return
@@ -22,7 +22,7 @@ export default new Event('messageDelete', async (client, message) => {
   ) as TextChannel
   if (!logChannel) return
   if (message.partial) message = await message.fetch()
-  if(!message.author) return
+  if (!message.author) return
   if (message.content.length > 1024) {
     message.content = message.content.slice(0, 700) + '...'
   }
