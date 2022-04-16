@@ -52,7 +52,7 @@ export default new ButtonInteraction(
             const member = interaction.member as GuildMember
             try {
               await member.roles.remove(VerifySettingDB.del_role_id)
-            } catch(e) {
+            } catch (e) {
               console.log(e)
             }
             try {
@@ -108,17 +108,22 @@ export default new ButtonInteraction(
       try {
         await interaction.user.send({ embeds: [captchaVerify] })
         await interaction.user.send({ embeds: [captchaGuildEmbed] })
-      } catch(e) {
-        if(e) return interaction.editReply('서버 멤버가 보내는 다이렉트 메시지 허용하기가 꺼저있는지 확인해주세요')
+      } catch (e) {
+        if (e)
+          return interaction.editReply(
+            '서버 멤버가 보내는 다이렉트 메시지 허용하기가 꺼저있는지 확인해주세요'
+          )
       }
       return interaction.editReply(
         'DM으로 인증정보를 보내드렸습니다 DM을 확인해주세요'
       )
     } else if (VerifySettingDB.type === 'email') {
       const isPremium = await checkPremium(client, interaction.guild as Guild)
-      if(!isPremium) {
-        return interaction.editReply('프리미엄 기한 만료로 이메일 인증 기능이 비활성화되었습니다')
-      } 
+      if (!isPremium) {
+        return interaction.editReply(
+          '프리미엄 기한 만료로 이메일 인증 기능이 비활성화되었습니다'
+        )
+      }
       const code = Math.random().toString(36).substr(2, 7)
       const captchaEmail = new Embed(client, 'success')
         .setTitle('인증')
@@ -168,7 +173,7 @@ export default new ButtonInteraction(
                   const member = interaction.member as GuildMember
                   try {
                     await member.roles.remove(VerifySettingDB.del_role_id)
-                  } catch(e) {
+                  } catch (e) {
                     console.log(e)
                   }
                   try {
@@ -211,20 +216,24 @@ export default new ButtonInteraction(
         })
     } else if (VerifySettingDB.type === 'kakao') {
       const isPremium = await checkPremium(client, interaction.guild as Guild)
-      if(!isPremium) {
-        return interaction.editReply('프리미엄 기한 만료로 카카오 인증 기능이 비활성화되었습니다')
-      } 
-      const UserDB = await User.findOne({id: interaction.user.id})
-      if(!UserDB || !UserDB.kakao_name) {
+      if (!isPremium) {
+        return interaction.editReply(
+          '프리미엄 기한 만료로 카카오 인증 기능이 비활성화되었습니다'
+        )
+      }
+      const UserDB = await User.findOne({ id: interaction.user.id })
+      if (!UserDB || !UserDB.kakao_name) {
         const Verify = new Embed(client, 'warn')
           .setTitle('인증')
-          .setDescription(`인증을 진행하기 위해 [여기](${config.web?.baseurl}/me)에서 카카오 아이디 연동을 진행해 주세요 \n 연동 후 다시 인증 버튼을 눌러주세요`)
+          .setDescription(
+            `인증을 진행하기 위해 [여기](${config.web?.baseurl}/me)에서 카카오 아이디 연동을 진행해 주세요 \n 연동 후 다시 인증 버튼을 눌러주세요`
+          )
         return interaction.editReply({ embeds: [Verify] })
       }
       const member = interaction.member as GuildMember
       try {
         await member.roles.remove(VerifySettingDB.del_role_id)
-      } catch(e) {
+      } catch (e) {
         console.log(e)
       }
       try {
@@ -232,15 +241,14 @@ export default new ButtonInteraction(
       } catch (e) {
         const captchaError = new Embed(client, 'error')
           .setTitle('인증')
-          .setDescription(
-            '인증완료 역할 지급중 오류가 발생했습니다'
-          )
-        if (e)
-          return interaction.editReply({ embeds: [captchaError] })
+          .setDescription('인증완료 역할 지급중 오류가 발생했습니다')
+        if (e) return interaction.editReply({ embeds: [captchaError] })
       }
       const VerifySuccess = new Embed(client, 'success')
         .setTitle('인증')
-        .setDescription(`${UserDB.kakao_name}(\`${UserDB.kakao_email}\`) 정보로 인증이 완료되었습니다`)
+        .setDescription(
+          `${UserDB.kakao_name}(\`${UserDB.kakao_email}\`) 정보로 인증이 완료되었습니다`
+        )
       return interaction.editReply({ embeds: [VerifySuccess] })
     }
   }

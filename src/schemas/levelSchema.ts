@@ -15,4 +15,4 @@ const LevelSchema: Schema<LevelDB> = new Schema(
 
 const Level: Model<LevelDB> = model('userlevel', LevelSchema, 'userlevel')
 
-export default Level;
+export default Level

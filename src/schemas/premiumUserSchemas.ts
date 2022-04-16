@@ -10,6 +10,10 @@ const premiumUserSchema = new Schema(
   { collection: 'premiumUser' }
 )
 
-const PremiumUser: Model<PremiumUserDB> = model('premiumUser', premiumUserSchema, 'premiumUser')
+const PremiumUser: Model<PremiumUserDB> = model(
+  'premiumUser',
+  premiumUserSchema,
+  'premiumUser'
+)
 
-export default PremiumUser;
+export default PremiumUser

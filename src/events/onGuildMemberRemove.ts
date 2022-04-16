@@ -10,7 +10,10 @@ export default new Event('guildMemberRemove', async (client, member) => {
   LoggerEvent(client, member)
 })
 
-const GreetingEvent = async (client: BotClient, member: GuildMember | PartialGuildMember) => {
+const GreetingEvent = async (
+  client: BotClient,
+  member: GuildMember | PartialGuildMember
+) => {
   const WelcomeSettingDB = await WelcomeSetting.findOne({
     guild_id: member.guild.id
   })
@@ -31,13 +34,18 @@ const GreetingEvent = async (client: BotClient, member: GuildMember | PartialGui
       .replaceAll('${username}', member.user.username)
       .replaceAll('${discriminator}', member.user.discriminator)
       .replaceAll('${servername}', member.guild.name)
-      .replaceAll('${memberCount}', member.guild.memberCount.toString()
-      .replaceAll('${줄바꿈}', '\n'))
+      .replaceAll(
+        '${memberCount}',
+        member.guild.memberCount.toString().replaceAll('${줄바꿈}', '\n')
+      )
   )
   return await WelcomeChannel.send({ embeds: [embed] })
 }
 
-const LoggerEvent = async (client: BotClient, member: GuildMember | PartialGuildMember) => {
+const LoggerEvent = async (
+  client: BotClient,
+  member: GuildMember | PartialGuildMember
+) => {
   const LoggerSettingDB = await LoggerSetting.findOne({
     guild_id: member.guild.id
   })

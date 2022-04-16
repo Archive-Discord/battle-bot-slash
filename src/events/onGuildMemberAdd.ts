@@ -33,12 +33,14 @@ const WelecomEvent = async (client: BotClient, member: GuildMember) => {
   if (!WelcomeChannel) return
   const embed = new Embed(client, 'success')
   embed.setAuthor(member.user.username, member.user.displayAvatarURL())
-  embed.setDescription(new String(WelcomeSettingDB.welcome_message)
-  .replaceAll('${username}', member.user.username)
-  .replaceAll('${discriminator}', member.user.discriminator)
-  .replaceAll('${servername}', member.guild.name)
-  .replaceAll('${memberCount}', member.guild.memberCount.toString())
-  .replaceAll('${줄바꿈}', '\n'))
+  embed.setDescription(
+    new String(WelcomeSettingDB.welcome_message)
+      .replaceAll('${username}', member.user.username)
+      .replaceAll('${discriminator}', member.user.discriminator)
+      .replaceAll('${servername}', member.guild.name)
+      .replaceAll('${memberCount}', member.guild.memberCount.toString())
+      .replaceAll('${줄바꿈}', '\n')
+  )
   return await WelcomeChannel.send({ embeds: [embed] })
 }
 
@@ -83,14 +85,21 @@ const AutoModCreateAtEvent = async (client: BotClient, member: GuildMember) => {
   const automodDB = await Automod.findOne({ guild_id: member.guild.id })
   const isPremium = await checkPremium(client, member.guild)
   if (!automodDB) return
-  if (!automodDB.useing.useCreateAt || automodDB.useing.useCreateAt === 0) return
-  if(!isPremium) {
-    const LoggerSettingDB = await LoggerSetting.findOne({ guild_id: member.guild.id })
-    if(!LoggerSettingDB) return
-    const logChannel = member.guild.channels.cache.get(LoggerSettingDB.guild_channel_id) as TextChannel
-    if(!logChannel) return
-    return logChannel.send('프리미엄 기한 만료로 유저 생성일 제한 기능이 비활성화되었습니다')
-  } 
+  if (!automodDB.useing.useCreateAt || automodDB.useing.useCreateAt === 0)
+    return
+  if (!isPremium) {
+    const LoggerSettingDB = await LoggerSetting.findOne({
+      guild_id: member.guild.id
+    })
+    if (!LoggerSettingDB) return
+    const logChannel = member.guild.channels.cache.get(
+      LoggerSettingDB.guild_channel_id
+    ) as TextChannel
+    if (!logChannel) return
+    return logChannel.send(
+      '프리미엄 기한 만료로 유저 생성일 제한 기능이 비활성화되었습니다'
+    )
+  }
   const now = new Date()
   const elapsedDate = Math.round(
     (Number(now) - Number(member.user.createdAt)) / 1000 / 60 / 60 / 24
@@ -116,7 +125,9 @@ const AutoModAutoRoleEvent = async (client: BotClient, member: GuildMember) => {
   const automodDB = await Automod.findOne({ guild_id: member.guild.id })
   if (!automodDB) return
   if (!automodDB.useing.useAutoRole) return
-  const role = member.guild.roles.cache.get(automodDB.useing.autoRoleId as string)
+  const role = member.guild.roles.cache.get(
+    automodDB.useing.autoRoleId as string
+  )
   if (!role) return
   try {
     return member.roles.add(role)
