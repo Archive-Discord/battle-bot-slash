@@ -27,9 +27,9 @@ jobs:
       - name: cd to build directory
         run: cd build
 
-      - name: Commit changes
-        uses: stefanzweifel/git-auto-commit-action@v4
-        with:
-          branch: build
-          create_branch: true
-          commit_message: "build: Build data uploaded"
+      - name: Deploy with gh-pages
+        run: |
+          git remote set-url origin https://git:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git
+          npx gh-pages -d build -u "github-actions-bot <support+actions@github.com>" -b "build"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
