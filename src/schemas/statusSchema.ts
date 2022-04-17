@@ -19,6 +19,7 @@ const StatusSchema = new Schema({
 })
 
 const Status = model('status', StatusSchema, 'status')
+// @ts-ignore
 Status.schema.index({ published_date: 1 }, { expireAfterSeconds: 3600 })
 
 export default Status

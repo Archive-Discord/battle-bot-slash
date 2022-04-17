@@ -5,9 +5,9 @@ import Embed from '../../utils/Embed'
 import mongoose from 'mongoose'
 import Warning from '../../schemas/Warning'
 let ObjectId = mongoose.Types.ObjectId
-
 // @ts-ignore
 String.prototype.toObjectId = function () {
+  // @ts-ignore
   return new ObjectId(this.toString())
 }
 
@@ -118,6 +118,7 @@ export default new BaseCommand(
         return interaction.editReply({ embeds: [embedAdd] })
       } else if (subcommand === '차감') {
         let warningID = interaction.options.getString('id')
+        // @ts-ignore
         if (!ObjectId.isValid(warningID as string))
           return interaction.editReply('찾을 수 없는 경고 아이디 입니다')
         // @ts-ignore

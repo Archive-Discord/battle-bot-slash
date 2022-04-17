@@ -55,7 +55,8 @@
     "string-progressbar": "^1.0.4",
     "strip-ansi": "^5.2.0",
     "uuid": "^8.3.2",
-    "winston": "^3.6.0"
+    "winston": "^3.6.0",
+    "xml-js": "^1.6.11"
   },
   "devDependencies": {
     "@types/cheerio": "^0.22.31",
