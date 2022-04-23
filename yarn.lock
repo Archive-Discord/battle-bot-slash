@@ -1044,6 +1044,7 @@ __metadata:
     fs: ^0.0.1-security
     googleapis: ^95.0.0
     hcs.js: ^2.1.1
+    korcen: ^0.0.6
     mongoose: ^6.2.6
     node-schedule: ^2.1.0
     nodemailer: ^6.7.2
@@ -3109,6 +3110,13 @@ __metadata:
   version: 2.3.5
   resolution: "kareem@npm:2.3.5"
   checksum: eb1b996937e0a7a031230ed56ba2142f35179af5973ff86074921a082375fc3d5df7820b4c7a70b51e7e19c063bf3d735defd5b99a50982095674d68442f4ecb
+  languageName: node
+  linkType: hard
+
+"korcen@npm:^0.0.6":
+  version: 0.0.6
+  resolution: "korcen@npm:0.0.6"
+  checksum: 25a918d14b0ce8eebedf10a8eed5a98700f071e5d958da1ddda3f1715f8bec20f819c21271f3ccffd38242867403ad169f11aac8494ee657a69d55071be6e0e1
   languageName: node
   linkType: hard
 
