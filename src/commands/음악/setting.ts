@@ -27,7 +27,7 @@ export default new BaseCommand(
     }
     let db = await musicDB.findOne({guild_id: message.guild.id})
     if(!db) {
-      let musicChannel = await message.guild.channels.create('battle-bot-music')
+      let musicChannel = await message.guild.channels.create('battle-bot-music', {type: "GUILD_TEXT"})
       const row = new MessageActionRow()
         .addComponents(buttonList)
       let msg = await musicChannel.send({embeds: [musicEmbed], components: [row]})
@@ -71,7 +71,7 @@ export default new BaseCommand(
       }
       let db = await musicDB.findOne({guild_id: interaction.guild.id})
       if(!db) {
-        let musicChannel = await interaction.guild.channels.create('battle-bot-music')
+        let musicChannel = await interaction.guild.channels.create('battle-bot-music', {type: "GUILD_TEXT"})
         const row = new MessageActionRow()
           .addComponents(buttonList)
         let msg = await musicChannel.send({embeds: [musicEmbed], components: [row]})
