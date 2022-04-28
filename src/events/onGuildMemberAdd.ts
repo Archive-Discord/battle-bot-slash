@@ -163,8 +163,10 @@ const AutoModTokenUserEvent = async (
       )
       if (!guildLastJoinUserDataMember) return
       if (
+        member.user.createdAt.getMonth() ===
+          guildLastJoinUserDataMember.createdAt.getMonth() &&
         member.user.createdAt.getDate() ===
-        guildLastJoinUserDataMember.createdAt.getDate()
+          guildLastJoinUserDataMember.createdAt.getDate()
       ) {
         const embed = new Embed(client, 'error')
           .setTitle('배틀이 자동 시스템')
