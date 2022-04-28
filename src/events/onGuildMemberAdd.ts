@@ -8,13 +8,18 @@ import Embed from '../utils/Embed'
 import { Event } from '../structures/Event'
 import Logger from '../utils/Logger'
 import checkPremium from '../utils/checkPremium'
+
+const guildLastJoin = new Map<string, Date>()
+const guildLastJoinUser = new Map<string, string>()
 const log = new Logger('GuildMemberAddEvent')
+
 export default new Event('guildMemberAdd', async (client, member) => {
   WelecomEvent(client, member)
   WelecomLogEvent(client, member)
   AutoModEvent(client, member)
   AutoModCreateAtEvent(client, member)
   AutoModAutoRoleEvent(client, member)
+  AutoModTokenUserEvent(client, member)
 })
 
 const WelecomEvent = async (client: BotClient, member: GuildMember) => {
@@ -133,5 +138,46 @@ const AutoModAutoRoleEvent = async (client: BotClient, member: GuildMember) => {
     return member.roles.add(role)
   } catch (e) {
     return
+  }
+}
+
+const AutoModTokenUserEvent = async (
+  client: BotClient,
+  member: GuildMember
+) => {
+  if (member.guild.id !== '786153760824492062') return
+  const guildLastJoinData = guildLastJoin.get(member.guild.id)
+  const guildLastJoinUserData = guildLastJoinUser.get(member.guild.id)
+  if (!guildLastJoinData || !guildLastJoinUserData) {
+    guildLastJoin.set(member.guild.id, new Date())
+    guildLastJoinUser.set(member.guild.id, member.id)
+  } else {
+    if (
+      new Date().getTime() - guildLastJoinData.getTime() < 1000 &&
+      !member.avatar
+    ) {
+      const guildLastJoinUserData = guildLastJoinUser.get(member.guild.id)
+      if (member.id === guildLastJoinUserData) return
+      const guildLastJoinUserDataMember = client.users.cache.get(
+        guildLastJoinUserData as string
+      )
+      if (!guildLastJoinUserDataMember) return
+      if (
+        member.user.createdAt.getDate() ===
+        guildLastJoinUserDataMember.createdAt.getDate()
+      ) {
+        const embed = new Embed(client, 'error')
+          .setTitle('배틀이 자동 시스템')
+          .setDescription(
+            `토큰 유저 의심 계정으로 추방되었습니다.\n**오류라고 생각될 경우 [여기](https://discord.gg/WtGq7D7BZm)로 문의해 주세요**`
+          )
+        try {
+          await member.send({ embeds: [embed] })
+          await member.kick()
+        } catch (e: any) {
+          log.error(e)
+        }
+      }
+    }
   }
 }
