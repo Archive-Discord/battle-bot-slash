@@ -12,8 +12,11 @@ export default new Event('interactionCreate', async (client, interaction) => {
     if (interaction.channel?.type === 'DM')
       return interaction.reply('DM으로는 버튼 사용이 불가능해요')
     let button = buttonManager.get(interaction.customId)
-    if(interaction.customId.startsWith('role_')) {
+    if (interaction.customId.startsWith('role_')) {
       button = buttonManager.get('autorole.add')
+    }
+    if (interaction.customId.startsWith('vote_')) {
+      button = buttonManager.get('vote.select')
     }
     if (!button) return
     try {

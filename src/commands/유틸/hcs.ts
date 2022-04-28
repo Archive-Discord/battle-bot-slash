@@ -78,7 +78,7 @@ export default new BaseCommand(
           errEmbed.setDescription('학교정보를 찾지 못했습니다.')
           return interaction.editReply({embeds: [errEmbed]})
         }
-        let login = await HcsLogin(schoolResult[0].endpoint, schoolResult[0].schoolCode, name, birthday.toString())
+        let login = await HcsLogin(schoolResult[0].endpoint, schoolResult[0].schoolCode, name, birthday.toString(), schoolResult[0].searchKey)
         if(!login.success) {
           errEmbed.setDescription('이름과 생년월일이 올바르게 작성되었는지 확인해주세요.')
           return interaction.editReply({embeds: [errEmbed]})
@@ -146,7 +146,7 @@ export default new BaseCommand(
           return await interaction.editReply({embeds: [errEmbed]})
         } else {
           const school = await searchSchool(hcsdb.school)
-          const login = await HcsLogin(school[0].endpoint, school[0].schoolCode, hcsdb.name, hcsdb.birthday)
+          const login = await HcsLogin(school[0].endpoint, school[0].schoolCode, hcsdb.name, hcsdb.birthday, school[0].searchKey)
           // @ts-ignore
           const secondLogin = await HcsSecondLogin(school[0].endpoint, login.token, hcsdb.password)
           if(!secondLogin.success) {

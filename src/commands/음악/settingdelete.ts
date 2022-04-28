@@ -10,8 +10,8 @@ import config from '../../../config'
 export default new BaseCommand(
   {
     name: 'musicsettingdelete',
-    description: '노래 기능 세팅을 헤제합니다',
-    aliases: ['뮤직설정헤제', '노래세팅헤제', 'musicsetdel']
+    description: '노래 기능 세팅을 해제합니다',
+    aliases: ['뮤직설정해제', '노래세팅해제', 'musicsetdel']
   },
   async (client, message, args) => {
     let errembed = new Embed(client, 'error')
@@ -37,10 +37,10 @@ export default new BaseCommand(
   },
   {
     data: new SlashCommandBuilder()
-    .setName('뮤직설정헤제')
+    .setName('뮤직설정해제')
     .setDescription('설정하신 뮤직 기능을 해제합니다!'),
     options: {
-      name: '뮤직설정헤제',
+      name: '뮤직설정해제',
       isSlash: true
     },
     async execute(client, interaction) {
@@ -51,7 +51,7 @@ export default new BaseCommand(
         errembed.setTitle('이 명령어는 서버에서만 사용이 가능해요!')
         return interaction.editReply({embeds: [errembed]})
       }
-      if(interaction.guild.members.cache.get(interaction.user.id)?.permissions.has('MANAGE_CHANNELS')) {
+      if(!interaction.guild.members.cache.get(interaction.user.id)?.permissions.has('MANAGE_CHANNELS')) {
         errembed.setTitle('이 명령어를 사용할 권한이 없어요')
         return interaction.editReply({embeds: [errembed]})
       }

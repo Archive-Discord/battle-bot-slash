@@ -15,9 +15,11 @@ const StatusSchema = new Schema({
       shardUptime: String
     }
   ],
-  published_date: { type: Date, default: Date.now }
+  published_date: { type: Date, default: Date.now, expires: 3600 }
 })
 
 const Status = model('status', StatusSchema, 'status')
+// @ts-ignore
+Status.schema.index({ published_date: 1 }, { expireAfterSeconds: 3600 })
 
 export default Status
