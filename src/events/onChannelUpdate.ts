@@ -54,7 +54,8 @@ export default new Event(
 
     if (updated) {
       if (!fetchedLogs) return await logChannel.send({ embeds: [embed] })
-      const deletionLog = fetchedLogs.entries.first() as GuildAuditLogsEntry
+      const deletionLog =
+        fetchedLogs.entries.first() as unknown as GuildAuditLogsEntry
       const executor = deletionLog.executor as User
       const target = deletionLog.target as GuildChannel
       if (target.id !== newChannel.id)
