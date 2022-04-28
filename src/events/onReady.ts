@@ -18,9 +18,9 @@ import NFTUserWallet from '../schemas/NFTUserWalletSchema'
 import NFTGuildVerify from '../schemas/NFTGuildVerifySchema'
 import axios, { AxiosError } from 'axios'
 import config from '../../config'
-import CommandManager from "../managers/CommandManager"
-import web from "../server/index"
-import PremiumUser from "../schemas/premiumUserSchemas"
+import CommandManager from '../managers/CommandManager'
+import web from '../server/index'
+import PremiumUser from '../schemas/premiumUserSchemas'
 
 const logger = new Logger('bot')
 
@@ -87,7 +87,7 @@ export default new Event(
       automodResetChannel(client)
       nftChecker(client)
       PremiumPersonAlert(client)
-    });
+    })
     const commandManager = new CommandManager(client)
     await commandManager.slashGlobalCommandSetup()
     logger.info(`Logged ${client.user?.username}`)
@@ -233,27 +233,43 @@ async function PremiumPersonAlert(client: BotClient) {
   const PremiumDB = await PremiumUser.find({})
   PremiumDB.forEach((user) => {
     const users = client.users.cache.get(user.user_id)
-    if(!users) return
+    if (!users) return
     const embed = new Embed(client, 'info')
     embed.setTitle(`${client.user?.username} 프리미엄`)
     const now = new Date()
-    const lastDate = Math.round((Number(user.nextpay_date) - Number(now))/ 1000 / 60 / 60 / 24)
+    const lastDate = Math.round(
+      (Number(user.nextpay_date) - Number(now)) / 1000 / 60 / 60 / 24
+    )
     try {
-      if(lastDate === 7) {
-        embed.setDescription(`${users.username}님의 프리미엄 만료일이 7일 (${DateFormatting._format(user.nextpay_date)}) 남았습니다`)
-        return users.send({embeds: [embed]})
+      if (lastDate === 7) {
+        embed.setDescription(
+          `${
+            users.username
+          }님의 프리미엄 만료일이 7일 (${DateFormatting._format(
+            user.nextpay_date
+          )}) 남았습니다`
+        )
+        return users.send({ embeds: [embed] })
       }
-      if(lastDate === 1) {
-        embed.setDescription(`${users.username} 서버의 프리미엄 만료일이 1일 (${DateFormatting._format(user.nextpay_date)}) 남았습니다`)
-        return users.send({embeds: [embed]})
+      if (lastDate === 1) {
+        embed.setDescription(
+          `${
+            users.username
+          } 서버의 프리미엄 만료일이 1일 (${DateFormatting._format(
+            user.nextpay_date
+          )}) 남았습니다`
+        )
+        return users.send({ embeds: [embed] })
       }
-      if(lastDate === 0) {
-        embed.setDescription(`${users.username} 서버의 프리미엄이 만료되었습니다`)
-        return users.send({embeds: [embed]})
+      if (lastDate === 0) {
+        embed.setDescription(
+          `${users.username} 서버의 프리미엄이 만료되었습니다`
+        )
+        return users.send({ embeds: [embed] })
       }
-    } catch(e) {
+    } catch (e) {
       logger.error(e as unknown as string)
-    }  
+    }
   })
 }
 
@@ -369,9 +385,7 @@ async function ServerCountUpdate(client: BotClient) {
         servers: res?.reduce((acc, guilds) => Number(acc) + Number(guilds), 0)
       },
       {
-        headers: {
-          Authorization: 'Bearer ' + config.updateServer.archive
-        }
+        headers: { Authorization: 'Bearer ' + config.updateServer.archive }
       }
     )
     .then((data) => {
@@ -381,6 +395,24 @@ async function ServerCountUpdate(client: BotClient) {
       logger.error(
         `아카이브: 서버 수 업데이트 오류: ${e.response?.data.message}`
       )
+    })
+
+  axios
+    .post(
+      `https://koreanbots.dev/api/v2/bots/${client.user?.id}/stats`,
+      {
+        servers: res?.reduce((acc, guilds) => Number(acc) + Number(guilds), 0),
+        shards: client.shard?.count
+      },
+      {
+        headers: { Authorization: config.updateServer.koreanbots }
+      }
+    )
+    .then((data) => {
+      logger.info('한디리: 서버 수 업데이트 완료')
+    })
+    .catch((e: AxiosError) => {
+      logger.error(`한디리: 서버 수 업데이트 오류: ${e.response?.data.message}`)
     })
 }
 
