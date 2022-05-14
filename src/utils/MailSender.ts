@@ -243,7 +243,17 @@ const mailSender = {
                       </td>
                     </tr>
                     <!-- end copy block -->
-                
+                    <script>
+                    function copyToClipboard(val) {
+                    let t = document.createElement("textarea");
+                    document.body.appendChild(t);
+                    t.value = val;
+                    t.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(t);
+                    alert('인증코드가 복사되었습니다.');
+                    }
+                    </script>
                     <!-- start footer -->
                     <tr>
                       <td align="center" bgcolor="#e9ecef" style="padding: 24px;">
