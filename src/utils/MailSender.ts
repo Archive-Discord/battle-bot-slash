@@ -223,7 +223,7 @@ const mailSender = {
                                   <td align="center" bgcolor="#ffffff" style="padding: 30px;">
                                     <table border="0" cellpadding="0" cellspacing="0">
                                       <tr>
-                                        <td align="center" bgcolor="#fffff" style="border-radius: 6px;">
+                                        <td align="center" bgcolor="#ffffff" style="border-radius: 6px;">
                                           <button id="copybtn" style="display: inline-block; padding: 16px 36px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; color: #000000; text-decoration: none; border-radius: 6px;" onclick="copyToClipboard('${param.code}');" title="인증 코드 복사">${param.code}</button>
                                         </td>
                                       </tr>
