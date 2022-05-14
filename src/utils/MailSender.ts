@@ -259,6 +259,8 @@ const mailSender = {
                             <td align="center" bgcolor="#e9ecef" style="padding: 12px 24px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 14px; line-height: 20px; color: #666;">
                               <p style="margin: 0;">배틀이 BattleBot</p>
                               <p style="margin: 0;">사업자등록번호 - 870-10-01917</p>
+                              <a href="https://battlebot.kr/help/privacy" target="_blank">개인정보 처리방침</a>
+                              <a href="https://battlebot.kr/help/terms" target="_blank">서비스 이용약관</a>
                             </td>
                           </tr>
                           <!-- end unsubscribe -->
