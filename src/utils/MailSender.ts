@@ -305,17 +305,6 @@ const mailSender = {
     }
   }
 }
-<script>
-    function copyToClipboard(val) {
-    let t = document.createElement("textarea");
-    document.body.appendChild(t);
-    t.value = val;
-    t.select();
-    document.execCommand('copy');
-    document.body.removeChild(t);
-    alert('인증코드가 복사되었습니다.');
-    }
-</script>
 
 // 메일객체 exports
 export default mailSender
