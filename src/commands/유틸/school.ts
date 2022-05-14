@@ -65,7 +65,7 @@ export default new BaseCommand(
                     if(e.response?.status === 404) {
                       let mealembed = new Embed(client, 'warn')
                         .setTitle(`${value[2]} 급식`)
-                        .setDescription(`어라... ${value[2]}의 급식을 찾을 수 없어요...\n오늘이 휴일인가요?!`)
+                        .setDescription(`어라... ${value[2]}의 급식을 찾을 수 없어요...`)
                       await i.reply({embeds: [mealembed], components: []})
                     }
                   })
