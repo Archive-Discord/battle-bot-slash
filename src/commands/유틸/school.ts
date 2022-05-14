@@ -107,14 +107,14 @@ export default new BaseCommand(
       } else {
         let embed = new Embed(client, 'info')
           .setTitle(`급식`)
-          .setDescription(`학교 학교를 찾는중이에요...`)
+          .setDescription(`학교를 찾는중이에요...`)
         let msg = await interaction.reply({ embeds: [embed] })
         await axios.get(`https://asia-northeast3-smeals-school.cloudfunctions.net/meals/schools?name=${encodeURI(school)}`)
           .then(async(d) => {
             let data: SchoolDataResponse = d.data
             let embed = new Embed(client, 'info')
               .setTitle(`급식`)
-              .setDescription(`학교 학교 찾았어요 학교를 선택해 주세요!`)
+              .setDescription(`학교를 찾았어요 학교를 선택해 주세요!`)
             let row = new MessageActionRow()
             let select = new MessageSelectMenu()
               .setCustomId('school.meal')
