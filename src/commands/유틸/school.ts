@@ -28,7 +28,7 @@ export default new BaseCommand(
           let data: SchoolDataResponse = d.data
           let embed = new Embed(client, 'info')
             .setTitle(`급식`)
-            .setDescription(`학교 학교 찾았어요 학교를 선택해 주세요!`)
+            .setDescription(`학교를 찾았어요 학교를 선택해 주세요!`)
           let row = new MessageActionRow()
           let select = new MessageSelectMenu()
             .setCustomId('school.meal')
@@ -65,7 +65,7 @@ export default new BaseCommand(
                     if(e.response?.status === 404) {
                       let mealembed = new Embed(client, 'warn')
                         .setTitle(`${value[2]} 급식`)
-                        .setDescription(`어라... ${value[2]}의 급식을 찾을 수 없어요...`)
+                        .setDescription(`어라... ${value[2]}의 급식을 찾을 수 없어요...\n오늘이 휴일인가요?!`)
                       await i.reply({embeds: [mealembed], components: []})
                     }
                   })
