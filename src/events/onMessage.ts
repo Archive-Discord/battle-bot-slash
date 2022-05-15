@@ -289,6 +289,6 @@ const LevelSystem = async (client: BotClient, message: Message) => {
     levelEmbed.setDescription(
       `레벨이 \`LV.${level ? level : 0} -> LV.${newData.level}\`로 올랐어요!`
     )*/
-    return message.reply('<@${message.author.id}>님의 레벨이 `LV.${level ? level : 0} -> LV.${newData.level}`로 올랐어요!')
+    return message.reply(`<@${message.author.id}>님의 레벨이 \`LV.${level ? level : 0} -> LV.${newData.level}\`로 올랐어요!`)
   }
 }
