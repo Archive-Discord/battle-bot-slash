@@ -284,11 +284,11 @@ const LevelSystem = async (client: BotClient, message: Message) => {
       { $inc: { level: 1 }, $set: { currentXP: 0 } },
       { upsert: true, new: true }
     )
-    const levelEmbed = new Embed(client, 'info')
+    /*const levelEmbed = new Embed(client, 'info')
     levelEmbed.setTitle(`${message.author.username}님의 레벨이 올랐어요!`)
     levelEmbed.setDescription(
       `레벨이 \`LV.${level ? level : 0} -> LV.${newData.level}\`로 올랐어요!`
-    )
-    return message.reply({ embeds: [levelEmbed] })
+    )*/
+    return message.reply('${message.author.username}님의 레벨이 `LV.${level ? level : 0} -> LV.${newData.level}`로 올랐어요!')
   }
 }
