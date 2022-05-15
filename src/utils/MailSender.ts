@@ -43,17 +43,6 @@ const mailSender = {
         html: `<!DOCTYPE html>
                 <html>
                 <head>
-                <script>
-                  function copyToClipboard(val) {
-                  let t = document.createElement("textarea");
-                  document.body.appendChild(t);
-                  t.value = val;
-                  t.select();
-                  document.execCommand('copy');
-                  document.body.removeChild(t);
-                  alert('인증코드가 복사되었습니다.');
-                  }
-                  </script>
                   <meta charset="utf-8">
                   <meta http-equiv="x-ua-compatible" content="ie=edge">
                   <title>배틀이 인증</title>
@@ -233,8 +222,8 @@ const mailSender = {
                                   <td align="center" bgcolor="#ffffff" style="padding: 30px;">
                                     <table border="0" cellpadding="0" cellspacing="0">
                                       <tr>
-                                        <td align="center" bgcolor="#ffffff" style="border-radius: 6px;">
-                                          <button id="copybtn" style="display: inline-block; padding: 16px 36px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; color: #000000; text-decoration: none; border-radius: 6px;" onclick="copyToClipboard(param.code);" title="인증 코드 복사">${param.code}</button>
+                                        <td align="center" bgcolor="#1a82e2" style="border-radius: 6px;">
+                                          <div style="display: inline-block; padding: 16px 36px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; color: #ffffff; text-decoration: none; border-radius: 6px;">${param.code}</div>
                                         </td>
                                       </tr>
                                     </table>
