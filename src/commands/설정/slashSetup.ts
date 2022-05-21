@@ -26,6 +26,7 @@ export default new BaseCommand(
       .setDescription(
         `Slash Command를 사용하려면 봇 초대할 떄 \`applications.commands\` 스코프를 사용하지 않았을 경우 해당기능을 이용할 수 없습니다. 만약 \`applications.commands\` 스코프를 안 할 경우 [여기를](https://discord.com/api/oauth2/authorize?client_id=${client.user?.id}&scope=applications.commands) 클릭하여 허용해 주시기 바랍니다.`
       )
+      .setColor('#2f3136')
 
     let m = await message.channel.send({ embeds: [embed], components: [row] })
 
@@ -39,6 +40,7 @@ export default new BaseCommand(
             '잠시만 기다려주십시요...',
             'https://cdn.discordapp.com/emojis/667750713698549781.gif?v=1'
           )
+          .setColor('#2f3136')
         await i.update({ embeds: [loading], components: [] })
 
         commandManager
@@ -52,6 +54,7 @@ export default new BaseCommand(
                   .setDescription(
                     `${data?.length}개의 (/) 명령어를 생성했어요!`
                   )
+                  .setColor('#2f3136')
               ]
             })
           })
@@ -65,6 +68,7 @@ export default new BaseCommand(
                     .setDescription(
                       '제 봇 권한이 부족합니다...\n> 필요한 권한\n`applications.commands`스코프'
                     )
+                    .setColor('#2f3136')
                 ]
               })
             } else {
