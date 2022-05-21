@@ -2,6 +2,7 @@ import { SlashCommandBuilder } from '@discordjs/builders'
 import config from '../../../config'
 import { BaseCommand } from '../../structures/Command'
 import Embed from '../../utils/Embed'
+import { MessageActionRow, MessageButton, MessageEmbed } from "discord.js";
 
 export default new BaseCommand(
   {
