@@ -16,6 +16,12 @@ export default new BaseCommand(
     aliases: ['정보', 'info', 'wjdqh']
   },
   async (client, message, args) => {
+    let buttton = new MessageButton()
+    	  .setLabel('하트 누르기')
+    	  .setURL("https://koreanbots.dev/bots/928523914890608671/vote")
+    	  .setStyle('LINK')
+    let row = new MessageActionRow()
+        .addComponents(buttton)
     let embed = new Embed(client, 'default')
         .setTitle(`${client.user?.username} 정보`)
         .setColor('#2f3136')
@@ -27,7 +33,7 @@ export default new BaseCommand(
     embed.addField('업타임', `${DateFormatting.relative(new Date(Date.now() - process.uptime() * 1000))}`, true)
     embed.addField('시스템정보', `\`\`\`diff\n- Discord.js: ${version} \n- Node.js: ${process.version}\n- OS: ${process.platform} - Memory: ${memory()} \`\`\``)
     embed.addField('유용한 링크', `[서포트 서버](https://discord.gg/WtGq7D7BZm) | [웹 대시보드](${config.web.baseurl}) | [깃허브](${repository}) | [개인정보처리방침](${config.web.baseurl}/help/privacy) | [상태](${config.web.baseurl}/status)`)
-    return message.reply({embeds: [embed]})
+    return message.reply({embeds: [embed], components: [row] })
   },
   {
     data: new SlashCommandBuilder()
@@ -38,6 +44,12 @@ export default new BaseCommand(
       isSlash: true
     },
     async execute(client, interaction) {
+      let buttton = new MessageButton()
+    	  .setLabel('하트 누르기')
+    	  .setURL("https://koreanbots.dev/bots/928523914890608671/vote")
+    	  .setStyle('LINK')
+      let row = new MessageActionRow()
+        .addComponents(buttton)
       let embed = new Embed(client, 'default')
         .setTitle(`${client.user?.username} 정보`)
         .setColor('#2f3136')
@@ -49,7 +61,7 @@ export default new BaseCommand(
       embed.addField('업타임', `${DateFormatting.relative(new Date(Date.now() - process.uptime() * 1000))}`, true)
       embed.addField('시스템정보', `\`\`\`diff\n- Discord.js: ${version} \n- Node.js: ${process.version}\n- OS: ${process.platform} - Memory: ${memory()} \`\`\``)
       embed.addField('유용한 링크', `[서포트 서버](https://discord.gg/WtGq7D7BZm) | [웹 대시보드](${config.web.baseurl}) | [깃허브](${repository}) | [개인정보처리방침](${config.web.baseurl}/help/privacy) | [상태](${config.web.baseurl}/status)`)
-      return interaction.reply({embeds: [embed]})
+      return interaction.reply({embeds: [embed], components: [row] })
     }
   }
 )
