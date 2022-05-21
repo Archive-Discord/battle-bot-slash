@@ -123,6 +123,7 @@ export default new BaseCommand(
         infoEmbed.setDescription(
           '[개인정보처리방침](https://battlebot.kr/help/privacy)에 따라 아래정보로 등록을 진행합니다 \n 동의하실경우 등록이 진행됩니다'
         )
+        infoEmbed.setColor('#2f3136')
         let buttons = [
           new MessageButton()
             .setCustomId('hcs.ok')
@@ -165,6 +166,7 @@ export default new BaseCommand(
             successEmbed.setDescription(
               '자가진단 등록이 성공적으로 완료 되었습니다!'
             )
+            successEmbed.setColor('#2f3136')
             await interaction.editReply({
               embeds: [successEmbed],
               components: []
@@ -214,6 +216,7 @@ export default new BaseCommand(
           successEmbed.setDescription(
             `\`${hcsdb.name}\`님의 자가진단이 완료되었습니다`
           )
+          successEmbed.setColor('#2f3136')
           return await interaction.editReply({ embeds: [successEmbed] })
         }
       }
