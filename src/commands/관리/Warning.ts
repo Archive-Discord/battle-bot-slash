@@ -104,6 +104,7 @@ export default new BaseCommand(
         })
 
         let embedAdd = new Embed(client, 'info')
+          .setColor('#2f3136')
           .setTitle('경고')
           .setDescription('아래와 같이 경고가 추가되었습니다')
           .setFields(
@@ -139,7 +140,7 @@ export default new BaseCommand(
         })
 
         const embedRemove = new MessageEmbed()
-          .setColor('#008000')
+          .setColor('#2f3136')
           .setTitle('경고')
           .setDescription('아래와 같이 경고가 삭감되었습니다')
           .addField(
@@ -175,7 +176,7 @@ export default new BaseCommand(
         )
 
         const embedList = new MessageEmbed()
-          .setColor('#ff7f00')
+          .setColor('#2f3136')
           .setTitle('경고')
           .setDescription(
             `${user?.username}님의 ${insertResLength.length}개의 경고중 최근 5개의 경고 기록입니다`
