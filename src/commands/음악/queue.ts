@@ -14,6 +14,7 @@ export default new BaseCommand(
   async (client, message, args) => {
     let errembed = new Embed(client, 'error')
     let sucessembed = new Embed(client, 'success')
+      .setColor('#2f3136')
     if(!message.guild) {
       errembed.setTitle('❌ 이 명령어는 서버에서만 사용이 가능해요!')
       return message.reply({embeds: [errembed]})
