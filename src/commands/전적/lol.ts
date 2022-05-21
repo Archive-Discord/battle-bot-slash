@@ -34,6 +34,7 @@ export default new BaseCommand(
       await interaction.editReply({
         embeds: [
           new Embed(client, 'info').setDescription('전적을 불러오는 중..')
+          .setColor('#2f3136')
         ]
       })
       let nickname = interaction.options.getString('user', true)
@@ -82,6 +83,7 @@ async function getStat(args: string) {
   })
   let embed = new MessageEmbed()
     .setTitle(`\`${args}\`의 프로필`)
+    .setColor('#2f3136')
   let leagueStatus = data.league_stats[0]
   if(leagueStatus.tier_info.tier) embed.setDescription(`${leagueStatus.queue_info.queue_translate} - ${leagueStatus.tier_info.tier} ${leagueStatus.tier_info.division} (${leagueStatus.tier_info.lp}LP) \n ${leagueStatus.win}승 / ${leagueStatus.lose}패 / ${(leagueStatus.win/(leagueStatus.win + leagueStatus.lose)*100).toFixed(2)}%`)
   else embed.setDescription(`**언랭크**`)
