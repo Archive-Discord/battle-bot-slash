@@ -21,14 +21,15 @@ export default new BaseCommand(
     } else {
       let embed = new Embed(client, 'info')
         .setTitle(`급식`)
-        .setDescription(`학교 급식을 찾는중이에요...`)
+        .setDescription(`잠시만 기다려주세요. 학교를 찾는중이에요...`)
       let msg = await message.reply({embeds: [embed]})
       await axios.get(`https://asia-northeast3-smeals-school.cloudfunctions.net/meals/schools?name=${encodeURI(args[0])}`)
         .then(async(d) => {
           let data: SchoolDataResponse = d.data
           let embed = new Embed(client, 'info')
             .setTitle(`급식`)
-            .setDescription(`학교를 찾았어요 학교를 선택해 주세요!`)
+            .setDescription(`학교를 찾았습니다. 학교를 선택해 주세요!`)
+            .setColor('#2f3136')
           let row = new MessageActionRow()
           let select = new MessageSelectMenu()
             .setCustomId('school.meal')
@@ -60,6 +61,7 @@ export default new BaseCommand(
                     let mealembed = new Embed(client, 'success')
                     .setTitle(`${value[2]} 급식`)
                     .setDescription(`${meal.meals[0].meal.join('\n')} \n\n ${meal.meals[0].calories}`)
+                    .setColor('#2f3136')
                     await i.reply({ embeds: [mealembed] })
                   }).catch(async(e: AxiosError) => {
                     if(e.response?.status === 404) {
@@ -107,14 +109,15 @@ export default new BaseCommand(
       } else {
         let embed = new Embed(client, 'info')
           .setTitle(`급식`)
-          .setDescription(`학교를 찾는중이에요...`)
+          .setDescription(`잠시만 기다려주세요. 학교를 찾는중이에요...`)
         let msg = await interaction.reply({ embeds: [embed] })
         await axios.get(`https://asia-northeast3-smeals-school.cloudfunctions.net/meals/schools?name=${encodeURI(school)}`)
           .then(async(d) => {
             let data: SchoolDataResponse = d.data
             let embed = new Embed(client, 'info')
               .setTitle(`급식`)
-              .setDescription(`학교를 찾았어요 학교를 선택해 주세요!`)
+              .setDescription(`학교를 찾았습니다. 학교를 선택해 주세요!`)
+              .setColor('#2f3136')
             let row = new MessageActionRow()
             let select = new MessageSelectMenu()
               .setCustomId('school.meal')
@@ -145,6 +148,7 @@ export default new BaseCommand(
                       let mealembed = new Embed(client, 'success')
                       .setTitle(`${value[2]} 급식`)
                       .setDescription(`${meal.meals[0].meal.join('\n')} \n\n ${meal.meals[0].calories}`)
+                      .setColor('#2f3136')
                       await i.reply({ embeds: [mealembed] })
                     }).catch(async(e: AxiosError) => {
                       if(e.response?.status === 404) {
