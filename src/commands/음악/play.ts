@@ -90,6 +90,7 @@ export default new BaseCommand(
         undefined,
         result.playlist.url
       )
+      sucessembed.setColor('#2f3136')
       sucessembed.setDescription(songs.join(', '))
       sucessembed.setThumbnail(result.playlist.thumbnail)
       queue.addTracks(result.tracks)
@@ -135,6 +136,7 @@ export default new BaseCommand(
               `[${result.tracks[index].title}](${result.tracks[index].url}) ${result.tracks[index].duration} - ${result.tracks[index].requestedBy}`
             )
             sucessembed.setThumbnail(result.tracks[index].thumbnail)
+            sucessembed.setColor('#2f3136')
             msg.edit({ content: ' ', embeds: [sucessembed], components: [] })
             if (!queue.playing) return await queue.play()
           }
@@ -247,6 +249,7 @@ export default new BaseCommand(
                   : ''
               }`
             )
+            embed.setColor('#2f3136')
             embed.setThumbnail(result.playlist.thumbnail)
             embed.setAuthor(
               `재생목록에 아래 노래들을 추가했어요!`,
@@ -266,6 +269,7 @@ export default new BaseCommand(
                 undefined,
                 `${result.playlist.url}`
               )
+              embed.setColor('#2f3136')
               return interaction.editReply({ embeds: [embed] })
             }
             if (page === 2) {
@@ -318,6 +322,7 @@ export default new BaseCommand(
                 `[${result.tracks[index].title}](${result.tracks[index].url}) ${result.tracks[index].duration} - ${result.tracks[index].requestedBy}`
               )
               sucessembed.setThumbnail(result.tracks[index].thumbnail)
+              sucessembed.setColor('#2f3136')
               interaction.editReply({
                 content: ' ',
                 embeds: [sucessembed],
