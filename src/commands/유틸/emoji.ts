@@ -13,6 +13,7 @@ export default new BaseCommand(
   async (client, message, args) => {
     let errEmbed = new Embed(client, 'error')
     let successEmbed = new Embed(client, 'success')
+      .setColor('#2f3136')
     if(!message.guild) {
       errEmbed.setDescription('이 명령어는 서버에서만 사용 가능합니다')
       return message.reply({embeds: [errEmbed]})
@@ -50,6 +51,7 @@ export default new BaseCommand(
       await interaction.deferReply()
       let errEmbed = new Embed(client, 'error')
       let successEmbed = new Embed(client, 'success')
+        .setColor('#2f3136')
       let stringemoji = interaction.options.getString('이모지', true)
       if(!interaction.guild) {
         errEmbed.setDescription('이 명령어는 서버에서만 사용 가능합니다')
