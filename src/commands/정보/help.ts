@@ -30,7 +30,8 @@ export default new BaseCommand(
           true
         )
       })
-      return message.reply({ embeds: [embed], components: [row] })
+      //return message.reply({ embeds: [embed], components: [row] })
+      return message.reply({ embeds: [embed], row })
     } else {
       let commands = client.categorys.get(args[0])
       if (args[0] === 'dev') {
@@ -95,7 +96,8 @@ export default new BaseCommand(
             true
           )
         })
-        return interaction.reply({ embeds: [embed], components: [row]})
+        //return interaction.reply({ embeds: [embed], components: [row]})
+        return message.reply({ embeds: [embed], row })
       } else {
         let category = interaction.options.getString('category')?.toLowerCase()
         if (category === 'dev') {
