@@ -10,6 +10,14 @@ export default new BaseCommand(
     aliases: ['도움말', 'ehdna', 'ehdnaakf', '도움']
   },
   async (client, message, args) => {
+    let butt1no = new MessageActionRow()
+			.addComponents(
+				new MessageButton()
+				  .setCustomId('hdl.heart.please')
+          .setLink("koreanbots.dev/bots/928523914890608671/vote")
+					.setLabel('하트 누르기')
+					.setStyle('LINK'),
+			);
     let embed = new Embed(client, 'success')
       .setTitle(`${client.user?.username} 도움말`)
       .setColor('#2f3136')
@@ -23,7 +31,7 @@ export default new BaseCommand(
           true
         )
       })
-      return message.reply({ embeds: [embed] })
+      return message.reply({ embeds: [embed], components: [butt1no] })
     } else {
       let commands = client.categorys.get(args[0])
       if (args[0] === 'dev') {
@@ -69,6 +77,14 @@ export default new BaseCommand(
       isSlash: true
     },
     async execute(client, interaction) {
+      let butt1no = new MessageActionRow()
+			.addComponents(
+				new MessageButton()
+				  .setCustomId('hdl.heart.please')
+          .setLink("koreanbots.dev/bots/928523914890608671/vote")
+					.setLabel('하트 누르기')
+					.setStyle('LINK'),
+			);
       let embed = new Embed(client, 'success')
         .setColor('#2f3136')
         .setTitle(`${client.user?.username} 도움말`)
@@ -82,7 +98,7 @@ export default new BaseCommand(
             true
           )
         })
-        return interaction.reply({ embeds: [embed] })
+        return interaction.reply({ embeds: [embed], components: [butt1no]})
       } else {
         let category = interaction.options.getString('category')?.toLowerCase()
         if (category === 'dev') {
