@@ -37,6 +37,7 @@ export default new BaseCommand(
       .addField(`서버 가입일`, DateFormatting._format(user.joinedAt as Date,''), true)
       .addField(`계정 생성일`, DateFormatting._format(user.user.createdAt as Date,''), true)
       .addField(`${client.user?.username} 웹 가입일`, (userdb ? DateFormatting._format(userdb.published_date ,'') : "미가입"))
+      .setColor('#2f3136')
     return message.reply({embeds: [embed]})
   },
   {
@@ -79,6 +80,7 @@ export default new BaseCommand(
         .addField(`서버 가입일`, DateFormatting._format(user.joinedAt as Date,''), true)
         .addField(`계정 생성일`, DateFormatting._format(user.user.createdAt as Date,''), true)
         .addField(`${client.user?.username} 웹 가입일`, (userdb ? DateFormatting._format(userdb.published_date ,'') : "미가입"))
+        .setColor('#2f3136')
       return interaction.reply({embeds: [embed]})
     }
   }
