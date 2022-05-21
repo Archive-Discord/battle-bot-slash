@@ -40,7 +40,7 @@ export default new BaseCommand(
             .setTitle('이런...')
             .setDescription(`존재하지 않는 카테고리입니다.`)
             .setType('error')
-          return message.reply({ embeds: [embed] })
+          return message.reply({ embeds: [embed], components: [row] })
         }
       }
       if (!commands) {
@@ -48,7 +48,7 @@ export default new BaseCommand(
           .setTitle('이런...')
           .setDescription(`존재하지 않는 카테고리입니다.`)
           .setType('error')
-        return message.reply({ embeds: [embed] })
+        return message.reply({ embeds: [embed], components: [row] })
       }
       embed.setDescription(`${args[0]} 관련 도움말 입니다!`)
       commands.forEach((command) => {
@@ -58,7 +58,7 @@ export default new BaseCommand(
           true
         )
       })
-      return message.reply({ embeds: [embed] })
+      return message.reply({ embeds: [embed], components: [row] })
     }
   },
   {
@@ -105,7 +105,7 @@ export default new BaseCommand(
               .setTitle('이런...')
               .setDescription(`존재하지 않는 카테고리입니다.`)
               .setType('error')
-            return interaction.reply({ embeds: [embed] })
+            return interaction.reply({ embeds: [embed], components: [row] })
           }
         }
         let commands = client.categorys.get(category as string)
@@ -114,7 +114,7 @@ export default new BaseCommand(
             .setTitle('이런...')
             .setDescription(`존재하지 않는 카테고리입니다.`)
             .setType('error')
-          return interaction.reply({ embeds: [embed] })
+          return interaction.reply({ embeds: [embed], components: [row] })
         }
         embed.setDescription(`${category} 관련 도움말 입니다!`)
         let isSlash = commands?.filter((x) => x.isSlash)
@@ -129,7 +129,7 @@ export default new BaseCommand(
             embed.addField(`\`/${command.name}\``, `> ${command.description}`)
           })
         }
-        return interaction.reply({ embeds: [embed] })
+        return interaction.reply({ embeds: [embed], components: [row] })
       }
     }
   }
