@@ -21,6 +21,7 @@ export default new BaseCommand(
   async (client, message, args) => {
     let errembed = new Embed(client, 'error')
     let sucessembed = new Embed(client, 'success')
+      .setColor('#2f3136')
     if (!message.guild) {
       errembed.setTitle('❌ 이 명령어는 서버에서만 사용이 가능해요!')
       return message.reply({ embeds: [errembed] })
@@ -90,7 +91,6 @@ export default new BaseCommand(
         undefined,
         result.playlist.url
       )
-      sucessembed.setColor('#2f3136')
       sucessembed.setDescription(songs.join(', '))
       sucessembed.setThumbnail(result.playlist.thumbnail)
       queue.addTracks(result.tracks)
@@ -136,7 +136,6 @@ export default new BaseCommand(
               `[${result.tracks[index].title}](${result.tracks[index].url}) ${result.tracks[index].duration} - ${result.tracks[index].requestedBy}`
             )
             sucessembed.setThumbnail(result.tracks[index].thumbnail)
-            sucessembed.setColor('#2f3136')
             msg.edit({ content: ' ', embeds: [sucessembed], components: [] })
             if (!queue.playing) return await queue.play()
           }
@@ -162,6 +161,7 @@ export default new BaseCommand(
       await interaction.deferReply()
       let errembed = new Embed(client, 'error')
       let sucessembed = new Embed(client, 'success')
+        .setColor('#2f3136')
       if (!interaction.guild) {
         errembed.setTitle('❌ 이 명령어는 서버에서만 사용이 가능해요!')
         return interaction.editReply({ embeds: [errembed] })
@@ -242,6 +242,7 @@ export default new BaseCommand(
             })
           if (tracks.length) {
             const embed = new Embed(client, 'success')
+            embed.setColor('#2f3136')
             embed.setDescription(
               `\n${tracks.join('\n')}${
                 result.playlist.tracks.length > pageEnd
@@ -249,7 +250,6 @@ export default new BaseCommand(
                   : ''
               }`
             )
-            embed.setColor('#2f3136')
             embed.setThumbnail(result.playlist.thumbnail)
             embed.setAuthor(
               `재생목록에 아래 노래들을 추가했어요!`,
@@ -262,6 +262,7 @@ export default new BaseCommand(
             emptypage = 1
             if (page === 1) {
               const embed = new Embed(client, 'success')
+              embed.setColor('#2f3136')
               embed.setDescription(`더 이상 재생목록에 노래가 없습니다`)
               embed.setThumbnail(result.playlist.thumbnail)
               embed.setAuthor(
@@ -269,7 +270,6 @@ export default new BaseCommand(
                 undefined,
                 `${result.playlist.url}`
               )
-              embed.setColor('#2f3136')
               return interaction.editReply({ embeds: [embed] })
             }
             if (page === 2) {
@@ -322,7 +322,6 @@ export default new BaseCommand(
                 `[${result.tracks[index].title}](${result.tracks[index].url}) ${result.tracks[index].duration} - ${result.tracks[index].requestedBy}`
               )
               sucessembed.setThumbnail(result.tracks[index].thumbnail)
-              sucessembed.setColor('#2f3136')
               interaction.editReply({
                 content: ' ',
                 embeds: [sucessembed],
