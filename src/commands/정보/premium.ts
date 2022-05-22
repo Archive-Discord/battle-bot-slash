@@ -13,6 +13,7 @@ export default new BaseCommand(
   },
   async (client, message, args) => {
     let embed = new Embed(client, 'success')
+      .setColor('#2f3136')
       .setTitle(`${client.user?.username} 프리미엄`)
     if(!message.guild) {
       embed.setDescription(`프리미엄 확인 기능은 DM 채널에서는 사용이 불가능합니다`)
@@ -45,6 +46,7 @@ export default new BaseCommand(
     async execute(client, interaction) {
       await interaction.deferReply();
       let embed = new Embed(client, 'success')
+        .setColor('#2f3136')
         .setTitle(`${client.user?.username} 프리미엄`)
       if(!interaction.guild) {
         embed.setDescription(`프리미엄 확인 기능은 DM 채널에서는 사용이 불가능합니다`)
