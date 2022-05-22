@@ -10,12 +10,15 @@ export default new BaseCommand(
     aliases: ['핑', '측정', 'vld']
   },
   async (client, message, args) => {
-    let embed = new Embed(client, 'warn').setTitle('핑 측정중...')
-
+    let embed = new Embed(client, 'warn')
+      .setTitle('핑 측정중...')
+      .setColor('#2f3136')
+    
     let m = await message.reply({
       embeds: [embed]
     })
     embed = new Embed(client, 'success')
+      .setColor('#2f3136')
       .setTitle('PONG!')
       .addField(
         '메세지 응답속도',
@@ -39,6 +42,7 @@ export default new BaseCommand(
     },
     async execute(client, interaction) {
       let PingEmbed = new Embed(client, 'success')
+        .setColor('#2f3136')
         .setTitle('핑 측정')
         .addField('웹소켓 지연속도', `${client.ws.ping}ms`)
         .addField('업타임', `<t:${(Number(client.readyAt) / 1000) | 0}:R>`)
