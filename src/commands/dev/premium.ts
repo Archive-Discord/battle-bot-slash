@@ -19,6 +19,7 @@ export default new MessageCommand(
       )
 
     let LoadingEmbed = new Embed(client, 'warn')
+      .setColor('#2f3136')
       .setTitle('잠시만 기다려주십시요')
       .setDescription('해당 서버의 정보를 찾는 중이에요...')
     let msg = await message.reply({ embeds: [LoadingEmbed] })
@@ -42,6 +43,7 @@ export default new MessageCommand(
         }
       })
       let successEmbed = new Embed(client, 'success')
+        .setColor('#2f3136')
         .setTitle('프리미엄')
         .setDescription(
           `관리자 ${message.author.username}에 의하여 ${
@@ -81,6 +83,7 @@ export default new MessageCommand(
         { $set: { nextpay_date: date } }
       )
       let successEmbed = new Embed(client, 'success')
+        .setColor('#2f3136')
         .setTitle('프리미엄')
         .setDescription(
           `관리자 ${message.author.username}에 의하여 ${
