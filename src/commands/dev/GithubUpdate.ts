@@ -53,6 +53,7 @@ export default new MessageCommand(
           res.json().then((json: GithubCommitAPI[]) => {
             if (json[0].sha.trim().substring(0, 6) === client.BUILD_NUMBER) {
               let SuccessEmbed = new Embed(client, 'success')
+                .setColor('#2f3136')
                 .setTitle('확인 완료!')
                 .setDescription('현재 최신 버전을 이용중입니다!')
                 .addField('현재 버전', `v${client.VERSION}`, true)
@@ -65,6 +66,7 @@ export default new MessageCommand(
                 count++
                 if (commit.sha.trim().substring(0, 6) === client.BUILD_NUMBER) {
                   let NewUpdateEmbed = new Embed(client, 'success')
+                    .setColor('#2f3136')
                     .setTitle('최신 업데이트가 있습니다!')
                     .setDescription(
                       `최신 업데이트된 ${count}개의 내용이 있습니다. 지금 업데이트 하시겠습니까?`
@@ -136,6 +138,7 @@ export default new MessageCommand(
           res.json().then((json: GithubCommitAPI[]) => {
             if (json[0].sha.trim().substring(0, 6) === client.BUILD_NUMBER) {
               let SuccessEmbed = new Embed(client, 'success')
+                .setColor('#2f3136')
                 .setTitle('확인 완료!')
                 .setDescription('현재 최신 버전을 이용중입니다!')
                 .addField('현재 버전', `v${client.VERSION}`, true)
@@ -152,6 +155,7 @@ export default new MessageCommand(
                 count++
                 if (commit.sha.trim().substring(0, 6) === client.BUILD_NUMBER) {
                   let NewUpdateEmbed = new Embed(client, 'success')
+                    .setColor('#2f3136')
                     .setTitle('최신 업데이트가 있습니다!')
                     .setDescription(
                       `최신 업데이트된 ${count}개의 내용이 있습니다. 지금 업데이트 하시겠습니까?`
