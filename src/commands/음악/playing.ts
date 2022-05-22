@@ -13,7 +13,6 @@ export default new BaseCommand(
   },
   async (client, message, args) => {
     let errembed = new Embed(client, 'error')
-      .setTitle('어라...')
     let sucessembed = new Embed(client, 'success')
       .setColor('#2f3136')
     if(!message.guild) {
@@ -43,7 +42,6 @@ export default new BaseCommand(
     async execute(client, interaction) {
       await interaction.deferReply()
       let errembed = new Embed(client, 'error')
-        .setTitle('어라...')
       let sucessembed = new Embed(client, 'success')
         .setColor('#2f3136')
       if(!interaction.guild) {
