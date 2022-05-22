@@ -150,6 +150,7 @@ const MusicPlayer = async (client: BotClient, message: Message) => {
   await message.delete()
   const errembed = new Embed(client, 'error')
   const sucessembed = new Embed(client, 'success')
+    .setColor('#2f3136')
   const user = message.guild?.members.cache.get(message.author.id)
   const channel = user?.voice.channel
   if (!channel) {
