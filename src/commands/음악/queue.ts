@@ -51,6 +51,8 @@ export default new BaseCommand(
     async execute(client, interaction) {
       await interaction.deferReply()
       let errembed = new Embed(client, 'error')
+      let sucessembed = new Embed(client, 'success')
+        .setColor('#2f3136')
       if(!interaction.guild) {
         errembed.setTitle('❌ 이 명령어는 서버에서만 사용이 가능해요!')
         return interaction.editReply({embeds: [errembed]})
@@ -81,23 +83,22 @@ export default new BaseCommand(
           return `**${i + pageStart + 1}**. [${m.title}](${m.url}) ${m.duration} - ${m.requestedBy}`;
       });
       if(tracks.length) {
-          const embed = new Embed(client, 'success');
-          embed.setDescription(`\n${tracks.join('\n')}${
+          sucessembed.setColor('#2f3136')
+          sucessembed.setDescription(`\n${tracks.join('\n')}${
               queue.tracks.length > pageEnd
                   ? `\n... + ${queue.tracks.length - pageEnd}`
                   : ''
           }`);
-          embed.setAuthor(`재생 중인 노래 🎵 ${queue.current.title} - ${queue.current.author}`, undefined, `${queue.current.url}`);
-          pages.push(embed);
+          sucessembed.setAuthor(`재생 중인 노래 🎵 ${queue.current.title} - ${queue.current.author}`, undefined, `${queue.current.url}`);
+          pages.push(sucessembed);
           page++;
       }
       else  {
           emptypage = 1;
           if(page === 1) {
-              const embed = new Embed(client, 'success');
-              embed.setDescription(`더 이상 재생목록에 노래가 없습니다`);
-              embed.setAuthor(`재생 중인 노래 🎵 ${queue.current.title} - ${queue.current.author}`,undefined, `${queue.current.url}`);
-              return interaction.editReply({ embeds: [embed] });
+              sucessembed.setDescription(`더 이상 재생목록에 노래가 없습니다`);
+              sucessembed.setAuthor(`재생 중인 노래 🎵 ${queue.current.title} - ${queue.current.author}`,undefined, `${queue.current.url}`);
+              return interaction.editReply({ embeds: [sucessembed] });
           }
           if(page === 2) {
               return interaction.editReply({ embeds: [pages[0]] });
