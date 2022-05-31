@@ -105,6 +105,7 @@ export default new BaseCommand(
         let embed = new Embed(client, 'error')
           .setTitle(`이런...`)
           .setDescription(`학교 이름을 적어주세요 \n\n \`${config.bot.prefix}급식 <학교명>\``)
+          .setColor('#2f3136')
         return interaction.reply({ embeds: [embed] })
       } else {
         let embed = new Embed(client, 'info')
