@@ -22,6 +22,7 @@ export default new BaseCommand(
       let embed = new Embed(client, 'info')
         .setTitle(`급식`)
         .setDescription(`잠시만 기다려주세요. 학교를 찾는중이에요...`)
+        .setColor('#2f3136')
       let msg = await message.reply({embeds: [embed]})
       await axios.get(`https://asia-northeast3-smeals-school.cloudfunctions.net/meals/schools?name=${encodeURI(args[0])}`)
         .then(async(d) => {
@@ -105,12 +106,12 @@ export default new BaseCommand(
         let embed = new Embed(client, 'error')
           .setTitle(`이런...`)
           .setDescription(`학교 이름을 적어주세요 \n\n \`${config.bot.prefix}급식 <학교명>\``)
-          .setColor('#2f3136')
         return interaction.reply({ embeds: [embed] })
       } else {
         let embed = new Embed(client, 'info')
           .setTitle(`급식`)
           .setDescription(`잠시만 기다려주세요. 학교를 찾는중이에요...`)
+          .setColor('#2f3136')
         let msg = await interaction.reply({ embeds: [embed] })
         await axios.get(`https://asia-northeast3-smeals-school.cloudfunctions.net/meals/schools?name=${encodeURI(school)}`)
           .then(async(d) => {
