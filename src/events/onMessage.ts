@@ -42,7 +42,7 @@ export default new Event('messageCreate', async (client, message) => {
     await command?.execute(client, message, args)
   } catch (error: any) {
     if (error?.code === Constants.APIErrors.MISSING_PERMISSIONS) {
-      return message.reply('해당 명령어를 실행하기 위한 권한이 부족합니다!')
+      return
     }
     errorManager.report(error, { executer: message, isSend: true })
   }
