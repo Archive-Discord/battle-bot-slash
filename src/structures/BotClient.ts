@@ -36,8 +36,7 @@ export default class BotClient extends Client {
   public player: Player = new Player(this)
   public dokdo: Dokdo = new Dokdo(this, {
     prefix: this.config.bot.prefix,
-    owners: config.bot.owners,
-    noPerm: continue
+    owners: config.bot.owners
   })
   public db: any
   public schemas: Collection<string, Model<any>> = new Collection()
