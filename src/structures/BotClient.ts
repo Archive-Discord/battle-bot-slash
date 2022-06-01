@@ -36,7 +36,8 @@ export default class BotClient extends Client {
   public player: Player = new Player(this)
   public dokdo: Dokdo = new Dokdo(this, {
     prefix: this.config.bot.prefix,
-    owners: config.bot.owners
+    owners: config.bot.owners,
+    noPerm: (message) => message.reply('당신은 Dokdo 를 이용할수 없습니다.')
   })
   public db: any
   public schemas: Collection<string, Model<any>> = new Collection()
