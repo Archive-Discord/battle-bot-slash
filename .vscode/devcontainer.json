@@ -1,0 +1,6 @@
+{
+  "dockerComposeFile": "docker-compose.yml",
+  "postCreateCommand": "yarn",
+  "forwardPorts": [3000, 27017],
+  "remoteUser": "node"
+}
