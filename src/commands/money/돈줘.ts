@@ -2,7 +2,7 @@ import { BaseCommand } from '../../structures/Command'
 import Discord from 'discord.js'
 import Embed from '../../utils/Embed'
 import comma from 'comma-number'
-import schema from '../../schemas/돈'
+import schema from '../../schemas/MoneySchema'
 
 export default new BaseCommand(
   {
