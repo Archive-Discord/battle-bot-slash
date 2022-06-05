@@ -1534,11 +1534,6 @@ __metadata:
   checksum: b3c46de38ffd35c57d1c02488355be9f218e582aec72d72d1b8bbec95a3ac1b38c96cd6e03ff015577e68f550fbb361a3bfdbd9bb248be9390b7b3745691be6b
   languageName: node
   linkType: hard
-
-"comma-number@^2.1.0":
-  "integrity" "sha512-fRcu1c+4yFLFp3tgranEkKPPWRlnkWQXr4p0KBL0WW9Kd2wmbKAoQ2R4rluFm4ubXCtXGybEaFB7r6YgPOnahQ=="
-  "resolved" "https://registry.npmjs.org/comma-number/-/comma-number-2.1.0.tgz"
-  "version" "2.1.0"
   
 "concat-map@npm:0.0.1":
   version: 0.0.1
