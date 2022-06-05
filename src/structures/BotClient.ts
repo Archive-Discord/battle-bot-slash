@@ -1,4 +1,4 @@
-import { Client, ClientOptions, Collection } from 'discord.js'
+import { Client, ClientOptions, Collection, Message } from 'discord.js'
 import { Player, PlayerEvents } from 'discord-player'
 import Dokdo from 'dokdo'
 import Logger from '../utils/Logger'

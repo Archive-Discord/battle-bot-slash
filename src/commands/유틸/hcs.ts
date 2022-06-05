@@ -3,7 +3,6 @@ import {
   searchSchool,
   login as HcsLogin,
   updateAgreement,
-  secondLogin as HcsSecondLogin,
   registerSurvey
 } from 'hcs.js'
 import hcsDB from '../../schemas/hcsSchemas'
@@ -87,7 +86,8 @@ export default new BaseCommand(
           schoolResult[0].schoolCode,
           name,
           birthday.toString(),
-          schoolResult[0].searchKey
+          schoolResult[0].searchKey,
+          password
         )
         if (!login.success) {
           errEmbed.setDescription(
@@ -97,24 +97,6 @@ export default new BaseCommand(
         }
         if (login.agreementRequired) {
           await updateAgreement(schoolResult[0].endpoint, login.token)
-        }
-        let token = login.token
-        let secondLogin = await HcsSecondLogin(
-          schoolResult[0].endpoint,
-          login.token,
-          password
-        )
-        if (!secondLogin.success) {
-          if (secondLogin.remainingMinutes) {
-            errEmbed.setDescription(
-              `비밀번호를 5회 이상 실패하여 ${secondLogin.remainingMinutes}분 후에 재시도가 가능합니다.`
-            )
-            return interaction.editReply({ embeds: [errEmbed] })
-          }
-          errEmbed.setDescription(
-            '비밀번호가 올바르지 않습니다. 다시 시도해주세요.'
-          )
-          return interaction.editReply({ embeds: [errEmbed] })
         }
         infoEmbed.setAuthor('자가진단 등록')
         infoEmbed.addField('이름', name, true)
@@ -192,27 +174,24 @@ export default new BaseCommand(
             school[0].schoolCode,
             hcsdb.name,
             hcsdb.birthday,
-            school[0].searchKey
-          )
-          const secondLogin = await HcsSecondLogin(
-            school[0].endpoint,
-            // @ts-ignore
-            login.token,
+            school[0].searchKey,
             hcsdb.password
           )
-          if (!secondLogin.success) {
-            if (secondLogin.remainingMinutes) {
+          if (!login.success) {
+            if (login.remainingMinutes) {
               errEmbed.setDescription(
-                `비밀번호를 5회 이상 실패하여 ${secondLogin.remainingMinutes}분 후에 재시도가 가능합니다.`
+                `비밀번호를 5회 이상 실패하여 ${login.remainingMinutes}분 후에 재시도가 가능합니다.`
               )
               return interaction.editReply({ embeds: [errEmbed] })
             }
-            errEmbed.setDescription(
-              '비밀번호가 올바르지 않습니다. 관리자에게 문의해주세요.'
-            )
-            return interaction.editReply({ embeds: [errEmbed] })
+            if (login.message) {
+              errEmbed.setDescription(login.message)
+            } else {
+              errEmbed.setDescription(`자가진단 실행중 오류가 발생했습니다.`)
+            }
+            return await interaction.editReply({ embeds: [errEmbed] })
           }
-          await registerSurvey(school[0].endpoint, secondLogin.token)
+          await registerSurvey(school[0].endpoint, login.token)
           successEmbed.setDescription(
             `\`${hcsdb.name}\`님의 자가진단이 완료되었습니다`
           )
