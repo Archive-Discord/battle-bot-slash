@@ -4,7 +4,7 @@ interface MoneySchema {
   userid: string
   date: string
 }
-let schema = new Schema<MoneySchema>({
+const schema = new Schema<MoneySchema>({
   money: { type: Number },
   userid: { type: String },
   date: { type: String }
