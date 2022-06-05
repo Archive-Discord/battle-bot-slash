@@ -182,9 +182,9 @@ async function StatusUpdate(client: BotClient) {
   ;(status.commands = client.commands.size), (status.totalShard = totalShard)
   status.shard = shardInfo
   status.save((err: any) => {
-    if (err) logger.error(`봇 상테 업데이트 오류: ${err}`)
+    if (err) logger.error(`봇 상태 업데이트 오류: ${err}`)
   })
-  logger.info('봇 상테 업데이트')
+  logger.info('봇 상태 업데이트')
 }
 
 async function PremiumAlert(client: BotClient) {
