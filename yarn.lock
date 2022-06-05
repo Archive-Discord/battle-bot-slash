@@ -431,9 +431,9 @@ __metadata:
   linkType: hard
   
 "@types/comma-number@^2.1.0":
-  "integrity" "sha512-9MoSSdmOOkzhGY4HKeA6Fc59Pvs4k5lryZZK6PrH8PgKQDwDjy/TCP5wuCHD9rTmKpOJlm85KuTlXGSiI1khdg=="
-  "resolved" "https://registry.npmjs.org/@types/comma-number/-/comma-number-2.1.0.tgz"
-  "version" "2.1.0"
+  "integrity": "sha512-9MoSSdmOOkzhGY4HKeA6Fc59Pvs4k5lryZZK6PrH8PgKQDwDjy/TCP5wuCHD9rTmKpOJlm85KuTlXGSiI1khdg=="
+  "resolved": "https://registry.npmjs.org/@types/comma-number/-/comma-number-2.1.0.tgz"
+  "version": "2.1.0"
 
 "@types/json-schema@npm:^7.0.9":
   version: 7.0.11
