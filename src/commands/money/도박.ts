@@ -8,7 +8,7 @@ export default new BaseCommand(
   {
     name: '도박',
     description: '자신의 돈을 확인합니다.',
-    aliases: []
+    aliases: ['ㄷㅂ']
   },
   async (client, message, args) => {
     let embed = new Embed(client, 'warn').setTitle('처리중..')
