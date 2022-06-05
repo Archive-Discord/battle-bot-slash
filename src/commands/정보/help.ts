@@ -2,7 +2,7 @@ import { SlashCommandBuilder } from '@discordjs/builders'
 import config from '../../../config'
 import { BaseCommand } from '../../structures/Command'
 import Embed from '../../utils/Embed'
-import { MessageActionRow, MessageButton, MessageEmbed } from "discord.js";
+import { MessageActionRow, MessageButton, MessageEmbed } from 'discord.js'
 
 export default new BaseCommand(
   {
@@ -12,11 +12,10 @@ export default new BaseCommand(
   },
   async (client, message, args) => {
     let buttton = new MessageButton()
-    	.setLabel('하트 누르기')
-    	.setURL("https://koreanbots.dev/bots/928523914890608671/vote")
-    	.setStyle('LINK')
-    let row = new MessageActionRow()
-        .addComponents(buttton)
+      .setLabel('하트 누르기')
+      .setURL('https://koreanbots.dev/bots/928523914890608671/vote')
+      .setStyle('LINK')
+    let row = new MessageActionRow().addComponents(buttton)
     let embed = new Embed(client, 'success')
       .setTitle(`${client.user?.username} 도움말`)
       .setColor('#2f3136')
@@ -76,12 +75,11 @@ export default new BaseCommand(
       isSlash: true
     },
     async execute(client, interaction) {
-    let buttton = new MessageButton()
-    	.setLabel('하트 누르기')
-    	.setURL("https://koreanbots.dev/bots/928523914890608671/vote")
-    	.setStyle('LINK')
-    let row = new MessageActionRow()
-        .addComponents(buttton)
+      let buttton = new MessageButton()
+        .setLabel('하트 누르기')
+        .setURL('https://koreanbots.dev/bots/928523914890608671/vote')
+        .setStyle('LINK')
+      let row = new MessageActionRow().addComponents(buttton)
       let embed = new Embed(client, 'success')
         .setColor('#2f3136')
         .setTitle(`${client.user?.username} 도움말`)
@@ -95,7 +93,7 @@ export default new BaseCommand(
             true
           )
         })
-        return interaction.reply({ embeds: [embed], components: [row]})
+        return interaction.reply({ embeds: [embed], components: [row] })
       } else {
         let category = interaction.options.getString('category')?.toLowerCase()
         if (category === 'dev') {

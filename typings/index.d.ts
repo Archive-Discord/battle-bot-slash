@@ -5,9 +5,6 @@ import {
   Role,
   ShardingManagerOptions
 } from 'discord.js'
-import { Request } from 'express'
-import BotClient from '../src/structures/BotClient'
-import { type } from 'os'
 
 export type LevelType =
   | 'fatal'
