@@ -429,11 +429,6 @@ __metadata:
   checksum: 12a2a0e6c4b993fc0854bec665906788aea0d8ee4392389d7a98a5de1eefdd33c9e1e40a91f3afd274011119c506f7b4126acb97fae62ae20b654974d44cba12
   languageName: node
   linkType: hard
-  
-"@types/comma-number@^2.1.0":
-  "integrity": "sha512-9MoSSdmOOkzhGY4HKeA6Fc59Pvs4k5lryZZK6PrH8PgKQDwDjy/TCP5wuCHD9rTmKpOJlm85KuTlXGSiI1khdg=="
-  "resolved": "https://registry.npmjs.org/@types/comma-number/-/comma-number-2.1.0.tgz"
-  "version": "2.1.0"
 
 "@types/json-schema@npm:^7.0.9":
   version: 7.0.11
