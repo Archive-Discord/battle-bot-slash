@@ -37,6 +37,7 @@
     "axios": "^0.25.0",
     "captcha-canvas": "^3.1.0",
     "chalk": "^3.0.0",
+    "comma-number": "^2.1.0",
     "cheerio": "^1.0.0-rc.10",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
@@ -66,6 +67,7 @@
     "winston": "^3.6.0"
   },
   "devDependencies": {
+    "@types/comma-number": "^2.1.0",
     "@types/node": "^16.11.12",
     "@types/randomstring": "^1.1.8",
     "@types/uuid": "^8.3.4",
