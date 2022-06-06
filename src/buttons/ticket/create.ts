@@ -63,6 +63,7 @@ export default new ButtonInteraction(
             .setDescription(
               `<@${interaction.user.id}> 님의 티켓 \n 티켓 종료를 원하시면 🔒 닫기 버튼을 눌러주세요`
             )
+            .setColor('#2f3136')
           const buttonSave = new MessageButton()
             .setLabel('저장')
             .setStyle('SUCCESS')
