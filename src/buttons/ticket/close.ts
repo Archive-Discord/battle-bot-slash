@@ -11,6 +11,7 @@ export default new ButtonInteraction(
     const replyTicket = new Embed(client, 'info').setDescription(
       `5초뒤에 티켓이 종료됩니다!,  <@!${interaction.user.id}>`
     )
+    .setColor('#2f3136')
     await interaction.editReply({ embeds: [replyTicket] })
     const ticketDB = await Ticket.findOne({
       guildId: interaction.guild?.id,
@@ -46,6 +47,7 @@ export default new ButtonInteraction(
       const replyCloseTicket = new Embed(client, 'info').setDescription(
         `티켓이 종료되었습니다!, <@!${interaction.user.id}>`
       )
+      .setColor('#2f3136')
       interaction.channelId
       const channel = interaction.guild?.channels.cache.get(
         interaction.channel?.id as string
