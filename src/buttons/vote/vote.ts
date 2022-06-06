@@ -99,6 +99,7 @@ export default new ButtonInteraction(
           interaction.message.embeds[0].description as string
         )
         SuccessEmbed.setTitle('성공적으로 투표에 참가했어요!')
+        SuccessEmbed.setColor('#2f3136')
         interaction.editReply({ embeds: [SuccessEmbed] })
         return message.edit({ embeds: [voteEmbed] })
       } else {
