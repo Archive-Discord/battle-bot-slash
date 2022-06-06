@@ -18,15 +18,15 @@ export default new BaseCommand(
     })
     Schema.find()
       .sort({ money: 1, descending: 1 })
-      .limit(30)
+      .limit(10)
       .exec((error, res) => {
+        const embed = new Embed(client, 'info').setTitle('돈 순위표')
         for (let i = 0; i < res.length; i++) {
           let searchuser = client.users.cache.get(res[i].userid)
           const user = searchuser
           const users = user?.username ?? '찾을수가 없어요!'
-          embed = new Embed(client, 'info')
-            .setTitle('돈 순위표')
-            .addField(`${i + 1}. ${users}`, `${comma(res[i].money)}원`, true)
+          embed.addField(`${i + 1}. ${users}`, `${comma(res[i].money)}원`)
+          embed.setColor('#2f3136')
         }
         m.edit({
           embeds: [embed]
