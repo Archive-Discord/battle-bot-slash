@@ -19,7 +19,7 @@ export default new BaseCommand(
     const ehqkrduqn = await Schema.findOne({
       userid: message.author.id
     })
-    embed = new Embed(client, 'error').setDescription(message.author + '님의 정보가 확인되지 않습니다.\n먼저 \`!돈줘\`를 입력해 정보를 알려주세요!')
+    embed = new Embed(client, 'error').setDescription(message.author + '님의 정보가 확인되지 않습니다.\n먼저 \`!돈받기\`를 입력해 정보를 알려주세요!')
       .setTimestamp()
     if (!ehqkrduqn) return m.edit({
       embeds: [embed]
@@ -50,7 +50,7 @@ export default new BaseCommand(
       embed = new Embed(client, 'success').setTitle(`아쉽네요..`)
         .setDescription(`저한테 패배 하셨군요... 이 돈은 그럼 제가 쓸어담아보겠습니다!`)
         .addField("잔액 :", `**${comma(money)}원**`)
-
+        .setColor('#2f3136')
       m.edit({
         embeds: [embed]
       })
@@ -63,7 +63,7 @@ export default new BaseCommand(
       embed = new Embed(client, 'success').setTitle(`승리!`)
         .setDescription(`도박에서 저를 이기셨군요!`)
         .addField("잔액 :", `**${comma(money)}원**`)
-
+        .setColor('#2f3136')
       m.edit({
         embeds: [embed]
       })

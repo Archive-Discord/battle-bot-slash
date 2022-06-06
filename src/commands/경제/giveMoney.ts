@@ -12,7 +12,7 @@ export default new BaseCommand(
   },
   async (client, message, args) => {
     let embed = new Embed(client, 'warn').setTitle('처리중..')
-
+    .setColor('#2f3136')
     let m = await message.reply({
       embeds: [embed]
     })
@@ -30,7 +30,7 @@ export default new BaseCommand(
       newData.save()
       embed = new Embed(client, 'success').setTitle('환영합니다!')
         .setDescription(`처음이시군요! 5000원을 입금해드리겠습니다!`)
-
+        .setColor('#2f3136')
       m.edit({
         embeds: [embed]
       })
@@ -38,7 +38,7 @@ export default new BaseCommand(
 
       embed = new Embed(client, 'info')
         .setDescription(`이미 오늘 돈을 받으셨어요 ㅠㅠ\n다음에 다시 와주세요!`)
-
+        .setColor('#2f3136')
       if (ehqkrduqn.date == date) return m.edit({
         embeds: [embed]
       })
@@ -52,7 +52,7 @@ export default new BaseCommand(
       embed = new Embed(client, 'success').setTitle('입금이 완료되었습니다!')
         .setDescription(`처음이시군요! 5000원을 입금해드리겠습니다!`)
         .addField(`돈이 입금되었습니다!`, `현재 잔액 : ${comma(f)}`)
-
+        .setColor('#2f3136')
       m.edit({
         embeds: [embed]
       })

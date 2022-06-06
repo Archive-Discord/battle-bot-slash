@@ -28,7 +28,7 @@ export default new BaseCommand(
     embed = new Embed(client, 'error')
       .setDescription(
         message.author +
-          '님의 정보가 확인되지 않습니다.\n먼저 `!돈줘`를 입력해 정보를 알려주세요!'
+          '님의 정보가 확인되지 않습니다.\n먼저 `!돈받기`를 입력해 정보를 알려주세요!'
       )
       .setTimestamp()
     if (!sk)
@@ -37,7 +37,7 @@ export default new BaseCommand(
       })
     embed = new Embed(client, 'error')
       .setDescription(
-        '상대방의 정보가 확인되지 않았어요ㅠㅠ\n상대방에게 먼저 `!돈줘`를 입력해 정보를 알려달라고 해주세요!'
+        '상대방의 정보가 확인되지 않았어요ㅠㅠ\n상대방에게 먼저 `!돈받기`를 입력해 정보를 알려달라고 해주세요!'
       )
       .setTimestamp()
     if (!tkdeoqkd)
@@ -106,7 +106,7 @@ export default new BaseCommand(
       .addField(`송금인 잔액`, `${comma(money - betting)}원`, true)
       .addField(`받는사람 잔액`, ` ${money2 + betting}원`, true)
       .setTimestamp()
-
+      .setColor('#2f3136')
     m.edit({
       embeds: [embed]
     })
