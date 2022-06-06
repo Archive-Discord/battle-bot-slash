@@ -25,6 +25,7 @@ export default new ButtonInteraction(
     const LoadingEmbed = new Embed(client, 'info').setTitle(
       '채팅 기록을 불러오는 중입니다'
     )
+    .setColor('#2f3136')
     const NoMessageEmbed = new Embed(client, 'error').setTitle(
       '채팅 기록을 불러오지 못했습니다'
     )
@@ -51,6 +52,7 @@ export default new ButtonInteraction(
     const SaveingEmbed = new Embed(client, 'info').setTitle(
       '채팅 기록을 저장하는 중입니다'
     )
+    .setColor('#2f3136')
     await interaction.editReply({ embeds: [SaveingEmbed] })
     await Ticket.updateOne(
       { guildId: interaction.guild?.id, channelId: interaction.channel?.id },
@@ -61,6 +63,7 @@ export default new ButtonInteraction(
       .setDescription(
         `[여기](${config.web?.baseurl}/guilds/${interaction.guild?.id}/ticket/${ticket.ticketId})에서 확인할 수 있습니다`
       )
+      .setColor('#2f3136')
     await interaction.editReply({ embeds: [successembed] })
   }
 )
