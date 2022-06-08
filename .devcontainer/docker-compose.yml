@@ -2,14 +2,13 @@ version: '3.8'
 
 services:
   app:
-    build: 
+    build:
       context: .
       dockerfile: Dockerfile
       args:
-        VARIANT: 18-buster
+        VARIANT: "18"
     volumes:
       - ..:/workspace:cached
-
     command: sleep infinity
     network_mode: service:db
 
@@ -20,4 +19,4 @@ services:
       - mongodb-data:/data/db
 
 volumes:
-  mongodb-data:
+  mongodb-data: null

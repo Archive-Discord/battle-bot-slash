@@ -1,6 +1,5 @@
-# [Choice] Node.js version (use -bullseye variants on local arm64/Apple Silicon): 18, 16, 14, 18-bullseye, 16-bullseye, 14-bullseye, 18-buster, 16-buster, 14-buster
-ARG VARIANT=18-bullseye
-FROM node:${VARIANT}
+ARG VARIANT=16-bullseye
+FROM mcr.microsoft.com/vscode/devcontainers/javascript-node:0-${VARIANT}
 
 ARG MONGO_TOOLS_VERSION=5.0
 RUN . /etc/os-release \
@@ -11,6 +10,3 @@ RUN . /etc/os-release \
         && apt-get install -y mongodb-database-tools mongodb-mongosh \
         && apt-get clean -y && rm -rf /var/lib/apt/lists/*; \
     fi
-
-ARG EXTRA_NODE_VERSION=18
-RUN su node -c "source /usr/local/share/nvm/nvm.sh && nvm install ${EXTRA_NODE_VERSION}"
