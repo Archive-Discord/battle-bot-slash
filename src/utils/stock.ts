@@ -122,19 +122,6 @@ export interface stock {
    */
   risefall: number
 }
-  marketSum: number // 시가 총액
-  per: number // 1 : 상한 , 2 : 상승, 3: 보합? , 4 : 하한, 5, 하락
-  eps: number // 전일대비 가격 차이
-  pbr: number // 상승율
-  now: number // 고가
-  diff: number // 저가
-  rate: number // 거래량
-  quant: number // 거래대금
-  amount: number // 거래대금
-  high: number // EPS
-  low: number // PBR
-  risefall: number // 현재가
-}
 
 export interface searchResults {
   result: searchStockResults
