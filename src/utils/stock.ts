@@ -69,6 +69,59 @@ export const searchStockList = async (
 }
 
 export interface stock {
+  /**
+   * @description 시가 총액
+   */
+  marketSum: number
+  /**
+   * @description 1 - 상한
+   * 2 - 상승
+   * 3 - 보합(?)
+   * 4 - 하한
+   * 5 - 하락
+   */
+  per: number
+  /**
+   * @description 전일대비 가격차이
+   */
+  eps: number
+  /**
+   * @description 상승율
+   */
+  pbr: number
+  /**
+   * @description 고가
+   */
+  now: number
+  /**
+   * @description 저가
+   */
+  diff: number
+  /**
+   * @description 거래량
+   */
+  rate: number
+  /**
+   * @description 거래대금
+   */
+  quant: number
+  /**
+   * @description 거래대금
+   */
+  amount: number
+  /**
+   * @description ESP
+   */
+  high: number
+  /**
+   * @description PBS
+   */
+  low: number
+  /**
+   * @description 현재가
+   */
+  risefall: number
+}
   marketSum: number // 시가 총액
   per: number // 1 : 상한 , 2 : 상승, 3: 보합? , 4 : 하한, 5, 하락
   eps: number // 전일대비 가격 차이
