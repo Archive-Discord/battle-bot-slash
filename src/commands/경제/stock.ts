@@ -3,9 +3,14 @@ import Discord from 'discord.js'
 import Embed from '../../utils/Embed'
 import comma from 'comma-number'
 import Schema from '../../schemas/Money'
-import StockSchema from '../../schemas/Stock'
+import StockSchema, { Stock } from '../../schemas/Stock'
 import config from '../../../config'
-import { searchStock, searchStocks, searchStockList } from '../../utils/stock'
+import {
+  searchStock,
+  searchStocks,
+  searchStockList,
+  stock
+} from '../../utils/stock'
 
 export default new BaseCommand(
   {
@@ -144,20 +149,49 @@ export default new BaseCommand(
               $inc: { money: -total }
             }
           )
-          await StockSchema.updateOne(
-            { userid: message.author.id },
-            {
-              $push: {
-                stocks: {
-                  code: results.items[0].code,
-                  quantity,
-                  name: results.items[0].name,
-                  price: result.now
+          const nowStock = await StockSchema.findOne({
+            userid: message.author.id,
+            'stocks.code': results.items[0].code
+          })
+          if (!nowStock) {
+            await StockSchema.updateOne(
+              { userid: message.author.id },
+              {
+                $push: {
+                  stocks: {
+                    code: results.items[0].code,
+                    quantity,
+                    name: results.items[0].name,
+                    price: result.now
+                  }
                 }
-              }
-            },
-            { upsert: true }
-          )
+              },
+              { upsert: true }
+            )
+          } else {
+            await StockSchema.findOneAndUpdate(
+              { userid: message.author.id },
+              { $pull: { stocks: { code: results.items[0].code } } }
+            )
+            await StockSchema.updateOne(
+              { userid: message.author.id },
+              {
+                $push: {
+                  stocks: {
+                    code: results.items[0].code,
+                    quantity: nowStock.stocks[0].quantity + quantity,
+                    name: results.items[0].name,
+                    price:
+                      (result.now * quantity +
+                        nowStock.stocks[0].quantity *
+                          nowStock.stocks[0].price) /
+                      (nowStock.stocks[0].quantity + quantity)
+                  }
+                }
+              },
+              { upsert: true }
+            )
+          }
           const successEmbed = new Embed(client, 'success')
             .setTitle(`주식`)
             .setDescription(
@@ -196,6 +230,186 @@ export default new BaseCommand(
         })
       })
     } else if (type === '매도') {
+      const keyword = args.slice(2).join(' ')
+      const quantity = parseInt(args[1])
+      const results = await searchStockList(keyword)
+      if (!results || results?.items.length == 0) {
+        embed.setDescription(`${keyword} 검색 결과가 없습니다.`)
+        return message.reply({ embeds: [embed] })
+      }
+      const result = await searchStock(results.items[0].code)
+      if (!result) {
+        embed.setDescription(`${keyword} 검색 결과가 없습니다.`)
+        return message.reply({ embeds: [embed] })
+      }
+      const stock = await StockSchema.findOne({
+        userid: message.author.id,
+        'stocks.code': results.items[0].code
+      })
+      if (!stock || stock.stocks.length === 0) {
+        embed.setDescription(
+          `${results.items[0].name}을 보유하고 있지 않습니다.`
+        )
+        return message.reply({ embeds: [embed] })
+      }
+      if (stock.stocks[0].quantity < quantity) {
+        embed.setDescription(
+          `${results.items[0].name}주식을 ${quantity}주만큼 보유하고 있지 않습니다. 현재 보유량: ${stock.stocks[0].quantity}주`
+        )
+        return message.reply({ embeds: [embed] })
+      }
+      const price = result.now * quantity
+      const fee = price * 0.02
+      const total = price - fee
+      const user = await Schema.findOne({ userid: message.author.id })
+      if (!user) {
+        embed.setDescription(
+          `등록되어 있지 않은 유저인 거 같아요!, 먼저 \`${config.bot.prefix}돈받기\` 명령어로 등록을 해주세요.`
+        )
+        return message.reply({ embeds: [embed] })
+      }
+      embed.setDescription(
+        `${results.items[0].name} ${quantity}주(${comma(
+          result.now * quantity
+        )}원)을 매도하시겠습니까?`
+      )
+      embed.addField('현재가', `${comma(result.now)}원`, true)
+      embed.addField('수수료', `${comma(fee)}원 (2%)`, true)
+      embed.addField('총계', `${comma(total)}원`, true)
+      embed.setImage(
+        `https://ssl.pstatic.net/imgfinance/chart/item/area/day/${results.items[0].code}.png`
+      )
+      const row = new Discord.MessageActionRow()
+        .addComponents(
+          new Discord.MessageButton()
+            .setCustomId('stocksell.accept')
+            .setLabel('확인')
+            .setStyle('SUCCESS')
+        )
+        .addComponents(
+          new Discord.MessageButton()
+            .setCustomId('stocksell.deny')
+            .setLabel('아니요')
+            .setStyle('DANGER')
+        )
+      const m = await message.reply({ embeds: [embed], components: [row] })
+      const collector = m.createMessageComponentCollector({ time: 10000 })
+      collector.on('collect', async (i) => {
+        if (i.user.id != message.author.id) return
+        if (i.customId == 'stocksell.accept') {
+          embed.setDescription(
+            `${results.items[0].name} ${quantity}주를 매도했어요!`
+          )
+          embed.addField('현재가', `${comma(result.now)}원`, true)
+          embed.addField('수수료', `${comma(fee)}원 (2%)`, true)
+          embed.addField('총계', `${comma(total)}원`, true)
+          embed.setImage(
+            `https://ssl.pstatic.net/imgfinance/chart/item/area/day/${results.items[0].code}.png`
+          )
+          await m.edit({ embeds: [embed] })
+          await Schema.findOneAndUpdate(
+            {
+              userid: message.author.id
+            },
+            {
+              $inc: { money: +total }
+            }
+          )
+          await StockSchema.findOneAndUpdate(
+            { userid: message.author.id },
+            { $pull: { stocks: { code: stock.stocks[0].code } } }
+          )
+          await StockSchema.updateOne(
+            { userid: message.author.id },
+            {
+              $push: {
+                stocks: {
+                  code: results.items[0].code,
+                  quantity: stock.stocks[0].quantity - quantity,
+                  name: results.items[0].name,
+                  price: stock.stocks[0].price
+                }
+              }
+            }
+          )
+          const successEmbed = new Embed(client, 'success')
+            .setTitle(`주식`)
+            .setDescription(
+              `${results.items[0].name} ${quantity}주를 매도했어요!`
+            )
+            .addField('거래금액', `${comma(total)}원`, true)
+            .addField('수수료', `${comma(fee)}원 (2%)`, true)
+            .addField('거래후 잔액', `${comma(user.money + total)}원`, true)
+          return i.update({ embeds: [successEmbed], components: [] })
+        } else if (i.customId == 'stocksell.deny') {
+          embed.setDescription(`매도를 취소하였습니다.`)
+          return i.update({ embeds: [embed], components: [] })
+        }
+      })
+      collector.on('end', (collected) => {
+        if (collected.size == 1) return
+        m.edit({
+          embeds: [embed],
+          components: [
+            new Discord.MessageActionRow()
+              .addComponents(
+                new Discord.MessageButton()
+                  .setCustomId('stock.accept')
+                  .setLabel('확인')
+                  .setStyle('SUCCESS')
+                  .setDisabled(true)
+              )
+              .addComponents(
+                new Discord.MessageButton()
+                  .setCustomId('stock.deny')
+                  .setLabel('아니요')
+                  .setStyle('DANGER')
+                  .setDisabled(true)
+              )
+          ]
+        })
+      })
+    } else if (args[0] == '보유') {
+      const nowStock = await StockSchema.findOne({ userid: message.author.id })
+      if (!nowStock) {
+        embed.setDescription(
+          `보유중인 주식이없습니다, 먼저 \`${config.bot.prefix}주식\` 명령어로 주식 명령어를 확인해보세요!`
+        )
+        return message.reply({
+          embeds: [embed]
+        })
+      } else {
+        embed.setTitle(`${message.author.username}님의 보유중인 주식`)
+
+        const results = await Promise.all(
+          nowStock.stocks.map(async (stock, index) => {
+            const stockSearch = await searchStock(stock.code)
+            if (!stockSearch)
+              return `- ${index + 1}. ${stock.name} ${stock.quantity}주 ${comma(
+                Math.round(stock.price * stock.quantity)
+              )}원 (실시간 정보 확인불가)`
+            return `${
+              Math.round(stockSearch.now) > Math.round(stock.price)
+                ? '-'
+                : Math.round(stockSearch.now) < Math.round(stock.price)
+                ? '+'
+                : ' '
+            } ${index + 1}. ${stock.name} ${stock.quantity}주 [ ${
+              Math.round(stockSearch.now * stock.quantity) >
+              Math.round(stock.price * stock.quantity)
+                ? '▾'
+                : Math.round(stockSearch.now * stock.quantity) <
+                  Math.round(stock.price * stock.quantity)
+                ? '▴'
+                : '-'
+            } ${comma(Math.round(stock.price * stock.quantity))}원 ]`
+          })
+        )
+        embed.setDescription('```diff\n' + results.join('\n') + '```')
+        return message.reply({
+          embeds: [embed]
+        })
+      }
     } else {
       embed.setDescription(
         `\`${config.bot.prefix}주식 목록 (검색어)\` 검색어에 관련된 주식들을 찾아줍니다\n\`${config.bot.prefix}주식 검색 (검색어)\` 검색어에 관련된 주식을 찾아줍니다\n\`${config.bot.prefix}주식 매수 (개수) (이름)\` 입력하신 주식을 개수만큼 매도합니다\n\`${config.bot.prefix}주식 매도 (개수) (이름)\` 입력하신 주식을 개수만큼 매수합니다\n\`${config.bot.prefix}주식 보유\` 보유중인 주식을 확인합니다`

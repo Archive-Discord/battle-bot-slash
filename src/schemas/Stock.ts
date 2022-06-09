@@ -4,7 +4,7 @@ interface StockSchema {
   stocks: Stock[]
 }
 
-interface Stock {
+export interface Stock {
   code: string
   name: string
   price: number
