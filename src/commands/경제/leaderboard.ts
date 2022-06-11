@@ -12,13 +12,10 @@ export default new BaseCommand(
   },
   async (client, message, args) => {
     const type = args[0]
-    let Loadembed = new Embed(client, 'warn').setTitle('처리중..')
-    let m = await message.reply({
-      embeds: [Loadembed]
-    })
     const data = await Schema.find()
       .sort({ money: -1, descending: -1 })
       .limit(10)
+    console.log(data)
     const embed = new Embed(client, 'info').setColor('#2f3136')
     for (let i = 0; i < data.length; i++) {
       if (type === '전체') {
@@ -47,7 +44,7 @@ export default new BaseCommand(
         )
       }
     }
-    m.edit({
+    message.reply({
       embeds: [embed]
     })
   }
