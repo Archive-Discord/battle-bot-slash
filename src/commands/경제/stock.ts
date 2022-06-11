@@ -74,6 +74,10 @@ export default new BaseCommand(
     } else if (type === '매수') {
       const keyword = args.slice(2).join(' ')
       const quantity = parseInt(args[1])
+      if (!quantity) {
+        embed.setDescription(`매수하실 주식의 수량을 숫자만 입력해주세요.`)
+        return message.reply({ embeds: [embed] })
+      }
       const results = await searchStockList(keyword)
       if (!results || results?.items.length == 0) {
         embed.setDescription(`${keyword} 검색 결과가 없습니다.`)
@@ -182,9 +186,8 @@ export default new BaseCommand(
                     quantity: nowStock.stocks[0].quantity + quantity,
                     name: results.items[0].name,
                     price:
-                      (result.now * quantity +
-                        nowStock.stocks[0].quantity *
-                          nowStock.stocks[0].price) /
+                      (nowStock.stocks[0].quantity * nowStock.stocks[0].price +
+                        result.now * quantity) /
                       (nowStock.stocks[0].quantity + quantity)
                   }
                 }
@@ -232,6 +235,10 @@ export default new BaseCommand(
     } else if (type === '매도') {
       const keyword = args.slice(2).join(' ')
       const quantity = parseInt(args[1])
+      if (!quantity) {
+        embed.setDescription(`매도하실 주식의 수량을 숫자만 입력해주세요.`)
+        return message.reply({ embeds: [embed] })
+      }
       const results = await searchStockList(keyword)
       if (!results || results?.items.length == 0) {
         embed.setDescription(`${keyword} 검색 결과가 없습니다.`)
@@ -411,8 +418,32 @@ export default new BaseCommand(
         })
       }
     } else {
-      embed.setDescription(
-        `\`${config.bot.prefix}주식 목록 (검색어)\` 검색어에 관련된 주식들을 찾아줍니다\n\`${config.bot.prefix}주식 검색 (검색어)\` 검색어에 관련된 주식을 찾아줍니다\n\`${config.bot.prefix}주식 매수 (개수) (이름)\` 입력하신 주식을 개수만큼 매도합니다\n\`${config.bot.prefix}주식 매도 (개수) (이름)\` 입력하신 주식을 개수만큼 매수합니다\n\`${config.bot.prefix}주식 보유\` 보유중인 주식을 확인합니다`
+      embed.setTitle('주식 도움말')
+      embed.setDescription('아래에 있는 명령어로 주식을 사용해보세요!')
+      embed.addField(
+        `\`${config.bot.prefix}주식 목록 (주식명)\``,
+        '> 검색한 주식들의 목록을 확인합니다',
+        true
+      )
+      embed.addField(
+        `\`${config.bot.prefix}주식 검색 (주식명)\``,
+        '> 검색한 주식의 상세 정보를 확인합니다.',
+        true
+      )
+      embed.addField(
+        `\`${config.bot.prefix}주식 매수 (개수) (주식명)\``,
+        '> 입력한 주식을 개수만큼 매수합니다.',
+        true
+      )
+      embed.addField(
+        `\`${config.bot.prefix}주식 매도 (개수) (주식명)\``,
+        '> 입력한 주식을 개수만큼 매도합니다.',
+        true
+      )
+      embed.addField(
+        `\`${config.bot.prefix}주식 보유\``,
+        '> 보유중인 주식을 확인합니다.',
+        true
       )
       return message.reply({
         embeds: [embed]

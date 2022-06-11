@@ -11,7 +11,7 @@ export default new BaseCommand(
   {
     name: '하트인증',
     description: '한디리, 아카이브 하트를 인증합니다',
-    aliases: ['ㅎㅌㅇㅈ']
+    aliases: ['하트인증', 'ㅎㅌㅇㅈ', 'heart']
   },
   async (client, message, args) => {
     let embed = new Embed(client, 'warn')
@@ -49,7 +49,7 @@ export default new BaseCommand(
       if (i.customId == 'heart.koreanlist') {
         axios
           .get(
-            `https://koreanbots.dev/api/v2/bots/928523914890608671/vote?userID=${message.author.id}`,
+            `https://koreanbots.dev/api/v2/bots/${client.user?.id}/vote?userID=${message.author.id}`,
             {
               headers: {
                 Authorization: config.updateServer.koreanbots,
@@ -131,7 +131,7 @@ export default new BaseCommand(
       } else if (i.customId == 'heart.archive') {
         axios
           .get(
-            `https://api.archiver.me/bots/928523914890608671/like/${message.author.id}`,
+            `https://api.archiver.me/bots/${client.user?.id}/like/${message.author.id}`,
             {
               headers: {
                 Authorization: 'Bearer ' + config.updateServer.archive,
