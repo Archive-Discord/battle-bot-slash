@@ -20,7 +20,9 @@ export default new BaseCommand(
   },
   async (client, message, args) => {
     const type = args[0]
-    const embed = new Embed(client, 'info').setTitle('주식')
+    const embed = new Embed(client, 'info')
+      .setTitle('주식')
+      .setColor('#2f3136')
     if (type === '검색') {
       const keyword = args.slice(1).join(' ')
       const results = await searchStockList(keyword)
