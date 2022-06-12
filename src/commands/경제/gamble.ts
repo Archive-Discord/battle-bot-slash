@@ -40,7 +40,7 @@ export default new BaseCommand(
     if (money < 500) return m.edit({
       embeds: [embed]
     })
-    embed = new Embed(client, 'error').setDescription('보유하고 있는 돈보다 많은 금액은 보낼수가 없어요.')
+    embed = new Embed(client, 'error').setDescription('보유하고 있는 돈보다 많은 돈을 배팅하실 수 없어요.')
       .setTimestamp()
     if (money > ehqkrduqn.money) return m.edit({
       embeds: [embed]
@@ -48,8 +48,8 @@ export default new BaseCommand(
     const random = Math.floor(Math.random() * 101)
     if (random < 50) {
       embed = new Embed(client, 'success').setTitle(`아쉽네요..`)
-        .setDescription(`저한테 패배 하셨군요... 이 돈은 그럼 제가 쓸어담아보겠습니다!`)
-        .addField("잔액 :", `**${comma(money)}원**`)
+        .setDescription(`저한테 패배 하셨군요... 이 돈은 그럼 제가 쓸어담아보겠습니다! - **${comma(money)}원`)
+        .addField("잔액 :", `**${comma(ehqkrduqn.money-money)}원**`)
         .setColor('#2f3136')
       m.edit({
         embeds: [embed]
