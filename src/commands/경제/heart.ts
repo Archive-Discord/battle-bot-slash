@@ -17,6 +17,7 @@ export default new BaseCommand(
     let embed = new Embed(client, 'warn')
       .setTitle('하트인증')
       .setDescription('하트인증 진행할 플랫폼을 선택해주세요!')
+      .setColor('#2f3136')
     const money = await Schema.findOne({ userid: message.author.id })
     if (!money) {
       embed.setDescription(
@@ -65,6 +66,7 @@ export default new BaseCommand(
                   `한국 디스코드 리스트에 있는 배틀이 봇의 하트가 아직 눌려있지 않았어요!`
                 )
                 .setTimestamp()
+                .setColor('#2f3136')
               let link = new Discord.MessageActionRow().addComponents(
                 new Discord.MessageButton()
                   .setURL(`https://koreanbots.dev/bots/${client.user?.id}/vote`)
@@ -96,6 +98,7 @@ export default new BaseCommand(
                     `${message.author.username}님의 한국 디스코드 리스트에 있는 배틀이 봇의 하트인증이 완료되었습니다.`
                   )
                   .setTimestamp()
+                  .setColor('#2f3136')  
                 i.reply({
                   embeds: [embed]
                 })
@@ -110,6 +113,7 @@ export default new BaseCommand(
                     )} 뒤에 다시 인증해주세요!`
                   )
                   .setTimestamp()
+                  .setColor('#2f3136')
                 i.reply({
                   embeds: [embed]
                 })
@@ -147,6 +151,7 @@ export default new BaseCommand(
                   `아카이브에 있는 배틀이 봇의 하트가 아직 눌려있지 않았어요!`
                 )
                 .setTimestamp()
+                .setColor('#2f3136')
               let link = new Discord.MessageActionRow().addComponents(
                 new Discord.MessageButton()
                   .setURL(`https://archiver.me/bots/${client.user?.id}/like`)
@@ -178,7 +183,7 @@ export default new BaseCommand(
                     `${message.author.username}님의 아카이브에 있는 배틀이 봇의 하트인증이 완료되었습니다.`
                   )
                   .setTimestamp()
-
+                  .setColor('#2f3136')
                 i.reply({
                   embeds: [embed]
                 })
@@ -193,6 +198,7 @@ export default new BaseCommand(
                     )} 뒤에 다시 인증해주세요!`
                   )
                   .setTimestamp()
+                  .setColor('#2f3136')
                 i.reply({
                   embeds: [embed]
                 })
