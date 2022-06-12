@@ -61,8 +61,8 @@ export default new BaseCommand(
       })
     } else {
       embed = new Embed(client, 'success').setTitle(`승리!`)
-        .setDescription(`도박에서 저를 이기셨군요!`)
-        .addField("잔액 :", `**${comma(money)}원**`)
+        .setDescription(`도박에서 저를 이기셨군요! + **${comma(money)}원**`)
+        .addField("잔액 :", `**${comma(ehqkrduqn.money+money)}원**`)
         .setColor('#2f3136')
       m.edit({
         embeds: [embed]
