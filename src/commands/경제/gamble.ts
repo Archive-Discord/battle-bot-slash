@@ -48,7 +48,7 @@ export default new BaseCommand(
     const random = Math.floor(Math.random() * 101)
     if (random < 50) {
       embed = new Embed(client, 'success').setTitle(`아쉽네요..`)
-        .setDescription(`저한테 패배 하셨군요... 이 돈은 그럼 제가 쓸어담아보겠습니다! - **${comma(money)}원`)
+        .setDescription(`저한테 패배 하셨군요... 이 돈은 그럼 제가 쓸어담아보겠습니다! - **${comma(money)}원**`)
         .addField("잔액 :", `**${comma(ehqkrduqn.money-money)}원**`)
         .setColor('#2f3136')
       m.edit({
