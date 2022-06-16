@@ -24,7 +24,7 @@ export default new BaseCommand(
         .setDescription(`잠시만 기다려주세요. 학교를 찾는중이에요...`)
         .setColor('#2f3136')
       let msg = await message.reply({embeds: [embed]})
-      await axios.get(`https://asia-northeast3-smeals-school.cloudfunctions.net/v1/meals/schools?name=${encodeURI(args[0])}`)
+      await axios.get(`https://api.smeals.co/v1/meals/schools?name=${encodeURI(args[0])}`)
         .then(async(d) => {
           let data: SchoolDataResponse = d.data
           let embed = new Embed(client, 'info')
@@ -56,7 +56,7 @@ export default new BaseCommand(
                 let date = getDate()
                 // @ts-ignore
                 let value = i.values[0].split("|")
-                axios.get(`https://asia-northeast3-smeals-school.cloudfunctions.net/v1/meals/meals?code=${value[0]}&scCode=${value[1]}&date=${date.datestring}`)
+                axios.get(`https://api.smeals.co/v1/meals/meals?code=${value[0]}&scCode=${value[1]}&date=${date.datestring}`)
                   .then(async(data) => {
                     let meal: SchoolMealResponse = data.data
                     let mealembed = new Embed(client, 'success')
@@ -113,7 +113,7 @@ export default new BaseCommand(
           .setDescription(`잠시만 기다려주세요. 학교를 찾는중이에요...`)
           .setColor('#2f3136')
         let msg = await interaction.reply({ embeds: [embed] })
-        await axios.get(`https://asia-northeast3-smeals-school.cloudfunctions.net/v1/meals/schools?name=${encodeURI(school)}`)
+        await axios.get(`https://api.smeals.co/v1/meals/schools?name=${encodeURI(school)}`)
           .then(async(d) => {
             let data: SchoolDataResponse = d.data
             let embed = new Embed(client, 'info')
@@ -144,7 +144,7 @@ export default new BaseCommand(
                   let date = getDate()
                   // @ts-ignore
                   let value = i.values[0].split("|")
-                  axios.get(`https://asia-northeast3-smeals-school.cloudfunctions.net/v1/meals/meals?code=${value[0]}&scCode=${value[1]}&date=${date.datestring}`)
+                  axios.get(`https://api.smeals.co/v1/meals/meals?code=${value[0]}&scCode=${value[1]}&date=${date.datestring}`)
                     .then(async(data) => {
                       let meal: SchoolMealResponse = data.data
                       let mealembed = new Embed(client, 'success')
