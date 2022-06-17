@@ -61,7 +61,7 @@ export default new BaseCommand(
                     let meal: SchoolMealResponse = data.data
                     let mealembed = new Embed(client, 'success')
                     .setTitle(`${value[2]} 급식`)
-                    .setDescription(`${meal.meals[0].meal.join('\n')} \n\n ${meal.meals[0].calories
+                    .setDescription(`${meal.meals[0].meal.join('\n')} \n\n ${meal.meals[0].calories}`)
                     .setFooter("해당 기능은 https://smeals.co/의 API 기반으로 개발되었습니다.")
                     .setColor('#2f3136')
                     await i.reply({ embeds: [mealembed] })
