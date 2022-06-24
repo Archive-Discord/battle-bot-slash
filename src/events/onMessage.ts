@@ -3,12 +3,7 @@ import CommandManager from '../managers/CommandManager'
 import ErrorManager from '../managers/ErrorManager'
 import { MessageCommand } from '../structures/Command'
 import BotClient from '../structures/BotClient'
-import {
-  Constants,
-  Message,
-  MessageActionRow,
-  MessageSelectMenu
-} from 'discord.js'
+import { Constants, Message } from 'discord.js'
 import Automod from '../schemas/autoModSchema'
 import MusicSetting from '../schemas/musicSchema'
 import Embed from '../utils/Embed'
@@ -16,7 +11,9 @@ import { PlayerSearchResult, Queue } from 'discord-player'
 import Level from '../schemas/levelSchema'
 import LevelSetting from '../schemas/levelSettingSchema'
 import config from '../../config'
+import { check } from 'korcen'
 import { checkUserPremium } from '../utils/checkPremium'
+import { userWarnAdd } from '../utils/WarnHandler'
 const LevelCooldown = new Map()
 
 export default new Event('messageCreate', async (client, message) => {
@@ -56,64 +53,37 @@ const profanityFilter = async (client: BotClient, message: Message) => {
   if (!automodDB.useing.useCurseType) return
   if (automodDB.useing.useCurseIgnoreChannel?.includes(message.channel.id))
     return
-  let regex = false
-  if (/(쌍)(년|놈)/.test(message.content)) regex = true
-  if (
-    !regex &&
-    /((씨|쓰|ㅅ|ㅆ|si)([0-9]+|\W+)(블|벌|발|빨|뻘|ㅂ|ㅃ|bal))/.test(
-      message.content
-    )
-  )
-    regex = true
-  if (
-    !regex &&
-    /((시발)(?!역)|((시|씨|쓰|ㅅ|ㅆ)([0-9]+|\W+|)(블|벌|발|빨|뻘|ㅂ|ㅃ))(!시발))/.test(
-      message.content
-    )
-  )
-    regex = true
-  if (
-    !regex &&
-    /((병|빙|븅|등|ㅂ)([0-9]+|\W+|)(신|싄|ㅅ)|ㅄ)/.test(message.content)
-  )
-    regex = true
-  if (
-    !regex &&
-    /((너|느(그|)|니)([0-9]+|\W+|)(금|애미|엄마|금마|검마))/.test(
-      message.content
-    )
-  )
-    regex = true
-  if (!regex && /(개|게)(같|갓|새|세|쉐)/.test(message.content)) regex = true
-  if (!regex && /(꼬|꽂|고)(추|츄)/.test(message.content)) regex = true
-  if (!regex && /(니|너)(어|엄|엠|애|m|M)/.test(message.content)) regex = true
-  if (!regex && /(노)(애|앰)/.test(message.content)) regex = true
-  if (!regex && /((뭔|)개(소리|솔))/.test(message.content)) regex = true
-  if (!regex && /(ㅅㅂ|ㅄ|ㄷㅊ)/.test(message.content)) regex = true
-  if (!regex && /(놈|년|새끼)/.test(message.content)) regex = true
-  if (regex) {
-    findCurse(automodDB, message)
+  if (check(message.content)) {
+    findCurse(automodDB, message, client)
   } else {
     return
   }
 }
 
-const findCurse = async (automodDB: any, message: Message) => {
+const findCurse = async (
+  automodDB: any,
+  message: Message,
+  client: BotClient
+) => {
   if (automodDB.useing.useCurseType === 'delete') {
     await message.reply('욕설 사용으로 자동 삭제됩니다').then((m) => {
       setTimeout(() => {
         m.delete()
       }, 5000)
     })
-    return await message.delete()
+    try {
+      message.delete()
+    } catch (error) {
+      console.log(error)
+    }
   } else if (automodDB.useing.useCurseType === 'delete_kick') {
     await message.reply('욕설 사용으로 자동 삭제 후 추방됩니다').then((m) => {
       setTimeout(() => {
         m.delete()
       }, 5000)
     })
-    await message.delete()
     try {
+      message.delete()
       return message.member?.kick()
     } catch (e) {
       return
@@ -124,14 +94,32 @@ const findCurse = async (automodDB: any, message: Message) => {
         m.delete()
       }, 5000)
     })
-    await message.delete()
     try {
+      message.delete()
       return message.member?.ban({ reason: '[배틀이] 욕설 사용 자동차단' })
     } catch (e) {
       return
     }
-  } else {
-    return
+  } else if (automodDB.useing.useCurseType === 'delete_warn') {
+    await message
+      .reply('욕설 사용으로 자동 삭제 후 경고가 지급됩니다')
+      .then((m) => {
+        setTimeout(() => {
+          m.delete()
+        }, 5000)
+      })
+    try {
+      message.delete()
+      return userWarnAdd(
+        client,
+        message.author.id,
+        message.guild?.id as string,
+        '[배틀이] 욕설 사용 자동경고',
+        client.user?.id as string
+      )
+    } catch (e) {
+      return
+    }
   }
 }
 
@@ -149,8 +137,7 @@ const MusicPlayer = async (client: BotClient, message: Message) => {
   }
   await message.delete()
   const errembed = new Embed(client, 'error')
-  const sucessembed = new Embed(client, 'success')
-    .setColor('#2f3136')
+  const sucessembed = new Embed(client, 'success').setColor('#2f3136')
   const user = message.guild?.members.cache.get(message.author.id)
   const channel = user?.voice.channel
   if (!channel) {
@@ -290,6 +277,10 @@ const LevelSystem = async (client: BotClient, message: Message) => {
     levelEmbed.setDescription(
       `레벨이 \`LV.${level ? level : 0} -> LV.${newData.level}\`로 올랐어요!`
     )*/
-    return message.reply(`${message.author}님의 레벨이 \`LV.${level ? level : 0} -> LV.${newData.level}\`로 올랐어요!`)
+    return message.reply(
+      `${message.author}님의 레벨이 \`LV.${level ? level : 0} -> LV.${
+        newData.level
+      }\`로 올랐어요!`
+    )
   }
 }
