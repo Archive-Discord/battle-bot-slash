@@ -1,4 +1,8 @@
-import { GuildTextBasedChannel, TextChannel } from 'discord.js'
+import {
+  CommandInteraction,
+  GuildTextBasedChannel,
+  TextChannel
+} from 'discord.js'
 import LoggerSetting from '../schemas/LogSettingSchema'
 import Warning from '../schemas/Warning'
 import BotClient from '../structures/BotClient'
@@ -9,7 +13,8 @@ export const userWarnAdd = async (
   userId: string,
   guildId: string,
   reason: string,
-  managerId: string
+  managerId: string,
+  interaction?: CommandInteraction
 ) => {
   const insertRes = await Warning.insertMany({
     userId: userId,
@@ -29,6 +34,9 @@ export const userWarnAdd = async (
       },
       { name: '사유', value: reason, inline: true }
     )
+  if (interaction) {
+    interaction.editReply({ embeds: [embedAdd] })
+  }
   const logSetting = await LoggerSetting.findOne({ guild_id: guildId })
   const guildLogChannel: TextChannel = client.guilds.cache
     .get(guildId)

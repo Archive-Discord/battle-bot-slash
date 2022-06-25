@@ -4,6 +4,7 @@ import { BaseCommand } from '../../structures/Command'
 import Embed from '../../utils/Embed'
 import mongoose from 'mongoose'
 import Warning from '../../schemas/Warning'
+import { userWarnAdd } from '../../utils/WarnHandler'
 let ObjectId = mongoose.Types.ObjectId
 // @ts-ignore
 String.prototype.toObjectId = function () {
@@ -85,7 +86,6 @@ export default new BaseCommand(
     },
     async execute(client, interaction) {
       await interaction.deferReply()
-
       let member = interaction.member as GuildMember
       member = interaction.guild?.members.cache.get(member.id) as GuildMember
       if (!member.permissions.has('MANAGE_CHANNELS'))
@@ -96,27 +96,14 @@ export default new BaseCommand(
 
       let subcommand = interaction.options.getSubcommand()
       if (subcommand === '지급') {
-        let insertRes = await Warning.insertMany({
-          userId: user?.id,
-          guildId: interaction.guild?.id,
-          reason: reason,
-          managerId: member.id
-        })
-
-        let embedAdd = new Embed(client, 'info')
-          .setColor('#2f3136')
-          .setTitle('경고')
-          .setDescription('아래와 같이 경고가 추가되었습니다')
-          .setFields(
-            { name: '경고 ID', value: insertRes[0]._id.toString() },
-            {
-              name: '유저',
-              value: `<@${user?.id}>` + '(' + '`' + user?.id + '`' + ')',
-              inline: true
-            },
-            { name: '사유', value: reason, inline: true }
-          )
-        return interaction.editReply({ embeds: [embedAdd] })
+        return userWarnAdd(
+          client,
+          user?.id as string,
+          interaction.guild?.id as string,
+          reason,
+          interaction.user.id,
+          interaction
+        )
       } else if (subcommand === '차감') {
         let warningID = interaction.options.getString('id')
         // @ts-ignore
