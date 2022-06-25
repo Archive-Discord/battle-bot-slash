@@ -251,7 +251,6 @@ export default new BaseCommand(
         )
         return message.reply({ embeds: [embed] })
       }
-      embed.setDescription(`매수하실 주식의 수량을 숫자만 입력해주세요.`)
       const results = await searchStockList(keyword)
       if (!results || results?.items.length == 0) {
         embed.setDescription(`${keyword} 검색 결과가 없습니다.`)
