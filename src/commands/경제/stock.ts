@@ -247,7 +247,7 @@ export default new BaseCommand(
       }
       if (quantity < 1) {
         embed.setDescription(
-          `매수하실 주식의 수량을 1이상의 숫자만 입력해주세요.`
+          `매도하실 주식의 수량을 1이상의 숫자만 입력해주세요.`
         )
         return message.reply({ embeds: [embed] })
       }

@@ -51,6 +51,7 @@
     "dokdo": "^0.5.1",
     "dotenv": "^16.0.0",
     "express": "^4.17.2",
+    "firebase": "^9.8.4",
     "fs": "^0.0.1-security",
     "googleapis": "^95.0.0",
     "hcs.js": "^2.0.6",
