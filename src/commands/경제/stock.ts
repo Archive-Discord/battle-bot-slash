@@ -20,9 +20,7 @@ export default new BaseCommand(
   },
   async (client, message, args) => {
     const type = args[0]
-    const embed = new Embed(client, 'info')
-      .setTitle('주식')
-      .setColor('#2f3136')
+    const embed = new Embed(client, 'info').setTitle('주식').setColor('#2f3136')
     if (type === '검색') {
       const keyword = args.slice(1).join(' ')
       const results = await searchStockList(keyword)
@@ -78,6 +76,12 @@ export default new BaseCommand(
       const quantity = parseInt(args[1])
       if (!quantity) {
         embed.setDescription(`매수하실 주식의 수량을 숫자만 입력해주세요.`)
+        return message.reply({ embeds: [embed] })
+      }
+      if (quantity < 1) {
+        embed.setDescription(
+          `매수하실 주식의 수량은 1이상의 숫자만 입력해주세요.`
+        )
         return message.reply({ embeds: [embed] })
       }
       const results = await searchStockList(keyword)
@@ -241,6 +245,13 @@ export default new BaseCommand(
         embed.setDescription(`매도하실 주식의 수량을 숫자만 입력해주세요.`)
         return message.reply({ embeds: [embed] })
       }
+      if (quantity < 1) {
+        embed.setDescription(
+          `매수하실 주식의 수량을 1이상의 숫자만 입력해주세요.`
+        )
+        return message.reply({ embeds: [embed] })
+      }
+      embed.setDescription(`매수하실 주식의 수량을 숫자만 입력해주세요.`)
       const results = await searchStockList(keyword)
       if (!results || results?.items.length == 0) {
         embed.setDescription(`${keyword} 검색 결과가 없습니다.`)
