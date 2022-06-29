@@ -136,7 +136,7 @@ export default new BaseCommand(
             true
           )
           .addField('경고 ID', warningID as string, true)
-        return interaction.editReply({ embeds: [embedRemove] })
+        return interaction.editReply({ embeds: [embedRemove], ephemeral: true })
       } else if (subcommand === '조회') {
         let warningID = interaction.options.getNumber('페이지')
         let insertRes = await Warning.find({
