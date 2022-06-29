@@ -31,6 +31,7 @@ export default new ButtonInteraction(
       .setDescription(
         `[여기](${config.web?.baseurl}/walletverify?token=${token})로 접속하여 인증을 진행해주세요`
       )
+      .setColor('#2f3136')
     return await interaction.editReply({ embeds: [captchaVerify] })
   }
 )

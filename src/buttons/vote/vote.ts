@@ -19,6 +19,7 @@ export default new ButtonInteraction(
   },
   async (client, interaction) => {
     const ErrEmbed = new Embed(client, 'error')
+      .setColor('#2f3136')
     if (!interaction.guild) {
       ErrEmbed.setTitle('서버에서만 투표할 수 있어요!')
       return interaction.editReply({ embeds: [ErrEmbed] })
@@ -26,6 +27,7 @@ export default new ButtonInteraction(
     await interaction.deferReply({ ephemeral: true })
     const vote_id = interaction.customId.split('_')[1]
     const SuccessEmbed = new Embed(client, 'success')
+      .setColor('#2f3136')
     const VoteDB = await Votes.findOne({
       guild_id: interaction.guild?.id,
       message_id: interaction.message.id

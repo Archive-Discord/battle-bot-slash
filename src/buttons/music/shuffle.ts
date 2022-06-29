@@ -11,6 +11,7 @@ export default new ButtonInteraction(
   async (client, interaction) => {
     await interaction.deferReply({ ephemeral: true })
     const errembed = new Embed(client, 'error')
+      .setColor('#2f3136')
     if (!interaction.guild) {
       errembed.setTitle('❌ 이 버튼은 서버에서만 사용이 가능해요!')
       return interaction.editReply({ embeds: [errembed] })
@@ -36,6 +37,7 @@ export default new ButtonInteraction(
       guild_id: guildQueue.guild.id
     })) as MusicDB
     const sucessembed = new Embed(client, 'info')
+      .setColor('#2f3136')
     await guildQueue.shuffle()
     MusicTrackEvent(client, guildQueue, musicDB)
     sucessembed.setDescription(

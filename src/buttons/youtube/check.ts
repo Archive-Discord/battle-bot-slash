@@ -14,8 +14,11 @@ export default new ButtonInteraction(
     await interaction.deferReply({ ephemeral: true })
     if (!interaction.channel) return
     const lodingEmbed = new Embed(client, 'info')
+      .setColor('#2f3136')
     const errorEmbed = new Embed(client, 'error')
+      .setColor('#2f3136')
     const successEmbed = new Embed(client, 'success')
+      .setColor('#2f3136')
     lodingEmbed.setDescription('**유튜브에서 정보를 찾아보는 중이에요!**')
     await interaction.editReply({ embeds: [lodingEmbed] })
     const userdb = await UserDB.findOne({ id: interaction.user.id })

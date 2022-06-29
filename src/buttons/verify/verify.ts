@@ -28,6 +28,7 @@ export default new ButtonInteraction(
         .setTitle('인증')
         .setDescription('아래코드를 입력해주세요 제한시간: 30초')
         .setImage('attachment://captcha.png')
+        .setColor('#2f3136')
       await interaction.editReply({
         embeds: [captchaEmbed],
         files: [{ name: 'captcha.png', attachment: captcha.buffer }]
@@ -49,6 +50,7 @@ export default new ButtonInteraction(
             const captchaSuccess = new Embed(client, 'success')
               .setTitle('인증')
               .setDescription('인증을 성공했습니다')
+              .setColor('#2f3136')
             const member = interaction.member as GuildMember
             try {
               await member.roles.remove(VerifySettingDB.del_role_id)
@@ -61,6 +63,7 @@ export default new ButtonInteraction(
               const captchaError = new Embed(client, 'error')
                 .setTitle('인증')
                 .setDescription('인증완료 역할 지급중 오류가 발생했습니다')
+                .setColor('#2f3136')
               if (e) return interaction.editReply({ embeds: [captchaError] })
             }
             return interaction.editReply({ embeds: [captchaSuccess] })
@@ -68,6 +71,7 @@ export default new ButtonInteraction(
             const captchaDeny = new Embed(client, 'error')
               .setTitle('인증')
               .setDescription('인증을 실패했습니다 다시 시도해주세요')
+              .setColor('#2f3136')
             return interaction.editReply({ embeds: [captchaDeny] })
           }
         })
@@ -75,6 +79,7 @@ export default new ButtonInteraction(
           const captchaTimeout = new Embed(client, 'error')
             .setTitle('인증')
             .setDescription('인증시간이 초과되었습니다 다시 시도해주세요')
+            .setColor('#2f3136')
           return interaction.editReply({ embeds: [captchaTimeout] })
         })
     } else if (VerifySettingDB.type === 'captcha') {
@@ -96,7 +101,9 @@ export default new ButtonInteraction(
         .setDescription(
           `[여기](${config.web?.baseurl}/verify?token=${token})로 접속하여 인증을 진행해주세요`
         )
+        .setColor('#2f3136')
       const captchaGuildEmbed = new Embed(client, 'info')
+        .setColor('#2f3136')
       captchaGuildEmbed.setThumbnail(
         guildProfileLink(interaction.guild as Guild)
       )
@@ -128,6 +135,7 @@ export default new ButtonInteraction(
       const captchaEmail = new Embed(client, 'success')
         .setTitle('인증')
         .setDescription('인증을 진행하실 이메일 주소를 30초 내로 입력해주세요!')
+        .setColor('#2f3136')
       await interaction.editReply({ embeds: [captchaEmail] })
       const filter = (m: Message) => {
         return m.author.id == interaction.user.id
@@ -155,6 +163,7 @@ export default new ButtonInteraction(
               .setDescription(
                 '이메일로 인증번호가 발송되었습니다! 2분 내로 인증번호를 입력해주세요'
               )
+              .setColor('#2f3136')
             await interaction.editReply({ embeds: [captchaEmailSended] })
             await interaction.channel
               ?.awaitMessages({
@@ -170,6 +179,7 @@ export default new ButtonInteraction(
                   const captchaSuccess = new Embed(client, 'success')
                     .setTitle('인증')
                     .setDescription('인증을 성공했습니다')
+                    .setColor('#2f3136')
                   const member = interaction.member as GuildMember
                   try {
                     await member.roles.remove(VerifySettingDB.del_role_id)
@@ -184,6 +194,7 @@ export default new ButtonInteraction(
                       .setDescription(
                         '인증완료 역할 지급중 오류가 발생했습니다'
                       )
+                      .setColor('#2f3136')
                     if (e)
                       return interaction.editReply({ embeds: [captchaError] })
                   }
@@ -192,6 +203,7 @@ export default new ButtonInteraction(
                   const captchaDeny = new Embed(client, 'error')
                     .setTitle('인증')
                     .setDescription('인증을 실패했습니다 다시 시도해주세요')
+                    .setColor('#2f3136')
                   return interaction.editReply({ embeds: [captchaDeny] })
                 }
               })
@@ -199,12 +211,14 @@ export default new ButtonInteraction(
                 const captchaTimeout = new Embed(client, 'error')
                   .setTitle('인증')
                   .setDescription('인증시간이 초과되었습니다 다시 시도해주세요')
+                  .setColor('#2f3136')
                 return interaction.editReply({ embeds: [captchaTimeout] })
               })
           } else {
             const captchaTimeout = new Embed(client, 'error')
               .setTitle('인증')
               .setDescription('올바른 이메일 형식이 아닙니다 다시 시도해주세요')
+              .setColor('#2f3136')
             return interaction.editReply({ embeds: [captchaTimeout] })
           }
         })
@@ -212,6 +226,7 @@ export default new ButtonInteraction(
           const captchaTimeout = new Embed(client, 'error')
             .setTitle('인증')
             .setDescription('메일 입력시간이 초과되었습니다 다시 시도해주세요')
+            .setColor('#2f3136')
           return interaction.editReply({ embeds: [captchaTimeout] })
         })
     } else if (VerifySettingDB.type === 'kakao') {
@@ -228,6 +243,7 @@ export default new ButtonInteraction(
           .setDescription(
             `인증을 진행하기 위해 [여기](${config.web?.baseurl}/me)에서 카카오 아이디 연동을 진행해 주세요 \n 연동 후 다시 인증 버튼을 눌러주세요`
           )
+          .setColor('#2f3136')
         return interaction.editReply({ embeds: [Verify] })
       }
       const member = interaction.member as GuildMember
@@ -242,6 +258,7 @@ export default new ButtonInteraction(
         const captchaError = new Embed(client, 'error')
           .setTitle('인증')
           .setDescription('인증완료 역할 지급중 오류가 발생했습니다')
+          .setColor('#2f3136')
         if (e) return interaction.editReply({ embeds: [captchaError] })
       }
       const VerifySuccess = new Embed(client, 'success')
@@ -249,6 +266,7 @@ export default new ButtonInteraction(
         .setDescription(
           `${UserDB.kakao_name}(\`${UserDB.kakao_email}\`) 정보로 인증이 완료되었습니다`
         )
+        .setColor('#2f3136')
       return interaction.editReply({ embeds: [VerifySuccess] })
     }
   }
