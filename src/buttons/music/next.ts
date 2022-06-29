@@ -8,6 +8,7 @@ export default new ButtonInteraction(
   async (client, interaction) => {
     await interaction.deferReply({ ephemeral: true })
     const errembed = new Embed(client, 'error')
+      .setColor('#2f3136')
     if (!interaction.guild) {
       errembed.setTitle('❌ 이 버튼은 서버에서만 사용이 가능해요!')
       return interaction.editReply({ embeds: [errembed] })
@@ -34,6 +35,7 @@ export default new ButtonInteraction(
       return interaction.editReply({ embeds: [errembed] })
     }
     const sucessembed = new Embed(client, 'info')
+      .setColor('#2f3136')
     guildQueue.skip()
     sucessembed.setDescription(
       `**${userMention(interaction.user.id)}님의 요청으로 \`${
