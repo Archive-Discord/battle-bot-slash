@@ -13,6 +13,7 @@ export default new BaseCommand(
   },
   async (client, message, args) => {
     let errembed = new Embed(client, 'error')
+      .setColor('#2f3136')
     let sucessembed = new Embed(client, 'success')
       .setColor('#2f3136')
     if(!message.guild) {
@@ -49,8 +50,9 @@ export default new BaseCommand(
       isSlash: true
     },
     async execute(client, interaction) {
-      await interaction.deferReply()
+      await interaction.deferReply({ ephemeral: true })
       let errembed = new Embed(client, 'error')
+        .setColor('#2f3136')
       let sucessembed = new Embed(client, 'success')
         .setColor('#2f3136')
       if(!interaction.guild) {
@@ -83,7 +85,6 @@ export default new BaseCommand(
           return `**${i + pageStart + 1}**. [${m.title}](${m.url}) ${m.duration} - ${m.requestedBy}`;
       });
       if(tracks.length) {
-          sucessembed.setColor('#2f3136')
           sucessembed.setDescription(`\n${tracks.join('\n')}${
               queue.tracks.length > pageEnd
                   ? `\n... + ${queue.tracks.length - pageEnd}`

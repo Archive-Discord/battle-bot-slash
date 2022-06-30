@@ -16,6 +16,7 @@ export default new BaseCommand(
   },
   async (client, message, args) => {
     let errembed = new Embed(client, 'error')
+      .setColor('#2f3136')
     let musicEmbed = new MusicEmbed(client)
     if(!message.guild) {
       errembed.setTitle('이 명령어는 서버에서만 사용이 가능해요!')
@@ -56,8 +57,9 @@ export default new BaseCommand(
       isSlash: true
     },
     async execute(client, interaction) {
-      await interaction.deferReply()
+      await interaction.deferReply({ ephemeral: true })
       let errembed = new Embed(client, 'error')
+        .setColor('#2f3136')
       let musicEmbed = new MusicEmbed(client)
       if(!interaction.guild) {
         errembed.setTitle('이 명령어는 서버에서만 사용이 가능해요!')

@@ -30,7 +30,7 @@ export default new BaseCommand(
       isSlash: true
     },
     async execute(client, interaction) {
-      await interaction.deferReply()
+      await interaction.deferReply({ ephemeral: true })
       await interaction.editReply({
         embeds: [
           new Embed(client, 'info').setDescription('전적을 불러오는 중..')

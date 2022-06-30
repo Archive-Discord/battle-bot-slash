@@ -15,6 +15,7 @@ export default new BaseCommand(
       let embed = new Embed(client, 'error')
       embed.setTitle('이런...')
       embed.setDescription('이 명령어는 서버에서만 사용 가능합니다')
+      embed.setColor('#2f3136')
       return message.reply({embeds: [embed]})
     }
     if(!args[0]) args[0] = message.author.id
@@ -24,6 +25,7 @@ export default new BaseCommand(
       let embed = new Embed(client, 'error')
       embed.setTitle('이런...')
       embed.setDescription('찾을 수 없는 유저입니다')
+      embed.setColor('#2f3136')
       return message.reply({embeds: [embed]})
     }
     let userdb = await UserDB.findOne({id: user.id})
@@ -59,7 +61,7 @@ export default new BaseCommand(
         let embed = new Embed(client, 'error')
         embed.setTitle('이런...')
         embed.setDescription('이 명령어는 서버에서만 사용 가능합니다')
-        return interaction.reply({embeds: [embed]})
+        return interaction.reply({embeds: [embed], ephemeral: true })
       }
       let seluser = interaction.options.getUser('user')
       let user = interaction.guild.members.cache.get(seluser?.id as string)
