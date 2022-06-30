@@ -44,7 +44,7 @@ export default new BaseCommand(
       isSlash: true
     },
     async execute(client, interaction) {
-      await interaction.deferReply();
+      await interaction.deferReply({ ephemeral: true });
       let embed = new Embed(client, 'success')
         .setColor('#2f3136')
         .setTitle(`${client.user?.username} 프리미엄`)

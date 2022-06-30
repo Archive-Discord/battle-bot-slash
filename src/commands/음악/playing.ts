@@ -13,6 +13,7 @@ export default new BaseCommand(
   },
   async (client, message, args) => {
     let errembed = new Embed(client, 'error')
+      .setColor('#2f3136')
     let sucessembed = new Embed(client, 'success')
       .setColor('#2f3136')
     if(!message.guild) {
@@ -28,7 +29,6 @@ export default new BaseCommand(
     sucessembed.setAuthor('재생 중인 노래', 'https://cdn.discordapp.com/emojis/667750713698549781.gif?v=1', queue.nowPlaying().url)
     sucessembed.setDescription(`[**${queue.nowPlaying().title} - ${queue.nowPlaying().author}**](${queue.nowPlaying().url}) ${queue.nowPlaying().duration} - ${queue.nowPlaying().requestedBy}`)
     sucessembed.setThumbnail(queue.nowPlaying().thumbnail)
-    sucessembed.setColor('#2f3136')
     return message.reply({embeds: [sucessembed]});
   },
   {
@@ -40,8 +40,9 @@ export default new BaseCommand(
       isSlash: true
     },
     async execute(client, interaction) {
-      await interaction.deferReply()
+      await interaction.deferReply({ ephemeral: true })
       let errembed = new Embed(client, 'error')
+        .setColor('#2f3136')
       let sucessembed = new Embed(client, 'success')
         .setColor('#2f3136')
       if(!interaction.guild) {

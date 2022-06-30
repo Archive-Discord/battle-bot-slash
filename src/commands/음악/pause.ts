@@ -12,6 +12,7 @@ export default new BaseCommand(
   },
   async (client, message, args) => {
     let errembed = new Embed(client, 'error')
+      .setColor('#2f3136')
     let sucessembed = new Embed(client, 'success')
       .setColor('#2f3136')
     if(!message.guild) {
@@ -53,8 +54,9 @@ export default new BaseCommand(
       isSlash: true
     },
     async execute(client, interaction) {
-      await interaction.deferReply()
+      await interaction.deferReply({ ephemeral: true })
       let errembed = new Embed(client, 'error')
+        .setColor('#2f3136')
       let sucessembed = new Embed(client, 'success')
         .setColor('#2f3136')
       if(!interaction.guild) {

@@ -37,7 +37,7 @@ export default new BaseCommand(
       isSlash: true
     },
     async execute(client, interaction) {
-      await interaction.deferReply()
+      await interaction.deferReply({ ephemeral: true })
       let nickname = interaction.options.getString('user', true)
       let mode = interaction.options.getString('mode', true)
       return await playerStats(nickname, mode, interaction)

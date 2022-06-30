@@ -12,6 +12,7 @@ export default new BaseCommand(
   },
   async (client, message, args) => {
     let errEmbed = new Embed(client, 'error')
+      .setColor('#2f3136')
     let successEmbed = new Embed(client, 'success')
       .setColor('#2f3136')
     if(!message.guild) {
@@ -48,8 +49,9 @@ export default new BaseCommand(
       isSlash: true
     },
     async execute(client, interaction) {
-      await interaction.deferReply()
+      await interaction.deferReply({ ephemeral: true })
       let errEmbed = new Embed(client, 'error')
+        .setColor('#2f3136')
       let successEmbed = new Embed(client, 'success')
         .setColor('#2f3136')
       let stringemoji = interaction.options.getString('이모지', true)
