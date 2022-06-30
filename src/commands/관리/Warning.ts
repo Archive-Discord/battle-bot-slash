@@ -85,7 +85,7 @@ export default new BaseCommand(
       isSlash: true
     },
     async execute(client, interaction) {
-      await interaction.deferReply()
+      await interaction.deferReply({ ephemeral: true })
       let member = interaction.member as GuildMember
       member = interaction.guild?.members.cache.get(member.id) as GuildMember
       if (!member.permissions.has('MANAGE_CHANNELS'))
