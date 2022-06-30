@@ -85,7 +85,7 @@ export default new BaseCommand(
       isSlash: true
     },
     async execute(client, interaction) {
-      await interaction.deferReply()
+      await interaction.deferReply({ ephemeral: true })
       let member = interaction.member as GuildMember
       member = interaction.guild?.members.cache.get(member.id) as GuildMember
       if (!member.permissions.has('MANAGE_CHANNELS'))
@@ -136,7 +136,7 @@ export default new BaseCommand(
             true
           )
           .addField('경고 ID', warningID as string, true)
-        return interaction.editReply({ embeds: [embedRemove], ephemeral: true })
+        return interaction.editReply({ embeds: [embedRemove] })
       } else if (subcommand === '조회') {
         let warningID = interaction.options.getNumber('페이지')
         let insertRes = await Warning.find({
