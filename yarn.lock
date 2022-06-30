@@ -1734,7 +1734,7 @@ __metadata:
     fs: ^0.0.1-security
     googleapis: ^95.0.0
     hcs.js: ^2.0.6
-    korcen: ^0.1.8
+    korcen: ^0.2.0
     mongoose: ^6.2.6
     node-cache: ^5.1.2
     node-schedule: ^2.1.0
@@ -4298,10 +4298,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"korcen@npm:^0.1.8":
-  version: 0.1.8
-  resolution: "korcen@npm:0.1.8"
-  checksum: 085678b55375fb35424a82c71a0038216caae0221ee5dec7ca4815dfb22a1c94369118c71e901ef9439053a0220a897fe9a5f6db4b57fb0df5ddd8265da5944c
+"korcen@npm:^0.2.0":
+  version: 0.2.0
+  resolution: "korcen@npm:0.2.0"
+  checksum: c363e4111c2f202adcf00835f3631f85cd7bff82c3312f1f97a15258531b3bbbd6a4a80b81153355bb701bbf149934b67961f8949e276eecaaf390de905515b1
   languageName: node
   linkType: hard
 
