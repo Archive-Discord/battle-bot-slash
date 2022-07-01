@@ -16,6 +16,7 @@ export default new BaseCommand(
     let embed = new Embed(client, 'error')
       .setTitle(`게임`)
       .setDescription('게임 명령어는 (/) 명령어로만 사용이 가능해요')
+      .setColor('#2f3136')
     return message.reply({ embeds: [embed] })
   },
   {
@@ -41,6 +42,7 @@ export default new BaseCommand(
     async execute(client, interaction) {
       const embed = new Embed(client, 'error')
         .setTitle(`🎮 게임`)
+        .setColor('#2f3136')
       const embedSuccess = new Embed(client, 'success')
         .setTitle(`🎮 게임`)
         .setColor('#2f3136')

@@ -15,6 +15,7 @@ export default new BaseCommand(
     let embed = new Embed(client, 'error')
       .setTitle(`유튜브`)
       .setDescription('유튜브 명령어는 (/) 명령어로만 사용이 가능해요')
+      .setColor('#2f3136')
     return message.reply({ embeds: [embed] })
   },
   {
@@ -30,26 +31,27 @@ export default new BaseCommand(
     async execute(client, interaction) {
       const embed = new Embed(client, 'error')
         .setTitle(`유튜브`)
+        .setColor('#2f3136')
       const embedSuccess = new Embed(client, 'success')
         .setTitle(`유튜브`)
         .setColor('#2f3136')
       const guild = interaction.guild
       if(!guild) {
         embed.setDescription('이 명령어는 서버에서만 사용이 가능해요!')
-        return interaction.reply({ embeds: [embed] })
+        return interaction.reply({ embeds: [embed], ephemeral: true })
       }
       const member = guild.members.cache.get(interaction.user.id)
       if(!member) {
         embed.setDescription('서버에서 유저를 찾지 못했어요!')
-        return interaction.reply({ embeds: [embed] })
+        return interaction.reply({ embeds: [embed], ephemeral: true })
       }
       if(!member.voice || !member.voice.channel) {
         embed.setDescription(`먼저 음성채널에 입장해주세요!`)
-        return interaction.reply({ embeds: [embed] })
+        return interaction.reply({ embeds: [embed], ephemeral: true })
       }
       if(member.voice.channel.type === "GUILD_STAGE_VOICE") { 
         embed.setDescription(`스테이지 채널에서는 이 명령어를 사용할 수 없어요!`)
-        return interaction.reply({ embeds: [embed] })
+        return interaction.reply({ embeds: [embed], ephemeral: true })
       }
       const rest = new REST({version: "8"}).setToken(config.bot.token)
       const invite: Invite = await rest.post(`/channels/${member.voice.channelId}/invites`, {
@@ -64,10 +66,10 @@ export default new BaseCommand(
       }) as Invite
       if(!invite) {
         embed.setDescription(`초대코드를 생성하지 못했어요!`)
-        return interaction.reply({ embeds: [embed] })
+        return interaction.reply({ embeds: [embed], ephemeral: true })
       }
       embedSuccess.setDescription(`성공적으로 유튜브같이 보기가 생성되었어요!\n**초대코드가 활성화 되지 않을 경우 링크를 눌러주세요!**`)
-      return interaction.reply({embeds: [embedSuccess], content: `https://discord.gg/${invite.code}`})
+      return interaction.reply({embeds: [embedSuccess], content: `https://discord.gg/${invite.code}`, ephemeral: true})
     }
   }
 )
