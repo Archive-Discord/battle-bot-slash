@@ -116,7 +116,7 @@ export default new BaseCommand(
           .setTitle(`급식`)
           .setDescription(`잠시만 기다려주세요. 학교를 찾는중이에요...`)
           .setColor('#2f3136')
-        let msg = await interaction.reply({ embeds: [embed] })
+        let msg = await interaction.reply({ embeds: [embed], ephemeral: true })
         await axios.get(`https://asia-northeast3-smeals-school.cloudfunctions.net/meals/schools?name=${encodeURI(school)}`)
           .then(async(d) => {
             let data: SchoolDataResponse = d.data
