@@ -13,16 +13,17 @@ export default new BaseCommand(
   },
   async (client, message, args) => {
     let errembed = new Embed(client, 'error')
+      .setTitle(`❌ 에러 발생`)
       .setColor('#2f3136')
     let sucessembed = new Embed(client, 'success')
       .setColor('#2f3136')
     if(!message.guild) {
-      errembed.setDescription('이 명령어는 서버에서만 사용이 가능해요!')
+      errembed.setDescription('이 명령어는 서버에서만 사용이 가능합니다.')
       return message.reply({embeds: [errembed]})
     }
     const queue = client.player.getQueue(message.guild.id);
     if (!queue || !queue.playing) {
-      errembed.setDescription('노래가 재생 중이지 않아요!')
+      errembed.setDescription('노래가 재생 중이지 않습니다.')
       return message.reply({embeds: [errembed]});
     }
 
@@ -42,16 +43,17 @@ export default new BaseCommand(
     async execute(client, interaction) {
       await interaction.deferReply({ ephemeral: true })
       let errembed = new Embed(client, 'error')
+        .setTitle(`❌ 에러 발생`)
         .setColor('#2f3136')
       let sucessembed = new Embed(client, 'success')
         .setColor('#2f3136')
       if(!interaction.guild) {
-        errembed.setTitle('❌ 이 명령어는 서버에서만 사용이 가능해요!')
+        errembed.setDescription('이 명령어는 서버에서만 사용이 가능합니다.')
         return interaction.editReply({embeds: [errembed]})
       }
       const queue = client.player.getQueue(interaction.guild.id);
       if (!queue || !queue.playing) {
-        errembed.setTitle('❌ 노래가 재생 중이지 않아요!')
+        errembed.setDescription('노래가 재생 중이지 않습니다.')
         return interaction.editReply({embeds: [errembed]});
       }
       sucessembed.setAuthor('재생 중인 노래', 'https://cdn.discordapp.com/emojis/667750713698549781.gif?v=1', queue.nowPlaying().url)

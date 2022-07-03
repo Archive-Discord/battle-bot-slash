@@ -20,6 +20,7 @@ export default new BaseCommand(
       .setColor('#2f3136')
     const money = await Schema.findOne({ userid: message.author.id })
     if (!money) {
+      embed.setTitle(`❌ 에러 발생`)
       embed.setDescription(
         message.author +
           '님의 정보가 확인되지 않습니다.\n먼저 `!돈받기`를 입력해 정보를 알려주세요!'
@@ -93,7 +94,7 @@ export default new BaseCommand(
                   platform: 'koreanlist'
                 })
                 embed = new Embed(client, 'success')
-                  .setTitle('한국 디스코드 리스트 봇 하트인증')
+                  .setTitle('⭕ 하트 인증 성공')
                   .setDescription(
                     `${message.author.username}님의 한국 디스코드 리스트에 있는 배틀이 봇의 하트인증이 완료되었습니다.`
                   )
@@ -105,7 +106,7 @@ export default new BaseCommand(
                 return m.edit({ components: [] })
               } else {
                 embed = new Embed(client, 'success')
-                  .setTitle('한국 디스코드 리스트 봇 하트인증')
+                  .setTitle('❌ 하트 인증 실패')
                   .setDescription(
                     `${DateFormatting._format(
                       res.data.data.lastVote + 12 * 60 * 60 * 1000,
@@ -123,10 +124,11 @@ export default new BaseCommand(
           })
           .catch((e) => {
             embed = new Embed(client, 'error')
-              .setTitle('한국 디스코드 리스트 봇 하트인증')
+              .setTitle('❌ 에러 발생')
               .setDescription(`하트 인증중 오류가 발생했어요! ${e.message}`)
               .setFooter(`${message.author.tag}`)
               .setTimestamp()
+              .setColor('#2f3136')
             i.reply({
               embeds: [embed]
             })
@@ -178,7 +180,7 @@ export default new BaseCommand(
                   platform: 'archive'
                 })
                 embed = new Embed(client, 'success')
-                  .setTitle('아카이브 봇 하트인증')
+                  .setTitle('⭕ 하트 인증 성공')
                   .setDescription(
                     `${message.author.username}님의 아카이브에 있는 배틀이 봇의 하트인증이 완료되었습니다.`
                   )
@@ -190,7 +192,7 @@ export default new BaseCommand(
                 return m.edit({ components: [] })
               } else {
                 embed = new Embed(client, 'success')
-                  .setTitle('아카이브 봇 하트인증')
+                  .setTitle('❌ 하트 인증 실패')
                   .setDescription(
                     `${DateFormatting._format(
                       res.data.data.lastLike + 24 * 60 * 60 * 1000,
@@ -208,10 +210,11 @@ export default new BaseCommand(
           })
           .catch((e) => {
             embed = new Embed(client, 'error')
-              .setTitle('아카이브 봇 하트인증')
+              .setTitle('❌ 에러 발생')
               .setDescription(`하트 인증중 오류가 발생했어요! ${e.message}`)
               .setFooter(`${message.author.tag}`)
               .setTimestamp()
+              .setColor('#2f3136')
             i.reply({
               embeds: [embed]
             })

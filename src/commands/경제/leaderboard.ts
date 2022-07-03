@@ -26,6 +26,7 @@ export default new BaseCommand(
           `${i + 1}. ${searchuser.username}`,
           `${comma(data[i].money)}원`
         )
+        embed.setColor('#2f3136')
       } else if (type === '서버') {
         embed.setTitle('서버 돈 순위표')
         let searchuser = message.guild?.members.cache.get(data[i].userid)
@@ -34,6 +35,7 @@ export default new BaseCommand(
           `${i + 1}. ${searchuser.nickname ?? searchuser.user.username}`,
           `${comma(data[i].money)}원`
         )
+        embed.setColor('#2f3136')
       } else {
         embed.setTitle('돈 순위표')
         let searchuser = client.users.cache.get(data[i].userid)
@@ -42,6 +44,7 @@ export default new BaseCommand(
           `${i + 1}. ${searchuser.username}`,
           `${comma(data[i].money)}원`
         )
+        embed.setColor('#2f3136')
       }
     }
     message.reply({

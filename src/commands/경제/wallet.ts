@@ -11,8 +11,9 @@ export default new BaseCommand(
     aliases: ['잔액', 'money', 'ehs', 'wlrkq', '지갑', '돈']
   },
   async (client, message, args) => {
-    let embed = new Embed(client, 'warn').setTitle('처리중..')
-    .setColor('#2f3136')
+    let embed = new Embed(client, 'warn')
+      .setTitle('처리중..')
+      .setColor('#2f3136')
     let m = await message.reply({
       embeds: [embed]
     })
@@ -30,7 +31,8 @@ export default new BaseCommand(
     let i
     if (wjdqh.date == date) i = "돈을 받음"
     else i = "돈을 받지않음"
-    embed = new Embed(client, 'success').setTitle(`${user.tag}님의 잔액`)
+    embed = new Embed(client, 'success')
+      .setTitle(`${user.tag}님의 잔액`)
       .setDescription(`유저님의 잔액은 아래와 같습니다.`)
       .addField("잔액 :", `**${comma(wjdqh.money)}원**`)
       .setColor('#2f3136')
