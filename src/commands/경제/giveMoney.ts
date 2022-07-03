@@ -29,11 +29,9 @@ export default new BaseCommand(
         date: date
       })
       newData.save()
-      const money = parseInt(String(ehqkrduqn.money))
       embed = new Embed(client, 'success')
         .setTitle('⭕ 입금 완료')
         .setDescription(`입금이 정상적으로 완료되었습니다. + **5000원**`)
-        .setDescription(`잔액 :  ${comma(money)}원`)
         .setColor('#2f3136')
       m.edit({
         embeds: [embed]

@@ -39,7 +39,7 @@ export default new BaseCommand(
       let user = interaction.options.getUser('유저', false)
       const isPremium = await checkUserPremium(client, interaction.user)
       if (!interaction.guild) {
-        errEmbed.seTitle(`❌ 에러 발생`)
+        errEmbed.setTitle(`❌ 에러 발생`)
         errEmbed.setDescription('이 명령어는 서버에서만 사용 가능합니다')
         return interaction.editReply({embeds: [errEmbed]})
       }

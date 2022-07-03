@@ -89,13 +89,13 @@ export default new BaseCommand(
       }
       const results = await searchStockList(keyword)
       if (!results || results?.items.length == 0) {
-        embed.seTitle(`❌ 에러 발생`)
+        embed.setTitle(`❌ 에러 발생`)
         embed.setDescription(`${keyword} 검색 결과가 없습니다.`)
         return message.reply({ embeds: [embed] })
       }
       const result = await searchStock(results.items[0].code)
       if (!result) {
-        embed.seTitle(`❌ 에러 발생`)
+        embed.setTitle(`❌ 에러 발생`)
         embed.setDescription(`${keyword} 검색 결과가 없습니다.`)
         return message.reply({ embeds: [embed] })
       }
@@ -104,7 +104,7 @@ export default new BaseCommand(
       const total = price + fee
       const user = await Schema.findOne({ userid: message.author.id })
       if (!user) {
-        embed.seTitle(`❌ 에러 발생`)
+        embed.setTitle(`❌ 에러 발생`)
         embed.setDescription(
           `등록되어 있지 않은 유저인 거 같아요!, 먼저 \`${config.bot.prefix}돈받기\` 명령어로 등록을 해주세요.`
         )
@@ -211,7 +211,7 @@ export default new BaseCommand(
           }
           const successEmbed = new Embed(client, 'success')
             .setTitle(`⭕ 매수 완료`)
-            .setDescription(
+            .setDescription(  
               `${results.items[0].name} ${quantity}주를 매수했어요!`
             )
             .addField('거래금액', `${comma(total)}원`, true)
@@ -220,7 +220,7 @@ export default new BaseCommand(
             .setColor('#2f3136')
           return i.update({ embeds: [successEmbed], components: [] })
         } else if (i.customId == 'stock.deny') {
-          embed.seTitle(`❌ 매수 취소`)
+          embed.setTitle(`❌ 매수 취소`)
           embed.setDescription(`매수를 취소하였습니다.`)
           return i.update({ embeds: [embed], components: [] })
         }
