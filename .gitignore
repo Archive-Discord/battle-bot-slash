@@ -27,3 +27,4 @@ config.*
 
 # Build data
 build/
+deploy-commands.js
