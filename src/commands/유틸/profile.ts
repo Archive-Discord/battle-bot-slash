@@ -13,7 +13,7 @@ export default new BaseCommand(
   async (client, message, args) => {
     if(!message.guild) {
       let embed = new Embed(client, 'error')
-      embed.setTitle('이런...')
+      embed.setTitle(`❌ 에러 발생`)
       embed.setDescription('이 명령어는 서버에서만 사용 가능합니다')
       embed.setColor('#2f3136')
       return message.reply({embeds: [embed]})
@@ -23,7 +23,7 @@ export default new BaseCommand(
     if(message.mentions.users.first()) user = message.guild.members.cache.get(message.mentions.users.first()?.id as string)
     if(!user) {
       let embed = new Embed(client, 'error')
-      embed.setTitle('이런...')
+      embed.setTitle(`❌ 에러 발생`)
       embed.setDescription('찾을 수 없는 유저입니다')
       embed.setColor('#2f3136')
       return message.reply({embeds: [embed]})
@@ -59,16 +59,18 @@ export default new BaseCommand(
     async execute(client, interaction) {
       if(!interaction.guild) {
         let embed = new Embed(client, 'error')
-        embed.setTitle('이런...')
+        embed.setTitle('❌ 에러 발생')
         embed.setDescription('이 명령어는 서버에서만 사용 가능합니다')
+        embed.setColor('#2f3136')
         return interaction.reply({embeds: [embed], ephemeral: true })
       }
       let seluser = interaction.options.getUser('user')
       let user = interaction.guild.members.cache.get(seluser?.id as string)
       if(!user) {
         let embed = new Embed(client, 'error')
-        embed.setTitle('이런...')
+        embed.setTitle('❌ 에러 발생')
         embed.setDescription('찾을 수 없는 유저입니다')
+        embed.setColor('#2f3136')
         return interaction.reply({embeds: [embed]})
       }
       let userdb = await UserDB.findOne({id: user.id})

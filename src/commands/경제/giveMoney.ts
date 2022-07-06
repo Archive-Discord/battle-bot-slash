@@ -11,8 +11,9 @@ export default new BaseCommand(
     aliases: ['돈받기', 'moneyget', 'ehswnj', '돈줘']
   },
   async (client, message, args) => {
-    let embed = new Embed(client, 'warn').setTitle('처리중..')
-    .setColor('#2f3136')
+    let embed = new Embed(client, 'warn')
+      .setTitle('생각하는 중...')
+      .setColor('#2f3136')
     let m = await message.reply({
       embeds: [embed]
     })
@@ -28,16 +29,17 @@ export default new BaseCommand(
         date: date
       })
       newData.save()
-      embed = new Embed(client, 'success').setTitle('환영합니다!')
-        .setDescription(`처음이시군요! 5000원을 입금해드리겠습니다!`)
+      embed = new Embed(client, 'success')
+        .setTitle('⭕ 입금 완료')
+        .setDescription(`입금이 정상적으로 완료되었습니다. + **5000원**`)
         .setColor('#2f3136')
       m.edit({
         embeds: [embed]
       })
     } else {
-
       embed = new Embed(client, 'info')
-        .setDescription(`이미 오늘 돈을 받으셨어요 ㅠㅠ\n다음에 다시 와주세요!`)
+        .setTitle(`❌ 입금 실패`)
+        .setDescription(`오늘은 이미 5000원을 받으셨습니다.`)
         .setColor('#2f3136')
       if (ehqkrduqn.date == date) return m.edit({
         embeds: [embed]
@@ -48,10 +50,10 @@ export default new BaseCommand(
         userid: message.author.id,
         date: date
       })
-      const f = money + 5000
-      embed = new Embed(client, 'success').setTitle('입금이 완료되었습니다!')
-        .setDescription(`처음이시군요! 5000원을 입금해드리겠습니다!`)
-        .addField(`돈이 입금되었습니다!`, `현재 잔액 : ${comma(f)}`)
+      embed = new Embed(client, 'success')
+        .setTitle('⭕ 입금 완료')
+        .setDescription(`입금이 정상적으로 완료되었습니다. + **5000원**`)
+        .setDescription(`잔액 :  ${comma(money + 5000)}원`)
         .setColor('#2f3136')
       m.edit({
         embeds: [embed]

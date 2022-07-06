@@ -66,6 +66,7 @@ export default new BaseCommand(
       let successEmbed = new Embed(client, 'success')
         .setColor('#2f3136')
       let errEmbed = new Embed(client, 'error')
+        .setTitle(`❌ 에러 발생`)
         .setColor('#2f3136')
       let infoEmbed = new Embed(client, 'info')
         .setColor('#2f3136')

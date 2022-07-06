@@ -20,15 +20,16 @@ export default new BaseCommand(
   },
   async (client, message, args) => {
     let errembed = new Embed(client, 'error')
+      .setTitle(`❌ 에러 발생`)
       .setColor('#2f3136')
     let sucessembed = new Embed(client, 'success')
       .setColor('#2f3136')
     if (!message.guild) {
-      errembed.setTitle('❌ 이 명령어는 서버에서만 사용이 가능해요!')
+      errembed.setDescription('이 명령어는 서버에서만 사용이 가능합니다.')
       return message.reply({ embeds: [errembed] })
     }
     if (!args[0]) {
-      errembed.setTitle('❌ 노래 제목을 적어주세요')
+      errembed.setDescription('노래 제목을 적어주세요.')
       return message.reply({ embeds: [errembed] })
     }
     let song = args.slice(1).join(' ')
@@ -36,26 +37,26 @@ export default new BaseCommand(
     const user = message.guild?.members.cache.get(message.author.id)
     const channel = user?.voice.channel
     if (!channel) {
-      errembed.setTitle('❌ 음성 채널에 먼저 입장해주세요!')
+      errembed.setDescription('음성 채널에 먼저 입장 해주세요!')
       return message.reply({ embeds: [errembed] })
     }
     const guildQueue = client.player.getQueue(message.guild.id)
     if (guildQueue && message.guild.me?.voice.channelId) {
       if (channel.id !== message.guild.me?.voice.channelId) {
-        errembed.setTitle('❌ 이미 다른 음성 채널에서 재생 중입니다!')
+        errembed.setDescription('이미 다른 음성 채널에서 재생 중입니다.')
         return message.reply({ embeds: [errembed] })
       }
     } else {
       if (!channel.viewable) {
-        errembed.setTitle('`채널보기` 권한이 필요해요!')
+        errembed.setDescription('`채널보기` 권한이 필요합니다.')
         return message.reply({ embeds: [errembed] })
       }
       if (!channel.joinable) {
-        errembed.setTitle('`채널입장` 권한이 필요해요!')
+        errembed.setDescription('`채널입장` 권한이 필요합니다.')
         return message.reply({ embeds: [errembed] })
       }
       if (channel.full) {
-        errembed.setTitle('채널이 가득 차 입장할 수 없어요!')
+        errembed.setDescription('채널이 가득 차 입장할 수 없습니다.')
         return message.reply({ embeds: [errembed] })
       }
     }
@@ -63,7 +64,7 @@ export default new BaseCommand(
       .search(song, { requestedBy: message.author })
       .catch((e) => {})) as PlayerSearchResult
     if (!result || !result.tracks.length) {
-      errembed.setTitle(`❌ ${song}를 찾지 못했어요!`)
+      errembed.setDescription(`${song}를 찾지 못했어요!`)
       return message.reply({ embeds: [errembed] })
     }
     let queue: Queue
@@ -79,7 +80,7 @@ export default new BaseCommand(
       if (!queue.connection) await queue.connect(channel)
     } catch (e) {
       client.player.deleteQueue(message.guild.id)
-      errembed.setTitle(`❌ 음성 채널에 입장할 수 없어요 ${e}`)
+      errembed.setDescription(`음성 채널에 입장할 수 없습니다. ${e}`)
       return message.reply({ embeds: [errembed] })
     }
     if (result.playlist) {
@@ -101,7 +102,7 @@ export default new BaseCommand(
       let row = new MessageActionRow()
       let select = new MessageSelectMenu()
         .setCustomId('music.select')
-        .setPlaceholder('재생할 노래를 선택해주세요!')
+        .setPlaceholder('재생할 노래를 선택 해주세요!')
       let trackslist = 15
       if (result.tracks.length < 15) trackslist = result.tracks.length
       for (let i = 0; i < trackslist; i++) {
@@ -161,37 +162,38 @@ export default new BaseCommand(
     async execute(client, interaction) {
       await interaction.deferReply({ ephemeral: true })
       let errembed = new Embed(client, 'error')
+        .setTitle(`❌ 에러 발생`)
         .setColor('#2f3136')
       let sucessembed = new Embed(client, 'success')
         .setColor('#2f3136')
       if (!interaction.guild) {
-        errembed.setTitle('❌ 이 명령어는 서버에서만 사용이 가능해요!')
+        errembed.setDescription('이 명령어는 서버에서만 사용이 가능합니다.')
         return interaction.editReply({ embeds: [errembed] })
       }
       const song = interaction.options.getString('song', true)
       const user = interaction.guild?.members.cache.get(interaction.user.id)
       const channel = user?.voice.channel
       if (!channel) {
-        errembed.setTitle('❌ 음성 채널에 먼저 입장해주세요!')
+        errembed.setDescription('음성 채널에 먼저 입장 해주세요!')
         return interaction.editReply({ embeds: [errembed] })
       }
       const guildQueue = client.player.getQueue(interaction.guild.id)
       if (guildQueue) {
         if (channel.id !== interaction.guild.me?.voice.channelId) {
-          errembed.setTitle('❌ 이미 다른 음성 채널에서 재생 중입니다!')
+          errembed.setDescription('이미 다른 음성 채널에서 재생 중입니다.')
           return interaction.editReply({ embeds: [errembed] })
         }
       } else {
         if (!channel.viewable) {
-          errembed.setTitle('`채널보기` 권한이 필요해요!')
+          errembed.setDescription('`채널보기` 권한이 필요합니다.')
           return interaction.editReply({ embeds: [errembed] })
         }
         if (!channel.joinable) {
-          errembed.setTitle('`채널입장` 권한이 필요해요!')
+          errembed.setDescription('`채널입장` 권한이 필요합니다.')
           return interaction.editReply({ embeds: [errembed] })
         }
         if (channel.full) {
-          errembed.setTitle('채널이 가득 차 입장할 수 없어요!')
+          errembed.setDescription('채널이 가득 차 입장할 수 없습니다.')
           return interaction.editReply({ embeds: [errembed] })
         }
       }
@@ -199,7 +201,7 @@ export default new BaseCommand(
         .search(song, { requestedBy: interaction.user })
         .catch((e) => {})) as PlayerSearchResult
       if (!result || !result.tracks.length) {
-        errembed.setTitle(`❌ ${song}을 찾지 못했어요!`)
+        errembed.setDescription(`${song}을/를 찾지 못했습니다.`)
         return interaction.editReply({ embeds: [errembed] })
       }
       let queue: Queue
@@ -215,7 +217,7 @@ export default new BaseCommand(
         if (!queue.connection) await queue.connect(channel)
       } catch (e) {
         client.player.deleteQueue(interaction.guild.id)
-        errembed.setTitle(`❌ 음성 채널에 입장할 수 없어요 ${e}`)
+        errembed.setDescription(`음성 채널에 입장할 수 없습니다. ${e}`)
         return interaction.editReply({ embeds: [errembed] })
       }
       if (result.playlist) {
@@ -254,7 +256,7 @@ export default new BaseCommand(
             )
             embed.setThumbnail(result.playlist.thumbnail)
             embed.setAuthor(
-              `재생목록에 아래 노래들을 추가했어요!`,
+              `재생목록에 아래 노래들을 추가했습니다.`,
               undefined,
               `${result.playlist.url}`
             )
@@ -265,10 +267,10 @@ export default new BaseCommand(
             if (page === 1) {
               const embed = new Embed(client, 'success')
               embed.setColor('#2f3136')
-              embed.setDescription(`더 이상 재생목록에 노래가 없습니다`)
+              embed.setDescription(`더 이상 재생목록에 노래가 없습니다.`)
               embed.setThumbnail(result.playlist.thumbnail)
               embed.setAuthor(
-                `재생목록에 아래 노래들을 추가했어요!`,
+                `재생목록에 아래 노래들을 추가했습니다.`,
                 undefined,
                 `${result.playlist.url}`
               )
@@ -286,7 +288,7 @@ export default new BaseCommand(
         let row = new MessageActionRow()
         let select = new MessageSelectMenu()
           .setCustomId('music.select')
-          .setPlaceholder('재생할 노래를 선택해주세요!')
+          .setPlaceholder('재생할 노래를 선택 해주세요!')
         let trackslist = 15
         if (result.tracks.length < 15) trackslist = result.tracks.length
         for (let i = 0; i < trackslist; i++) {
@@ -316,7 +318,7 @@ export default new BaseCommand(
               let index = Number(i.values[0])
               queue.addTrack(result.tracks[index])
               sucessembed.setAuthor(
-                `재생목록에 노래를 추가했어요!`,
+                `재생목록에 노래를 추가했습니다.`,
                 undefined,
                 result.tracks[index].url
               )

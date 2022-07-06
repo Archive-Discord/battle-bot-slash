@@ -13,9 +13,8 @@ export default new BaseCommand(
   },
   async (client, message, args) => {
     let embed = new Embed(client, 'error')
-      .setTitle(`유튜브`)
-      .setDescription('유튜브 명령어는 (/) 명령어로만 사용이 가능해요')
-      .setColor('#2f3136')
+      .setTitle(`❌ 에러 발생`)
+      .setDescription('유튜브 명령어는 (/) 명령어로만 사용이 가능합니다.')
     return message.reply({ embeds: [embed] })
   },
   {
@@ -30,8 +29,7 @@ export default new BaseCommand(
     },
     async execute(client, interaction) {
       const embed = new Embed(client, 'error')
-        .setTitle(`유튜브`)
-        .setColor('#2f3136')
+        .setTitle(`❌ 에러 발생`)
       const embedSuccess = new Embed(client, 'success')
         .setTitle(`유튜브`)
         .setColor('#2f3136')

@@ -51,6 +51,7 @@ export default new BaseCommand(
     async execute(client, interaction) {
       await interaction.deferReply({ ephemeral: true })
       let errEmbed = new Embed(client, 'error')
+        .setTitle(`❌ 에러 발생`)
         .setColor('#2f3136')
       let successEmbed = new Embed(client, 'success')
         .setColor('#2f3136')
