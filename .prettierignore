@@ -1,6 +1,0 @@
-# Packages
-node_modules/
-.yarn/*
-
-# Build data
-build/
