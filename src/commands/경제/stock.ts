@@ -609,7 +609,7 @@ export default new BaseCommand(
       }
       if(type === '매수') {
         const keyword = interaction.options.getString("주식명") || ''
-        const quantity = interaction.options.getString("개수") || 0
+        const quantity = Number(interaction.options.getString("개수")) || 0
         if (!quantity) {
           embed.setDescription(`매수하실 주식의 수량을 숫자만 입력해주세요.`)
           return interaction.editReply({ embeds: [embed] })
@@ -677,7 +677,7 @@ export default new BaseCommand(
               .setStyle('DANGER')
           )
         const m = await interaction.editReply({ embeds: [embed], components: [row] })
-        const collector = m.createMessageComponentCollector({ time: 10000 })
+        const collector = interaction.channel.createMessageComponentCollector({ time: 10000 })
         collector.on('collect', async (i) => {
           if (i.user.id != interaction.user.id) return
           if (i.customId == 'stock.accept') {
@@ -784,7 +784,7 @@ export default new BaseCommand(
       }
       if(type === '매도') {
         const keyword = interaction.options.getString("주식명") || ''
-        const quantity = interaction.options.getString("개수") || 0
+        const quantity = Number(interaction.options.getString("개수")) || 0
         if (!quantity) {
           embed.setTitle(`❌ 에러 발생`)
           embed.setDescription(`매도하실 주식의 수량을 숫자만 입력해주세요.`)
@@ -857,7 +857,7 @@ export default new BaseCommand(
               .setStyle('DANGER')
           )
         const m = await interaction.editReply({ embeds: [embed], components: [row] })
-        const collector = m.createMessageComponentCollector({ time: 10000 })
+        const collector = interaction.channel.createMessageComponentCollector({ time: 10000 })
         collector.on('collect', async (i) => {
           if (i.user.id != interaction.user.id) return
           if (i.customId == 'stocksell.accept') {
