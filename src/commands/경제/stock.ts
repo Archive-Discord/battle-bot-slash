@@ -677,6 +677,7 @@ export default new BaseCommand(
               .setStyle('DANGER')
           )
         const m = await interaction.editReply({ embeds: [embed], components: [row] })
+        // @ts-ignore
         const collector = interaction.channel.createMessageComponentCollector({ time: 10000 })
         collector.on('collect', async (i) => {
           if (i.user.id != interaction.user.id) return
@@ -857,6 +858,7 @@ export default new BaseCommand(
               .setStyle('DANGER')
           )
         const m = await interaction.editReply({ embeds: [embed], components: [row] })
+        // @ts-ignore
         const collector = interaction.channel.createMessageComponentCollector({ time: 10000 })
         collector.on('collect', async (i) => {
           if (i.user.id != interaction.user.id) return
