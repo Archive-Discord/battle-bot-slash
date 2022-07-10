@@ -57,7 +57,7 @@ export default new BaseCommand(
       isSlash: true
     },
     async execute(client, interaction) {
-      await interaction.deferReply({ })
+      await interaction.deferReply({ ephemeral: true })
       let embed = new Embed(client, 'warn')
       .setTitle('처리중..')
       .setColor('#2f3136')

@@ -64,7 +64,7 @@ export default new BaseCommand(
           .addChoice('전체','전체')
       ),
     async execute(client, interaction) {
-      await interaction.deferReply({ })
+      await interaction.deferReply({ ephemeral: true })
       let embeds = new Embed(client, 'warn')
       .setTitle('처리중..')
       .setColor('#2f3136')

@@ -67,7 +67,7 @@ export default new BaseCommand(
       .setName('돈받기')
       .setDescription('자신의 돈을 받습니다.'),
     async execute(client, interaction) {
-      await interaction.deferReply({ })
+      await interaction.deferReply({ ephemeral: true })
       let embed = new Embed(client, 'warn')
       .setTitle('처리중..')
       .setColor('#2f3136')
