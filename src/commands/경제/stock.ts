@@ -542,7 +542,7 @@ export default new BaseCommand(
               .setDescription("주식에 대한 도움말을 보여줍니다.")
       ),
     async execute(client, interaction) {
-      await interaction.deferReply({ })
+      await interaction.deferReply({ ephemeral: true })
       let embeds = new Embed(client, 'warn')
       .setTitle('처리중..')
       .setColor('#2f3136')
