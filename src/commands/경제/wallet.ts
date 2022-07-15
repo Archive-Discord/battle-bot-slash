@@ -12,12 +12,18 @@ export default new BaseCommand(
     aliases: ['잔액', 'money', 'ehs', 'wlrkq', '지갑', '돈']
   },
   async (client, message, args) => {
+    let embed = new Embed(client, 'warn')
+      .setTitle('처리중..')
+      .setColor('#2f3136')
+    let m = await message.reply({
+      embeds: [embed]
+    })
     const user = message.mentions.users.first() || client.users.cache.get(args[0]) || message.author
     const wjdqh = await Schema.findOne({ userid: user.id })
     let embed = new Embed(client, 'success')
       .setTitle(`정보 오류`)
       .setDescription(`${message.author}님의 정보가 기록되어있지 않습니다. 계좌가 있으신 유저에게만 송금이 가능합니다.`)
-    if (!wjdqh) let m = await message.reply({
+    if (!wjdqh) return m.edit({
       embeds: [embed]
     })
     const t = new Date()
