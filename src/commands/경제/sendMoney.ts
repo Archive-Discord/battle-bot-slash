@@ -148,7 +148,7 @@ export default new BaseCommand(
       let user = interaction.options.getMember("유저") || interaction.member
       let user2 = interaction.options.getUser("유저") || interaction.user
       let betting = interaction.options.getInteger("송금액") || 0
-      embed = new Embed(client, 'error')
+      let embed = new Embed(client, 'error')
         .setTitle(`❌ 에러 발생`)
         .setDescription(`송금할 대상이 지정되지 않았습니다.`)
         .setColor('#2f3136')

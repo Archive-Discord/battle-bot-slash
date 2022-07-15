@@ -108,7 +108,7 @@ export default new BaseCommand(
     const ehqkrduqn = await Schema.findOne({
       userid: interaction.user.id
     })
-    embed = new Embed(client, 'error')
+    let embed = new Embed(client, 'error')
       .setTitle(`❌ 에러 발생`)
       .setDescription(interaction.user + '님의 계좌가 생성되어있지 않습니다. 계좌가 있으신 유저에게만 송금이 가능합니다.')
       .setTimestamp()
