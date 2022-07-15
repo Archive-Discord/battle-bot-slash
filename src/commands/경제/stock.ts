@@ -107,16 +107,16 @@ export default new BaseCommand(
       if (!user) {
         embed.setTitle(`❌ 에러 발생`)
         embed.setDescription(
-          `등록되어 있지 않은 유저인 거 같아요!, 먼저 \`${config.bot.prefix}돈받기\` 명령어로 등록을 해주세요.`
+          `등록되어 있지 않은 유저인 거 같습니다. 먼저 \`${config.bot.prefix}돈받기\` 명령어로 등록을 해주세요.`
         )
         return message.reply({ embeds: [embed] })
       }
       if (user.money < total) {
         embed.setTitle(`❌ 에러 발생`)
         embed.setDescription(
-          `${comma(total - user.money)}원이 부족해요!\n잔액은 ${comma(
+          `${comma(total - user.money)}원이 부족합니다.\n잔액은 ${comma(
             user.money
-          )}원이에요.`
+          )}원입니다.`
         )
         return message.reply({ embeds: [embed] })
       }
@@ -151,7 +151,7 @@ export default new BaseCommand(
         if (i.customId == 'stock.accept') {
           embed.setTitle(`⭕ 매수 성공`)
           embed.setDescription(
-            `${results.items[0].name} ${quantity}주를 매수했어요!`
+            `${results.items[0].name} ${quantity}주를 매수했습니다.`
           )
           embed.addField('현재가', `${comma(result.now)}원`, true)
           embed.addField('수수료', `${comma(fee)}원 (2%)`, true)
@@ -213,7 +213,7 @@ export default new BaseCommand(
           const successEmbed = new Embed(client, 'success')
             .setTitle(`⭕ 매수 완료`)
             .setDescription(  
-              `${results.items[0].name} ${quantity}주를 매수했어요!`
+              `${results.items[0].name} ${quantity}주를 매수했습니다.`
             )
             .addField('거래금액', `${comma(total)}원`, true)
             .addField('수수료', `${comma(fee)}원 (2%)`, true)
@@ -296,7 +296,7 @@ export default new BaseCommand(
       const user = await Schema.findOne({ userid: message.author.id })
       if (!user) {
         embed.setTitle(`❌ 에러 발생`)
-        embed.setDescription(`등록되어 있지 않은 유저인 거 같아요!, 먼저 \`${config.bot.prefix}돈받기\` 명령어로 등록을 해주세요.`)
+        embed.setDescription(`등록되어 있지 않은 유저인 거 같습니다. 먼저 \`${config.bot.prefix}돈받기\` 명령어로 등록을 해주세요.`)
         return message.reply({ embeds: [embed] })
       }
       embed.setDescription(
@@ -330,7 +330,7 @@ export default new BaseCommand(
         if (i.customId == 'stocksell.accept') {
           embed.setTitle(`⭕ 매도 성공`)
           embed.setDescription(
-            `${results.items[0].name} ${quantity}주를 매도했어요!`
+            `${results.items[0].name} ${quantity}주를 매도했습니다.`
           )
           embed.addField('현재가', `${comma(result.now)}원`, true)
           embed.addField('수수료', `${comma(fee)}원 (2%)`, true)
@@ -367,7 +367,7 @@ export default new BaseCommand(
           const successEmbed = new Embed(client, 'success')
             .setTitle(`⭕ 매도 성공`)
             .setDescription(
-              `${results.items[0].name} ${quantity}주를 매도했어요!`
+              `${results.items[0].name} ${quantity}주를 매도했습니다.`
             )
             .addField('거래금액', `${comma(total)}원`, true)
             .addField('수수료', `${comma(fee)}원 (2%)`, true)
@@ -407,7 +407,7 @@ export default new BaseCommand(
       const nowStock = await StockSchema.findOne({ userid: message.author.id })
       if (!nowStock) {
         embed.setTitle(`❌ 에러 발생`)
-        embed.setDescription(`보유중인 주식이없습니다, 먼저 \`${config.bot.prefix}주식\` 명령어로 주식 명령어를 확인해보세요!`)
+        embed.setDescription(`보유중인 주식이없습니다. 먼저 \`${config.bot.prefix}주식\` 명령어로 주식 명령어를 확인해주세요.`)
         return message.reply({
           embeds: [embed]
         })
@@ -445,7 +445,7 @@ export default new BaseCommand(
       }
     } else {
       embed.setTitle('주식 도움말')
-      embed.setDescription('아래에 있는 명령어로 주식을 사용해보세요!')
+      embed.setDescription('아래에 있는 명령어로 주식을 사용하실 수 있습니다.')
       embed.addField(
         `\`${config.bot.prefix}주식 목록 (주식명)\``,
         '> 검색한 주식들의 목록을 확인합니다',
@@ -639,14 +639,14 @@ export default new BaseCommand(
         if (!user) {
           embed.setTitle(`❌ 에러 발생`)
           embed.setDescription(
-            `등록되어 있지 않은 유저인 거 같아요!, 먼저 \`${config.bot.prefix}돈받기\` 명령어로 등록을 해주세요.`
+            `등록되어 있지 않은 유저인 거 같습니다. 먼저 \`${config.bot.prefix}돈받기\` 명령어로 등록을 해주세요.`
           )
           return interaction.editReply({ embeds: [embed] })
         }
         if (user.money < total) {
           embed.setTitle(`❌ 에러 발생`)
           embed.setDescription(
-            `${comma(total - user.money)}원이 부족해요!\n잔액은 ${comma(
+            `${comma(total - user.money)}원이 부족합니다.\n잔액은 ${comma(
               user.money
             )}원이에요.`
           )
@@ -684,7 +684,7 @@ export default new BaseCommand(
           if (i.customId == 'stock.accept') {
             embed.setTitle(`⭕ 매수 성공`)
             embed.setDescription(
-              `${results.items[0].name} ${quantity}주를 매수했어요!`
+              `${results.items[0].name} ${quantity}주를 매수했습니다.`
             )
             embed.addField('현재가', `${comma(result.now)}원`, true)
             embed.addField('수수료', `${comma(fee)}원 (2%)`, true)
@@ -746,7 +746,7 @@ export default new BaseCommand(
             const successEmbed = new Embed(client, 'success')
               .setTitle(`⭕ 매수 완료`)
               .setDescription(  
-                `${results.items[0].name} ${quantity}주를 매수했어요!`
+                `${results.items[0].name} ${quantity}주를 매수했습니다.`
               )
               .addField('거래금액', `${comma(total)}원`, true)
               .addField('수수료', `${comma(fee)}원 (2%)`, true)
@@ -830,7 +830,7 @@ export default new BaseCommand(
         const user = await Schema.findOne({ userid: interaction.user.id })
         if (!user) {
           embed.setTitle(`❌ 에러 발생`)
-          embed.setDescription(`등록되어 있지 않은 유저인 거 같아요!, 먼저 \`${config.bot.prefix}돈받기\` 명령어로 등록을 해주세요.`)
+          embed.setDescription(`등록되어 있지 않은 유저인 거 같습니다. 먼저 \`${config.bot.prefix}돈받기\` 명령어로 등록을 해주세요.`)
           return interaction.editReply({ embeds: [embed] })
         }
         embed.setDescription(
@@ -902,7 +902,7 @@ export default new BaseCommand(
             const successEmbed = new Embed(client, 'success')
               .setTitle(`⭕ 매도 성공`)
               .setDescription(
-                `${results.items[0].name} ${quantity}주를 매도했어요!`
+                `${results.items[0].name} ${quantity}주를 매도했습니다.`
               )
               .addField('거래금액', `${comma(total)}원`, true)
               .addField('수수료', `${comma(fee)}원 (2%)`, true)
@@ -943,7 +943,7 @@ export default new BaseCommand(
         const nowStock = await StockSchema.findOne({ userid: interaction.user.id })
         if (!nowStock) {
           embed.setTitle(`❌ 에러 발생`)
-          embed.setDescription(`보유중인 주식이없습니다, 먼저 \`${config.bot.prefix}주식\` 명령어로 주식 명령어를 확인해보세요!`)
+          embed.setDescription(`보유중인 주식이없습니다. 먼저 \`${config.bot.prefix}주식\` 명령어로 주식 명령어를 확인해주세요.`)
           return interaction.editReply({
             embeds: [embed]
           })
@@ -982,7 +982,7 @@ export default new BaseCommand(
       }
       if(type === '도움말') {
         embed.setTitle('주식 도움말')
-        embed.setDescription('아래에 있는 명령어로 주식을 사용해보세요!')
+        embed.setDescription('아래에 있는 명령어로 주식을 사용하실 수 있습니다.')
         embed.addField(
           `\`${config.bot.prefix}주식 목록 (주식명)\``,
           '> 검색한 주식들의 목록을 확인합니다',

@@ -288,7 +288,7 @@ export default new BaseCommand(
         let row = new MessageActionRow()
         let select = new MessageSelectMenu()
           .setCustomId('music.select')
-          .setPlaceholder('재생할 노래를 선택 해주세요!')
+          .setPlaceholder('재생할 노래를 선택 해주세요.')
         let trackslist = 15
         if (result.tracks.length < 15) trackslist = result.tracks.length
         for (let i = 0; i < trackslist; i++) {

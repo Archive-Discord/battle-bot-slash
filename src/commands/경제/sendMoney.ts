@@ -31,7 +31,7 @@ export default new BaseCommand(
     embed = new Embed(client, 'error')
       .setDescription(
         message.author +
-        '님의 계좌가 생성되지 않으셨습니다.\n먼저 `!돈받기`를 입력한 유저에게만 송금이 가능합니다!'
+        '님의 계좌가 생성되지 않으셨습니다. \n계좌가 있으신 유저에게만 송금이 가능합니다.'
       )
       .setTimestamp()
       .setColor('#2f3136')
@@ -41,7 +41,7 @@ export default new BaseCommand(
       })
     embed = new Embed(client, 'error')
       .setDescription(
-        '계좌가 생성되지 않으셨습니다. \n먼저 `!돈받기`를 입력한 유저에게만 송금이 가능합니다!'
+        '계좌가 생성되지 않으셨습니다. \n계좌가 있으신 유저에게만 송금이 가능합니다.'
       )
       .setTimestamp()
       .setColor('#2f3136')
@@ -63,7 +63,7 @@ export default new BaseCommand(
     embed = new Embed(client, 'error')
       .setTitle(`❌ 에러 발생`)
       .setDescription(
-        '금액정보가 올바르지 않아요!\n특수문자가 들어가있다면 제거해주세요!(-)'
+        '금액은 자연수만 입력해주세요.'
       )
       .setTimestamp()
       .setColor('#2f3136')
@@ -73,7 +73,7 @@ export default new BaseCommand(
       })
     embed = new Embed(client, 'error')
       .setTitle(`❌ 에러 발생`)
-      .setDescription('송금할수 있는 최소 금액은 1000원부터 시작합니다!')
+      .setDescription('1')
       .setTimestamp()
       .setColor('#2f3136')
     if (betting < 1000)
@@ -84,7 +84,7 @@ export default new BaseCommand(
     const money2 = parseInt(String(tkdeoqkd.money))
     embed = new Embed(client, 'error')
       .setTitle(`❌ 에러 발생`)
-      .setDescription('보유하고 있는 돈보다 많은 금액은 보낼수가 없어요.')
+      .setDescription('보내실려는 금액이 보유하신 금액보다 큽니다.')
       .setTimestamp()
       .setColor('#2f3136')
     if (money < betting)
@@ -145,12 +145,6 @@ export default new BaseCommand(
     },
     async execute(client, interaction) {
       await interaction.deferReply({ ephemeral: true })
-      let embed = new Embed(client, 'warn')
-        .setTitle('처리중..')
-        .setColor('#2f3136')
-      let m = await interaction.editReply({
-        embeds: [embed]
-      })
       let user = interaction.options.getMember("유저") || interaction.member
       let user2 = interaction.options.getUser("유저") || interaction.user
       let betting = interaction.options.getInteger("송금액") || 0
@@ -167,7 +161,7 @@ export default new BaseCommand(
       embed = new Embed(client, 'error')
         .setDescription(
           interaction.user +
-          '님의 계좌가 생성되지 않으셨습니다.\n먼저 `!돈받기`를 입력한 유저에게만 송금이 가능합니다!'
+          '님의 계좌가 생성되지 않으셨습니다.\n계좌가 있으신 유저에게만 송금이 가능합니다.'
         )
         .setTimestamp()
         .setColor('#2f3136')
@@ -177,7 +171,7 @@ export default new BaseCommand(
         })
       embed = new Embed(client, 'error')
         .setDescription(
-          '계좌가 생성되지 않으셨습니다. \n먼저 `!돈받기`를 입력한 유저에게만 송금이 가능합니다!'
+          '계좌가 생성되지 않으셨습니다. \n계좌가 있으신 유저에게만 송금이 가능합니다.'
         )
         .setTimestamp()
         .setColor('#2f3136')
@@ -187,7 +181,7 @@ export default new BaseCommand(
         })
       embed = new Embed(client, 'error')
         .setTitle(`❌ 에러 발생`)
-        .setDescription('송금할수 있는 최소 금액은 1000원부터 시작합니다!')
+        .setDescription('1000원 이상부터 송금이 가능합니다.')
         .setTimestamp()
         .setColor('#2f3136')
       if (betting < 1000)
@@ -198,7 +192,7 @@ export default new BaseCommand(
       const money2 = parseInt(String(tkdeoqkd.money))
       embed = new Embed(client, 'error')
         .setTitle(`❌ 에러 발생`)
-        .setDescription('보유하고 있는 돈보다 많은 금액은 보낼수가 없어요.')
+        .setDescription('보내실려는 금액이 보유하신 금액보다 큽니다.')
         .setTimestamp()
         .setColor('#2f3136')
       if (money < betting)

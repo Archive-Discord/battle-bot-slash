@@ -20,63 +20,63 @@ export default new BaseCommand(
   },
   async (client, message, args) => {
     let embed = new Embed(client, 'error')
-      .setTitle(`경고`)
-      .setDescription('경고 명령어는 (/) 명령어로만 사용이 가능해요')
+      .setTitle(`❌ 에러 발생`)
+      .setDescription('해당 명령어는 슬래쉬 커맨드 ( / )로만 사용이 가능합니다.')
     return message.reply({ embeds: [embed] })
   },
   {
     // @ts-ignore
     data: new SlashCommandBuilder()
       .setName('경고')
-      .setDescription('경고 관련 명령어 입니다')
+      .setDescription('경고 관련 명령어 입니다.')
       .addSubcommand((option) =>
         option
           .setName('지급')
-          .setDescription('경고를 지급합니다')
+          .setDescription('경고를 지급합니다.')
           .addUserOption((user) =>
             user
               .setName('user')
-              .setDescription('유저를 적어주세요')
+              .setDescription('유저를 적어주세요.')
               .setRequired(true)
           )
           .addStringOption((reason) =>
             reason
               .setName('사유')
-              .setDescription('사유를 적어주세요')
+              .setDescription('사유를 적어주세요.')
               .setRequired(false)
           )
       )
       .addSubcommand((option) =>
         option
           .setName('차감')
-          .setDescription('경고를 차감합니다')
+          .setDescription('경고를 차감합니다.')
           .addUserOption((user) =>
             user
               .setName('user')
-              .setDescription('유저를 적어주세요')
+              .setDescription('유저를 적어주세요.')
               .setRequired(true)
           )
           .addStringOption((id) =>
             id
               .setName('id')
-              .setDescription('차감할 경고의 ID를 적어주세요')
+              .setDescription('차감할 경고의 ID를 적어주세요.')
               .setRequired(true)
           )
       )
       .addSubcommand((option) =>
         option
           .setName('조회')
-          .setDescription('경고를 조회합니다')
+          .setDescription('경고를 조회합니다.')
           .addUserOption((user) =>
             user
               .setName('user')
-              .setDescription('유저를 적어주세요')
+              .setDescription('유저를 적어주세요.')
               .setRequired(true)
           )
           .addNumberOption((number) =>
             number
               .setName('페이지')
-              .setDescription('페이지를 적어주세요')
+              .setDescription('페이지를 적어주세요.')
               .setRequired(false)
           )
       ),
@@ -89,7 +89,7 @@ export default new BaseCommand(
       let member = interaction.member as GuildMember
       member = interaction.guild?.members.cache.get(member.id) as GuildMember
       if (!member.permissions.has('MANAGE_CHANNELS'))
-        return interaction.editReply('해당 명령어를 사용할 권한이 없습니다')
+        return interaction.editReply('해당 명령어를 사용할 권한이 없습니다.')
       let reason = interaction.options.getString('사유')
       let user = interaction.options.getUser('user')
       if (!reason) reason = '없음'
@@ -108,7 +108,7 @@ export default new BaseCommand(
         let warningID = interaction.options.getString('id')
         // @ts-ignore
         if (!ObjectId.isValid(warningID as string))
-          return interaction.editReply('찾을 수 없는 경고 아이디 입니다')
+          return interaction.editReply('찾을 수 없는 경고 아이디 입니다.')
         // @ts-ignore
         let warningIDtoObject = warningID.toObjectId()
         let findWarnDB = await Warning.findOne({
@@ -118,7 +118,7 @@ export default new BaseCommand(
         })
 
         if (!findWarnDB)
-          return interaction.editReply('찾을 수 없는 경고 아이디 입니다')
+          return interaction.editReply('찾을 수 없는 경고 아이디 입니다.')
 
         await Warning.deleteOne({
           userId: user?.id,
@@ -129,7 +129,7 @@ export default new BaseCommand(
         const embedRemove = new MessageEmbed()
           .setColor('#2f3136')
           .setTitle('경고')
-          .setDescription('아래와 같이 경고가 삭감되었습니다')
+          .setDescription('아래와 같이 경고가 삭감되었습니다.')
           .addField(
             '유저',
             `<@${user?.id}>` + '(' + '`' + user?.id + '`' + ')',
@@ -153,7 +153,7 @@ export default new BaseCommand(
         let warns = new Array()
 
         if (insertRes.length == 0)
-          return interaction.editReply('해당 유저의 경고 기록이 없습니다')
+          return interaction.editReply('해당 유저의 경고 기록이 없습니다.')
 
         insertRes.forEach((reasons) =>
           warns.push({
@@ -166,7 +166,7 @@ export default new BaseCommand(
           .setColor('#2f3136')
           .setTitle('경고')
           .setDescription(
-            `${user?.username}님의 ${insertResLength.length}개의 경고중 최근 5개의 경고 기록입니다`
+            `${user?.username}님의 ${insertResLength.length}개의 경고중 최근 5개의 경고 기록입니다.`
           )
           .setFooter(
             `페이지 - ${warningID ? warningID : 1}/${Math.ceil(

@@ -65,12 +65,6 @@ export default new BaseCommand(
       ),
     async execute(client, interaction) {
       await interaction.deferReply({ ephemeral: true })
-      let embeds = new Embed(client, 'warn')
-      .setTitle('처리중..')
-      .setColor('#2f3136')
-    let m = await interaction.editReply({
-      embeds: [embeds]
-    })
     const type = interaction.options.getString("옵션") || "전체"
     const data = await Schema.find()
       .sort({ money: -1, descending: -1 })

@@ -37,7 +37,7 @@ export default new BaseCommand(
     }
 
     queue.shuffle()
-    sucessembed.setDescription(`${userMention(message.author.id)}님의 요청으로 대기열을 섞었어요!`)
+    sucessembed.setDescription(`${userMention(message.author.id)}님의 요청으로 대기열을 섞었습니다.`)
     return message.reply({embeds: [sucessembed]});
   },
   {

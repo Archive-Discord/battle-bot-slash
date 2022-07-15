@@ -68,12 +68,6 @@ export default new BaseCommand(
       .setDescription('자신의 돈을 받습니다.'),
     async execute(client, interaction) {
       await interaction.deferReply({ ephemeral: true })
-      let embed = new Embed(client, 'warn')
-      .setTitle('처리중..')
-      .setColor('#2f3136')
-    let m = await interaction.editReply({
-      embeds: [embed]
-    })
       const t = new Date()
       const date = "" + t.getFullYear() + t.getMonth() + t.getDate();
       const ehqkrduqn = await schema.findOne({

@@ -23,7 +23,7 @@ export default new BaseCommand(
     })
     embed = new Embed(client, 'error')
       .setTitle(`❌ 에러 발생`)
-      .setDescription(message.author + '님의 정보가 확인되지 않습니다.\n먼저 \`!돈받기\`를 입력해 정보를 알려주세요!')
+      .setDescription(message.author + '님의 정보가 확인되지 않습니다. 계좌가 있으신 유저에게만 송금이 가능합니다.')
       .setTimestamp()
       .setColor('#2f3136')
     if (!ehqkrduqn) return m.edit({
@@ -39,7 +39,7 @@ export default new BaseCommand(
     })
     embed = new Embed(client, 'error')
       .setTitle(`❌ 에러 발생`)
-      .setDescription('금액정보가 올바르지 않습니다. \n특수문자가 들어가있다면 제거해주세요!(-)')
+      .setDescription('금액은 자연수만 입력해주세요.')
       .setTimestamp()
       .setColor('#2f3136')
     if (args.join(" ").includes("-")) return m.edit({
@@ -48,7 +48,7 @@ export default new BaseCommand(
     const money = parseInt(args[0]);
     embed = new Embed(client, 'error')
       .setTitle(`❌ 에러 발생`)
-      .setDescription('도박은 1000원 이상부터 진행하실 수 있습니다.')
+      .setDescription('1000원 이상부터 도박이 가능합니다.')
       .setTimestamp()
       .setColor('#2f3136')
     if (money < 1000) return m.edit({
@@ -66,7 +66,7 @@ export default new BaseCommand(
     if (random < 50) {
       embed = new Embed(client, 'success')
         .setTitle(`❌ 도박 실패`)
-        .setDescription(`도박에 실패하셨습니다. 돈은 그럼 제가 쓸어 담아보겠습니다! - **${comma(money)}원**`)
+        .setDescription(`도박에 실패하셨습니다. 돈은 제가 가져가겠습니다. - **${comma(money)}원**`)
         .addField("잔액 :", `**${comma(ehqkrduqn.money-money)}원**`)
         .setColor('#2f3136')
       m.edit({
@@ -105,19 +105,12 @@ export default new BaseCommand(
           ),
     async execute(client, interaction) {
       await interaction.deferReply({ ephemeral: true })
-      let embed = new Embed(client, 'warn')
-      .setTitle('처리중..')
-      .setColor('#2f3136')
-    let m = await interaction.editReply({
-      embeds: [embed]
-    })
-    // let point = 
     const ehqkrduqn = await Schema.findOne({
       userid: interaction.user.id
     })
     embed = new Embed(client, 'error')
       .setTitle(`❌ 에러 발생`)
-      .setDescription(interaction.user + '님의 정보가 확인되지 않습니다.\n먼저 \`!돈받기\`를 입력해 정보를 알려주세요!')
+      .setDescription(interaction.user + '님의 계좌가 생성되어있지 않습니다. 계좌가 있으신 유저에게만 송금이 가능합니다.')
       .setTimestamp()
       .setColor('#2f3136')
     if (!ehqkrduqn) return interaction.editReply({
@@ -126,7 +119,7 @@ export default new BaseCommand(
     let money = interaction.options.getInteger("베팅금") || 0 //parseInt();
     embed = new Embed(client, 'error')
       .setTitle(`❌ 에러 발생`)
-      .setDescription('도박은 1000원 이상부터 진행하실 수 있습니다.')
+      .setDescription('1000원 이상부터 도박이 가능합니다.')
       .setTimestamp()
       .setColor('#2f3136')
     if (money < 1000) return interaction.editReply({
@@ -134,7 +127,7 @@ export default new BaseCommand(
     })
     embed = new Embed(client, 'error')
       .setTitle(`❌ 에러 발생`)
-      .setDescription('보유하신 돈보다 배팅하신 돈의 금액이 많습니다. 금액 확인 부탁드립니다.')
+      .setDescription('배팅하신 금액이 보유하신 금액보다 큽니다.')
       .setTimestamp()
       .setColor('#2f3136')
     if (money > ehqkrduqn.money) return interaction.editReply({
@@ -144,7 +137,7 @@ export default new BaseCommand(
     if (random < 50) {
       embed = new Embed(client, 'success')
         .setTitle(`❌ 도박 실패`)
-        .setDescription(`도박에 실패하셨습니다. 돈은 그럼 제가 쓸어 담아보겠습니다! - **${comma(money)}원**`)
+        .setDescription(`도박에 실패하셨습니다. 돈은 제가 가져가겠습니다. - **${comma(money)}원**`)
         .addField("잔액 :", `**${comma(ehqkrduqn.money-money)}원**`)
         .setColor('#2f3136')
         interaction.editReply({

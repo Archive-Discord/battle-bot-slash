@@ -12,18 +12,11 @@ export default new BaseCommand(
     aliases: ['잔액', 'money', 'ehs', 'wlrkq', '지갑', '돈']
   },
   async (client, message, args) => {
-    let embed = new Embed(client, 'warn')
-      .setTitle('처리중..')
-      .setColor('#2f3136')
-    let m = await message.reply({
-      embeds: [embed]
-    })
     const user = message.mentions.users.first() || client.users.cache.get(args[0]) || message.author
     const wjdqh = await Schema.findOne({ userid: user.id })
-
-    embed = new Embed(client, 'success').setTitle(`정보 오류`)
-      .setDescription(`아쉽지만 ${message.author}님의 정보가 기록되어있지 않아요..ㅠ\n!돈받기 명령어로 정보를 알려주세요!`)
-
+    embed = new Embed(client, 'success')
+      .setTitle(`정보 오류`)
+      .setDescription(`${message.author}님의 정보가 기록되어있지 않습니다. 계좌가 있으신 유저에게만 송금이 가능합니다.`)
     if (!wjdqh) return m.edit({
       embeds: [embed]
     })
@@ -49,7 +42,7 @@ export default new BaseCommand(
       .addUserOption(option =>
       option
         .setName("유저")
-        .setDescription("확인할 유저를 입력해주세요")
+        .setDescription("확인할 유저를 입력해주세요.")
         .setRequired(false)
     ),
     options: {
@@ -67,7 +60,7 @@ export default new BaseCommand(
       let user = interaction.options.getUser('유저') || interaction.user
       const wjdqh = await Schema.findOne({ userid: user.id })
       embed = new Embed(client, 'success').setTitle(`정보 오류`)
-        .setDescription(`아쉽지만 ${interaction.user}님의 정보가 기록되어있지 않습니다.\n!돈받기 명령어로 정보를 알려주세요.`)
+        .setDescription(`${interaction.user}님의 정보가 기록되어있지 않습니다. 계좌가 있으신 유저에게만 송금이 가능합니다.`)
 
       if (!wjdqh) return interaction.editReply({
         embeds: [embed]

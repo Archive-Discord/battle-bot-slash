@@ -28,7 +28,7 @@ export default new BaseCommand(
 
     queue.stop()
     queue.destroy()
-    sucessembed.setDescription(`${userMention(message.author.id)}님의 요청으로 노래 재생이 정지되었어요!`)
+    sucessembed.setDescription(`${userMention(message.author.id)}님의 요청으로 노래 재생이 정지되었습니다.`)
     return message.reply({embeds: [sucessembed]});
   },
   {

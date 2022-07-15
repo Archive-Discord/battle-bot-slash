@@ -64,7 +64,7 @@ export default new BaseCommand(
               embed = new Embed(client, 'warn')
                 .setTitle('한국 디스코드 리스트 봇 하트인증')
                 .setDescription(
-                  `한국 디스코드 리스트에 있는 배틀이 봇의 하트가 아직 눌려있지 않았어요!`
+                  `한국 디스코드 리스트에 있는 배틀이 봇의 하트가 아직 눌려있지 않습니다.`
                 )
                 .setTimestamp()
                 .setColor('#2f3136')
@@ -150,7 +150,7 @@ export default new BaseCommand(
               embed = new Embed(client, 'warn')
                 .setTitle('아카이브 봇 하트인증')
                 .setDescription(
-                  `아카이브에 있는 배틀이 봇의 하트가 아직 눌려있지 않았어요!`
+                  `아카이브에 있는 배틀이 봇의 하트가 아직 눌려있지 않습니다.`
                 )
                 .setTimestamp()
                 .setColor('#2f3136')
