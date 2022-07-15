@@ -17,7 +17,7 @@ export default new BaseCommand(
     let embed = new Embed(client, 'success')
       .setTitle(`정보 오류`)
       .setDescription(`${message.author}님의 정보가 기록되어있지 않습니다. 계좌가 있으신 유저에게만 송금이 가능합니다.`)
-    if (!wjdqh) return m.edit({
+    if (!wjdqh) let m = await message.reply({
       embeds: [embed]
     })
     const t = new Date()

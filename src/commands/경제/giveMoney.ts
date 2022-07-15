@@ -88,7 +88,7 @@ export default new BaseCommand(
           embeds: [embed]
         })
       } else {
-        embed = new Embed(client, 'info')
+        let embed = new Embed(client, 'info')
           .setTitle(`❌ 입금 실패`)
           .setDescription(`오늘은 이미 5000원을 받으셨습니다.`)
           .setColor('#2f3136')
