@@ -22,6 +22,7 @@
     "@discordjs/builders": "^0.8.2",
     "@discordjs/opus": "^0.7.0",
     "@discordjs/rest": "^0.4.1",
+    "@discordjs/voice": "0.8.0",
     "@types/cheerio": "^0.22.31",
     "@types/comma-number": "^2.1.0",
     "@types/cookie-parser": "^1.4.2",
