@@ -13,6 +13,7 @@ export default new ButtonInteraction(
     const role_id = interaction.customId.split('_')[1]
     const ErrEmbed = new Embed(client, 'error')
     const SuccessEmbed = new Embed(client, 'success')
+      .setColor('#2f3136')
     const autoroleDB = await AutoRole.findOne({
       guild_id: interaction.guild?.id,
       message_id: interaction.message.id

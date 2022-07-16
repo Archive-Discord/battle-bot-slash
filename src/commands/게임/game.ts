@@ -14,8 +14,8 @@ export default new BaseCommand(
   },
   async (client, message, args) => {
     let embed = new Embed(client, 'error')
-      .setTitle(`게임`)
-      .setDescription('게임 명령어는 (/) 명령어로만 사용이 가능해요')
+      .setTitle(`❌ 에러 발생`)
+      .setDescription('해당 명령어는 슬래쉬 커맨드 ( / )로만 사용이 가능합니다.')
     return message.reply({ embeds: [embed] })
   },
   {
@@ -40,27 +40,27 @@ export default new BaseCommand(
     },
     async execute(client, interaction) {
       const embed = new Embed(client, 'error')
-        .setTitle(`🎮 게임`)
+        .setTitle(`❌ 에러 발생`)
       const embedSuccess = new Embed(client, 'success')
         .setTitle(`🎮 게임`)
         .setColor('#2f3136')
       const guild = interaction.guild
       if(!guild) {
-        embed.setDescription('이 명령어는 서버에서만 사용이 가능해요!')
-        return interaction.reply({ embeds: [embed] })
+        embed.setDescription('이 명령어는 서버에서만 사용이 가능합니다.')
+        return interaction.reply({ embeds: [embed], ephemeral: true })
       }
       const member = guild.members.cache.get(interaction.user.id)
       if(!member) {
-        embed.setDescription('서버에서 유저를 찾지 못했어요!')
-        return interaction.reply({ embeds: [embed] })
+        embed.setDescription('서버에서 유저를 찾지 못했습니다.')
+        return interaction.reply({ embeds: [embed], ephemeral: true })
       }
       if(!member.voice || !member.voice.channel) {
-        embed.setDescription(`먼저 음성채널에 입장해주세요!`)
-        return interaction.reply({ embeds: [embed] })
+        embed.setDescription(`먼저 음성채널에 입장해주세요.`)
+        return interaction.reply({ embeds: [embed], ephemeral: true })
       }
       if(member.voice.channel.type === "GUILD_STAGE_VOICE") { 
-        embed.setDescription(`스테이지 채널에서는 이 명령어를 사용할 수 없어요!`)
-        return interaction.reply({ embeds: [embed] })
+        embed.setDescription(`스테이지 채널에서는 이 명령어를 사용할 수 없습니다.`)
+        return interaction.reply({ embeds: [embed], ephemeral: true })
       }
       const rest = new REST({version: "8"}).setToken(config.bot.token)
       const game = interaction.options.getString('게임', true)
@@ -76,11 +76,11 @@ export default new BaseCommand(
           }
         }) as Invite
         if(!invite) {
-          embed.setDescription(`초대코드를 생성하지 못했어요!`)
-          return interaction.reply({ embeds: [embed] })
+          embed.setDescription(`초대코드를 생성하지 못했습니다.`)
+          return interaction.reply({ embeds: [embed], ephemeral: true })
         }
-        embedSuccess.setDescription(`성공적으로 게임코드가 생성되었어요!\n**초대코드가 활성화 되지 않을 경우 링크를 눌러주세요!**`)
-        return interaction.reply({embeds: [embedSuccess], content: `https://discord.gg/${invite.code}`})
+        embedSuccess.setDescription(`성공적으로 게임코드가 생성되었었습니다.\n**초대코드가 활성화 되지 않을 경우 링크를 눌러주세요.**`)
+        return interaction.reply({embeds: [embedSuccess], content: `https://discord.gg/${invite.code}`, ephemeral: true})
       } else if (game === "fishing") {
         const invite: Invite = await rest.post(`/channels/${member.voice.channelId}/invites`, {
           body: {
@@ -93,11 +93,11 @@ export default new BaseCommand(
           }
         }) as Invite
         if(!invite) {
-          embed.setDescription(`초대코드를 생성하지 못했어요!`)
+          embed.setDescription(`초대코드를 생성하지 못했습니다.`)
           return interaction.reply({ embeds: [embed] })
         }
-        embedSuccess.setDescription(`성공적으로 게임코드가 생성되었어요!\n**초대코드가 활성화 되지 않을 경우 링크를 눌러주세요!**`)
-        return interaction.reply({embeds: [embedSuccess], content: `https://discord.gg/${invite.code}`})
+        embedSuccess.setDescription(`성공적으로 게임코드가 생성되었습니다.\n**초대코드가 활성화 되지 않을 경우 링크를 눌러주세요.**`)
+        return interaction.reply({embeds: [embedSuccess], content: `https://discord.gg/${invite.code}`, ephemeral: true})
       } else if (game === "chess") {
         const invite: Invite = await rest.post(`/channels/${member.voice.channelId}/invites`, {
           body: {
@@ -110,11 +110,11 @@ export default new BaseCommand(
           }
         }) as Invite
         if(!invite) {
-          embed.setDescription(`초대코드를 생성하지 못했어요!`)
-          return interaction.reply({ embeds: [embed] })
+          embed.setDescription(`초대코드를 생성하지 못했습니다.`)
+          return interaction.reply({ embeds: [embed], ephemeral: true })
         }
-        embedSuccess.setDescription(`성공적으로 게임코드가 생성되었어요!\n**초대코드가 활성화 되지 않을 경우 링크를 눌러주세요!**`)
-        return interaction.reply({embeds: [embedSuccess], content: `https://discord.gg/${invite.code}`})
+        embedSuccess.setDescription(`성공적으로 게임코드가 생성되었습니다.\n**초대코드가 활성화 되지 않을 경우 링크를 눌러주세요.**`)
+        return interaction.reply({embeds: [embedSuccess], content: `https://discord.gg/${invite.code}`, ephemeral: true})
       } else if (game === "doodlecrew") {
         const invite: Invite = await rest.post(`/channels/${member.voice.channelId}/invites`, {
           body: {
@@ -127,11 +127,11 @@ export default new BaseCommand(
           }
         }) as Invite
         if(!invite) {
-          embed.setDescription(`초대코드를 생성하지 못했어요!`)
-          return interaction.reply({ embeds: [embed] })
+          embed.setDescription(`초대코드를 생성하지 못했습니다.`)
+          return interaction.reply({ embeds: [embed], ephemeral: true })
         }
-        embedSuccess.setDescription(`성공적으로 게임코드가 생성되었어요!\n**초대코드가 활성화 되지 않을 경우 링크를 눌러주세요!**`)
-        return interaction.reply({embeds: [embedSuccess], content: `https://discord.gg/${invite.code}`})
+        embedSuccess.setDescription(`성공적으로 게임코드가 생성되었습니다.\n**초대코드가 활성화 되지 않을 경우 링크를 눌러주세요.**`)
+        return interaction.reply({embeds: [embedSuccess], content: `https://discord.gg/${invite.code}`, ephemeral: true})
       } else if (game === "spellcast") {
         const invite: Invite = await rest.post(`/channels/${member.voice.channelId}/invites`, {
           body: {
@@ -144,14 +144,14 @@ export default new BaseCommand(
           }
         }) as Invite
         if(!invite) {
-          embed.setDescription(`초대코드를 생성하지 못했어요!`)
-          return interaction.reply({ embeds: [embed] })
+          embed.setDescription(`초대코드를 생성하지 못했습니다.`)
+          return interaction.reply({ embeds: [embed], ephemeral: true })
         }
-        embedSuccess.setDescription(`성공적으로 게임코드가 생성되었어요!\n**초대코드가 활성화 되지 않을 경우 링크를 눌러주세요!**`)
-        return interaction.reply({embeds: [embedSuccess], content: `https://discord.gg/${invite.code}`})
+        embedSuccess.setDescription(`성공적으로 게임코드가 생성되었습니다.\n**초대코드가 활성화 되지 않을 경우 링크를 눌러주세요.**`)
+        return interaction.reply({embeds: [embedSuccess], content: `https://discord.gg/${invite.code}`, ephemeral: true})
       } else {
-        embed.setDescription('찾을 수 없는 게임 입니다!')
-        return interaction.reply({ embeds: [embed] })
+        embed.setDescription('찾을 수 없는 게임 입니다.')
+        return interaction.reply({ embeds: [embed], ephemeral: true })
       }
     }
   }

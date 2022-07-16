@@ -17,6 +17,7 @@ export default new ButtonInteraction(
     const ErrorEmbed = new Embed(client, 'error').setTitle(
       '찾을 수 없는 티켓 정보입니다'
     )
+    .setColor('#2f3136')
     if (!ticket) await interaction.editReply({ embeds: [ErrorEmbed] })
     let messages = new Collection() as any
     let channelMessages = await interaction.channel?.messages.fetch({
@@ -29,6 +30,7 @@ export default new ButtonInteraction(
     const NoMessageEmbed = new Embed(client, 'error').setTitle(
       '채팅 기록을 불러오지 못했습니다'
     )
+    .setColor('#2f3136')
     if (!channelMessages)
       return interaction.editReply({ embeds: [NoMessageEmbed] })
     messages = messages.concat(channelMessages)

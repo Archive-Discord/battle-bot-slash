@@ -16,13 +16,15 @@ export default new BaseCommand(
   },
   async (client, message, args) => {
     let errembed = new Embed(client, 'error')
+      .setTitle(`❌ 에러 발생`)
+      .setColor('#2f3136')
     let musicEmbed = new MusicEmbed(client)
     if(!message.guild) {
-      errembed.setTitle('이 명령어는 서버에서만 사용이 가능해요!')
+      errembed.setDescription('이 명령어는 서버에서만 사용이 가능합니다.')
       return message.reply({embeds: [errembed]})
     }
     if(!message.member?.permissions.has("MANAGE_CHANNELS")) {
-      errembed.setTitle('이 명령어를 사용할 권한이 없어요')
+      errembed.setDescription('이 명령어를 사용할 권한이 없습니다.')
       return message.reply({embeds: [errembed]})
     }
     let db = await musicDB.findOne({guild_id: message.guild.id})
@@ -37,14 +39,13 @@ export default new BaseCommand(
       musicdb.message_id = msg.id
       musicdb.save((err: any) => {
         if(err) {
-          errembed.setTitle('뮤직기능 설정중 오류가 발생했어요!')
+          errembed.setDescription('뮤직기능 설정중 오류가 발생했습니다.')
           return message.reply({embeds: [errembed]})
         }
       })
-      return message.reply(`${channelMention(musicChannel.id)} 노래기능 설정이 완료되었어요!`)
+      return message.reply(`${channelMention(musicChannel.id)} 노래기능 설정이 완료되었습니다.`)
     } else {
-      errembed.setTitle('이런...!')
-      errembed.setDescription(`이미 ${channelMention(db.channel_id)}로 음악기능이 설정되있는거 같아요! \n 채널을 삭제하셨거나 다시 설정을 원하시면 \`${config.bot.prefix}뮤직설정헤제\` 입력 후 다시 시도해주세요!`)
+      errembed.setDescription(`이미 ${channelMention(db.channel_id)}로 음악기능이 설정되있는거 같습니다. \n 채널을 삭제하셨거나 다시 설정을 원하시면 \`${config.bot.prefix}뮤직설정헤제\` 입력 후 다시 시도해주세요.`)
       return message.reply({embeds: [errembed]})
     }
   }, {
@@ -56,17 +57,19 @@ export default new BaseCommand(
       isSlash: true
     },
     async execute(client, interaction) {
-      await interaction.deferReply()
+      await interaction.deferReply({ ephemeral: true })
       let errembed = new Embed(client, 'error')
+        .setTitle(`❌ 에러 발생`)
+        .setColor('#2f3136')
       let musicEmbed = new MusicEmbed(client)
       if(!interaction.guild) {
-        errembed.setTitle('이 명령어는 서버에서만 사용이 가능해요!')
+        errembed.setDescription('이 명령어는 서버에서만 사용이 가능합니다.')
         return interaction.editReply({embeds: [errembed]})
       }
       let member = interaction.guild.members.cache.get(interaction.user.id)
       if(!member) member = await interaction.guild.members.fetch(interaction.user.id) as GuildMember
       if(!member.permissions.has("MANAGE_CHANNELS")) {
-        errembed.setTitle('이 명령어를 사용할 권한이 없어요')
+        errembed.setDescription('이 명령어를 사용할 권한이 없습니다.')
         return interaction.editReply({embeds: [errembed]})
       }
       let db = await musicDB.findOne({guild_id: interaction.guild.id})
@@ -81,14 +84,13 @@ export default new BaseCommand(
         musicdb.message_id = msg.id
         musicdb.save((err: any) => {
           if(err) {
-            errembed.setTitle('뮤직기능 설정중 오류가 발생했어요!')
+            errembed.setDescription('뮤직기능 설정중 오류가 발생했습니다.')
             return interaction.editReply({embeds: [errembed]})
           }
         })
-        return interaction.editReply(`${channelMention(musicChannel.id)} 노래기능 설정이 완료되었어요!`)
+        return interaction.editReply(`${channelMention(musicChannel.id)} 노래기능 설정이 완료되었습니다.`)
       } else {
-        errembed.setTitle('이런...!')
-        errembed.setDescription(`이미 ${channelMention(db.channel_id)}로 음악기능이 설정되있는거 같아요! \n 채널을 삭제하셨거나 다시 설정을 원하시면 \`${config.bot.prefix}뮤직설정헤제\` 입력 후 다시 시도해주세요!`)
+        errembed.setDescription(`이미 ${channelMention(db.channel_id)}로 음악기능이 설정되있는거 같습니다. \n 채널을 삭제하셨거나 다시 설정을 원하시면 \`${config.bot.prefix}뮤직설정헤제\` 입력 후 다시 시도해주세요.`)
         return interaction.editReply({embeds: [errembed]})
       }
     }

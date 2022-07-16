@@ -13,7 +13,7 @@ export default new BaseCommand(
     aliases: ['롤전적', 'lolstat']
   },
   async (client, message, args) => {
-    return message.reply(`해당 명령어는 (/)커멘드로만 사용가능합니다`)
+    return message.reply(`해당 명령어는 슬래쉬 커맨드 ( / )로만 사용이 가능합니다.`)
   },
   {
     data: new SlashCommandBuilder()
@@ -30,7 +30,7 @@ export default new BaseCommand(
       isSlash: true
     },
     async execute(client, interaction) {
-      await interaction.deferReply()
+      await interaction.deferReply({ ephemeral: true })
       await interaction.editReply({
         embeds: [
           new Embed(client, 'info').setDescription('전적을 불러오는 중..')

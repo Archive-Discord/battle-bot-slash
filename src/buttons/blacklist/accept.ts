@@ -23,6 +23,7 @@ export default new ButtonInteraction(
           new Embed(client, 'warn').setDescription(
             '이미 처리가 완료된 블랙리스트입니다'
           )
+          .setColor('#2f3136')
         ]
       })
     await Blacklist.updateOne(
@@ -34,6 +35,7 @@ export default new ButtonInteraction(
         new Embed(client, 'success').setDescription(
           '성공적으로 승인이 완료되었습니다'
         )
+        .setColor('#2f3136')
       ]
     })
   }

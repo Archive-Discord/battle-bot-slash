@@ -3,6 +3,7 @@ import Discord from 'discord.js'
 import Embed from '../../utils/Embed'
 import comma from 'comma-number'
 import Schema from '../../schemas/Money'
+import { SlashCommandBuilder, userMention } from '@discordjs/builders'
 
 export default new BaseCommand(
   {
@@ -12,38 +13,96 @@ export default new BaseCommand(
   },
   async (client, message, args) => {
     const type = args[0]
-    let embed = new Embed(client, 'warn').setTitle('처리중..')
-    let m = await message.reply({
+    const data = await Schema.find()
+      .sort({ money: -1, descending: -1 })
+      .limit(10)
+    const embed = new Embed(client, 'info').setColor('#2f3136')
+    for (let i = 0; i < data.length; i++) {
+      if (type === '전체') {
+        embed.setTitle('돈 순위표')
+        let searchuser = client.users.cache.get(data[i].userid)
+        if (!searchuser) return
+        embed.addField(
+          `${i + 1}. ${searchuser.username}`,
+          `${comma(data[i].money)}원`
+        )
+        embed.setColor('#2f3136')
+      } else if (type === '서버') {
+        embed.setTitle('서버 돈 순위표')
+        let searchuser = message.guild?.members.cache.get(data[i].userid)
+        if (!searchuser) return
+        embed.addField(
+          `${i + 1}. ${searchuser.nickname ?? searchuser.user.username}`,
+          `${comma(data[i].money)}원`
+        )
+        embed.setColor('#2f3136')
+      } else {
+        embed.setTitle('돈 순위표')
+        let searchuser = client.users.cache.get(data[i].userid)
+        if (!searchuser) return
+        embed.addField(
+          `${i + 1}. ${searchuser.username}`,
+          `${comma(data[i].money)}원`
+        )
+        embed.setColor('#2f3136')
+      }
+    }
+    message.reply({
       embeds: [embed]
     })
-    Schema.find()
-      .sort({ money: 1, descending: 1 })
+  },
+  {
+    // @ts-ignore
+    data: new SlashCommandBuilder()
+      .setName('돈순위')
+      .setDescription('돈 순위를 확인합니다.')
+      .addStringOption(options => options
+          .setName("옵션")
+          .setDescription("순위 옵션을 선택해주세요.")
+          .setRequired(false)
+          .addChoice('서버','서버')
+          .addChoice('전체','전체')
+      ),
+    async execute(client, interaction) {
+      await interaction.deferReply({ ephemeral: true })
+    const type = interaction.options.getString("옵션") || "전체"
+    const data = await Schema.find()
+      .sort({ money: -1, descending: -1 })
       .limit(10)
-      .exec((error, res) => {
-        const data = res.reverse()
-        const embed = new Embed(client, 'info').setColor('#2f3136')
-        for (let i = 0; i < data.length; i++) {
-          if (type === '전체' || !type) {
-            embed.setTitle('돈 순위표')
-            let searchuser = client.users.cache.get(data[i].userid)
-            if (!searchuser) return
-            embed.addField(
-              `${i + 1}. ${searchuser.username}`,
-              `${comma(data[i].money)}원`
-            )
-          } else if (type === '서버') {
-            embed.setTitle('서버 돈 순위표')
-            let searchuser = message.guild?.members.cache.get(data[i].userid)
-            if (!searchuser) return
-            embed.addField(
-              `${i + 1}. ${searchuser.nickname ?? searchuser.user.username}`,
-              `${comma(data[i].money)}원`
-            )
-          }
-        }
-        m.edit({
-          embeds: [embed]
-        })
-      })
+    const embed = new Embed(client, 'info').setColor('#2f3136')
+    for (let i = 0; i < data.length; i++) {
+      if (type === '전체') {
+        embed.setTitle('돈 순위표')
+        let searchuser = client.users.cache.get(data[i].userid)
+        if (!searchuser) return
+        embed.addField(
+          `${i + 1}. ${searchuser.username}`,
+          `${comma(data[i].money)}원`
+        )
+        embed.setColor('#2f3136')
+      } else if (type === '서버') {
+        embed.setTitle('서버 돈 순위표')
+        let searchuser = interaction.guild?.members.cache.get(data[i].userid)
+        if (!searchuser) return
+        embed.addField(
+          `${i + 1}. ${searchuser.nickname ?? searchuser.user.username}`,
+          `${comma(data[i].money)}원`
+        )
+        embed.setColor('#2f3136')
+      } else {
+        embed.setTitle('돈 순위표')
+        let searchuser = client.users.cache.get(data[i].userid)
+        if (!searchuser) return
+        embed.addField(
+          `${i + 1}. ${searchuser.username}`,
+          `${comma(data[i].money)}원`
+        )
+        embed.setColor('#2f3136')
+      }
+    }
+    interaction.editReply({
+      embeds: [embed]
+    })
+    }
   }
 )

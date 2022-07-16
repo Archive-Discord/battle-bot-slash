@@ -64,7 +64,7 @@ export default new BaseCommand(
               message.channel.send({
                 embeds: [
                   new Embed(client, 'error')
-                    .setTitle('Error!')
+                    .setTitle(`❌ 에러 발생`)
                     .setDescription(
                       '제 봇 권한이 부족합니다...\n> 필요한 권한\n`applications.commands`스코프'
                     )

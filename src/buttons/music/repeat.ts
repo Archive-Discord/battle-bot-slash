@@ -8,6 +8,7 @@ export default new ButtonInteraction(
   async (client, interaction) => {
     await interaction.deferReply({ ephemeral: true })
     const errembed = new Embed(client, 'error')
+      .setColor('#2f3136')
     if (!interaction.guild) {
       errembed.setTitle('❌ 이 버튼은 서버에서만 사용이 가능해요!')
       return interaction.editReply({ embeds: [errembed] })
@@ -30,6 +31,7 @@ export default new ButtonInteraction(
       }
     }
     const sucessembed = new Embed(client, 'info')
+      .setColor('#2f3136')
     if (guildQueue.repeatMode === 0) {
       guildQueue.setRepeatMode(1)
       sucessembed.setTitle('현제 재생 중인 노래를 반복합니다')
