@@ -79,8 +79,13 @@ export interface IConfig {
     Google_Redirect_Url: string
     Google_Refresh_Token: string
   }
+  locale: {
+    locales: LocaleType[]
+    default: LocaleType
+  }
 }
 
+export type LocaleType = 'ko' | 'en'
 export interface logger {
   memberJoin?: boolean
   memberLeft?: boolean
