@@ -14,6 +14,7 @@
     "lint:fix": "eslint . --ext .ts --fix",
     "format": "prettier --check .",
     "format:fix": "prettier --write .",
+    "test": "yarn run lint:fix && yarn run format:fix && yarn run build",
     "pm2:start": "cd build && pm2 start ../process.json",
     "pm2:stop": "pm2 stop process.json",
     "pm2:delete": "pm2 delete process.json"
