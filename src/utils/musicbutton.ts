@@ -16,27 +16,27 @@ const musicbuttonrow = async (
 const buttonList: MessageButton[] = [
   new MessageButton()
     .setCustomId('music.back')
-    .setStyle('primary')
+    .setStyle('Primary')
     .setLabel('Back')
     .setEmoji('⬅️'),
   new MessageButton()
     .setCustomId('music.repeat')
-    .setStyle('primary')
+    .setStyle('Primary')
     .setLabel('Repeat')
     .setEmoji('🔁'),
   new MessageButton()
     .setCustomId('music.shuffle')
-    .setStyle('primary')
+    .setStyle('Primary')
     .setLabel('Shuffle')
     .setEmoji('🔀'),
   new MessageButton()
     .setCustomId('music.pause')
-    .setStyle('primary')
+    .setStyle('Primary')
     .setLabel('Pause')
     .setEmoji('⏯️'),
   new MessageButton()
     .setCustomId('music.next')
-    .setStyle('primary')
+    .setStyle('Primary')
     .setLabel('Next')
     .setEmoji('➡️')
 ]
