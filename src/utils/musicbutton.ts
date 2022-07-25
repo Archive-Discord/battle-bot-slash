@@ -17,22 +17,27 @@ const buttonList: MessageButton[] = [
   new MessageButton()
     .setCustomId('music.back')
     .setStyle('SECONDARY')
+    .setLabel('Back')
     .setEmoji('⬅️'),
   new MessageButton()
     .setCustomId('music.repeat')
     .setStyle('SECONDARY')
+    .setLabel('Repeat')
     .setEmoji('🔁'),
   new MessageButton()
     .setCustomId('music.shuffle')
     .setStyle('SECONDARY')
+    .setLabel('Shuffle')
     .setEmoji('🔀'),
   new MessageButton()
     .setCustomId('music.pause')
     .setStyle('SECONDARY')
+    .setLabel('Pause')
     .setEmoji('⏯️'),
   new MessageButton()
     .setCustomId('music.next')
     .setStyle('SECONDARY')
+    .setLabel('Next')
     .setEmoji('➡️')
 ]
 
