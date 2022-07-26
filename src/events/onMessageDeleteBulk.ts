@@ -2,7 +2,7 @@ import { Event } from '../structures/Event'
 import dateFormat from '../utils/DateFormatting'
 import LoggerSetting from '../schemas/LogSettingSchema'
 import Embed from '../utils/Embed'
-import { MessageAttachment, TextChannel } from 'discord.js'
+import { AttachmentBuilder, TextChannel } from 'discord.js'
 
 export default new Event('messageDeleteBulk', async (client, messages) => {
   messages.first()?.guild?.id
@@ -23,18 +23,20 @@ export default new Event('messageDeleteBulk', async (client, messages) => {
     } (${message.id})`
     humanLog += ' : ' + message.content
   }
-  const attachment = new MessageAttachment(
-    Buffer.from(humanLog, 'utf-8'),
-    'DeletedMessages.txt'
-  )
+  const attachment = new AttachmentBuilder(Buffer.from(humanLog, 'utf-8'), {
+    name: 'DeletedMessages.txt'
+  })
   const msg = await logChannel.send({ files: [attachment] })
-  const embed = new Embed(client, 'error').setTitle('메시지 대량 삭제')
-  embed.addField('삭제된 메시지', `${messages.size}`)
-  embed.addField(
-    '삭제된 메시지 확인',
-    `[링크](https://txt.discord.website/?txt=${logChannel.id}/${
-      msg.attachments.first()?.id
-    }/DeletedMessages)`
-  )
+  const embed = new Embed(client, 'error')
+    .setTitle('메시지 대량 삭제')
+    .addFields(
+      { name: '삭제된 메시지', value: `${messages.size}` },
+      {
+        name: '삭제된 메시지 확인',
+        value: `[링크](https://txt.discord.website/?txt=${logChannel.id}/${
+          msg.attachments.first()?.id
+        }/DeletedMessages)`
+      }
+    )
   return await logChannel.send({ embeds: [embed] })
 })

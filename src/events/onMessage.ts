@@ -3,11 +3,8 @@ import CommandManager from '../managers/CommandManager'
 import ErrorManager from '../managers/ErrorManager'
 import { MessageCommand } from '../structures/Command'
 import BotClient from '../structures/BotClient'
-import { Constants, Message } from 'discord.js'
+import { ChannelType, Message, RESTJSONErrorCodes } from 'discord.js'
 import Automod from '../schemas/autoModSchema'
-import MusicSetting from '../schemas/musicSchema'
-import Embed from '../utils/Embed'
-import { PlayerSearchResult, Queue } from 'discord-player'
 import Level from '../schemas/levelSchema'
 import LevelSetting from '../schemas/levelSettingSchema'
 import { check } from 'korcen'
@@ -20,9 +17,8 @@ export default new Event('messageCreate', async (client, message) => {
   const errorManager = new ErrorManager(client)
 
   if (message.author.bot) return
-  if (message.channel.type === 'DM') return
+  if (message.channel.type === ChannelType.DM) return
   profanityFilter(client, message)
-  MusicPlayer(client, message)
   LevelSystem(client, message)
   if (!message.content.startsWith(client.config.bot.prefix)) return
 
@@ -37,7 +33,7 @@ export default new Event('messageCreate', async (client, message) => {
   try {
     await command?.execute(client, message, args)
   } catch (error: any) {
-    if (error?.code === Constants.APIErrors.MISSING_PERMISSIONS) {
+    if (error?.code === RESTJSONErrorCodes.MissingPermissions) {
       return
     }
     errorManager.report(error, { executer: message, isSend: true })
@@ -119,112 +115,6 @@ const findCurse = async (
     } catch (e) {
       return
     }
-  }
-}
-
-const MusicPlayer = async (client: BotClient, message: Message) => {
-  if (!message.guild) return
-  if (!message.content) return
-  const musicDB = await MusicSetting.findOne({
-    channel_id: message.channel.id,
-    guild_id: message.guild.id
-  })
-  if (!musicDB) return
-  const prefix = [client.config.bot.prefix, '!', '.', '$', '%', '&', '=']
-  for (const i in prefix) {
-    if (message.content.startsWith(prefix[i])) return message.delete()
-  }
-  await message.delete()
-  const errembed = new Embed(client, 'error')
-  const sucessembed = new Embed(client, 'success').setColor('#2f3136')
-  const user = message.guild?.members.cache.get(message.author.id)
-  const channel = user?.voice.channel
-  if (!channel) {
-    errembed.setTitle('❌ 음성 채널에 먼저 입장해주세요!')
-    return message.channel.send({ embeds: [errembed] }).then((m) => {
-      setTimeout(() => {
-        m.delete()
-      }, 15000)
-    })
-  }
-  const guildQueue = client.player.getQueue(message.guild.id)
-  if (guildQueue) {
-    if (channel.id !== message.guild.me?.voice.channelId) {
-      errembed.setTitle('❌ 이미 다른 음성 채널에서 재생 중입니다!')
-      return message.channel.send({ embeds: [errembed] }).then((m) => {
-        setTimeout(() => {
-          m.delete()
-        }, 15000)
-      })
-    }
-  }
-  const song = (await client.player.search(message.content, {
-    requestedBy: message.author
-  })) as PlayerSearchResult
-  if (!song || !song.tracks.length) {
-    errembed.setTitle(`❌ ${message.content}를 찾지 못했어요!`)
-    return message.channel.send({ embeds: [errembed] }).then((m) => {
-      setTimeout(() => {
-        m.delete()
-      }, 15000)
-    })
-  }
-  let queue: Queue
-  if (guildQueue) {
-    queue = guildQueue
-    queue.metadata = message
-  } else {
-    queue = await client.player.createQueue(message.guild, {
-      metadata: message
-    })
-  }
-  try {
-    if (!queue.connection) await queue.connect(channel)
-  } catch (e) {
-    client.player.deleteQueue(message.guild.id)
-    errembed.setTitle(`❌ 음성 채널에 입장할 수 없어요 ${e}`)
-    return message.channel.send({ embeds: [errembed] }).then((m) => {
-      setTimeout(() => {
-        m.delete()
-      }, 15000)
-    })
-  }
-  if (song.playlist) {
-    const songs: string[] = []
-    song.playlist.tracks.forEach((music) => {
-      songs.push(music.title)
-    })
-    sucessembed.setAuthor(
-      '재생목록에 아래 노래들을 추가했어요!',
-      undefined,
-      song.playlist.url
-    )
-    sucessembed.setDescription(songs.join(', '))
-    sucessembed.setThumbnail(song.playlist.thumbnail)
-    queue.addTracks(song.tracks)
-    if (!queue.playing) await queue.play()
-    return message.channel.send({ embeds: [sucessembed] }).then((m) => {
-      setTimeout(() => {
-        m.delete()
-      }, 15000)
-    })
-  } else {
-    queue.addTrack(song.tracks[0])
-    sucessembed.setAuthor(
-      `재생목록에 노래를 추가했어요!`,
-      undefined,
-      song.tracks[0].url
-    )
-    sucessembed.setDescription(
-      `[${song.tracks[0].title}](${song.tracks[0].url}) ${song.tracks[0].duration} - ${song.tracks[0].requestedBy}`
-    )
-    sucessembed.setThumbnail(song.tracks[0].thumbnail)
-    if (!queue.playing) await queue.play()
-    return message.channel.send({ embeds: [sucessembed] }).then((m) => {
-      setTimeout(() => {
-        m.delete()
-      }, 15000)
-    })
   }
 }
 

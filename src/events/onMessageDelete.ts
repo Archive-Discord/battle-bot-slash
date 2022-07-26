@@ -2,7 +2,7 @@ import { Event } from '../structures/Event'
 import config from '../../config'
 import LoggerSetting from '../schemas/LogSettingSchema'
 import Embed from '../utils/Embed'
-import { TextChannel, User } from 'discord.js'
+import { AuditLogEvent, TextChannel, User } from 'discord.js'
 
 export default new Event('messageDelete', async (client, message) => {
   if (!message) return
@@ -27,24 +27,27 @@ export default new Event('messageDelete', async (client, message) => {
     message.content = message.content.slice(0, 700) + '...'
   }
   const embed = new Embed(client, 'error').setTitle('메시지 삭제')
-  embed.addField(
-    '채널',
-    `<#${message.channel.id}>` + '(`' + message.channel.id + '`)'
+  embed.addFields(
+    {
+      name: '채널',
+      value: `<#${message.channel.id}>` + '(`' + message.channel.id + '`)'
+    },
+    {
+      name: '작성자',
+      value: `<@${message.author.id}>` + '(`' + message.author.id + '`)'
+    }
   )
-  embed.addField(
-    '작성자',
-    `<@${message.author.id}>` + '(`' + message.author.id + '`)'
-  )
-  if (message.content.length > 0) embed.addField('내용', `${message.content}`)
+  if (message.content.length > 0)
+    embed.addFields({ name: '내용', value: `${message.content}` })
   if (message.attachments.size > 0) {
-    embed.addField(
-      '파일',
-      message.attachments.map((file) => `[링크](${file.url})`).join('\n')
-    )
+    embed.addFields({
+      name: '파일',
+      value: message.attachments.map((file) => `[링크](${file.url})`).join('\n')
+    })
   }
   const fetchedLogs = await message.guild?.fetchAuditLogs({
     limit: 1,
-    type: 'MESSAGE_DELETE'
+    type: AuditLogEvent.MessageDelete
   })
   if (!fetchedLogs) return await logChannel.send({ embeds: [embed] })
   const deletionLog = fetchedLogs.entries.first()
@@ -58,7 +61,10 @@ export default new Event('messageDelete', async (client, message) => {
     target.id === message.author.id &&
     deletionLog.createdTimestamp > Date.now() - 60 * 1000
   ) {
-    embed.addField('삭제유저', `<@${executor.id}>` + '(`' + executor.id + '`)')
+    embed.addFields({
+      name: '삭제유저',
+      value: `<@${executor.id}>` + '(`' + executor.id + '`)'
+    })
     return await logChannel.send({ embeds: [embed] })
   }
   return await logChannel.send({ embeds: [embed] })

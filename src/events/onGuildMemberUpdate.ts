@@ -17,7 +17,7 @@ export default new Event(
     let update = false
     const embed = new Embed(client, 'warn')
       .setTitle('멤버 수정')
-      .addField(
+      .addFields(
         '유저',
         `<@${newMember.user.id}>` + '(`' + newMember.user.id + '`)'
       )
@@ -31,12 +31,12 @@ export default new Event(
         const executor = deletionLog.executor as User
         const target = deletionLog.target as User
         if (target.id === newMember.id && executor.id !== newMember.id)
-          embed.addField(
+          embed.addFields(
             '수정유저',
             `<@${executor.id}>` + '(`' + executor.id + '`)'
           )
       }
-      embed.addField(
+      embed.addFields(
         '닉네임 수정',
         '`' +
           (oldMember.nickname ? oldMember.nickname : oldMember.user.username) +
@@ -49,7 +49,7 @@ export default new Event(
       update = true
     }
     if (!oldMember.premiumSince && newMember.premiumSince) {
-      embed.addField(
+      embed.addFields(
         '서버 부스트',
         `<@${newMember.user.id}>` +
           '(`' +
@@ -69,7 +69,7 @@ export default new Event(
         const executor = deletionLog.executor as User
         const target = deletionLog.target as User
         if (target.id === newMember.id)
-          embed.addField(
+          embed.addFields(
             '수정유저',
             `<@${executor.id}>` + '(`' + executor.id + '`)'
           )
@@ -77,7 +77,7 @@ export default new Event(
       if (oldMember.roles.cache.size > newMember.roles.cache.size) {
         oldMember.roles.cache.forEach((role) => {
           if (!newMember.roles.cache.has(role.id)) {
-            embed.addField(
+            embed.addFields(
               '역할 삭제',
               `<@&${role.id}>` + '(`' + role.id + '`)'
             )
@@ -87,7 +87,7 @@ export default new Event(
       } else if (oldMember.roles.cache.size < newMember.roles.cache.size) {
         newMember.roles.cache.forEach((role) => {
           if (!oldMember.roles.cache.has(role.id)) {
-            embed.addField(
+            embed.addFields(
               '역할 추가',
               `<@&${role.id}>` + '(`' + role.id + '`)'
             )

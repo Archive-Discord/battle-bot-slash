@@ -20,11 +20,13 @@ export default new Event(
     if (!logChannel) return
     const embed = new Embed(client, 'error')
       .setTitle('모든 반응 삭제')
-      .addField(
-        '채널',
-        `<#${message.channel.id}>` + '(`' + message.channel.id + '`)'
+      .addFields(
+        {
+          name: '채널',
+          value: `<#${message.channel.id}>` + '(`' + message.channel.id + '`)'
+        },
+        { name: '메시지', value: `[메시지](${message.url})` }
       )
-      .addField('메시지', `[메시지](${message.url})`)
 
     return await logChannel.send({ embeds: [embed] })
   }

@@ -35,7 +35,7 @@ export default class ErrorManager extends BaseManager {
       .setDescription(
         '명령어 실행 도중에 오류가 발생하였습니다. 개발자에게 오류코드를 보내 개발에 지원해주세요.'
       )
-      .addField('오류 코드', errorCode, true)
+      .addFields('오류 코드', errorCode, true)
 
     isSend ? executer?.reply({ embeds: [errorEmbed] }) : null
 

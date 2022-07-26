@@ -1,5 +1,5 @@
 import { SlashCommandBuilder } from '@discordjs/builders'
-import { GuildMember, MessageEmbed } from 'discord.js'
+import { GuildMember, EmbedBuilder } from 'discord.js'
 import { BaseCommand } from '../../structures/Command'
 import Embed from '../../utils/Embed'
 import mongoose from 'mongoose'
@@ -21,7 +21,9 @@ export default new BaseCommand(
   async (client, message, args) => {
     let embed = new Embed(client, 'error')
       .setTitle(`❌ 에러 발생`)
-      .setDescription('해당 명령어는 슬래쉬 커맨드 ( / )로만 사용이 가능합니다.')
+      .setDescription(
+        '해당 명령어는 슬래쉬 커맨드 ( / )로만 사용이 가능합니다.'
+      )
     return message.reply({ embeds: [embed] })
   },
   {
@@ -126,16 +128,16 @@ export default new BaseCommand(
           _id: warningIDtoObject
         })
 
-        const embedRemove = new MessageEmbed()
+        const embedRemove = new EmbedBuilder()
           .setColor('#2f3136')
           .setTitle('경고')
           .setDescription('아래와 같이 경고가 삭감되었습니다.')
-          .addField(
+          .addFields(
             '유저',
             `<@${user?.id}>` + '(' + '`' + user?.id + '`' + ')',
             true
           )
-          .addField('경고 ID', warningID as string, true)
+          .addFields('경고 ID', warningID as string, true)
         return interaction.editReply({ embeds: [embedRemove] })
       } else if (subcommand === '조회') {
         let warningID = interaction.options.getNumber('페이지')
@@ -162,7 +164,7 @@ export default new BaseCommand(
           })
         )
 
-        const embedList = new MessageEmbed()
+        const embedList = new EmbedBuilder()
           .setColor('#2f3136')
           .setTitle('경고')
           .setDescription(

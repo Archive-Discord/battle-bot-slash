@@ -21,19 +21,19 @@ let config: IConfig = {
   BUILD_NUMBER,
   BUILD_VERSION: '0.0.1-dev',
   githubToken: '',
-  pubgapikey: "",
-  klaytnapikey: "",
+  pubgapikey: '',
+  klaytnapikey: '',
   updateServer: {
-    koreanbots: "", // https://koreanbots.dev
-    archive: "" // https://archiver.me
+    koreanbots: '', // https://koreanbots.dev
+    archive: '' // https://archiver.me
   },
   web: {
-    baseurl: ""
+    baseurl: ''
   },
   bot: {
     sharding: false,
     options: {
-      intents: [32767],
+      intents: [130815],
       allowedMentions: { parse: ['users', 'roles'], repliedUser: false }
     },
     token: '',
@@ -59,8 +59,8 @@ let config: IConfig = {
     channelID: ''
   },
   devGuild: {
-    guildID: "",
-    channelID: ""
+    guildID: '',
+    channelID: ''
   },
   database: {
     /**

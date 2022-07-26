@@ -1,6 +1,6 @@
 import {
   MessageButton,
-  MessageEmbed,
+  EmbedBuilder,
   MessageActionRow,
   ButtonInteraction,
   CommandInteraction,
@@ -9,7 +9,7 @@ import {
 
 const paginationEmbed = async (
   interaction: CommandInteraction,
-  pages: MessageEmbed[],
+  pages: EmbedBuilder[],
   buttonList: MessageButton[],
   timeout = 120000
 ) => {

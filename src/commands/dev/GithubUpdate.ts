@@ -56,8 +56,8 @@ export default new MessageCommand(
                 .setColor('#2f3136')
                 .setTitle('확인 완료!')
                 .setDescription('현재 최신 버전을 이용중입니다!')
-                .addField('현재 버전', `v${client.VERSION}`, true)
-                .addField('현재 빌드 번호', `${client.BUILD_NUMBER}`, true)
+                .addFields('현재 버전', `v${client.VERSION}`, true)
+                .addFields('현재 빌드 번호', `${client.BUILD_NUMBER}`, true)
 
               return msg.edit({ embeds: [SuccessEmbed] })
             } else {
@@ -71,9 +71,9 @@ export default new MessageCommand(
                     .setDescription(
                       `최신 업데이트된 ${count}개의 내용이 있습니다. 지금 업데이트 하시겠습니까?`
                     )
-                    .addField('현재 버전', `v${client.VERSION}`, true)
-                    .addField('현재 빌드 번호', `${client.BUILD_NUMBER}`, true)
-                    .addField(
+                    .addFields('현재 버전', `v${client.VERSION}`, true)
+                    .addFields('현재 빌드 번호', `${client.BUILD_NUMBER}`, true)
+                    .addFields(
                       '최신 빌드 번호',
                       `${json[0].sha.trim().substring(0, 6)}`,
                       true
@@ -141,8 +141,8 @@ export default new MessageCommand(
                 .setColor('#2f3136')
                 .setTitle('확인 완료!')
                 .setDescription('현재 최신 버전을 이용중입니다!')
-                .addField('현재 버전', `v${client.VERSION}`, true)
-                .addField(
+                .addFields('현재 버전', `v${client.VERSION}`, true)
+                .addFields(
                   '현재 빌드 번호',
                   `[${client.BUILD_NUMBER}](${repository}/commit/${client.BUILD_NUMBER})`,
                   true
@@ -160,13 +160,13 @@ export default new MessageCommand(
                     .setDescription(
                       `최신 업데이트된 ${count}개의 내용이 있습니다. 지금 업데이트 하시겠습니까?`
                     )
-                    .addField('현재 버전', `v${client.VERSION}`, true)
-                    .addField(
+                    .addFields('현재 버전', `v${client.VERSION}`, true)
+                    .addFields(
                       '현재 빌드 번호',
                       `[${client.BUILD_NUMBER}](${repository}/commit/${client.BUILD_NUMBER})`,
                       true
                     )
-                    .addField(
+                    .addFields(
                       '최신 빌드 번호',
                       `[${json[0].sha
                         .trim()

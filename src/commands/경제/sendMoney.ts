@@ -12,8 +12,7 @@ export default new BaseCommand(
     aliases: ['송금', 'moneysay', 'thdrma']
   },
   async (client, message, args) => {
-    let embed = new Embed(client, 'warn')
-      .setTitle('생각하는 중...')
+    let embed = new Embed(client, 'warn').setTitle('생각하는 중...')
     let m = await message.reply({
       embeds: [embed]
     })
@@ -31,7 +30,7 @@ export default new BaseCommand(
     embed = new Embed(client, 'error')
       .setDescription(
         message.author +
-        '님의 계좌가 생성되지 않으셨습니다. \n계좌가 있으신 유저에게만 송금이 가능합니다.'
+          '님의 계좌가 생성되지 않으셨습니다. \n계좌가 있으신 유저에게만 송금이 가능합니다.'
       )
       .setTimestamp()
       .setColor('#2f3136')
@@ -62,9 +61,7 @@ export default new BaseCommand(
 
     embed = new Embed(client, 'error')
       .setTitle(`❌ 에러 발생`)
-      .setDescription(
-        '금액은 자연수만 입력해주세요.'
-      )
+      .setDescription('금액은 자연수만 입력해주세요.')
       .setTimestamp()
       .setColor('#2f3136')
     if (message.content.includes('-'))
@@ -118,8 +115,8 @@ export default new BaseCommand(
     )
     embed = new Embed(client, 'info')
       .setTitle('⭕ 송금 완료')
-      .addField(`송금인 잔액`, `${comma(money - betting)}원`, true)
-      .addField(`받는사람 잔액`, ` ${money2 + betting}원`, true)
+      .addFields(`송금인 잔액`, `${comma(money - betting)}원`, true)
+      .addFields(`받는사람 잔액`, ` ${money2 + betting}원`, true)
       .setTimestamp()
       .setColor('#2f3136')
     m.edit({
@@ -131,23 +128,29 @@ export default new BaseCommand(
     data: new SlashCommandBuilder()
       .setName('송금')
       .setDescription('자신의 돈을 다른사람에게 송금합니다.')
-      .addUserOption(options => options
-        .setName("유저")
-        .setDescription("송금하실 유저를 선택해주세요.")
-        .setRequired(true))
-      .addIntegerOption(options => options
-        .setName("송금액")
-        .setDescription("지정한 대상에게 송금하실 포인트를 작성해주세요. ( 최소 1000 포인트 )")
-        .setRequired(true)),
+      .addUserOption((options) =>
+        options
+          .setName('유저')
+          .setDescription('송금하실 유저를 선택해주세요.')
+          .setRequired(true)
+      )
+      .addIntegerOption((options) =>
+        options
+          .setName('송금액')
+          .setDescription(
+            '지정한 대상에게 송금하실 포인트를 작성해주세요. ( 최소 1000 포인트 )'
+          )
+          .setRequired(true)
+      ),
     options: {
       name: '돈',
       isSlash: true
     },
     async execute(client, interaction) {
       await interaction.deferReply({ ephemeral: true })
-      let user = interaction.options.getMember("유저") || interaction.member
-      let user2 = interaction.options.getUser("유저") || interaction.user
-      let betting = interaction.options.getInteger("송금액") || 0
+      let user = interaction.options.getMember('유저') || interaction.member
+      let user2 = interaction.options.getUser('유저') || interaction.user
+      let betting = interaction.options.getInteger('송금액') || 0
       let embed = new Embed(client, 'error')
         .setTitle(`❌ 에러 발생`)
         .setDescription(`송금할 대상이 지정되지 않았습니다.`)
@@ -161,7 +164,7 @@ export default new BaseCommand(
       embed = new Embed(client, 'error')
         .setDescription(
           interaction.user +
-          '님의 계좌가 생성되지 않으셨습니다.\n계좌가 있으신 유저에게만 송금이 가능합니다.'
+            '님의 계좌가 생성되지 않으셨습니다.\n계좌가 있으신 유저에게만 송금이 가능합니다.'
         )
         .setTimestamp()
         .setColor('#2f3136')
@@ -226,11 +229,11 @@ export default new BaseCommand(
       )
       embed = new Embed(client, 'info')
         .setTitle('⭕ 송금 완료')
-        .addField(`송금인 잔액`, `${comma(money - betting)}원`, true)
-        .addField(`받는사람 잔액`, ` ${money2 + betting}원`, true)
+        .addFields(`송금인 잔액`, `${comma(money - betting)}원`, true)
+        .addFields(`받는사람 잔액`, ` ${money2 + betting}원`, true)
         .setTimestamp()
         .setColor('#2f3136')
-        interaction.editReply({
+      interaction.editReply({
         embeds: [embed]
       })
     }

@@ -14,14 +14,14 @@ export default new Event('guildUpdate', async (client, oldGuild, newGuild) => {
   let update = false
   const embed = new Embed(client, 'warn').setTitle('서버 수정')
   if (oldGuild.name != newGuild.name) {
-    embed.addField(
+    embed.addFields(
       '이름 수정',
       '`' + oldGuild.name + '`' + ' -> ' + '`' + newGuild.name + '`'
     )
     update = true
   }
   if (oldGuild.premiumTier !== newGuild.premiumTier) {
-    embed.addField(
+    embed.addFields(
       `부스트 ${
         oldGuild.premiumTier < newGuild.premiumTier ? '추가됨' : '차감됨'
       }`,
@@ -36,14 +36,14 @@ export default new Event('guildUpdate', async (client, oldGuild, newGuild) => {
     update = true
   }
   if (!oldGuild.banner && newGuild.banner) {
-    embed.addField(
+    embed.addFields(
       '배너 수정',
       '`' + oldGuild.banner + '`' + ' -> ' + '`' + newGuild.banner + '`'
     )
     update = true
   }
   if (!oldGuild.afkChannel && newGuild.afkChannel) {
-    embed.addField(
+    embed.addFields(
       '잠수 채널 수정',
       (oldGuild.afkChannelId
         ? `<#${oldGuild.afkChannelId}>` + '(`' + oldGuild.afkChannelId + '`)'
@@ -56,7 +56,7 @@ export default new Event('guildUpdate', async (client, oldGuild, newGuild) => {
     update = true
   }
   if (!oldGuild.vanityURLCode && newGuild.vanityURLCode) {
-    embed.addField(
+    embed.addFields(
       '초대 링크 수정',
       (oldGuild.vanityURLCode ? oldGuild.vanityURLCode : '`없음`') +
         ' -> ' +
@@ -65,7 +65,7 @@ export default new Event('guildUpdate', async (client, oldGuild, newGuild) => {
     update = true
   }
   if (oldGuild.afkTimeout !== newGuild.afkTimeout) {
-    embed.addField(
+    embed.addFields(
       '잠수 시간 수정',
       '`' +
         oldGuild.afkTimeout / 60 +
@@ -80,7 +80,7 @@ export default new Event('guildUpdate', async (client, oldGuild, newGuild) => {
     update = true
   }
   if (oldGuild.ownerId !== newGuild.ownerId) {
-    embed.addField(
+    embed.addFields(
       '서버 주인 변경',
       `<@${oldGuild.ownerId}>` +
         '(`' +
@@ -95,7 +95,7 @@ export default new Event('guildUpdate', async (client, oldGuild, newGuild) => {
     update = true
   }
   if (oldGuild.systemChannelId !== newGuild.systemChannelId) {
-    embed.addField(
+    embed.addFields(
       '시스템 채널 변경',
       `<#${oldGuild.systemChannelId}>` +
         '(`' +

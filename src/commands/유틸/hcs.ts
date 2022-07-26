@@ -17,7 +17,9 @@ export default new BaseCommand(
     aliases: ['자가진단', 'hcskr', 'hcs']
   },
   async (client, message, args) => {
-    return message.reply(`해당 명령어는 슬래쉬 커맨드 ( / )로만 사용이 가능합니다.`)
+    return message.reply(
+      `해당 명령어는 슬래쉬 커맨드 ( / )로만 사용이 가능합니다.`
+    )
   },
   {
     // @ts-ignore
@@ -63,13 +65,11 @@ export default new BaseCommand(
     async execute(client, interaction) {
       await interaction.deferReply({ ephemeral: true })
       let subcommand = interaction.options.getSubcommand()
-      let successEmbed = new Embed(client, 'success')
-        .setColor('#2f3136')
+      let successEmbed = new Embed(client, 'success').setColor('#2f3136')
       let errEmbed = new Embed(client, 'error')
         .setTitle(`❌ 에러 발생`)
         .setColor('#2f3136')
-      let infoEmbed = new Embed(client, 'info')
-        .setColor('#2f3136')
+      let infoEmbed = new Embed(client, 'info').setColor('#2f3136')
       if (subcommand === '설정') {
         let name = interaction.options.getString('이름', true)
         let school = interaction.options.getString('학교', true)
@@ -103,9 +103,9 @@ export default new BaseCommand(
           await updateAgreement(schoolResult[0].endpoint, login.token)
         }
         infoEmbed.setAuthor('자가진단 등록')
-        infoEmbed.addField('이름', name, true)
-        infoEmbed.addField('생년월일', birthday.toString(), true)
-        infoEmbed.addField('학교', schoolResult[0].name, true)
+        infoEmbed.addFields('이름', name, true)
+        infoEmbed.addFields('생년월일', birthday.toString(), true)
+        infoEmbed.addFields('학교', schoolResult[0].name, true)
         infoEmbed.setDescription(
           '[개인정보처리방침](https://battlebot.kr/help/privacy)에 따라 아래정보로 등록을 진행합니다 \n 동의하실경우 등록이 진행됩니다'
         )

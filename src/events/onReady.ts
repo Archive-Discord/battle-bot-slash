@@ -1,22 +1,17 @@
-import MusicEmbed from '../utils/MusicEmbed'
-import { Queue, Track } from 'discord-player'
-import { Message, MessageEmbed, TextChannel } from 'discord.js'
-import MusicSetting from '../schemas/musicSchema'
+import { ChannelType } from 'discord.js'
 import Status from '../schemas/statusSchema'
 import BotClient from '../structures/BotClient'
 import { Event } from '../structures/Event'
 import Embed from '../utils/Embed'
 import Logger from '../utils/Logger'
-import { MusicDB } from '../../typings'
-import progressbar from 'string-progressbar'
 import Premium from '../schemas/premiumSchemas'
 import schedule from 'node-schedule'
 import DateFormatting from '../utils/DateFormatting'
 import Automod from '../schemas/autoModSchema'
-import { Guild, GuildChannel } from 'discord.js'
+import { GuildChannel } from 'discord.js'
 import NFTUserWallet from '../schemas/NFTUserWalletSchema'
 import NFTGuildVerify from '../schemas/NFTGuildVerifySchema'
-import axios, { AxiosError } from 'axios'
+import axios from 'axios'
 import config from '../../config'
 import CommandManager from '../managers/CommandManager'
 import web from '../server/index'
@@ -33,55 +28,6 @@ export default new Event(
     setInterval(async () => {
       ServerCountUpdate(client)
     }, 60 * 1000 * 10)
-    client.player.on('trackStart', async (queue, track) => {
-      const musicDB = (await MusicSetting.findOne({
-        guild_id: queue.guild.id
-      })) as MusicDB
-      MusicAlert(client, track, queue, musicDB)
-      MusicTrackEvent(client, queue, musicDB)
-      //MusicTrackStartEvent(client, queue, musicDB)
-    })
-    client.player.on('queueEnd', async (queue) => {
-      const musicDB = (await MusicSetting.findOne({
-        guild_id: queue.guild.id
-      })) as MusicDB
-      MusicQueueEnd(client, queue, musicDB)
-    })
-    client.player.on('connectionError', async (queue, error) => {
-      const musicDB = (await MusicSetting.findOne({
-        guild_id: queue.guild.id
-      })) as MusicDB
-      MusicQueueEnd(client, queue, musicDB)
-    })
-    client.player.on('error', async (queue, error) => {
-      if (error.name === 'DestroyedQueue') {
-        const musicDB = (await MusicSetting.findOne({
-          guild_id: queue.guild.id
-        })) as MusicDB
-        MusicQueueEnd(client, queue, musicDB)
-      } else {
-        console.log(error)
-      }
-    })
-    client.player.on('botDisconnect', async (queue) => {
-      const musicDB = (await MusicSetting.findOne({
-        guild_id: queue.guild.id
-      })) as MusicDB
-      queue.destroy()
-      MusicQueueEnd(client, queue, musicDB)
-    })
-    client.player.on('trackAdd', async (queue, track) => {
-      const musicDB = (await MusicSetting.findOne({
-        guild_id: queue.guild.id
-      })) as MusicDB
-      MusicTrackEvent(client, queue, musicDB)
-    })
-    client.player.on('tracksAdd', async (queue, track) => {
-      const musicDB = (await MusicSetting.findOne({
-        guild_id: queue.guild.id
-      })) as MusicDB
-      MusicTrackEvent(client, queue, musicDB)
-    })
     schedule.scheduleJob('0 0 0 * * *', () => {
       PremiumAlert(client)
       automodResetChannel(client)
@@ -94,92 +40,14 @@ export default new Event(
   },
   { once: true }
 )
-
-async function MusicTrackEvent(
-  client: BotClient,
-  queue: Queue,
-  musicDB: MusicDB
-) {
-  if (!musicDB) return
-  const channel = queue.guild.channels.cache.get(
-    musicDB.channel_id
-  ) as TextChannel
-  if (!channel) return
-  let message = channel.messages.cache.get(musicDB.message_id)
-  if (!message) message = await channel.messages.fetch(musicDB.message_id)
-  if (!message) return
-  const pageStart = 0
-  const pageEnd = pageStart + 5
-  const tracks = queue.tracks.slice(pageStart, pageEnd).map((m, i) => {
-    return `**${i + pageStart + 1}**. [${m.title}](${m.url}) ${m.duration} - ${
-      m.requestedBy
-    }`
-  })
-  const embed = new MusicEmbed(client, queue.nowPlaying())
-  if (tracks.length === 0) {
-    embed.setDescription(`
-      [대시보드](${config.web?.baseurl}) | [서포트 서버](https://discord.gg/WtGq7D7BZm)
-      \n**플레이리스트**\n❌ 더 이상 재생목록에 노래가 없습니다`)
-  } else {
-    embed.setDescription(`
-      [대시보드](${
-        config.web?.baseurl
-      }) | [서포트 서버](https://discord.gg/WtGq7D7BZm)
-      \n**플레이리스트**\n${tracks.join('\n')}${
-      queue.tracks.length > pageEnd
-        ? `\n... + ${queue.tracks.length - pageEnd}`
-        : ''
-    }`)
-  }
-  return message.edit({ embeds: [embed] })
-}
-
-async function MusicQueueEnd(
-  client: BotClient,
-  queue: Queue,
-  musicDB: MusicDB
-) {
-  if (!musicDB) return
-  const channel = queue.guild.channels.cache.get(
-    musicDB.channel_id
-  ) as TextChannel
-  if (!channel) return
-  let message = channel.messages.cache.get(musicDB.message_id)
-  if (!message) message = await channel.messages.fetch(musicDB.message_id)
-  if (!message) return
-  const embed = new MusicEmbed(client)
-  return message.edit({ embeds: [embed] })
-}
-async function MusicAlert(
-  client: BotClient,
-  track: Track,
-  queue: Queue,
-  musicDB: MusicDB
-) {
-  //@ts-ignore
-  const channel = queue.metadata.channel as TextChannel
-  if (!musicDB || channel.id !== musicDB.channel_id) {
-    const embed = new Embed(client, 'info')
-    embed.setAuthor(
-      '재생 중인 노래',
-      'https://cdn.discordapp.com/emojis/667750713698549781.gif?v=1',
-      track.url
-    )
-    embed.setDescription(
-      `[**${track.title} - ${track.author}**](${track.url}) ${track.duration} - ${track.requestedBy}`
-    )
-    embed.setThumbnail(track.thumbnail)
-    return channel.send({ embeds: [embed] }).catch((e) => {
-      if (e) console.log(e)
-    })
-  }
-}
 async function StatusUpdate(client: BotClient) {
   const totalShard = client.shard?.count
   const shardInfo = await ShardInfo(client)
   const status = new Status()
-  status.build_number = client.BUILD_NUMBER
-  ;(status.commands = client.commands.size), (status.totalShard = totalShard)
+  status.build_number = client.BUILD_NUMBER!
+  ;(status.commands = String(client.commands.size)),
+    (status.totalShard = String(totalShard))
+  // @ts-ignore
   status.shard = shardInfo
   status.save((err: any) => {
     if (err) logger.error(`봇 상태 업데이트 오류: ${err}`)
@@ -312,8 +180,9 @@ async function automodResetChannel(client: BotClient) {
     for await (const resetchannel of useing.useResetChannels) {
       const channel = guild?.channels.cache.get(resetchannel) as GuildChannel
       if (!channel) return
-      const newchannel = await guild?.channels.create(channel.name, {
-        type: 'GUILD_TEXT',
+      const newchannel = await guild?.channels.create({
+        name: channel.name,
+        type: ChannelType.GuildText,
         parent: channel.parent ? channel.parent.id : undefined,
         permissionOverwrites: channel.permissionOverwrites.cache,
         position: channel.position
@@ -391,7 +260,7 @@ async function ServerCountUpdate(client: BotClient) {
     .then((data) => {
       logger.info('아카이브: 서버 수 업데이트 완료')
     })
-    .catch((e: AxiosError) => {
+    .catch((e: any) => {
       logger.error(
         `아카이브: 서버 수 업데이트 오류: ${e.response?.data.message}`
       )
@@ -411,9 +280,7 @@ async function ServerCountUpdate(client: BotClient) {
     .then((data) => {
       logger.info('한디리: 서버 수 업데이트 완료')
     })
-    .catch((e: AxiosError) => {
+    .catch((e: any) => {
       logger.error(`한디리: 서버 수 업데이트 오류: ${e.response?.data.message}`)
     })
 }
-
-export { MusicTrackEvent }

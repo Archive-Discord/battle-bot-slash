@@ -21,18 +21,19 @@ export default new Event(
       LoggerSettingDB.guild_channel_id
     ) as TextChannel
     if (!logChannel) return
-    const embed = new Embed(client, 'error')
-      .setTitle('반응 삭제')
-      .addField(
-        '채널',
-        `<#${messageReaction.message.channel.id}>` +
+    const embed = new Embed(client, 'error').setTitle('반응 삭제').addFields(
+      {
+        name: '채널',
+        value:
+          `<#${messageReaction.message.channel.id}>` +
           '(`' +
           messageReaction.message.channel.id +
           '`)'
-      )
-      .addField('메시지', `[메시지](${messageReaction.message.url})`)
-      .addField('유저', `<@${user.id}>` + '(`' + user.id + '`)')
-      .addField('반응 이모지', messageReaction.emoji.toString())
+      },
+      { name: '메시지', value: `[메시지](${messageReaction.message.url})` },
+      { name: '유저', value: `<@${user.id}>` + '(`' + user.id + '`)' },
+      { name: '반응 이모지', value: messageReaction.emoji.toString() }
+    )
     return await logChannel.send({ embeds: [embed] })
   }
 )

@@ -15,7 +15,7 @@ export default new Event(
       LoggerSettingDB.guild_channel_id
     ) as TextChannel
     if (!logChannel) return
-    const embed = new Embed(client, 'warn').addField(
+    const embed = new Embed(client, 'warn').addFields(
       '유저',
       `<@${newState.member?.id}>` + '(`' + newState.member?.id + '`)',
       true
@@ -24,7 +24,7 @@ export default new Event(
     if (!newState.channel) {
       if (!LoggerSettingDB.useing.leaveVoiceChannel) return
       embed.setTitle('음성채널 퇴장')
-      embed.addField(
+      embed.addFields(
         '채널',
         oldState.channel?.id
           ? `<#${oldState.channel.id}>` + '(`' + oldState.channel.id + '`)'
@@ -37,7 +37,7 @@ export default new Event(
     if (!oldState.channel) {
       if (!LoggerSettingDB.useing.joinVoiceChannel) return
       embed.setTitle('음성채널 입장')
-      embed.addField(
+      embed.addFields(
         '채널',
         newState.channel?.id
           ? `<#${newState.channel.id}>` + '(`' + newState.channel.id + '`)'

@@ -29,7 +29,7 @@ export default new Event('guildBanAdd', async (client, ban) => {
   const executor = deletionLog.executor as User
   const target = deletionLog.target as User
   if (target.id == ban.user.id) {
-    embed.addField('관리자', `<@${executor.id}>` + '(`' + executor.id + '`)')
+    embed.addFields('관리자', `<@${executor.id}>` + '(`' + executor.id + '`)')
     return await logChannel.send({ embeds: [embed] })
   } else {
     return await logChannel.send({ embeds: [embed] })

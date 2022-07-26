@@ -2,12 +2,12 @@ import {
   CommandInteraction,
   MessageActionRow,
   MessageButton,
-  MessageEmbed
+  EmbedBuilder
 } from 'discord.js'
 
 const musicbuttonrow = async (
   interaction: CommandInteraction,
-  embed: MessageEmbed
+  embed: EmbedBuilder
 ) => {
   const row = new MessageActionRow().addComponents(buttonList)
   interaction.editReply({ embeds: [embed], components: [row], content: ' ' })

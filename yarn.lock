@@ -109,20 +109,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@discordjs/voice@npm:^0.8.0":
-  version: 0.8.0
-  resolution: "@discordjs/voice@npm:0.8.0"
-  dependencies:
-    "@types/ws": ^8.2.0
-    discord-api-types: ^0.26.1
-    prism-media: ^1.3.2
-    tiny-typed-emitter: ^2.1.0
-    tslib: ^2.3.1
-    ws: ^8.4.2
-  checksum: 9a92712c6bac110454ed32a8a1da4457e9fac2292d463d5d06678cd9a414cec9499889a1a19beb2adaeb381c77a0fae98643578d96e07f86fef64368aca6e14b
-  languageName: node
-  linkType: hard
-
 "@eslint/eslintrc@npm:^1.3.0":
   version: 1.3.0
   resolution: "@eslint/eslintrc@npm:1.3.0"
@@ -553,7 +539,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/ws@npm:^8.2.0, @types/ws@npm:^8.5.3":
+"@types/ws@npm:^8.5.3":
   version: 8.5.3
   resolution: "@types/ws@npm:8.5.3"
   dependencies:
@@ -1009,9 +995,8 @@ __metadata:
     cookie-parser: ^1.4.6
     cors: ^2.8.5
     dayjs: ^1.11.4
-    discord-player: ^5.2.2
     discord.js: ^14.0.3
-    dokdo: ^0.5.1
+    dokdo: "pikokr/dokdo#v14"
     dotenv: ^16.0.1
     eslint: ^8.20.0
     eslint-config-prettier: ^8.5.0
@@ -1275,22 +1260,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cheerio@npm:^1.0.0-rc.10":
-  version: 1.0.0-rc.11
-  resolution: "cheerio@npm:1.0.0-rc.11"
-  dependencies:
-    cheerio-select: ^2.1.0
-    dom-serializer: ^2.0.0
-    domhandler: ^5.0.3
-    domutils: ^3.0.1
-    htmlparser2: ^8.0.1
-    parse5: ^7.0.0
-    parse5-htmlparser2-tree-adapter: ^7.0.0
-    tslib: ^2.4.0
-  checksum: 7619edcbecafb70ca6ca842ce149307a84e8d451432a888d82959b2aa04e2090701658f25eac75821e0832cc1305bdbcf02f17175102fc1723f119f3c9ece17a
-  languageName: node
-  linkType: hard
-
 "cheerio@npm:^1.0.0-rc.12":
   version: 1.0.0-rc.12
   resolution: "cheerio@npm:1.0.0-rc.12"
@@ -1528,15 +1497,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cross-fetch@npm:~3.1.4":
-  version: 3.1.5
-  resolution: "cross-fetch@npm:3.1.5"
-  dependencies:
-    node-fetch: 2.6.7
-  checksum: f6b8c6ee3ef993ace6277fd789c71b6acf1b504fd5f5c7128df4ef2f125a429e29cd62dc8c127523f04a5f2fa4771ed80e3f3d9695617f441425045f505cf3bb
-  languageName: node
-  linkType: hard
-
 "cross-spawn@npm:^7.0.2":
   version: 7.0.3
   resolution: "cross-spawn@npm:7.0.3"
@@ -1703,42 +1663,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"discord-api-types@npm:^0.26.1":
-  version: 0.26.1
-  resolution: "discord-api-types@npm:0.26.1"
-  checksum: e53bfa7589b24108e6b403dbe213da34c4592f72e2b8fde6800dcb6c703065887ecbd644e1cdf694e4c7796954bc51462ced868f26ec45dc1e0dc4fa8d3c723c
-  languageName: node
-  linkType: hard
-
 "discord-api-types@npm:^0.36.2":
   version: 0.36.3
   resolution: "discord-api-types@npm:0.36.3"
   checksum: 3089c0fb37425dc5df03c76d82988d43fcc272699b06a02fc830d0a3bef550009aaebdf6d646529e8a7ccea76ae3f43b099d736ea5ef37a0be143142ab49871d
-  languageName: node
-  linkType: hard
-
-"discord-player@npm:^5.2.2":
-  version: 5.2.2
-  resolution: "discord-player@npm:5.2.2"
-  dependencies:
-    "@discordjs/voice": ^0.8.0
-    discord-ytdl-core: ^5.0.4
-    libsodium-wrappers: ^0.7.9
-    soundcloud-scraper: ^5.0.2
-    spotify-url-info: ^2.2.5
-    tiny-typed-emitter: ^2.1.0
-    youtube-sr: ^4.1.13
-    ytdl-core: ^4.10.0
-  checksum: a215524e8f32cc452fdcf0ad54a7d98723382bb81fe8bd9a4ab7e7bddf2b614242d0be03e139468cef7f47ffadb12189e7f12af61851f95fa511d2b2a701ae68
-  languageName: node
-  linkType: hard
-
-"discord-ytdl-core@npm:^5.0.4":
-  version: 5.0.4
-  resolution: "discord-ytdl-core@npm:5.0.4"
-  dependencies:
-    prism-media: ^1.2.9
-  checksum: d68ba8fc0a0311032a5ed9894685b96d5177d93ce11aa218c497d88801961ff0eff40c24ae25d12d4c4665860842c8da014edb211a132bb40b5a1060db83cfed
   languageName: node
   linkType: hard
 
@@ -1770,14 +1698,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dokdo@npm:^0.5.1":
+"dokdo@pikokr/dokdo#v14":
   version: 0.5.1
-  resolution: "dokdo@npm:0.5.1"
+  resolution: "dokdo@https://github.com/pikokr/dokdo.git#commit=ea8e910516b1bcacc61269470d159762f07cced9"
   dependencies:
     node-fetch: ^2.6.1
   peerDependencies:
-    discord.js: ^13.0.0
-  checksum: ed439ac7e7443e1839713b7efdcb3263eed3279fc159f068eef2606da1103069250df0f101424e70e4670a594d77d94f618708901a513c6dcdbbb58f93ca1c68
+    discord.js: ^14.0.2
+  checksum: a291b39acec4907e29c4c6d2f7468c3cc83e572f3c03611f5ae2e632dd8e414bb3cd716cfa21f43f15ad10aa9232ef1b6e1892c550897557f70cbf08cce46a85
   languageName: node
   linkType: hard
 
@@ -2722,13 +2650,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"himalaya@npm:~1.1.0":
-  version: 1.1.0
-  resolution: "himalaya@npm:1.1.0"
-  checksum: b07c165e78b22f031515de61d82c97702e8552ba1c4748fde60a97973178d2e380b9eb75dea602bbcc9c2eb1ca2948e125aac6c1f3bfc9f56b92b09df8124af3
-  languageName: node
-  linkType: hard
-
 "htmlparser2@npm:^8.0.1":
   version: 8.0.1
   resolution: "htmlparser2@npm:8.0.1"
@@ -3129,22 +3050,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"libsodium-wrappers@npm:^0.7.9":
-  version: 0.7.10
-  resolution: "libsodium-wrappers@npm:0.7.10"
-  dependencies:
-    libsodium: ^0.7.0
-  checksum: 294ac098895a15f99e65431c62478f149e9e5cbbcd1fa1b41e832b65e0ead63856cc964b3b7c14447a48701e3334661dea9223442834ae7dd0d34285991616cd
-  languageName: node
-  linkType: hard
-
-"libsodium@npm:^0.7.0":
-  version: 0.7.10
-  resolution: "libsodium@npm:0.7.10"
-  checksum: 243794a0b3b753fafb304a82e9ff777eaccf11785bde6965e7f25171fd2fb35da302a89f009a91c1e922817d37724f7afc86592b128b2b58ed657d7fbe5259e6
-  languageName: node
-  linkType: hard
-
 "lodash.merge@npm:^4.6.2":
   version: 4.6.2
   resolution: "lodash.merge@npm:4.6.2"
@@ -3213,16 +3118,6 @@ __metadata:
   version: 1.28.0
   resolution: "luxon@npm:1.28.0"
   checksum: 5250cb9f138b6048eeb0b3a9044a4ac994d0058f680c72a0da4b6aeaec8612460385639cba2b1052ef6d5564879e9ed144d686f26d9d97b38ab920d82e18281c
-  languageName: node
-  linkType: hard
-
-"m3u8stream@npm:^0.8.4, m3u8stream@npm:^0.8.6":
-  version: 0.8.6
-  resolution: "m3u8stream@npm:0.8.6"
-  dependencies:
-    miniget: ^4.2.2
-    sax: ^1.2.4
-  checksum: b8f61c1101dd3ad873ff2f3d0e9e6a5139ad17e20990b89ae67f2585043bc2b727151ed85f3e58aabc8a1a95af28e1ee26f69af6ac9e8841ff68129eae2f5ac5
   languageName: node
   linkType: hard
 
@@ -3340,13 +3235,6 @@ __metadata:
   version: 3.1.0
   resolution: "mimic-response@npm:3.1.0"
   checksum: 25739fee32c17f433626bf19f016df9036b75b3d84a3046c7d156e72ec963dd29d7fc8a302f55a3d6c5a4ff24259676b15d915aad6480815a969ff2ec0836867
-  languageName: node
-  linkType: hard
-
-"miniget@npm:^4.2.2":
-  version: 4.2.2
-  resolution: "miniget@npm:4.2.2"
-  checksum: 577a7826cbf521b8ecb31906b3dce55c61b35398318a461f3484681572287208b7ec5a40de7b0bf0b7738f21630d015cc39ba3edcfb69146565f1528ff957612
   languageName: node
   linkType: hard
 
@@ -3564,7 +3452,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"node-fetch@npm:2.6.7, node-fetch@npm:^2.6.1, node-fetch@npm:^2.6.7":
+"node-fetch@npm:^2.6.1, node-fetch@npm:^2.6.7":
   version: 2.6.7
   resolution: "node-fetch@npm:2.6.7"
   dependencies:
@@ -3879,27 +3767,6 @@ __metadata:
   bin:
     prettier: bin-prettier.js
   checksum: 55a4409182260866ab31284d929b3cb961e5fdb91fe0d2e099dac92eaecec890f36e524b4c19e6ceae839c99c6d7195817579cdffc8e2c80da0cb794463a748b
-  languageName: node
-  linkType: hard
-
-"prism-media@npm:^1.2.9, prism-media@npm:^1.3.2":
-  version: 1.3.2
-  resolution: "prism-media@npm:1.3.2"
-  peerDependencies:
-    "@discordjs/opus": ^0.5.0
-    ffmpeg-static: ^4.2.7 || ^3.0.0 || ^2.4.0
-    node-opus: ^0.3.3
-    opusscript: ^0.0.8
-  peerDependenciesMeta:
-    "@discordjs/opus":
-      optional: true
-    ffmpeg-static:
-      optional: true
-    node-opus:
-      optional: true
-    opusscript:
-      optional: true
-  checksum: a4ff111086d98509ba4dc24340c0750a2558dddc0277fb7be718f872f16d407a8215fa3cecde7ea05578392446c03b64050e680621f8b2d053487224fbddfc39
   languageName: node
   linkType: hard
 
@@ -4223,13 +4090,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sax@npm:^1.1.3, sax@npm:^1.2.4":
-  version: 1.2.4
-  resolution: "sax@npm:1.2.4"
-  checksum: d3df7d32b897a2c2f28e941f732c71ba90e27c24f62ee918bd4d9a8cfb3553f2f81e5493c7f0be94a11c1911b643a9108f231dd6f60df3fa9586b5d2e3e9e1fe
-  languageName: node
-  linkType: hard
-
 "semver@npm:^6.0.0":
   version: 6.3.0
   resolution: "semver@npm:6.3.0"
@@ -4421,17 +4281,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"soundcloud-scraper@npm:^5.0.2":
-  version: 5.0.2
-  resolution: "soundcloud-scraper@npm:5.0.2"
-  dependencies:
-    cheerio: ^1.0.0-rc.10
-    m3u8stream: ^0.8.4
-    node-fetch: ^2.6.1
-  checksum: 009fc1523fa82393a576ae0621300da82dd5c7fce3adc2d4367b1b1a6fc334ec8a0594c520b5fe5245008dd1eacdbfe6e0bd4dde426d9389d6c62806ef0cd768
-  languageName: node
-  linkType: hard
-
 "source-map-support@npm:^0.5.12":
   version: 0.5.21
   resolution: "source-map-support@npm:0.5.21"
@@ -4455,24 +4304,6 @@ __metadata:
   dependencies:
     memory-pager: ^1.0.2
   checksum: 174da88dbbcc783d5dbd26921931cc83830280b8055fb05333786ebe6fc015b9601b24972b3d55920dd2d9f5fb120576fbfa2469b08e5222c9cadf3f05210aab
-  languageName: node
-  linkType: hard
-
-"spotify-uri@npm:~2.2.0":
-  version: 2.2.2
-  resolution: "spotify-uri@npm:2.2.2"
-  checksum: 75c5f40a222af489aa9d92755223ad60593922d51e6a92e01c50e54d7557be66919375602b6c96dae0391d65217528ce93daf7b7091b1f439c1497b11bd8acf6
-  languageName: node
-  linkType: hard
-
-"spotify-url-info@npm:^2.2.5":
-  version: 2.2.9
-  resolution: "spotify-url-info@npm:2.2.9"
-  dependencies:
-    cross-fetch: ~3.1.4
-    himalaya: ~1.1.0
-    spotify-uri: ~2.2.0
-  checksum: 16c5916305e1a04aff4e971882955aed94877f016aa3568fe409591c1c7c1370674621a7da2c2e01329d2f4bcd37cd7e6e9b4c6205298a03bede260b6308b26a
   languageName: node
   linkType: hard
 
@@ -4653,13 +4484,6 @@ __metadata:
   version: 0.2.0
   resolution: "text-table@npm:0.2.0"
   checksum: b6937a38c80c7f84d9c11dd75e49d5c44f71d95e810a3250bd1f1797fc7117c57698204adf676b71497acc205d769d65c16ae8fa10afad832ae1322630aef10a
-  languageName: node
-  linkType: hard
-
-"tiny-typed-emitter@npm:^2.1.0":
-  version: 2.1.0
-  resolution: "tiny-typed-emitter@npm:2.1.0"
-  checksum: 709bca410054e08df4dc29d5ea0916328bb2900d60245c6a743068ea223887d9fd2c945b6070eb20336275a557a36c2808e5c87d2ed4b60633458632be4a3e10
   languageName: node
   linkType: hard
 
@@ -4871,7 +4695,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tslib@npm:^2.3.1, tslib@npm:^2.4.0":
+"tslib@npm:^2.4.0":
   version: 2.4.0
   resolution: "tslib@npm:2.4.0"
   checksum: 8c4aa6a3c5a754bf76aefc38026134180c053b7bd2f81338cb5e5ebf96fefa0f417bff221592bf801077f5bf990562f6264fecbc42cd3309b33872cb6fc3b113
@@ -5167,21 +4991,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ws@npm:^8.4.2":
-  version: 8.7.0
-  resolution: "ws@npm:8.7.0"
-  peerDependencies:
-    bufferutil: ^4.0.1
-    utf-8-validate: ^5.0.2
-  peerDependenciesMeta:
-    bufferutil:
-      optional: true
-    utf-8-validate:
-      optional: true
-  checksum: 078fa2dbc06b31a45e0057b19e2930d26c222622e355955afe019c9b9b25f62eb2a8eff7cceabdad04910ecd2bd6ef4fa48e6f3673f2fdddff02a6e4c2459584
-  languageName: node
-  linkType: hard
-
 "ws@npm:^8.8.1":
   version: 8.8.1
   resolution: "ws@npm:8.8.1"
@@ -5215,23 +5024,5 @@ __metadata:
   version: 3.1.1
   resolution: "yn@npm:3.1.1"
   checksum: 2c487b0e149e746ef48cda9f8bad10fc83693cd69d7f9dcd8be4214e985de33a29c9e24f3c0d6bcf2288427040a8947406ab27f7af67ee9456e6b84854f02dd6
-  languageName: node
-  linkType: hard
-
-"youtube-sr@npm:^4.1.13":
-  version: 4.1.17
-  resolution: "youtube-sr@npm:4.1.17"
-  checksum: 19f9b20cd809222cb5f219c7eee01fddadb28cf4480801c83b6c30db9e83714a010bd763820649bb54290f5c3c1c39eb6e1ef8bbc2c63b93e16773ed2be98fac
-  languageName: node
-  linkType: hard
-
-"ytdl-core@npm:^4.10.0":
-  version: 4.11.0
-  resolution: "ytdl-core@npm:4.11.0"
-  dependencies:
-    m3u8stream: ^0.8.6
-    miniget: ^4.2.2
-    sax: ^1.1.3
-  checksum: 1ebe546da39e2a55fea6544d290f92f722416b77bb9c84322d5ca08394fb00642c6cf832ccac2feec12e9189a009af90e8185a96772e84c94599841ded21bd65
   languageName: node
   linkType: hard

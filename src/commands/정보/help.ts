@@ -2,7 +2,7 @@ import { SlashCommandBuilder } from '@discordjs/builders'
 import config from '../../../config'
 import { BaseCommand } from '../../structures/Command'
 import Embed from '../../utils/Embed'
-import { MessageActionRow, MessageButton, MessageEmbed } from 'discord.js'
+import { MessageActionRow, MessageButton, EmbedBuilder } from 'discord.js'
 
 export default new BaseCommand(
   {
@@ -22,8 +22,10 @@ export default new BaseCommand(
     if (!args[0]) {
       client.categorys.forEach((category, command) => {
         if (command === 'dev') return
-        embed.setDescription(`아래에 있는 명령어들을 이용해 도움말을 보실 수 있습니다.`)
-        embed.addField(
+        embed.setDescription(
+          `아래에 있는 명령어들을 이용해 도움말을 보실 수 있습니다.`
+        )
+        embed.addFields(
           `\`${config.bot.prefix}도움말 ${command}\``,
           `> ${command}관련 명령어들을 보내드려요!`,
           true
@@ -51,7 +53,7 @@ export default new BaseCommand(
       }
       embed.setDescription(`${args[0]} 관련 도움말 입니다!`)
       commands.forEach((command) => {
-        embed.addField(
+        embed.addFields(
           `\`${config.bot.prefix}${command.name}\``,
           `> ${command.description}`,
           true
@@ -87,7 +89,7 @@ export default new BaseCommand(
         client.categorys.forEach((category, command) => {
           if (command === 'dev') return
           embed.setDescription(`아래에 있는 명령어들을 이용해 도움말을 보세요!`)
-          embed.addField(
+          embed.addFields(
             `\`/도움말 ${command}\``,
             `> ${command}관련 명령어들을 보내드려요!`,
             true
@@ -124,7 +126,7 @@ export default new BaseCommand(
         } else {
           commands.forEach((command) => {
             if (!command.isSlash) return
-            embed.addField(`\`/${command.name}\``, `> ${command.description}`)
+            embed.addFields(`\`/${command.name}\``, `> ${command.description}`)
           })
         }
         return interaction.reply({ embeds: [embed], components: [row] })

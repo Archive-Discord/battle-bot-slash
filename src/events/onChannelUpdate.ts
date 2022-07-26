@@ -32,14 +32,14 @@ export default new Event(
       value: `<#${newChannel.id}>` + '(`' + newChannel.id + '`)'
     })
     if (oldChannel.name != newChannel.name) {
-      embed.addField(
+      embed.addFields(
         '이름 수정',
         '`' + oldChannel.name + '`' + ' -> ' + '`' + newChannel.name + '`'
       )
       updated = true
     }
     if (oldChannel.parent != newChannel.parent) {
-      embed.addField(
+      embed.addFields(
         '카테고리 변경',
         '`' +
           (oldChannel.parent ? oldChannel.parent.name : '없음') +
@@ -54,12 +54,13 @@ export default new Event(
 
     if (updated) {
       if (!fetchedLogs) return await logChannel.send({ embeds: [embed] })
-      const deletionLog = fetchedLogs.entries.first() as unknown as GuildAuditLogsEntry
+      const deletionLog =
+        fetchedLogs.entries.first() as unknown as GuildAuditLogsEntry
       const executor = deletionLog.executor as User
       const target = deletionLog.target as GuildChannel
       if (target.id !== newChannel.id)
         return await logChannel.send({ embeds: [embed] })
-      embed.addField(
+      embed.addFields(
         '수정유저',
         `<@${executor.id}>` + '(`' + executor.id + '`)'
       )

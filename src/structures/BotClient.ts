@@ -1,8 +1,6 @@
 import { Client, ClientOptions, Collection, Message } from 'discord.js'
-import { Player, PlayerEvents } from 'discord-player'
 import Dokdo from 'dokdo'
 import Logger from '../utils/Logger'
-import DiscordModal from 'discord-modals'
 import {
   BaseButton,
   BaseCommand,
@@ -33,7 +31,6 @@ export default class BotClient extends Client {
   public events: Collection<string, Event> = new Collection()
   public musicEvents: Collection<string, MusicEvent> = new Collection()
   public errors: Collection<string, string> = new Collection()
-  public player: Player = new Player(this)
   public dokdo: Dokdo = new Dokdo(this, {
     prefix: this.config.bot.prefix,
     owners: config.bot.owners,
@@ -60,7 +57,6 @@ export default class BotClient extends Client {
   public async start(token: string = config.bot.token): Promise<void> {
     logger.info('Logging in bot...')
     await this.login(token)
-    DiscordModal(this)
   }
 
   public async setStatus(

@@ -2,7 +2,7 @@ import {
   CommandInteraction,
   MessageActionRow,
   MessageButton,
-  MessageEmbed
+  EmbedBuilder
 } from 'discord.js'
 import {
   Client as PUBGClient,
@@ -405,13 +405,13 @@ const rankStatEmbed = (
   mode: string,
   last_update: Date
 ) => {
-  const embed = new MessageEmbed()
+  const embed = new EmbedBuilder()
   if (!stats) {
+    embed.setDescription(
+      `\`${nickname}\`님의 ${mode} 스쿼드 전적을 찾을 수 없습니다`
+    )
     embed
-      .setDescription(
-        `\`${nickname}\`님의 ${mode} 스쿼드 전적을 찾을 수 없습니다`
-      )
-    embed.setColor('#ED4245')
+      .setColor('#ED4245')
       .setFooter(`마지막 업데이트: ${Day(last_update).fromNow(false)}`)
     return embed
   }
@@ -428,16 +428,16 @@ const rankStatEmbed = (
         stats.currentTier.tier.toLowerCase() + stats.currentTier.subTier
       }.png`
     )
-    .addField('KDA', stats.kda.toFixed(2), true)
-    .addField('승률', (stats.winRatio * 100).toFixed(1) + '%', true)
-    .addField('TOP 10', (stats.top10Ratio * 100).toFixed(1) + '%', true)
-    .addField(
+    .addFields('KDA', stats.kda.toFixed(2), true)
+    .addFields('승률', (stats.winRatio * 100).toFixed(1) + '%', true)
+    .addFields('TOP 10', (stats.top10Ratio * 100).toFixed(1) + '%', true)
+    .addFields(
       '평균 딜량',
       (stats.damageDealt / stats.roundsPlayed).toFixed(0),
       true
     )
-    .addField('게임 수', stats.roundsPlayed.toString(), true)
-    .addField('평균 등수', stats.avgRank.toFixed(1) + '등', true)
+    .addFields('게임 수', stats.roundsPlayed.toString(), true)
+    .addFields('평균 등수', stats.avgRank.toFixed(1) + '등', true)
     .setFooter(`마지막 업데이트: ${Day(last_update).fromNow(false)}`)
   return embed
 }
@@ -450,23 +450,23 @@ const statEmbed = (
 ) => {
   const winGamePercent = (stats.wins / stats.roundsPlayed) * 100
   const top10GamePercent = (stats.top10s / stats.roundsPlayed) * 100
-  const embed = new MessageEmbed()
+  const embed = new EmbedBuilder()
     .setColor('#2f3136')
     .setAuthor(`${nickname}님의 ${mode} 전적`)
-    .addField(
+    .addFields(
       'KDA',
       ((stats.kills + stats.assists) / stats.losses).toFixed(2),
       true
     )
-    .addField('승률', winGamePercent.toFixed(1) + '%', true)
-    .addField('TOP 10', top10GamePercent.toFixed(1) + '%', true)
-    .addField(
+    .addFields('승률', winGamePercent.toFixed(1) + '%', true)
+    .addFields('TOP 10', top10GamePercent.toFixed(1) + '%', true)
+    .addFields(
       '평균 딜량',
       (stats.damageDealt / stats.roundsPlayed).toFixed(0),
       true
     )
-    .addField('게임 수', stats.roundsPlayed.toString(), true)
-    .addField('최다 킬', stats.roundMostKills + '킬', true)
+    .addFields('게임 수', stats.roundsPlayed.toString(), true)
+    .addFields('최다 킬', stats.roundMostKills + '킬', true)
     .setFooter(`마지막 업데이트: ${Day(last_update).fromNow(false)}`)
   return embed
 }

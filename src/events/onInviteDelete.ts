@@ -14,6 +14,6 @@ export default new Event('inviteDelete', async (client, invite) => {
   if (!logChannel) return
   const embed = new Embed(client, 'error')
     .setTitle('초대코드 삭제')
-    .addField(`초대코드`, invite.code)
+    .addFields(`초대코드`, invite.code)
   return await logChannel.send({ embeds: [embed] })
 })

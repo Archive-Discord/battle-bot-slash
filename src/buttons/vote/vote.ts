@@ -2,7 +2,7 @@ import {
   DiscordAPIError,
   MessageButton,
   Role,
-  MessageEmbed,
+  EmbedBuilder,
   TextChannel
 } from 'discord.js'
 import { VoteItem } from '../../../typings'
@@ -18,16 +18,14 @@ export default new ButtonInteraction(
     name: 'vote.select'
   },
   async (client, interaction) => {
-    const ErrEmbed = new Embed(client, 'error')
-      .setColor('#2f3136')
+    const ErrEmbed = new Embed(client, 'error').setColor('#2f3136')
     if (!interaction.guild) {
       ErrEmbed.setTitle('서버에서만 투표할 수 있어요!')
       return interaction.editReply({ embeds: [ErrEmbed] })
     }
     await interaction.deferReply({ ephemeral: true })
     const vote_id = interaction.customId.split('_')[1]
-    const SuccessEmbed = new Embed(client, 'success')
-      .setColor('#2f3136')
+    const SuccessEmbed = new Embed(client, 'success').setColor('#2f3136')
     const VoteDB = await Votes.findOne({
       guild_id: interaction.guild?.id,
       message_id: interaction.message.id
@@ -115,11 +113,11 @@ export default new ButtonInteraction(
 )
 
 const VoteEmbed = (items: VoteItem[], title: string) => {
-  const embed = new MessageEmbed().setColor('#2f3136')
+  const embed = new EmbedBuilder().setColor('#2f3136')
   embed.setTitle('🗳 투표')
   embed.setDescription(title)
   items.forEach((item, index) => {
-    embed.addField(`${item.item_name}`, `\`${item.vote}\`표`, true)
+    embed.addFields(`${item.item_name}`, `\`${item.vote}\`표`, true)
   })
   return embed
 }

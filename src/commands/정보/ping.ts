@@ -13,20 +13,20 @@ export default new BaseCommand(
     let embed = new Embed(client, 'warn')
       .setTitle('핑 측정중...')
       .setColor('#2f3136')
-    
+
     let m = await message.reply({
       embeds: [embed]
     })
     embed = new Embed(client, 'success')
       .setColor('#2f3136')
       .setTitle('PONG!')
-      .addField(
+      .addFields(
         '메세지 응답속도',
         `${Number(m.createdAt) - Number(message.createdAt)}ms`,
         true
       )
-      .addField('API 반응속도', `${client.ws.ping}ms`, true)
-      .addField('업타임', `<t:${(Number(client.readyAt) / 1000) | 0}:R>`, true)
+      .addFields('API 반응속도', `${client.ws.ping}ms`, true)
+      .addFields('업타임', `<t:${(Number(client.readyAt) / 1000) | 0}:R>`, true)
 
     m.edit({
       embeds: [embed]
@@ -44,8 +44,8 @@ export default new BaseCommand(
       let PingEmbed = new Embed(client, 'success')
         .setColor('#2f3136')
         .setTitle('핑 측정')
-        .addField('웹소켓 지연속도', `${client.ws.ping}ms`)
-        .addField('업타임', `<t:${(Number(client.readyAt) / 1000) | 0}:R>`)
+        .addFields('웹소켓 지연속도', `${client.ws.ping}ms`)
+        .addFields('업타임', `<t:${(Number(client.readyAt) / 1000) | 0}:R>`)
       interaction.reply({ embeds: [PingEmbed], ephemeral: true })
     }
   }

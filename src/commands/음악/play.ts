@@ -6,7 +6,7 @@ import paginationEmbed from '../../utils/button-pagination'
 import {
   MessageActionRow,
   MessageButton,
-  MessageEmbed,
+  EmbedBuilder,
   MessageSelectMenu
 } from 'discord.js'
 import { PlayerSearchResult, Queue } from 'discord-player'
@@ -22,8 +22,7 @@ export default new BaseCommand(
     let errembed = new Embed(client, 'error')
       .setTitle(`❌ 에러 발생`)
       .setColor('#2f3136')
-    let sucessembed = new Embed(client, 'success')
-      .setColor('#2f3136')
+    let sucessembed = new Embed(client, 'success').setColor('#2f3136')
     if (!message.guild) {
       errembed.setDescription('이 명령어는 서버에서만 사용이 가능합니다.')
       return message.reply({ embeds: [errembed] })
@@ -164,8 +163,7 @@ export default new BaseCommand(
       let errembed = new Embed(client, 'error')
         .setTitle(`❌ 에러 발생`)
         .setColor('#2f3136')
-      let sucessembed = new Embed(client, 'success')
-        .setColor('#2f3136')
+      let sucessembed = new Embed(client, 'success').setColor('#2f3136')
       if (!interaction.guild) {
         errembed.setDescription('이 명령어는 서버에서만 사용이 가능합니다.')
         return interaction.editReply({ embeds: [errembed] })

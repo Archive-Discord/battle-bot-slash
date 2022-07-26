@@ -33,13 +33,13 @@ export default new Event(
       }
       const embed = new Embed(client, 'warn')
         .setTitle('메시지 수정')
-        .addField(
+        .addFields(
           '채널',
           `<#${newMessage.channel.id}>` + '(`' + newMessage.channel.id + '`)'
         )
-        .addField('메시지', `[메시지](${newMessage.url})`)
-        .addField('수정전', `${oldContent ? oldContent : '없음'}`)
-        .addField('수정후', `${newContent ? newContent : '없음'}`)
+        .addFields('메시지', `[메시지](${newMessage.url})`)
+        .addFields('수정전', `${oldContent ? oldContent : '없음'}`)
+        .addFields('수정후', `${newContent ? newContent : '없음'}`)
 
       return await logChannel.send({ embeds: [embed] })
     }
