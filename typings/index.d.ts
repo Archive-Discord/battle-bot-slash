@@ -5,6 +5,7 @@ import {
   Role,
   ShardingManagerOptions
 } from 'discord.js'
+import { InitOptions } from 'i18next'
 
 export type LevelType =
   | 'fatal'
@@ -78,6 +79,9 @@ export interface IConfig {
     Google_Client_Secret: string
     Google_Redirect_Url: string
     Google_Refresh_Token: string
+  }
+  i18n: {
+    options: InitOptions
   }
 }
 

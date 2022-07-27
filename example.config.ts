@@ -1,3 +1,5 @@
+import ko from './src/locales/ko.json'
+import en from './src/locales/en.json'
 import { IConfig } from './typings'
 import fs from 'fs'
 
@@ -83,6 +85,16 @@ let config: IConfig = {
     Google_Client_Secret: '',
     Google_Redirect_Url: '',
     Google_Refresh_Token: ''
+  },
+  i18n: {
+    options: {
+      debug: false,
+      lng: 'ko',
+      resources: {
+        ko,
+        en
+      }
+    }
   }
 }
 
