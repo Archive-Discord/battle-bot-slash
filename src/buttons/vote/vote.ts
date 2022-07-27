@@ -117,7 +117,11 @@ const VoteEmbed = (items: VoteItem[], title: string) => {
   embed.setTitle('🗳 투표')
   embed.setDescription(title)
   items.forEach((item, index) => {
-    embed.addFields(`${item.item_name}`, `\`${item.vote}\`표`, true)
+    embed.addFields({
+      name: `${item.item_name}`,
+      value: `\`${item.vote}\`표`,
+      inline: true
+    })
   })
   return embed
 }

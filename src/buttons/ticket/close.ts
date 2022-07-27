@@ -1,12 +1,20 @@
 import Ticket from '../../schemas/ticketSchema'
 import { ButtonInteraction } from '../../structures/Command'
 import Embed from '../../utils/Embed'
-import { GuildChannel, ActionRowBuilder, ButtonBuilder } from 'discord.js'
+import {
+  GuildChannel,
+  ActionRowBuilder,
+  ButtonBuilder,
+  ButtonStyle,
+  GuildMember
+} from 'discord.js'
 export default new ButtonInteraction(
   {
     name: 'close'
   },
   async (client, interaction) => {
+    if (!interaction.inCachedGuild()) return
+
     await interaction.deferReply({ ephemeral: true })
     const replyTicket = new Embed(client, 'info')
       .setDescription(`5초뒤에 티켓이 종료됩니다!,  <@!${interaction.user.id}>`)
@@ -32,15 +40,15 @@ export default new ButtonInteraction(
       )
       const buttonSave = new ButtonBuilder()
         .setLabel('저장')
-        .setStyle('SUCCESS')
+        .setStyle(ButtonStyle.Success)
         .setEmoji('💾')
         .setCustomId('save')
       const buttonDelete = new ButtonBuilder()
         .setLabel('삭제')
-        .setStyle('DANGER')
+        .setStyle(ButtonStyle.Danger)
         .setEmoji('🗑')
         .setCustomId('delete')
-      const componets = new ActionRowBuilder()
+      const componets = new ActionRowBuilder<ButtonBuilder>()
         .addComponents(buttonSave)
         .addComponents(buttonDelete)
       const replyCloseTicket = new Embed(client, 'info')
@@ -50,11 +58,13 @@ export default new ButtonInteraction(
       const channel = interaction.guild?.channels.cache.get(
         interaction.channel?.id as string
       ) as GuildChannel
-      await channel.permissionOverwrites.edit(ticketDB.userId, {
-        VIEW_CHANNEL: false,
-        SEND_MESSAGES: false
-      })
-      channel.setName(`closed-ticket-${ticketDB.ticketId.slice(0, 5)}`)
+      await channel.permissionOverwrites.edit(
+        interaction.guild.members.cache.get(ticketDB.userId!) as GuildMember,
+        {
+          SendMessages: false
+        }
+      )
+      channel.setName(`closed-ticket-${ticketDB.ticketId?.slice(0, 5)}`)
       interaction.channel?.send({
         embeds: [replyCloseTicket],
         components: [componets]

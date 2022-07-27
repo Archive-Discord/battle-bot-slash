@@ -3,7 +3,12 @@ import TicketSetting from '../../schemas/ticketSettingSchema'
 import { ButtonInteraction } from '../../structures/Command'
 import randomstring from 'randomstring'
 import Embed from '../../utils/Embed'
-import { ActionRowBuilder, ButtonBuilder } from 'discord.js'
+import {
+  ActionRowBuilder,
+  ButtonBuilder,
+  ButtonStyle,
+  ChannelType
+} from 'discord.js'
 export default new ButtonInteraction(
   {
     name: 'create'
@@ -22,23 +27,24 @@ export default new ButtonInteraction(
       const ticketId = randomstring.generate({ length: 25 })
       const count = guildtickets.length + 1
       const categori = interaction.guild?.channels.cache.get(
-        ticketSetting.categories
+        ticketSetting.categories!
       )
       await interaction.guild?.channels
-        .create(`ticket-${count}-${interaction.user.discriminator}`, {
-          type: 'GUILD_TEXT',
+        .create({
+          type: ChannelType.GuildText,
+          name: `ticket-${count}-${interaction.user.discriminator}`,
           permissionOverwrites: [
             {
               id: interaction.guild?.roles.everyone,
-              deny: ['VIEW_CHANNEL']
+              deny: ['ViewChannel']
             },
             {
               id: interaction.user.id,
               allow: [
-                'VIEW_CHANNEL',
-                'READ_MESSAGE_HISTORY',
-                'ATTACH_FILES',
-                'SEND_MESSAGES'
+                'ViewChannel',
+                'ReadMessageHistory',
+                'AttachFiles',
+                'SendMessages'
               ]
             }
           ],
@@ -66,20 +72,20 @@ export default new ButtonInteraction(
             .setColor('#2f3136')
           const buttonSave = new ButtonBuilder()
             .setLabel('저장')
-            .setStyle('SUCCESS')
+            .setStyle(ButtonStyle.Success)
             .setEmoji('💾')
             .setCustomId('save')
           const buttonDelete = new ButtonBuilder()
             .setLabel('삭제')
-            .setStyle('DANGER')
+            .setStyle(ButtonStyle.Danger)
             .setEmoji('❌')
             .setCustomId('delete')
           const buttonClose = new ButtonBuilder()
             .setLabel('닫기')
-            .setStyle('PRIMARY')
+            .setStyle(ButtonStyle.Primary)
             .setEmoji('🔒')
             .setCustomId('close')
-          const componets = new ActionRowBuilder()
+          const componets = new ActionRowBuilder<ButtonBuilder>()
             .addComponents(buttonSave)
             .addComponents(buttonClose)
             .addComponents(buttonDelete)

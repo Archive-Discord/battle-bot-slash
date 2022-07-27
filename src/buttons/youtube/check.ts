@@ -4,7 +4,7 @@ import config from '../../../config'
 import UserDB from '../../schemas/userSchema'
 import axios, { AxiosError } from 'axios'
 import { YoutubeChannels } from '../../../typings'
-import { ActionRowBuilder, ButtonBuilder } from 'discord.js'
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js'
 
 export default new ButtonInteraction(
   {
@@ -41,12 +41,15 @@ export default new ButtonInteraction(
             const button1 = new ButtonBuilder()
               .setCustomId('youtube.subscription')
               .setLabel('네')
-              .setStyle('PRIMARY')
+              .setStyle(ButtonStyle.Primary)
             const button2 = new ButtonBuilder()
               .setCustomId('youtube.nosubscription')
               .setLabel('아니요')
-              .setStyle('DANGER')
-            const row = new ActionRowBuilder().addComponents([button1, button2])
+              .setStyle(ButtonStyle.Danger)
+            const row = new ActionRowBuilder<ButtonBuilder>().addComponents([
+              button1,
+              button2
+            ])
             errorEmbed.setDescription(
               `**구독이 되어있지 않은 거 같아요!** \n 직접 구독해 드릴까요?`
             )
@@ -106,11 +109,11 @@ export default new ButtonInteraction(
               interaction.editReply({
                 embeds: [errorEmbed],
                 components: [
-                  new ActionRowBuilder().addComponents(
+                  new ActionRowBuilder<ButtonBuilder>().addComponents(
                     new ButtonBuilder()
                       .setCustomId('accept')
                       .setLabel('시간 초과. 다시 시도해주세요...')
-                      .setStyle('SECONDARY')
+                      .setStyle(ButtonStyle.Secondary)
                       .setEmoji('⛔')
                       .setDisabled(true)
                   )
