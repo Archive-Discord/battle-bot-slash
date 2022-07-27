@@ -1,4 +1,5 @@
 import {
+  AuditLogEvent,
   GuildAuditLogsEntry,
   GuildChannel,
   TextChannel,
@@ -20,7 +21,7 @@ export default new Event('channelCreate', async (client, channel) => {
   if (!logChannel) return
   const fetchedLogs = await channel.guild.fetchAuditLogs({
     limit: 1,
-    type: 'CHANNEL_CREATE'
+    type: AuditLogEvent.ChannelCreate
   })
   const embed = new Embed(client, 'success').setTitle('채널 생성').addFields(
     {
@@ -38,7 +39,10 @@ export default new Event('channelCreate', async (client, channel) => {
   const executor = deletionLog.executor as User
   const target = deletionLog.target as GuildChannel
   if (target.id === channel.id) {
-    embed.addFields('생성유저', `<@${executor.id}>` + '(`' + executor.id + '`)')
+    embed.addFields({
+      name: '생성유저',
+      value: `<@${executor.id}>` + '(`' + executor.id + '`)'
+    })
     return await logChannel.send({ embeds: [embed] })
   } else {
     return await logChannel.send({ embeds: [embed] })

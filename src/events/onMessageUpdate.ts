@@ -31,15 +31,16 @@ export default new Event(
         const newContentLength = newMessage.content.length - 500
         newContent = newContent.slice(0, 500) + `... +${newContentLength}`
       }
-      const embed = new Embed(client, 'warn')
-        .setTitle('메시지 수정')
-        .addFields(
-          '채널',
-          `<#${newMessage.channel.id}>` + '(`' + newMessage.channel.id + '`)'
-        )
-        .addFields('메시지', `[메시지](${newMessage.url})`)
-        .addFields('수정전', `${oldContent ? oldContent : '없음'}`)
-        .addFields('수정후', `${newContent ? newContent : '없음'}`)
+      const embed = new Embed(client, 'warn').setTitle('메시지 수정').addFields(
+        {
+          name: '채널',
+          value:
+            `<#${newMessage.channel.id}>` + '(`' + newMessage.channel.id + '`)'
+        },
+        { name: '메시지', value: `[메시지](${newMessage.url})` },
+        { name: '수정전', value: `${oldContent ? oldContent : '없음'}` },
+        { name: '수정후', value: `${newContent ? newContent : '없음'}` }
+      )
 
       return await logChannel.send({ embeds: [embed] })
     }

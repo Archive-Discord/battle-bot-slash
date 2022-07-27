@@ -9,6 +9,8 @@ const AlertSchema = new Schema({
       title: String,
       message: String,
       button: {
+        required: false,
+
         url: String,
         value: String
       }

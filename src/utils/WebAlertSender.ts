@@ -15,11 +15,13 @@ const alertSender = async (
   if (!user_id) {
     const update = await Alert.updateMany(
       {},
+      // @ts-ignore
       {
         $push: {
           message: {
             title: title,
             message: message,
+
             button: url?.url ? url : null,
             read: false
           }
@@ -35,6 +37,7 @@ const alertSender = async (
       throw new Error('유저가 웹 대시보드를 로그인한 기록이 존재하지 않습니다.')
     const update = await Alert.updateOne(
       { user_id: user_id },
+      // @ts-ignore
       {
         $push: {
           message: {

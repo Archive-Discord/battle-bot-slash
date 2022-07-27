@@ -1,8 +1,10 @@
 import {
   CommandInteraction,
-  MessageActionRow,
-  MessageButton,
-  EmbedBuilder
+  ActionRowBuilder,
+  ButtonBuilder,
+  EmbedBuilder,
+  ButtonStyle,
+  ComponentType
 } from 'discord.js'
 import {
   Client as PUBGClient,
@@ -26,14 +28,14 @@ export const playerStats = async (
   const embedError = new Embed(interaction.client, 'info')
   if (!pubgUser) {
     const buttons = [
-      new MessageButton()
+      new ButtonBuilder()
         .setLabel('스팀')
         .setCustomId('pubg.steam')
-        .setStyle('SECONDARY'),
-      new MessageButton()
+        .setStyle(ButtonStyle.Secondary),
+      new ButtonBuilder()
         .setLabel('카카오')
         .setCustomId('pubg.kakao')
-        .setStyle('SECONDARY')
+        .setStyle(2) // extend ButtonStyle.Secondary
     ]
     embedError.setDescription(
       '처음으로 전적을 검색하는 닉네임 같아요! \n 서버를 선택해 주세요! 다음부터는 선택 없이 검색이 가능해요!'
@@ -41,11 +43,13 @@ export const playerStats = async (
     embedError.setColor('#2f3136')
     await interaction.editReply({
       embeds: [embedError],
-      components: [new MessageActionRow().addComponents(buttons)]
+      components: [new ActionRowBuilder<ButtonBuilder>().addComponents(buttons)]
     })
     const collector = interaction.channel?.createMessageComponentCollector({
+      componentType: ComponentType.Button,
       time: 30 * 1000
     })
+    // @ts-ignore
     collector?.on('collect', async (collector_interaction) => {
       if (collector_interaction.customId === 'pubg.kakao') {
         const pubg = new PUBGClient({
@@ -412,12 +416,14 @@ const rankStatEmbed = (
     )
     embed
       .setColor('#ED4245')
-      .setFooter(`마지막 업데이트: ${Day(last_update).fromNow(false)}`)
+      .setFooter({
+        text: `마지막 업데이트: ${Day(last_update).fromNow(false)}`
+      })
     return embed
   }
   embed
     .setColor('#2f3136')
-    .setAuthor(`${nickname}님의 ${mode} 전적`)
+    .setAuthor({ name: `${nickname}님의 ${mode} 전적` })
     .setTitle(
       stats.currentTier
         ? `${stats.currentTier.tier} ${stats.currentTier.subTier}`
@@ -428,17 +434,33 @@ const rankStatEmbed = (
         stats.currentTier.tier.toLowerCase() + stats.currentTier.subTier
       }.png`
     )
-    .addFields('KDA', stats.kda.toFixed(2), true)
-    .addFields('승률', (stats.winRatio * 100).toFixed(1) + '%', true)
-    .addFields('TOP 10', (stats.top10Ratio * 100).toFixed(1) + '%', true)
-    .addFields(
-      '평균 딜량',
-      (stats.damageDealt / stats.roundsPlayed).toFixed(0),
-      true
-    )
-    .addFields('게임 수', stats.roundsPlayed.toString(), true)
-    .addFields('평균 등수', stats.avgRank.toFixed(1) + '등', true)
-    .setFooter(`마지막 업데이트: ${Day(last_update).fromNow(false)}`)
+    .addFields({ name: 'KDA', value: stats.kda.toFixed(2), inline: true })
+    .addFields({
+      name: '승률',
+      value: (stats.winRatio * 100).toFixed(1) + '%',
+      inline: true
+    })
+    .addFields({
+      name: 'TOP 10',
+      value: (stats.top10Ratio * 100).toFixed(1) + '%',
+      inline: true
+    })
+    .addFields({
+      name: '평균 딜량',
+      value: (stats.damageDealt / stats.roundsPlayed).toFixed(0),
+      inline: true
+    })
+    .addFields({
+      name: '게임 수',
+      value: stats.roundsPlayed.toString(),
+      inline: true
+    })
+    .addFields({
+      name: '평균 등수',
+      value: stats.avgRank.toFixed(1) + '등',
+      inline: true
+    })
+    .setFooter({ text: `마지막 업데이트: ${Day(last_update).fromNow(false)}` })
   return embed
 }
 
@@ -452,21 +474,37 @@ const statEmbed = (
   const top10GamePercent = (stats.top10s / stats.roundsPlayed) * 100
   const embed = new EmbedBuilder()
     .setColor('#2f3136')
-    .setAuthor(`${nickname}님의 ${mode} 전적`)
-    .addFields(
-      'KDA',
-      ((stats.kills + stats.assists) / stats.losses).toFixed(2),
-      true
-    )
-    .addFields('승률', winGamePercent.toFixed(1) + '%', true)
-    .addFields('TOP 10', top10GamePercent.toFixed(1) + '%', true)
-    .addFields(
-      '평균 딜량',
-      (stats.damageDealt / stats.roundsPlayed).toFixed(0),
-      true
-    )
-    .addFields('게임 수', stats.roundsPlayed.toString(), true)
-    .addFields('최다 킬', stats.roundMostKills + '킬', true)
-    .setFooter(`마지막 업데이트: ${Day(last_update).fromNow(false)}`)
+    .setAuthor({ name: `${nickname}님의 ${mode} 전적` })
+    .addFields({
+      name: 'KDA',
+      value: ((stats.kills + stats.assists) / stats.losses).toFixed(2),
+      inline: true
+    })
+    .addFields({
+      name: '승률',
+      value: winGamePercent.toFixed(1) + '%',
+      inline: true
+    })
+    .addFields({
+      name: 'TOP 10',
+      value: top10GamePercent.toFixed(1) + '%',
+      inline: true
+    })
+    .addFields({
+      name: '평균 딜량',
+      value: (stats.damageDealt / stats.roundsPlayed).toFixed(0),
+      inline: true
+    })
+    .addFields({
+      name: '게임 수',
+      value: stats.roundsPlayed.toString(),
+      inline: true
+    })
+    .addFields({
+      name: '최다 킬',
+      value: stats.roundMostKills + '킬',
+      inline: true
+    })
+    .setFooter({ text: `마지막 업데이트: ${Day(last_update).fromNow(false)}` })
   return embed
 }

@@ -4,7 +4,7 @@ import config from '../../../config'
 import UserDB from '../../schemas/userSchema'
 import axios, { AxiosError } from 'axios'
 import { YoutubeChannels } from '../../../typings'
-import { MessageActionRow, MessageButton } from 'discord.js'
+import { ActionRowBuilder, ButtonBuilder } from 'discord.js'
 
 export default new ButtonInteraction(
   {
@@ -13,12 +13,9 @@ export default new ButtonInteraction(
   async (client, interaction) => {
     await interaction.deferReply({ ephemeral: true })
     if (!interaction.channel) return
-    const lodingEmbed = new Embed(client, 'info')
-      .setColor('#2f3136')
-    const errorEmbed = new Embed(client, 'error')
-      .setColor('#2f3136')
-    const successEmbed = new Embed(client, 'success')
-      .setColor('#2f3136')
+    const lodingEmbed = new Embed(client, 'info').setColor('#2f3136')
+    const errorEmbed = new Embed(client, 'error').setColor('#2f3136')
+    const successEmbed = new Embed(client, 'success').setColor('#2f3136')
     lodingEmbed.setDescription('**유튜브에서 정보를 찾아보는 중이에요!**')
     await interaction.editReply({ embeds: [lodingEmbed] })
     const userdb = await UserDB.findOne({ id: interaction.user.id })
@@ -41,15 +38,15 @@ export default new ButtonInteraction(
         .then(async (data) => {
           const youtubeData: YoutubeChannels = data.data
           if (youtubeData.pageInfo.totalResults === 0) {
-            const button1 = new MessageButton()
+            const button1 = new ButtonBuilder()
               .setCustomId('youtube.subscription')
               .setLabel('네')
               .setStyle('PRIMARY')
-            const button2 = new MessageButton()
+            const button2 = new ButtonBuilder()
               .setCustomId('youtube.nosubscription')
               .setLabel('아니요')
               .setStyle('DANGER')
-            const row = new MessageActionRow().addComponents([button1, button2])
+            const row = new ActionRowBuilder().addComponents([button1, button2])
             errorEmbed.setDescription(
               `**구독이 되어있지 않은 거 같아요!** \n 직접 구독해 드릴까요?`
             )
@@ -109,8 +106,8 @@ export default new ButtonInteraction(
               interaction.editReply({
                 embeds: [errorEmbed],
                 components: [
-                  new MessageActionRow().addComponents(
-                    new MessageButton()
+                  new ActionRowBuilder().addComponents(
+                    new ButtonBuilder()
                       .setCustomId('accept')
                       .setLabel('시간 초과. 다시 시도해주세요...')
                       .setStyle('SECONDARY')

@@ -3,8 +3,8 @@ import {
   Message,
   ClientEvents,
   Awaitable,
-  CommandInteraction,
-  ButtonInteraction as ButtonInteractionType
+  ButtonInteraction as ButtonInteractionType,
+  ChatInputCommandInteraction
 } from 'discord.js'
 import BotClient from '../src/structures/BotClient'
 import { PlayerEvents } from 'discord-player'
@@ -55,7 +55,7 @@ export type MessageCommandFuntion = (
 
 export type SlashCommandFunction = (
   client: BotClient,
-  interaction: CommandInteraction
+  interaction: ChatInputCommandInteraction
 ) => Promise<any>
 
 export interface SlashCommandOptions {

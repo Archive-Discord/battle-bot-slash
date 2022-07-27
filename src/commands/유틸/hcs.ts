@@ -8,7 +8,7 @@ import {
 import hcsDB from '../../schemas/hcsSchemas'
 import { SlashCommandBuilder } from '@discordjs/builders'
 import Embed from '../../utils/Embed'
-import { MessageButton, MessageActionRow } from 'discord.js'
+import { ButtonBuilder, ActionRowBuilder } from 'discord.js'
 
 export default new BaseCommand(
   {
@@ -110,18 +110,18 @@ export default new BaseCommand(
           '[개인정보처리방침](https://battlebot.kr/help/privacy)에 따라 아래정보로 등록을 진행합니다 \n 동의하실경우 등록이 진행됩니다'
         )
         let buttons = [
-          new MessageButton()
+          new ButtonBuilder()
             .setCustomId('hcs.ok')
             .setLabel('동의')
             .setStyle('SUCCESS'),
-          new MessageButton()
+          new ButtonBuilder()
             .setCustomId('hcs.none')
             .setLabel('거부')
             .setStyle('DANGER')
         ]
         await interaction.editReply({
           embeds: [infoEmbed],
-          components: [new MessageActionRow().addComponents(buttons)]
+          components: [new ActionRowBuilder().addComponents(buttons)]
         })
         const collector = interaction.channel?.createMessageComponentCollector({
           time: 30000

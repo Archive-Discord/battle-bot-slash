@@ -1,4 +1,4 @@
-import { DiscordAPIError, MessageButton, Role } from 'discord.js'
+import { DiscordAPIError, ButtonBuilder, Role } from 'discord.js'
 import AutoRole from '../../schemas/AutoRoleSchema'
 import Blacklist from '../../schemas/blacklistSchemas'
 import { ButtonInteraction } from '../../structures/Command'
@@ -12,8 +12,7 @@ export default new ButtonInteraction(
     await interaction.deferReply({ ephemeral: true })
     const role_id = interaction.customId.split('_')[1]
     const ErrEmbed = new Embed(client, 'error')
-    const SuccessEmbed = new Embed(client, 'success')
-      .setColor('#2f3136')
+    const SuccessEmbed = new Embed(client, 'success').setColor('#2f3136')
     const autoroleDB = await AutoRole.findOne({
       guild_id: interaction.guild?.id,
       message_id: interaction.message.id

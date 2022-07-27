@@ -1,11 +1,16 @@
-import { Message, MessageActionRow, MessageButton, MessageSelectMenu } from 'discord.js';
-import { SchoolMealResponse, SchoolDataResponse } from '../../../typings';
+import {
+  Message,
+  ActionRowBuilder,
+  ButtonBuilder,
+  MessageSelectMenu
+} from 'discord.js'
+import { SchoolMealResponse, SchoolDataResponse } from '../../../typings'
 import { BaseCommand } from '../../structures/Command'
 import Embed from '../../utils/Embed'
-import axios, { AxiosError } from "axios"
-import { getDate } from '../../utils/convert';
-import config from '../../../config';
-import { SlashCommandBuilder } from '@discordjs/builders';
+import axios, { AxiosError } from 'axios'
+import { getDate } from '../../utils/convert'
+import config from '../../../config'
+import { SlashCommandBuilder } from '@discordjs/builders'
 export default new BaseCommand(
   {
     name: 'schoolmeal',
@@ -17,27 +22,34 @@ export default new BaseCommand(
       let embed = new Embed(client, 'error')
         .setColor('#2f3136')
         .setTitle(`❌ 에러 발생`)
-        .setDescription(`학교 이름을 적어주세요 \n\n \`${config.bot.prefix}급식 <학교명>\``)
+        .setDescription(
+          `학교 이름을 적어주세요 \n\n \`${config.bot.prefix}급식 <학교명>\``
+        )
       return message.reply({ embeds: [embed] })
     } else {
       let embed = new Embed(client, 'info')
         .setTitle(`급식`)
         .setDescription(`잠시만 기다려주세요. 학교를 찾는중이에요...`)
         .setColor('#2f3136')
-      let msg = await message.reply({embeds: [embed]})
-      await axios.get(`https://asia-northeast3-smeals-school.cloudfunctions.net/meals/schools?name=${encodeURI(args[0])}`)
-        .then(async(d) => {
+      let msg = await message.reply({ embeds: [embed] })
+      await axios
+        .get(
+          `https://asia-northeast3-smeals-school.cloudfunctions.net/meals/schools?name=${encodeURI(
+            args[0]
+          )}`
+        )
+        .then(async (d) => {
           let data: SchoolDataResponse = d.data
           let embed = new Embed(client, 'info')
             .setTitle(`급식`)
             .setDescription(`학교를 찾았습니다. 학교를 선택해 주세요!`)
             .setColor('#2f3136')
-          let row = new MessageActionRow()
+          let row = new ActionRowBuilder()
           let select = new MessageSelectMenu()
             .setCustomId('school.meal')
             .setPlaceholder('학교를 선택해주세요!')
           let schoolsTime = 25
-          if(data.schools.length < 25) schoolsTime = data.schools.length
+          if (data.schools.length < 25) schoolsTime = data.schools.length
           for (let i = 0; i < schoolsTime; i++) {
             select.addOptions([
               {
@@ -48,48 +60,62 @@ export default new BaseCommand(
             ])
           }
           row.addComponents(select)
-          await msg.edit({embeds: [embed], components: [row]})
+          await msg.edit({ embeds: [embed], components: [row] })
           const collector = msg.createMessageComponentCollector({ time: 60000 })
 
           collector.on('collect', async (i) => {
             if (i.user.id === message.author.id) {
-              if(i.customId === "school.meal") {
+              if (i.customId === 'school.meal') {
                 let date = getDate()
                 // @ts-ignore
-                let value = i.values[0].split("|")
-                axios.get(`https://asia-northeast3-smeals-school.cloudfunctions.net/meals/meals?code=${value[0]}&scCode=${value[1]}&date=${date.datestring}`)
-                  .then(async(data) => {
+                let value = i.values[0].split('|')
+                axios
+                  .get(
+                    `https://asia-northeast3-smeals-school.cloudfunctions.net/meals/meals?code=${value[0]}&scCode=${value[1]}&date=${date.datestring}`
+                  )
+                  .then(async (data) => {
                     let meal: SchoolMealResponse = data.data
                     let mealembed = new Embed(client, 'success')
                       .setTitle(`${value[2]} 급식`)
-                      .setDescription(`${meal.meals[0].meal.join('\n')} \n\n ${meal.meals[0].calories}`)
+                      .setDescription(
+                        `${meal.meals[0].meal.join('\n')} \n\n ${
+                          meal.meals[0].calories
+                        }`
+                      )
                       .setColor('#2f3136')
                     await i.reply({ embeds: [mealembed] })
-                  }).catch(async(e: AxiosError) => {
-                    if(e.response?.status === 404) {
+                  })
+                  .catch(async (e: AxiosError) => {
+                    if (e.response?.status === 404) {
                       let mealembed = new Embed(client, 'warn')
                         .setTitle(`❌ 에러 발생`)
-                        .setDescription(`어라... ${value[2]}의 급식을 찾을 수 없어요...`)
+                        .setDescription(
+                          `어라... ${value[2]}의 급식을 찾을 수 없어요...`
+                        )
                         .setColor('#2f3136')
-                      await i.reply({embeds: [mealembed], components: []})
+                      await i.reply({ embeds: [mealembed], components: [] })
                     }
                   })
               }
             } else {
-              i.reply(`명령어를 요청한 **${message.author.username}**만 사용할수 있어요.`)
+              i.reply(
+                `명령어를 요청한 **${message.author.username}**만 사용할수 있어요.`
+              )
             }
           })
-        }).catch(async(e: AxiosError) => {
-          if(e.response?.status === 404) {
+        })
+        .catch(async (e: AxiosError) => {
+          if (e.response?.status === 404) {
             let mealembed = new Embed(client, 'warn')
               .setTitle(`❌ 에러 발생`)
               .setDescription(`어라... ${args[0]}을 찾을 수 없어요...`)
               .setColor('#2f3136')
-            await msg.edit({embeds: [mealembed], components: []})
+            await msg.edit({ embeds: [mealembed], components: [] })
           }
         })
     }
-  }, {
+  },
+  {
     data: new SlashCommandBuilder()
       .setName('급식')
       .addStringOption((option) =>
@@ -108,7 +134,9 @@ export default new BaseCommand(
       if (!school) {
         let embed = new Embed(client, 'error')
           .setTitle(`❌ 에러 발생`)
-          .setDescription(`학교 이름을 적어주세요 \n\n \`${config.bot.prefix}급식 <학교명>\``)
+          .setDescription(
+            `학교 이름을 적어주세요 \n\n \`${config.bot.prefix}급식 <학교명>\``
+          )
           .setColor('#2f3136')
         return interaction.reply({ embeds: [embed], ephemeral: true })
       } else {
@@ -117,19 +145,24 @@ export default new BaseCommand(
           .setDescription(`잠시만 기다려주세요. 학교를 찾는중이에요...`)
           .setColor('#2f3136')
         let msg = await interaction.reply({ embeds: [embed], ephemeral: true })
-        await axios.get(`https://asia-northeast3-smeals-school.cloudfunctions.net/meals/schools?name=${encodeURI(school)}`)
-          .then(async(d) => {
+        await axios
+          .get(
+            `https://asia-northeast3-smeals-school.cloudfunctions.net/meals/schools?name=${encodeURI(
+              school
+            )}`
+          )
+          .then(async (d) => {
             let data: SchoolDataResponse = d.data
             let embed = new Embed(client, 'info')
               .setTitle(`급식`)
               .setDescription(`학교를 찾았습니다. 학교를 선택해 주세요!`)
               .setColor('#2f3136')
-            let row = new MessageActionRow()
+            let row = new ActionRowBuilder()
             let select = new MessageSelectMenu()
               .setCustomId('school.meal')
               .setPlaceholder('학교를 선택해주세요!')
             let schoolsTime = 25
-            if(data.schools.length < 25) schoolsTime = data.schools.length
+            if (data.schools.length < 25) schoolsTime = data.schools.length
             for (let i = 0; i < schoolsTime; i++) {
               select.addOptions([
                 {
@@ -140,47 +173,65 @@ export default new BaseCommand(
               ])
             }
             row.addComponents(select)
-            await interaction.editReply({embeds: [embed], components: [row]})
-            const collector = interaction.channel?.createMessageComponentCollector({ time: 60000 })
+            await interaction.editReply({ embeds: [embed], components: [row] })
+            const collector =
+              interaction.channel?.createMessageComponentCollector({
+                time: 60000
+              })
             collector?.on('collect', async (i) => {
               if (i.user.id === interaction.user.id) {
-                if(i.customId === "school.meal") {
+                if (i.customId === 'school.meal') {
                   let date = getDate()
                   // @ts-ignore
-                  let value = i.values[0].split("|")
-                  axios.get(`https://asia-northeast3-smeals-school.cloudfunctions.net/meals/meals?code=${value[0]}&scCode=${value[1]}&date=${date.datestring}`)
-                    .then(async(data) => {
+                  let value = i.values[0].split('|')
+                  axios
+                    .get(
+                      `https://asia-northeast3-smeals-school.cloudfunctions.net/meals/meals?code=${value[0]}&scCode=${value[1]}&date=${date.datestring}`
+                    )
+                    .then(async (data) => {
                       let meal: SchoolMealResponse = data.data
                       let mealembed = new Embed(client, 'success')
-                      .setTitle(`❌ 에러 발생`)
-                      .setDescription(`${meal.meals[0].meal.join('\n')} \n\n ${meal.meals[0].calories}`)
-                      .setColor('#2f3136')
+                        .setTitle(`❌ 에러 발생`)
+                        .setDescription(
+                          `${meal.meals[0].meal.join('\n')} \n\n ${
+                            meal.meals[0].calories
+                          }`
+                        )
+                        .setColor('#2f3136')
                       await i.reply({ embeds: [mealembed] })
-                    }).catch(async(e: AxiosError) => {
-                      if(e.response?.status === 404) {
+                    })
+                    .catch(async (e: AxiosError) => {
+                      if (e.response?.status === 404) {
                         let mealembed = new Embed(client, 'warn')
                           .setTitle(`❌ 에러 발생`)
-                          .setDescription(`어라... ${value[2]}의 급식을 찾을 수 없어요...`)
+                          .setDescription(
+                            `어라... ${value[2]}의 급식을 찾을 수 없어요...`
+                          )
                           .setColor('#2f3136')
-                        await i.reply({embeds: [mealembed], components: []})
+                        await i.reply({ embeds: [mealembed], components: [] })
                       }
                     })
                 }
               } else {
-                i.editReply(`명령어를 요청한 **${interaction.user.username}**만 사용할수 있어요.`)
+                i.editReply(
+                  `명령어를 요청한 **${interaction.user.username}**만 사용할수 있어요.`
+                )
               }
             })
-          }).catch(async(e: AxiosError) => {
-            if(e.response?.status === 404) {
+          })
+          .catch(async (e: AxiosError) => {
+            if (e.response?.status === 404) {
               let mealembed = new Embed(client, 'warn')
                 .setTitle(`❌ 에러 발생`)
                 .setDescription(`어라... ${school}을 찾을 수 없어요...`)
                 .setColor('#2f3136')
-              return await interaction.editReply({embeds: [mealembed], components: []})
+              return await interaction.editReply({
+                embeds: [mealembed],
+                components: []
+              })
             }
           })
       }
-
     }
   }
 )

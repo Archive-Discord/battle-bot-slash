@@ -33,19 +33,22 @@ const WelecomEvent = async (client: BotClient, member: GuildMember) => {
   )
     return
   const WelcomeChannel = member.guild.channels.cache.get(
-    WelcomeSettingDB.channel_id
+    WelcomeSettingDB.channel_id!
   ) as TextChannel
   if (!WelcomeChannel) return
   const embed = new Embed(client, 'success')
-  embed.setAuthor(member.user.username, member.user.displayAvatarURL())
-  embed.setDescription(
-    new String(WelcomeSettingDB.welcome_message)
-      .replaceAll('${username}', member.user.username)
-      .replaceAll('${discriminator}', member.user.discriminator)
-      .replaceAll('${servername}', member.guild.name)
-      .replaceAll('${memberCount}', member.guild.memberCount.toString())
-      .replaceAll('${줄바꿈}', '\n')
-  )
+    .setAuthor({
+      name: member.user.username,
+      iconURL: member.user.displayAvatarURL()
+    })
+    .setDescription(
+      new String(WelcomeSettingDB.welcome_message)
+        .replaceAll('${username}', member.user.username)
+        .replaceAll('${discriminator}', member.user.discriminator)
+        .replaceAll('${servername}', member.guild.name)
+        .replaceAll('${memberCount}', member.guild.memberCount.toString())
+        .replaceAll('${줄바꿈}', '\n')
+    )
   return await WelcomeChannel.send({ embeds: [embed] })
 }
 
@@ -61,7 +64,10 @@ const WelecomLogEvent = async (client: BotClient, member: GuildMember) => {
   if (!logChannel) return
   const embed = new Embed(client, 'success')
     .setTitle('멤버 추가')
-    .setAuthor(member.user.username, member.user.displayAvatarURL())
+    .setAuthor({
+      name: member.user.username,
+      iconURL: member.user.displayAvatarURL()
+    })
     .addFields({
       name: '유저',
       value: `<@${member.user.id}>` + '(`' + member.user.id + '`)'
@@ -77,7 +83,7 @@ const AutoModEvent = async (client: BotClient, member: GuildMember) => {
     const isUser = banlist.some((user) => user.user_id === member.id)
     if (isUser) {
       const user = await Blacklist.findOne({ user_id: member.id })
-      return await member.ban({ reason: `[배틀이 자동차단] ${user.reason}` })
+      return await member.ban({ reason: `[배틀이 자동차단] ${user?.reason}` })
     } else {
       return
     }

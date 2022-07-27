@@ -5,7 +5,7 @@ import { repository } from '../../../package.json'
 import { BaseCommand } from '../../structures/Command'
 import DateFormatting from '../../utils/DateFormatting'
 import Embed from '../../utils/Embed'
-import { MessageActionRow, MessageButton } from 'discord.js'
+import { ActionRowBuilder, ButtonBuilder } from 'discord.js'
 const memory = () => {
   const memory = process.memoryUsage().rss
   return (memory / 1024 / 1024).toFixed(2) + 'MB'
@@ -17,11 +17,11 @@ export default new BaseCommand(
     aliases: ['정보', 'info', 'wjdqh']
   },
   async (client, message, args) => {
-    let buttton = new MessageButton()
+    let buttton = new ButtonBuilder()
       .setLabel('하트 누르기')
       .setURL('https://koreanbots.dev/bots/928523914890608671/vote')
       .setStyle('LINK')
-    let row = new MessageActionRow().addComponents(buttton)
+    let row = new ActionRowBuilder().addComponents(buttton)
     let embed = new Embed(client, 'default')
       .setTitle(`${client.user?.username} 정보`)
       .setColor('#2f3136')
@@ -62,11 +62,11 @@ export default new BaseCommand(
       isSlash: true
     },
     async execute(client, interaction) {
-      let buttton = new MessageButton()
+      let buttton = new ButtonBuilder()
         .setLabel('하트 누르기')
         .setURL('https://koreanbots.dev/bots/928523914890608671/vote')
         .setStyle('LINK')
-      let row = new MessageActionRow().addComponents(buttton)
+      let row = new ActionRowBuilder().addComponents(buttton)
       let embed = new Embed(client, 'default')
         .setTitle(`${client.user?.username} 정보`)
         .setColor('#2f3136')

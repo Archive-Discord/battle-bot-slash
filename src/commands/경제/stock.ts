@@ -130,15 +130,15 @@ export default new BaseCommand(
       embed.setImage(
         `https://ssl.pstatic.net/imgfinance/chart/item/area/day/${results.items[0].code}.png`
       )
-      const row = new Discord.MessageActionRow()
+      const row = new Discord.ActionRowBuilder()
         .addComponents(
-          new Discord.MessageButton()
+          new Discord.ButtonBuilder()
             .setCustomId('stock.accept')
             .setLabel('확인')
             .setStyle('SUCCESS')
         )
         .addComponents(
-          new Discord.MessageButton()
+          new Discord.ButtonBuilder()
             .setCustomId('stock.deny')
             .setLabel('아니요')
             .setStyle('DANGER')
@@ -230,16 +230,16 @@ export default new BaseCommand(
         m.edit({
           embeds: [embed],
           components: [
-            new Discord.MessageActionRow()
+            new Discord.ActionRowBuilder()
               .addComponents(
-                new Discord.MessageButton()
+                new Discord.ButtonBuilder()
                   .setCustomId('stock.accept')
                   .setLabel('확인')
                   .setStyle('SUCCESS')
                   .setDisabled(true)
               )
               .addComponents(
-                new Discord.MessageButton()
+                new Discord.ButtonBuilder()
                   .setCustomId('stock.deny')
                   .setLabel('아니요')
                   .setStyle('DANGER')
@@ -315,15 +315,15 @@ export default new BaseCommand(
       embed.setImage(
         `https://ssl.pstatic.net/imgfinance/chart/item/area/day/${results.items[0].code}.png`
       )
-      const row = new Discord.MessageActionRow()
+      const row = new Discord.ActionRowBuilder()
         .addComponents(
-          new Discord.MessageButton()
+          new Discord.ButtonBuilder()
             .setCustomId('stocksell.accept')
             .setLabel('확인')
             .setStyle('SUCCESS')
         )
         .addComponents(
-          new Discord.MessageButton()
+          new Discord.ButtonBuilder()
             .setCustomId('stocksell.deny')
             .setLabel('아니요')
             .setStyle('DANGER')
@@ -390,16 +390,16 @@ export default new BaseCommand(
         m.edit({
           embeds: [embed],
           components: [
-            new Discord.MessageActionRow()
+            new Discord.ActionRowBuilder()
               .addComponents(
-                new Discord.MessageButton()
+                new Discord.ButtonBuilder()
                   .setCustomId('stock.accept')
                   .setLabel('확인')
                   .setStyle('SUCCESS')
                   .setDisabled(true)
               )
               .addComponents(
-                new Discord.MessageButton()
+                new Discord.ButtonBuilder()
                   .setCustomId('stock.deny')
                   .setLabel('아니요')
                   .setStyle('DANGER')
@@ -683,15 +683,15 @@ export default new BaseCommand(
         embed.setImage(
           `https://ssl.pstatic.net/imgfinance/chart/item/area/day/${results.items[0].code}.png`
         )
-        const row = new Discord.MessageActionRow()
+        const row = new Discord.ActionRowBuilder()
           .addComponents(
-            new Discord.MessageButton()
+            new Discord.ButtonBuilder()
               .setCustomId('stock.accept')
               .setLabel('확인')
               .setStyle('SUCCESS')
           )
           .addComponents(
-            new Discord.MessageButton()
+            new Discord.ButtonBuilder()
               .setCustomId('stock.deny')
               .setLabel('아니요')
               .setStyle('DANGER')
@@ -790,16 +790,16 @@ export default new BaseCommand(
           interaction.editReply({
             embeds: [embed],
             components: [
-              new Discord.MessageActionRow()
+              new Discord.ActionRowBuilder()
                 .addComponents(
-                  new Discord.MessageButton()
+                  new Discord.ButtonBuilder()
                     .setCustomId('stock.accept')
                     .setLabel('확인')
                     .setStyle('SUCCESS')
                     .setDisabled(true)
                 )
                 .addComponents(
-                  new Discord.MessageButton()
+                  new Discord.ButtonBuilder()
                     .setCustomId('stock.deny')
                     .setLabel('아니요')
                     .setStyle('DANGER')
@@ -876,15 +876,15 @@ export default new BaseCommand(
         embed.setImage(
           `https://ssl.pstatic.net/imgfinance/chart/item/area/day/${results.items[0].code}.png`
         )
-        const row = new Discord.MessageActionRow()
+        const row = new Discord.ActionRowBuilder()
           .addComponents(
-            new Discord.MessageButton()
+            new Discord.ButtonBuilder()
               .setCustomId('stocksell.accept')
               .setLabel('확인')
               .setStyle('SUCCESS')
           )
           .addComponents(
-            new Discord.MessageButton()
+            new Discord.ButtonBuilder()
               .setCustomId('stocksell.deny')
               .setLabel('아니요')
               .setStyle('DANGER')
@@ -957,16 +957,16 @@ export default new BaseCommand(
           interaction.editReply({
             embeds: [embed],
             components: [
-              new Discord.MessageActionRow()
+              new Discord.ActionRowBuilder()
                 .addComponents(
-                  new Discord.MessageButton()
+                  new Discord.ButtonBuilder()
                     .setCustomId('stock.accept')
                     .setLabel('확인')
                     .setStyle('SUCCESS')
                     .setDisabled(true)
                 )
                 .addComponents(
-                  new Discord.MessageButton()
+                  new Discord.ButtonBuilder()
                     .setCustomId('stock.deny')
                     .setLabel('아니요')
                     .setStyle('DANGER')

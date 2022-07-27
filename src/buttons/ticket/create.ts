@@ -3,7 +3,7 @@ import TicketSetting from '../../schemas/ticketSettingSchema'
 import { ButtonInteraction } from '../../structures/Command'
 import randomstring from 'randomstring'
 import Embed from '../../utils/Embed'
-import { MessageActionRow, MessageButton } from 'discord.js'
+import { ActionRowBuilder, ButtonBuilder } from 'discord.js'
 export default new ButtonInteraction(
   {
     name: 'create'
@@ -64,22 +64,22 @@ export default new ButtonInteraction(
               `<@${interaction.user.id}> 님의 티켓 \n 티켓 종료를 원하시면 🔒 닫기 버튼을 눌러주세요`
             )
             .setColor('#2f3136')
-          const buttonSave = new MessageButton()
+          const buttonSave = new ButtonBuilder()
             .setLabel('저장')
             .setStyle('SUCCESS')
             .setEmoji('💾')
             .setCustomId('save')
-          const buttonDelete = new MessageButton()
+          const buttonDelete = new ButtonBuilder()
             .setLabel('삭제')
             .setStyle('DANGER')
             .setEmoji('❌')
             .setCustomId('delete')
-          const buttonClose = new MessageButton()
+          const buttonClose = new ButtonBuilder()
             .setLabel('닫기')
             .setStyle('PRIMARY')
             .setEmoji('🔒')
             .setCustomId('close')
-          const componets = new MessageActionRow()
+          const componets = new ActionRowBuilder()
             .addComponents(buttonSave)
             .addComponents(buttonClose)
             .addComponents(buttonDelete)

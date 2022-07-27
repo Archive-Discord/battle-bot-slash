@@ -14,8 +14,8 @@ export default new BaseCommand(
     let commandManager = new CommandManager(client)
     let errorManager = new ErrorManager(client)
 
-    let row = new Discord.MessageActionRow().addComponents(
-      new Discord.MessageButton()
+    let row = new Discord.ActionRowBuilder().addComponents(
+      new Discord.ButtonBuilder()
         .setCustomId('accept')
         .setLabel('동의합니다.')
         .setStyle('SUCCESS')
@@ -87,8 +87,8 @@ export default new BaseCommand(
       m.edit({
         embeds: [embed],
         components: [
-          new Discord.MessageActionRow().addComponents(
-            new Discord.MessageButton()
+          new Discord.ActionRowBuilder().addComponents(
+            new Discord.ButtonBuilder()
               .setCustomId('accept')
               .setLabel('시간 초과. 다시 시도해주세요...')
               .setStyle('SECONDARY')

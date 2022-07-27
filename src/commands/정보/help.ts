@@ -2,7 +2,7 @@ import { SlashCommandBuilder } from '@discordjs/builders'
 import config from '../../../config'
 import { BaseCommand } from '../../structures/Command'
 import Embed from '../../utils/Embed'
-import { MessageActionRow, MessageButton, EmbedBuilder } from 'discord.js'
+import { ActionRowBuilder, ButtonBuilder, EmbedBuilder } from 'discord.js'
 
 export default new BaseCommand(
   {
@@ -11,11 +11,11 @@ export default new BaseCommand(
     aliases: ['도움말', 'ehdna', 'ehdnaakf', '도움']
   },
   async (client, message, args) => {
-    let buttton = new MessageButton()
+    let buttton = new ButtonBuilder()
       .setLabel('하트 누르기')
       .setURL('https://koreanbots.dev/bots/928523914890608671/vote')
       .setStyle('LINK')
-    let row = new MessageActionRow().addComponents(buttton)
+    let row = new ActionRowBuilder().addComponents(buttton)
     let embed = new Embed(client, 'success')
       .setTitle(`${client.user?.username} 도움말`)
       .setColor('#2f3136')
@@ -77,11 +77,11 @@ export default new BaseCommand(
       isSlash: true
     },
     async execute(client, interaction) {
-      let buttton = new MessageButton()
+      let buttton = new ButtonBuilder()
         .setLabel('하트 누르기')
         .setURL('https://koreanbots.dev/bots/928523914890608671/vote')
         .setStyle('LINK')
-      let row = new MessageActionRow().addComponents(buttton)
+      let row = new ActionRowBuilder().addComponents(buttton)
       let embed = new Embed(client, 'success')
         .setColor('#2f3136')
         .setTitle(`${client.user?.username} 도움말`)

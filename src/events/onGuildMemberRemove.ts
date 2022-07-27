@@ -24,21 +24,25 @@ const GreetingEvent = async (
   )
     return
   const WelcomeChannel = member.guild.channels.cache.get(
-    WelcomeSettingDB.channel_id
+    WelcomeSettingDB.channel_id!
   ) as TextChannel
   if (!WelcomeChannel) return
   const embed = new Embed(client, 'warn')
-  embed.setAuthor(member.user.username, member.user.displayAvatarURL())
-  embed.setDescription(
-    new String(WelcomeSettingDB.outting_message)
-      .replaceAll('${username}', member.user.username)
-      .replaceAll('${discriminator}', member.user.discriminator)
-      .replaceAll('${servername}', member.guild.name)
-      .replaceAll(
-        '${memberCount}',
-        member.guild.memberCount.toString().replaceAll('${줄바꿈}', '\n')
-      )
-  )
+  embed
+    .setAuthor({
+      name: member.user.username,
+      iconURL: member.user.displayAvatarURL()
+    })
+    .setDescription(
+      new String(WelcomeSettingDB.outting_message)
+        .replaceAll('${username}', member.user.username)
+        .replaceAll('${discriminator}', member.user.discriminator)
+        .replaceAll('${servername}', member.guild.name)
+        .replaceAll(
+          '${memberCount}',
+          member.guild.memberCount.toString().replaceAll('${줄바꿈}', '\n')
+        )
+    )
   return await WelcomeChannel.send({ embeds: [embed] })
 }
 
@@ -57,7 +61,10 @@ const LoggerEvent = async (
   if (!logChannel) return
   const embed = new Embed(client, 'error')
     .setTitle('멤버 퇴장')
-    .setAuthor(member.user.username, member.user.displayAvatarURL())
+    .setAuthor({
+      name: member.user.username,
+      iconURL: member.user.displayAvatarURL()
+    })
     .addFields({
       name: '유저',
       value: `<@${member.user.id}>` + '(`' + member.user.id + '`)'

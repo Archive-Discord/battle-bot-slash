@@ -30,15 +30,15 @@ export default new BaseCommand(
     let m = await message.reply({
       embeds: [embed],
       components: [
-        new Discord.MessageActionRow()
+        new Discord.ActionRowBuilder()
           .addComponents(
-            new Discord.MessageButton()
+            new Discord.ButtonBuilder()
               .setLabel(`한디리 인증`)
               .setStyle('PRIMARY')
               .setCustomId('heart.koreanlist')
           )
           .addComponents(
-            new Discord.MessageButton()
+            new Discord.ButtonBuilder()
               .setLabel(`아카이브 인증`)
               .setStyle('PRIMARY')
               .setCustomId('heart.archive')
@@ -68,8 +68,8 @@ export default new BaseCommand(
                 )
                 .setTimestamp()
                 .setColor('#2f3136')
-              let link = new Discord.MessageActionRow().addComponents(
-                new Discord.MessageButton()
+              let link = new Discord.ActionRowBuilder().addComponents(
+                new Discord.ButtonBuilder()
                   .setURL(`https://koreanbots.dev/bots/${client.user?.id}/vote`)
                   .setLabel(`하트 누르기`)
                   .setStyle('LINK')
@@ -99,7 +99,7 @@ export default new BaseCommand(
                     `${message.author.username}님의 한국 디스코드 리스트에 있는 배틀이 봇의 하트인증이 완료되었습니다.`
                   )
                   .setTimestamp()
-                  .setColor('#2f3136')  
+                  .setColor('#2f3136')
                 i.reply({
                   embeds: [embed]
                 })
@@ -154,8 +154,8 @@ export default new BaseCommand(
                 )
                 .setTimestamp()
                 .setColor('#2f3136')
-              let link = new Discord.MessageActionRow().addComponents(
-                new Discord.MessageButton()
+              let link = new Discord.ActionRowBuilder().addComponents(
+                new Discord.ButtonBuilder()
                   .setURL(`https://archiver.me/bots/${client.user?.id}/like`)
                   .setLabel(`하트 누르기`)
                   .setStyle('LINK')
@@ -227,16 +227,16 @@ export default new BaseCommand(
       m.edit({
         embeds: [embed],
         components: [
-          new Discord.MessageActionRow()
+          new Discord.ActionRowBuilder()
             .addComponents(
-              new Discord.MessageButton()
+              new Discord.ButtonBuilder()
                 .setLabel(`한디리 인증`)
                 .setStyle('PRIMARY')
                 .setCustomId('heart.koreanlist')
                 .setDisabled(true)
             )
             .addComponents(
-              new Discord.MessageButton()
+              new Discord.ButtonBuilder()
                 .setLabel(`아카이브 인증`)
                 .setStyle('PRIMARY')
                 .setCustomId('heart.archive')

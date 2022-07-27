@@ -79,13 +79,13 @@ export default new MessageCommand(
                       true
                     )
 
-                  let buttonData = new Discord.MessageButton()
+                  let buttonData = new Discord.ButtonBuilder()
                     .setStyle('SUCCESS')
                     .setLabel('업데이트 하기')
                     .setEmoji('✅')
                     .setCustomId('update.run')
 
-                  let components = new Discord.MessageActionRow().addComponents(
+                  let components = new Discord.ActionRowBuilder().addComponents(
                     buttonData
                   )
 
@@ -176,13 +176,13 @@ export default new MessageCommand(
                       true
                     )
 
-                  let buttonData = new Discord.MessageButton()
+                  let buttonData = new Discord.ButtonBuilder()
                     .setStyle('SUCCESS')
                     .setLabel('업데이트 하기')
                     .setEmoji('✅')
                     .setCustomId('update.run')
 
-                  let components = new Discord.MessageActionRow().addComponents(
+                  let components = new Discord.ActionRowBuilder().addComponents(
                     buttonData
                   )
                   let collector = msg.channel.createMessageComponentCollector({

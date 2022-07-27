@@ -1,5 +1,4 @@
-import Discord, { TextChannel } from 'discord.js'
-import CommandManager from '../managers/CommandManager'
+import { TextChannel } from 'discord.js'
 import Embed from '../utils/Embed'
 import Logger from '../utils/Logger'
 import { Event } from '../structures/Event'

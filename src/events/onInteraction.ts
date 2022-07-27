@@ -1,3 +1,4 @@
+import { ChannelType } from 'discord.js'
 import ButtonManager from '../managers/ButtonManager'
 import CommandManager from '../managers/CommandManager'
 import ErrorManager from '../managers/ErrorManager'
@@ -9,7 +10,7 @@ export default new Event('interactionCreate', async (client, interaction) => {
   const buttonManager = new ButtonManager(client)
   if (interaction.isButton()) {
     if (interaction.user.bot) return
-    if (interaction.channel?.type === 'DM')
+    if (interaction.channel?.type === ChannelType.DM)
       return interaction.reply('DM으로는 버튼 사용이 불가능해요')
     let button = buttonManager.get(interaction.customId)
     if (interaction.customId.startsWith('role_')) {
@@ -26,9 +27,9 @@ export default new Event('interactionCreate', async (client, interaction) => {
     }
   }
 
-  if (interaction.isCommand()) {
+  if (interaction.isChatInputCommand()) {
     if (interaction.user.bot) return
-    if (interaction.channel?.type === 'DM')
+    if (interaction.channel?.type === ChannelType.DM)
       return interaction.reply('DM으로는 명령어 사용이 불가능해요')
 
     const command = commandManager.get(interaction.commandName)

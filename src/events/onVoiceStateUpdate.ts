@@ -15,36 +15,38 @@ export default new Event(
       LoggerSettingDB.guild_channel_id
     ) as TextChannel
     if (!logChannel) return
-    const embed = new Embed(client, 'warn').addFields(
-      '유저',
-      `<@${newState.member?.id}>` + '(`' + newState.member?.id + '`)',
-      true
-    )
+    const embed = new Embed(client, 'warn').addFields({
+      name: '유저',
+      value: `<@${newState.member?.id}>` + '(`' + newState.member?.id + '`)',
+      inline: true
+    })
     let updated = false
     if (!newState.channel) {
       if (!LoggerSettingDB.useing.leaveVoiceChannel) return
-      embed.setTitle('음성채널 퇴장')
-      embed.addFields(
-        '채널',
-        oldState.channel?.id
-          ? `<#${oldState.channel.id}>` + '(`' + oldState.channel.id + '`)'
-          : '없음',
-        true
-      )
-      embed.setColor('RED')
+      embed
+        .setTitle('음성채널 퇴장')
+        .addFields({
+          name: '채널',
+          value: oldState.channel?.id
+            ? `<#${oldState.channel.id}>` + '(`' + oldState.channel.id + '`)'
+            : '없음',
+          inline: true
+        })
+        .setType('error')
       updated = true
     }
     if (!oldState.channel) {
       if (!LoggerSettingDB.useing.joinVoiceChannel) return
-      embed.setTitle('음성채널 입장')
-      embed.addFields(
-        '채널',
-        newState.channel?.id
-          ? `<#${newState.channel.id}>` + '(`' + newState.channel.id + '`)'
-          : '없음',
-        true
-      )
-      embed.setColor('GREEN')
+      embed
+        .setTitle('음성채널 입장')
+        .addFields({
+          name: '채널',
+          value: newState.channel?.id
+            ? `<#${newState.channel.id}>` + '(`' + newState.channel.id + '`)'
+            : '없음',
+          inline: true
+        })
+        .setType('success')
       updated = true
     }
     if (updated) return await logChannel.send({ embeds: [embed] })

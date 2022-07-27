@@ -1,17 +1,16 @@
 import Ticket from '../../schemas/ticketSchema'
 import { ButtonInteraction } from '../../structures/Command'
 import Embed from '../../utils/Embed'
-import { GuildChannel, MessageActionRow, MessageButton } from 'discord.js'
+import { GuildChannel, ActionRowBuilder, ButtonBuilder } from 'discord.js'
 export default new ButtonInteraction(
   {
     name: 'close'
   },
   async (client, interaction) => {
     await interaction.deferReply({ ephemeral: true })
-    const replyTicket = new Embed(client, 'info').setDescription(
-      `5초뒤에 티켓이 종료됩니다!,  <@!${interaction.user.id}>`
-    )
-    .setColor('#2f3136')
+    const replyTicket = new Embed(client, 'info')
+      .setDescription(`5초뒤에 티켓이 종료됩니다!,  <@!${interaction.user.id}>`)
+      .setColor('#2f3136')
     await interaction.editReply({ embeds: [replyTicket] })
     const ticketDB = await Ticket.findOne({
       guildId: interaction.guild?.id,
@@ -31,23 +30,22 @@ export default new ButtonInteraction(
         },
         { $set: { status: 'close' } }
       )
-      const buttonSave = new MessageButton()
+      const buttonSave = new ButtonBuilder()
         .setLabel('저장')
         .setStyle('SUCCESS')
         .setEmoji('💾')
         .setCustomId('save')
-      const buttonDelete = new MessageButton()
+      const buttonDelete = new ButtonBuilder()
         .setLabel('삭제')
         .setStyle('DANGER')
         .setEmoji('🗑')
         .setCustomId('delete')
-      const componets = new MessageActionRow()
+      const componets = new ActionRowBuilder()
         .addComponents(buttonSave)
         .addComponents(buttonDelete)
-      const replyCloseTicket = new Embed(client, 'info').setDescription(
-        `티켓이 종료되었습니다!, <@!${interaction.user.id}>`
-      )
-      .setColor('#2f3136')
+      const replyCloseTicket = new Embed(client, 'info')
+        .setDescription(`티켓이 종료되었습니다!, <@!${interaction.user.id}>`)
+        .setColor('#2f3136')
       interaction.channelId
       const channel = interaction.guild?.channels.cache.get(
         interaction.channel?.id as string

@@ -1,6 +1,6 @@
 import {
   DiscordAPIError,
-  MessageButton,
+  ButtonBuilder,
   Role,
   EmbedBuilder,
   TextChannel
