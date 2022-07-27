@@ -2,7 +2,7 @@ import {
   Message,
   ActionRowBuilder,
   ButtonBuilder,
-  MessageSelectMenu
+  SelectMenuBuilder
 } from 'discord.js'
 import { SchoolMealResponse, SchoolDataResponse } from '../../../typings'
 import { BaseCommand } from '../../structures/Command'
@@ -44,8 +44,8 @@ export default new BaseCommand(
             .setTitle(`급식`)
             .setDescription(`학교를 찾았습니다. 학교를 선택해 주세요!`)
             .setColor('#2f3136')
-          let row = new ActionRowBuilder()
-          let select = new MessageSelectMenu()
+          let row = new ActionRowBuilder<SelectMenuBuilder>()
+          let select = new SelectMenuBuilder()
             .setCustomId('school.meal')
             .setPlaceholder('학교를 선택해주세요!')
           let schoolsTime = 25
@@ -157,8 +157,8 @@ export default new BaseCommand(
               .setTitle(`급식`)
               .setDescription(`학교를 찾았습니다. 학교를 선택해 주세요!`)
               .setColor('#2f3136')
-            let row = new ActionRowBuilder()
-            let select = new MessageSelectMenu()
+            let row = new ActionRowBuilder<SelectMenuBuilder>()
+            let select = new SelectMenuBuilder()
               .setCustomId('school.meal')
               .setPlaceholder('학교를 선택해주세요!')
             let schoolsTime = 25

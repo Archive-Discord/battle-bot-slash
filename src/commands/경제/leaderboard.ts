@@ -22,28 +22,28 @@ export default new BaseCommand(
         embed.setTitle('돈 순위표')
         let searchuser = client.users.cache.get(data[i].userid)
         if (!searchuser) return
-        embed.addFields(
-          `${i + 1}. ${searchuser.username}`,
-          `${comma(data[i].money)}원`
-        )
+        embed.addFields({
+          name: `${i + 1}. ${searchuser.username}`,
+          value: `${comma(data[i].money)}원`
+        })
         embed.setColor('#2f3136')
       } else if (type === '서버') {
         embed.setTitle('서버 돈 순위표')
         let searchuser = message.guild?.members.cache.get(data[i].userid)
         if (!searchuser) return
-        embed.addFields(
-          `${i + 1}. ${searchuser.nickname ?? searchuser.user.username}`,
-          `${comma(data[i].money)}원`
-        )
+        embed.addFields({
+          name: `${i + 1}. ${searchuser.nickname ?? searchuser.user.username}`,
+          value: `${comma(data[i].money)}원`
+        })
         embed.setColor('#2f3136')
       } else {
         embed.setTitle('돈 순위표')
         let searchuser = client.users.cache.get(data[i].userid)
         if (!searchuser) return
-        embed.addFields(
-          `${i + 1}. ${searchuser.username}`,
-          `${comma(data[i].money)}원`
-        )
+        embed.addFields({
+          name: `${i + 1}. ${searchuser.username}`,
+          value: `${comma(data[i].money)}원`
+        })
         embed.setColor('#2f3136')
       }
     }
@@ -61,8 +61,10 @@ export default new BaseCommand(
           .setName('옵션')
           .setDescription('순위 옵션을 선택해주세요.')
           .setRequired(false)
-          .addChoice('서버', '서버')
-          .addChoice('전체', '전체')
+          .addChoices(
+            { name: '서버', value: '서버' },
+            { name: '전체', value: '전체' }
+          )
       ),
     async execute(client, interaction) {
       await interaction.deferReply({ ephemeral: true })
@@ -76,28 +78,30 @@ export default new BaseCommand(
           embed.setTitle('돈 순위표')
           let searchuser = client.users.cache.get(data[i].userid)
           if (!searchuser) return
-          embed.addFields(
-            `${i + 1}. ${searchuser.username}`,
-            `${comma(data[i].money)}원`
-          )
+          embed.addFields({
+            name: `${i + 1}. ${searchuser.username}`,
+            value: `${comma(data[i].money)}원`
+          })
           embed.setColor('#2f3136')
         } else if (type === '서버') {
           embed.setTitle('서버 돈 순위표')
           let searchuser = interaction.guild?.members.cache.get(data[i].userid)
           if (!searchuser) return
-          embed.addFields(
-            `${i + 1}. ${searchuser.nickname ?? searchuser.user.username}`,
-            `${comma(data[i].money)}원`
-          )
+          embed.addFields({
+            name: `${i + 1}. ${
+              searchuser.nickname ?? searchuser.user.username
+            }`,
+            value: `${comma(data[i].money)}원`
+          })
           embed.setColor('#2f3136')
         } else {
           embed.setTitle('돈 순위표')
           let searchuser = client.users.cache.get(data[i].userid)
           if (!searchuser) return
-          embed.addFields(
-            `${i + 1}. ${searchuser.username}`,
-            `${comma(data[i].money)}원`
-          )
+          embed.addFields({
+            name: `${i + 1}. ${searchuser.username}`,
+            value: `${comma(data[i].money)}원`
+          })
           embed.setColor('#2f3136')
         }
       }

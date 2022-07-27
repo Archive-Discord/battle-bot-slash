@@ -40,10 +40,9 @@ export default class CommandManager extends BaseManager {
                   `Not a TypeScript file ${commandFile}. Skipping.`
                 )*/
 
-              const {
-                default: command
+              const command =
                 // eslint-disable-next-line @typescript-eslint/no-var-requires
-              } = require(`../commands/${folder}/${commandFile}`)
+                require(`../commands/${folder}/${commandFile}`).default
               if (!command.data.name ?? !command.name)
                 return this.logger.debug(
                   `Command ${commandFile} has no name. Skipping.`
@@ -59,7 +58,9 @@ export default class CommandManager extends BaseManager {
               })
               this.commands.set(command.data.name ?? command.name, command)
 
-              this.logger.debug(`Loaded command ${command.name}`)
+              this.logger.debug(
+                `Loaded command ${command.data.name ?? command.name}`
+              )
             } catch (error: any) {
               this.logger.error(
                 `Error loading command '${commandFile}'.\n` + error.stack

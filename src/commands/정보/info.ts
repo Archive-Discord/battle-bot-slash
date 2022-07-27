@@ -1,5 +1,5 @@
 import { SlashCommandBuilder } from '@discordjs/builders'
-import { version } from 'discord.js'
+import { ButtonStyle, version } from 'discord.js'
 import config from '../../../config'
 import { repository } from '../../../package.json'
 import { BaseCommand } from '../../structures/Command'
@@ -20,37 +20,41 @@ export default new BaseCommand(
     let buttton = new ButtonBuilder()
       .setLabel('하트 누르기')
       .setURL('https://koreanbots.dev/bots/928523914890608671/vote')
-      .setStyle('LINK')
-    let row = new ActionRowBuilder().addComponents(buttton)
+      .setStyle(ButtonStyle.Link)
+    let row = new ActionRowBuilder<ButtonBuilder>().addComponents(buttton)
     let embed = new Embed(client, 'default')
       .setTitle(`${client.user?.username} 정보`)
       .setColor('#2f3136')
     let shardEmbed
     shardEmbed = `**서버의 Shard ID#${message.guild?.shard.id} ${client.ws.ping}ms**\n`
     embed.setDescription(shardEmbed)
-    embed.addFields('서버 수', `${client.guilds.cache.size}서버`, true)
-    embed.addFields(
-      '유저 수',
-      `${client.guilds.cache.reduce((a, b) => a + b.memberCount, 0)}명`,
-      true
-    )
-    embed.addFields(
-      '업타임',
-      `${DateFormatting.relative(
+    embed.addFields({
+      name: '서버 수',
+      value: `${client.guilds.cache.size}서버`,
+      inline: true
+    })
+    embed.addFields({
+      name: '유저 수',
+      value: `${client.guilds.cache.reduce((a, b) => a + b.memberCount, 0)}명`,
+      inline: true
+    })
+    embed.addFields({
+      name: '업타임',
+      value: `${DateFormatting.relative(
         new Date(Date.now() - process.uptime() * 1000)
       )}`,
-      true
-    )
-    embed.addFields(
-      '시스템정보',
-      `\`\`\`diff\n- Discord.js: ${version} \n- Node.js: ${
+      inline: true
+    })
+    embed.addFields({
+      name: '시스템정보',
+      value: `\`\`\`diff\n- Discord.js: ${version} \n- Node.js: ${
         process.version
       }\n- OS: ${process.platform} - Memory: ${memory()} \`\`\``
-    )
-    embed.addFields(
-      '유용한 링크',
-      `[서포트 서버](https://discord.gg/WtGq7D7BZm) | [웹 대시보드](${config.web.baseurl}) | [깃허브](${repository}) | [개인정보처리방침](${config.web.baseurl}/help/privacy) | [상태](${config.web.baseurl}/status)`
-    )
+    })
+    embed.addFields({
+      name: '유용한 링크',
+      value: `[서포트 서버](https://discord.gg/WtGq7D7BZm) | [웹 대시보드](${config.web.baseurl}) | [깃허브](${repository}) | [개인정보처리방침](${config.web.baseurl}/help/privacy) | [상태](${config.web.baseurl}/status)`
+    })
     return message.reply({ embeds: [embed], components: [row] })
   },
   {
@@ -65,37 +69,44 @@ export default new BaseCommand(
       let buttton = new ButtonBuilder()
         .setLabel('하트 누르기')
         .setURL('https://koreanbots.dev/bots/928523914890608671/vote')
-        .setStyle('LINK')
-      let row = new ActionRowBuilder().addComponents(buttton)
+        .setStyle(ButtonStyle.Link)
+      let row = new ActionRowBuilder<ButtonBuilder>().addComponents(buttton)
       let embed = new Embed(client, 'default')
         .setTitle(`${client.user?.username} 정보`)
         .setColor('#2f3136')
       let shardEmbed
       shardEmbed = `**서버의 Shard ID#${interaction.guild?.shard.id} ${client.ws.ping}ms**\n`
       embed.setDescription(shardEmbed)
-      embed.addFields('서버 수', `${client.guilds.cache.size}서버`, true)
-      embed.addFields(
-        '유저 수',
-        `${client.guilds.cache.reduce((a, b) => a + b.memberCount, 0)}명`,
-        true
-      )
-      embed.addFields(
-        '업타임',
-        `${DateFormatting.relative(
+      embed.addFields({
+        name: '서버 수',
+        value: `${client.guilds.cache.size}서버`,
+        inline: true
+      })
+      embed.addFields({
+        name: '유저 수',
+        value: `${client.guilds.cache.reduce(
+          (a, b) => a + b.memberCount,
+          0
+        )}명`,
+        inline: true
+      })
+      embed.addFields({
+        name: '업타임',
+        value: `${DateFormatting.relative(
           new Date(Date.now() - process.uptime() * 1000)
         )}`,
-        true
-      )
-      embed.addFields(
-        '시스템정보',
-        `\`\`\`diff\n- Discord.js: ${version} \n- Node.js: ${
+        inline: true
+      })
+      embed.addFields({
+        name: '시스템정보',
+        value: `\`\`\`diff\n- Discord.js: ${version} \n- Node.js: ${
           process.version
         }\n- OS: ${process.platform} - Memory: ${memory()} \`\`\``
-      )
-      embed.addFields(
-        '유용한 링크',
-        `[서포트 서버](https://discord.gg/WtGq7D7BZm) | [웹 대시보드](${config.web.baseurl}) | [깃허브](${repository}) | [개인정보처리방침](${config.web.baseurl}/help/privacy) | [상태](${config.web.baseurl}/status)`
-      )
+      })
+      embed.addFields({
+        name: '유용한 링크',
+        value: `[서포트 서버](https://discord.gg/WtGq7D7BZm) | [웹 대시보드](${config.web.baseurl}) | [깃허브](${repository}) | [개인정보처리방침](${config.web.baseurl}/help/privacy) | [상태](${config.web.baseurl}/status)`
+      })
       return interaction.reply({
         embeds: [embed],
         components: [row],

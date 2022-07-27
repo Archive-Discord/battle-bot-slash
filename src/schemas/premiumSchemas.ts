@@ -1,7 +1,7 @@
 import { Schema, model, Model } from 'mongoose'
 import { PremiumDB } from '../../typings'
 
-const premiumSchema = new Schema(
+const premiumSchema = new Schema<PremiumDB>(
   {
     guild_id: String,
     nextpay_date: { type: Date, default: Date.now },

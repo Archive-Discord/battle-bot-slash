@@ -1,6 +1,6 @@
 import { BaseCommand } from '../../structures/Command'
 import Embed from '../../utils/Embed'
-import Discord from 'discord.js'
+import Discord, { ButtonBuilder, ButtonStyle } from 'discord.js'
 import Schema from '../../schemas/Money'
 import axios from 'axios'
 import config from '../../../config'
@@ -30,17 +30,17 @@ export default new BaseCommand(
     let m = await message.reply({
       embeds: [embed],
       components: [
-        new Discord.ActionRowBuilder()
+        new Discord.ActionRowBuilder<ButtonBuilder>()
           .addComponents(
             new Discord.ButtonBuilder()
               .setLabel(`한디리 인증`)
-              .setStyle('PRIMARY')
+              .setStyle(ButtonStyle.Primary)
               .setCustomId('heart.koreanlist')
           )
           .addComponents(
             new Discord.ButtonBuilder()
               .setLabel(`아카이브 인증`)
-              .setStyle('PRIMARY')
+              .setStyle(ButtonStyle.Primary)
               .setCustomId('heart.archive')
           )
       ]
@@ -68,12 +68,15 @@ export default new BaseCommand(
                 )
                 .setTimestamp()
                 .setColor('#2f3136')
-              let link = new Discord.ActionRowBuilder().addComponents(
-                new Discord.ButtonBuilder()
-                  .setURL(`https://koreanbots.dev/bots/${client.user?.id}/vote`)
-                  .setLabel(`하트 누르기`)
-                  .setStyle('LINK')
-              )
+              let link =
+                new Discord.ActionRowBuilder<ButtonBuilder>().addComponents(
+                  new Discord.ButtonBuilder()
+                    .setURL(
+                      `https://koreanbots.dev/bots/${client.user?.id}/vote`
+                    )
+                    .setLabel(`하트 누르기`)
+                    .setStyle(ButtonStyle.Link)
+                )
               i.reply({
                 embeds: [embed],
                 components: [link]
@@ -126,7 +129,7 @@ export default new BaseCommand(
             embed = new Embed(client, 'error')
               .setTitle('❌ 에러 발생')
               .setDescription(`하트 인증중 오류가 발생했어요! ${e.message}`)
-              .setFooter(`${message.author.tag}`)
+              .setFooter({ text: `${message.author.tag}` })
               .setTimestamp()
               .setColor('#2f3136')
             i.reply({
@@ -154,12 +157,13 @@ export default new BaseCommand(
                 )
                 .setTimestamp()
                 .setColor('#2f3136')
-              let link = new Discord.ActionRowBuilder().addComponents(
-                new Discord.ButtonBuilder()
-                  .setURL(`https://archiver.me/bots/${client.user?.id}/like`)
-                  .setLabel(`하트 누르기`)
-                  .setStyle('LINK')
-              )
+              let link =
+                new Discord.ActionRowBuilder<ButtonBuilder>().addComponents(
+                  new Discord.ButtonBuilder()
+                    .setURL(`https://archiver.me/bots/${client.user?.id}/like`)
+                    .setLabel(`하트 누르기`)
+                    .setStyle(ButtonStyle.Link)
+                )
               i.reply({
                 embeds: [embed],
                 components: [link]
@@ -212,7 +216,7 @@ export default new BaseCommand(
             embed = new Embed(client, 'error')
               .setTitle('❌ 에러 발생')
               .setDescription(`하트 인증중 오류가 발생했어요! ${e.message}`)
-              .setFooter(`${message.author.tag}`)
+              .setFooter({ text: `${message.author.tag}` })
               .setTimestamp()
               .setColor('#2f3136')
             i.reply({
@@ -227,18 +231,18 @@ export default new BaseCommand(
       m.edit({
         embeds: [embed],
         components: [
-          new Discord.ActionRowBuilder()
+          new Discord.ActionRowBuilder<ButtonBuilder>()
             .addComponents(
               new Discord.ButtonBuilder()
                 .setLabel(`한디리 인증`)
-                .setStyle('PRIMARY')
+                .setStyle(ButtonStyle.Primary)
                 .setCustomId('heart.koreanlist')
                 .setDisabled(true)
             )
             .addComponents(
               new Discord.ButtonBuilder()
                 .setLabel(`아카이브 인증`)
-                .setStyle('PRIMARY')
+                .setStyle(ButtonStyle.Primary)
                 .setCustomId('heart.archive')
                 .setDisabled(true)
             )

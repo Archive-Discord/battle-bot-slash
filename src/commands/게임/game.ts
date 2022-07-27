@@ -1,5 +1,5 @@
 import { SlashCommandBuilder } from '@discordjs/builders'
-import { GuildMember, EmbedBuilder, Invite } from 'discord.js'
+import { GuildMember, EmbedBuilder, Invite, ChannelType } from 'discord.js'
 import { REST } from '@discordjs/rest'
 import { BaseCommand } from '../../structures/Command'
 import Embed from '../../utils/Embed'
@@ -30,11 +30,13 @@ export default new BaseCommand(
           .setName('게임')
           .setDescription('플레이할 게임을 선택해주세요!')
           .setRequired(true)
-          .addChoice('포커', 'poker')
-          .addChoice('물고기 잡기', 'fishing')
-          .addChoice('채스', 'chess')
-          .addChoice('캐치마인드', 'doodlecrew')
-          .addChoice('단어만들기', 'spellcast')
+          .addChoices(
+            { name: '포커', value: 'poker' },
+            { name: '물고기 잡기', value: 'fishing' },
+            { name: '채스', value: 'chess' },
+            { name: '캐치마인드', value: 'doodlecrew' },
+            { name: '단어만들기', value: 'spellcast' }
+          )
       ),
     options: {
       name: '게임',
@@ -59,7 +61,7 @@ export default new BaseCommand(
         embed.setDescription(`먼저 음성채널에 입장해주세요.`)
         return interaction.reply({ embeds: [embed], ephemeral: true })
       }
-      if (member.voice.channel.type === 'GUILD_STAGE_VOICE') {
+      if (member.voice.channel.type === ChannelType.GuildStageVoice) {
         embed.setDescription(
           `스테이지 채널에서는 이 명령어를 사용할 수 없습니다.`
         )

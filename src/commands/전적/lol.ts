@@ -115,12 +115,12 @@ async function getStat(args: string) {
     )
   else embed.setDescription(`**언랭크**`)
   return embed
-    .addFields(
-      '최근 10판 전적',
-      `
+    .addFields({
+      name: '최근 10판 전적',
+      value: `
     \`\`\`diff
 ${matchinfo.slice(undefined, 10).join('\n')} 
 \`\`\``
-    )
+    })
     .setThumbnail(leagueStatus.tier_info.tier_image_url)
 }

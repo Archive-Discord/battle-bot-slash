@@ -34,8 +34,10 @@ const paginationEmbed = async (
     components: [row]
   })
 
-  const filter = (i: ButtonComponent) =>
+  const filter = (i: any) =>
+    // @ts-ignore
     i.customId === buttonList[0].customId ||
+    // @ts-ignore
     i.customId === buttonList[1].customId
 
   const collector = await interaction.channel?.createMessageComponentCollector({
@@ -43,11 +45,13 @@ const paginationEmbed = async (
     time: timeout
   })
 
-  collector?.on('collect', async (i: ButtonInteraction) => {
+  collector?.on('collect', async (i) => {
     switch (i.customId) {
+      // @ts-ignore
       case buttonList[0].customId:
         page = page > 0 ? --page : pages.length - 1
         break
+      // @ts-ignore
       case buttonList[1].customId:
         page = page + 1 < pages.length ? ++page : 0
         break

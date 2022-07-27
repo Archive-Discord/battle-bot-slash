@@ -36,31 +36,33 @@ export default new BaseCommand(
     let embed = new Embed(client, 'success')
       .setTitle(`${user.user.username}님의 정보`)
       .setThumbnail(user.displayAvatarURL())
-      .addFields(`유저`, userMention(user.id), true)
-      .addFields(`아이디`, `\`${user.id}\``, true)
-      .addFields(
-        `상태`,
-        user.presence
+      .addFields({ name: `유저`, value: userMention(user.id), inline: true })
+      .addFields({ name: `아이디`, value: `\`${user.id}\``, inline: true })
+      .addFields({
+        name: `상태`,
+        value: user.presence
           ? user.presence.activities.length === 0
             ? '없음'
             : user.presence.activities.join(', ')
           : '오프라인',
-        true
-      )
-      .addFields(
-        `서버 가입일`,
-        DateFormatting._format(user.joinedAt as Date, ''),
-        true
-      )
-      .addFields(
-        `계정 생성일`,
-        DateFormatting._format(user.user.createdAt as Date, ''),
-        true
-      )
-      .addFields(
-        `${client.user?.username} 웹 가입일`,
-        userdb ? DateFormatting._format(userdb.published_date, '') : '미가입'
-      )
+        inline: true
+      })
+      .addFields({
+        name: `서버 가입일`,
+        value: DateFormatting._format(user.joinedAt as Date, ''),
+        inline: true
+      })
+      .addFields({
+        name: `계정 생성일`,
+        value: DateFormatting._format(user.user.createdAt as Date, ''),
+        inline: true
+      })
+      .addFields({
+        name: `${client.user?.username} 웹 가입일`,
+        value: userdb
+          ? DateFormatting._format(userdb.published_date, '')
+          : '미가입'
+      })
       .setColor('#2f3136')
     return message.reply({ embeds: [embed] })
   },
@@ -100,31 +102,33 @@ export default new BaseCommand(
       let embed = new Embed(client, 'success')
         .setTitle(`${user.user.username}님의 정보`)
         .setThumbnail(user.displayAvatarURL())
-        .addFields(`유저`, userMention(user.id), true)
-        .addFields(`아이디`, `\`${user.id}\``, true)
-        .addFields(
-          `상태`,
-          user.presence
+        .addFields({ name: `유저`, value: userMention(user.id), inline: true })
+        .addFields({ name: `아이디`, value: `\`${user.id}\``, inline: true })
+        .addFields({
+          name: `상태`,
+          value: user.presence
             ? user.presence.activities.length === 0
               ? '없음'
               : user.presence.activities.join(', ')
             : '오프라인',
-          true
-        )
-        .addFields(
-          `서버 가입일`,
-          DateFormatting._format(user.joinedAt as Date, ''),
-          true
-        )
-        .addFields(
-          `계정 생성일`,
-          DateFormatting._format(user.user.createdAt as Date, ''),
-          true
-        )
-        .addFields(
-          `${client.user?.username} 웹 가입일`,
-          userdb ? DateFormatting._format(userdb.published_date, '') : '미가입'
-        )
+          inline: true
+        })
+        .addFields({
+          name: `서버 가입일`,
+          value: DateFormatting._format(user.joinedAt as Date, ''),
+          inline: true
+        })
+        .addFields({
+          name: `계정 생성일`,
+          value: DateFormatting._format(user.user.createdAt as Date, ''),
+          inline: true
+        })
+        .addFields({
+          name: `${client.user?.username} 웹 가입일`,
+          value: userdb
+            ? DateFormatting._format(userdb.published_date, '')
+            : '미가입'
+        })
         .setColor('#2f3136')
       return interaction.reply({ embeds: [embed] })
     }

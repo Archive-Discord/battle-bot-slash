@@ -115,8 +115,14 @@ export default new BaseCommand(
     )
     embed = new Embed(client, 'info')
       .setTitle('⭕ 송금 완료')
-      .addFields(`송금인 잔액`, `${comma(money - betting)}원`, true)
-      .addFields(`받는사람 잔액`, ` ${money2 + betting}원`, true)
+      .addFields(
+        {
+          name: `송금인 잔액`,
+          value: `${comma(money - betting)}원`,
+          inline: true
+        },
+        { name: `받는사람 잔액`, value: ` ${money2 + betting}원`, inline: true }
+      )
       .setTimestamp()
       .setColor('#2f3136')
     m.edit({
@@ -229,8 +235,18 @@ export default new BaseCommand(
       )
       embed = new Embed(client, 'info')
         .setTitle('⭕ 송금 완료')
-        .addFields(`송금인 잔액`, `${comma(money - betting)}원`, true)
-        .addFields(`받는사람 잔액`, ` ${money2 + betting}원`, true)
+        .addFields(
+          {
+            name: `송금인 잔액`,
+            value: `${comma(money - betting)}원`,
+            inline: true
+          },
+          {
+            name: `받는사람 잔액`,
+            value: ` ${money2 + betting}원`,
+            inline: true
+          }
+        )
         .setTimestamp()
         .setColor('#2f3136')
       interaction.editReply({

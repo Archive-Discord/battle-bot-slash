@@ -1,7 +1,7 @@
 import { Schema, model, Model } from 'mongoose'
 import { loggerDB } from '../../typings'
 
-const LoggerSettingSchema = new Schema(
+const LoggerSettingSchema = new Schema<loggerDB>(
   {
     guild_id: String,
     guild_channel_id: String,

@@ -1,5 +1,10 @@
 import { BaseCommand } from '../../structures/Command'
-import Discord from 'discord.js'
+import Discord, {
+  ButtonBuilder,
+  ButtonStyle,
+  ComponentType,
+  MessageComponent
+} from 'discord.js'
 import Embed from '../../utils/Embed'
 import comma from 'comma-number'
 import Schema from '../../schemas/Money'
@@ -37,22 +42,40 @@ export default new BaseCommand(
         return message.reply({ embeds: [embed] })
       }
       embed.setTitle(`${results.items[0].name} (${results.items[0].code})`)
-      embed.addFields('현재가', `${comma(result.now)}원`, true)
       embed.addFields(
-        '전일대비',
-        `${comma(result.diff)}원 (${
-          result.risefall == 1 || result.risefall == 2
-            ? '▴'
-            : result.risefall == 3
-            ? '-'
-            : '▾'
-        } ${comma(result.rate)}%)`,
-        true
+        { name: '현재가', value: `${comma(result.now)}원`, inline: true },
+        {
+          name: '전일대비',
+          value: `${comma(result.diff)}원 (${
+            result.risefall == 1 || result.risefall == 2
+              ? '▴'
+              : result.risefall == 3
+              ? '-'
+              : '▾'
+          } ${comma(result.rate)}%)`,
+          inline: true
+        }
       )
-      embed.addFields('거래량', `${comma(result.quant)}주`, true)
-      embed.addFields('고가', `${comma(result.high)}원`, true)
-      embed.addFields('저가', `${comma(result.low)}원`, true)
-      embed.addFields('거래대금', `${comma(result.amount)}백만원`, true)
+      embed.addFields({
+        name: '거래량',
+        value: `${comma(result.quant)}주`,
+        inline: true
+      })
+      embed.addFields({
+        name: '고가',
+        value: `${comma(result.high)}원`,
+        inline: true
+      })
+      embed.addFields({
+        name: '저가',
+        value: `${comma(result.low)}원`,
+        inline: true
+      })
+      embed.addFields({
+        name: '거래대금',
+        value: `${comma(result.amount)}백만원`,
+        inline: true
+      })
       embed.setImage(
         `https://ssl.pstatic.net/imgfinance/chart/item/area/day/${results.items[0].code}.png`
       )
@@ -124,27 +147,42 @@ export default new BaseCommand(
           result.now * quantity
         )}원)을 매수하시겠습니까?`
       )
-      embed.addFields('현재가', `${comma(result.now)}원`, true)
-      embed.addFields('수수료', `${comma(fee)}원 (2%)`, true)
-      embed.addFields('총계', `${comma(total)}원`, true)
+      embed.addFields({
+        name: '현재가',
+        value: `${comma(result.now)}원`,
+        inline: true
+      })
+      embed.addFields({
+        name: '수수료',
+        value: `${comma(fee)}원 (2%)`,
+        inline: true
+      })
+      embed.addFields({
+        name: '총계',
+        value: `${comma(total)}원`,
+        inline: true
+      })
       embed.setImage(
         `https://ssl.pstatic.net/imgfinance/chart/item/area/day/${results.items[0].code}.png`
       )
-      const row = new Discord.ActionRowBuilder()
+      const row = new Discord.ActionRowBuilder<ButtonBuilder>()
         .addComponents(
           new Discord.ButtonBuilder()
             .setCustomId('stock.accept')
             .setLabel('확인')
-            .setStyle('SUCCESS')
+            .setStyle(ButtonStyle.Success)
         )
         .addComponents(
           new Discord.ButtonBuilder()
             .setCustomId('stock.deny')
             .setLabel('아니요')
-            .setStyle('DANGER')
+            .setStyle(ButtonStyle.Danger)
         )
       const m = await message.reply({ embeds: [embed], components: [row] })
-      const collector = m.createMessageComponentCollector({ time: 10000 })
+      const collector = m.createMessageComponentCollector<ComponentType.Button>(
+        { time: 10000 }
+      )
+      // @ts-ignore
       collector.on('collect', async (i) => {
         if (i.user.id != message.author.id) return
         if (i.customId == 'stock.accept') {
@@ -152,9 +190,21 @@ export default new BaseCommand(
           embed.setDescription(
             `${results.items[0].name} ${quantity}주를 매수했습니다.`
           )
-          embed.addFields('현재가', `${comma(result.now)}원`, true)
-          embed.addFields('수수료', `${comma(fee)}원 (2%)`, true)
-          embed.addFields('총계', `${comma(total)}원`, true)
+          embed.addFields({
+            name: '현재가',
+            value: `${comma(result.now)}원`,
+            inline: true
+          })
+          embed.addFields({
+            name: '수수료',
+            value: `${comma(fee)}원 (2%)`,
+            inline: true
+          })
+          embed.addFields({
+            name: '총계',
+            value: `${comma(total)}원`,
+            inline: true
+          })
           embed.setImage(
             `https://ssl.pstatic.net/imgfinance/chart/item/area/day/${results.items[0].code}.png`
           )
@@ -214,9 +264,21 @@ export default new BaseCommand(
             .setDescription(
               `${results.items[0].name} ${quantity}주를 매수했습니다.`
             )
-            .addFields('거래금액', `${comma(total)}원`, true)
-            .addFields('수수료', `${comma(fee)}원 (2%)`, true)
-            .addFields('거래후 잔액', `${comma(user.money - total)}원`, true)
+            .addFields({
+              name: '거래금액',
+              value: `${comma(total)}원`,
+              inline: true
+            })
+            .addFields({
+              name: '수수료',
+              value: `${comma(fee)}원 (2%)`,
+              inline: true
+            })
+            .addFields({
+              name: '거래후 잔액',
+              value: `${comma(user.money - total)}원`,
+              inline: true
+            })
             .setColor('#2f3136')
           return i.update({ embeds: [successEmbed], components: [] })
         } else if (i.customId == 'stock.deny') {
@@ -230,19 +292,19 @@ export default new BaseCommand(
         m.edit({
           embeds: [embed],
           components: [
-            new Discord.ActionRowBuilder()
+            new Discord.ActionRowBuilder<ButtonBuilder>()
               .addComponents(
                 new Discord.ButtonBuilder()
                   .setCustomId('stock.accept')
                   .setLabel('확인')
-                  .setStyle('SUCCESS')
+                  .setStyle(ButtonStyle.Success)
                   .setDisabled(true)
               )
               .addComponents(
                 new Discord.ButtonBuilder()
                   .setCustomId('stock.deny')
                   .setLabel('아니요')
-                  .setStyle('DANGER')
+                  .setStyle(ButtonStyle.Danger)
                   .setDisabled(true)
               )
           ]
@@ -309,27 +371,40 @@ export default new BaseCommand(
           result.now * quantity
         )}원)을 매도하시겠습니까?`
       )
-      embed.addFields('현재가', `${comma(result.now)}원`, true)
-      embed.addFields('수수료', `${comma(fee)}원 (2%)`, true)
-      embed.addFields('총계', `${comma(total)}원`, true)
+      embed.addFields({
+        name: '현재가',
+        value: `${comma(result.now)}원`,
+        inline: true
+      })
+      embed.addFields({
+        name: '수수료',
+        value: `${comma(fee)}원 (2%)`,
+        inline: true
+      })
+      embed.addFields({
+        name: '총계',
+        value: `${comma(total)}원`,
+        inline: true
+      })
       embed.setImage(
         `https://ssl.pstatic.net/imgfinance/chart/item/area/day/${results.items[0].code}.png`
       )
-      const row = new Discord.ActionRowBuilder()
+      const row = new Discord.ActionRowBuilder<ButtonBuilder>()
         .addComponents(
           new Discord.ButtonBuilder()
             .setCustomId('stocksell.accept')
             .setLabel('확인')
-            .setStyle('SUCCESS')
+            .setStyle(ButtonStyle.Success)
         )
         .addComponents(
           new Discord.ButtonBuilder()
             .setCustomId('stocksell.deny')
             .setLabel('아니요')
-            .setStyle('DANGER')
+            .setStyle(ButtonStyle.Danger)
         )
       const m = await message.reply({ embeds: [embed], components: [row] })
       const collector = m.createMessageComponentCollector({ time: 10000 })
+      // @ts-ignore
       collector.on('collect', async (i) => {
         if (i.user.id != message.author.id) return
         if (i.customId == 'stocksell.accept') {
@@ -337,9 +412,21 @@ export default new BaseCommand(
           embed.setDescription(
             `${results.items[0].name} ${quantity}주를 매도했습니다.`
           )
-          embed.addFields('현재가', `${comma(result.now)}원`, true)
-          embed.addFields('수수료', `${comma(fee)}원 (2%)`, true)
-          embed.addFields('총계', `${comma(total)}원`, true)
+          embed.addFields({
+            name: '현재가',
+            value: `${comma(result.now)}원`,
+            inline: true
+          })
+          embed.addFields({
+            name: '수수료',
+            value: `${comma(fee)}원 (2%)`,
+            inline: true
+          })
+          embed.addFields({
+            name: '총계',
+            value: `${comma(total)}원`,
+            inline: true
+          })
           embed.setImage(
             `https://ssl.pstatic.net/imgfinance/chart/item/area/day/${results.items[0].code}.png`
           )
@@ -374,9 +461,21 @@ export default new BaseCommand(
             .setDescription(
               `${results.items[0].name} ${quantity}주를 매도했습니다.`
             )
-            .addFields('거래금액', `${comma(total)}원`, true)
-            .addFields('수수료', `${comma(fee)}원 (2%)`, true)
-            .addFields('거래후 잔액', `${comma(user.money + total)}원`, true)
+            .addFields({
+              name: '거래금액',
+              value: `${comma(total)}원`,
+              inline: true
+            })
+            .addFields({
+              name: '수수료',
+              value: `${comma(fee)}원 (2%)`,
+              inline: true
+            })
+            .addFields({
+              name: '거래후 잔액',
+              value: `${comma(user.money + total)}원`,
+              inline: true
+            })
             .setColor('#2f3136')
           return i.update({ embeds: [successEmbed], components: [] })
         } else if (i.customId == 'stocksell.deny') {
@@ -390,19 +489,19 @@ export default new BaseCommand(
         m.edit({
           embeds: [embed],
           components: [
-            new Discord.ActionRowBuilder()
+            new Discord.ActionRowBuilder<ButtonBuilder>()
               .addComponents(
                 new Discord.ButtonBuilder()
                   .setCustomId('stock.accept')
                   .setLabel('확인')
-                  .setStyle('SUCCESS')
+                  .setStyle(ButtonStyle.Success)
                   .setDisabled(true)
               )
               .addComponents(
                 new Discord.ButtonBuilder()
                   .setCustomId('stock.deny')
                   .setLabel('아니요')
-                  .setStyle('DANGER')
+                  .setStyle(ButtonStyle.Danger)
                   .setDisabled(true)
               )
           ]
@@ -453,31 +552,31 @@ export default new BaseCommand(
     } else {
       embed.setTitle('주식 도움말')
       embed.setDescription('아래에 있는 명령어로 주식을 사용하실 수 있습니다.')
-      embed.addFields(
-        `\`${config.bot.prefix}주식 목록 (주식명)\``,
-        '> 검색한 주식들의 목록을 확인합니다',
-        true
-      )
-      embed.addFields(
-        `\`${config.bot.prefix}주식 검색 (주식명)\``,
-        '> 검색한 주식의 상세 정보를 확인합니다.',
-        true
-      )
-      embed.addFields(
-        `\`${config.bot.prefix}주식 매수 (개수) (주식명)\``,
-        '> 입력한 주식을 개수만큼 매수합니다.',
-        true
-      )
-      embed.addFields(
-        `\`${config.bot.prefix}주식 매도 (개수) (주식명)\``,
-        '> 입력한 주식을 개수만큼 매도합니다.',
-        true
-      )
-      embed.addFields(
-        `\`${config.bot.prefix}주식 보유\``,
-        '> 보유중인 주식을 확인합니다.',
-        true
-      )
+      embed.addFields({
+        name: `\`${config.bot.prefix}주식 목록 (주식명)\``,
+        value: '> 검색한 주식들의 목록을 확인합니다',
+        inline: true
+      })
+      embed.addFields({
+        name: `\`${config.bot.prefix}주식 검색 (주식명)\``,
+        value: '> 검색한 주식의 상세 정보를 확인합니다.',
+        inline: true
+      })
+      embed.addFields({
+        name: `\`${config.bot.prefix}주식 매수 (개수) (주식명)\``,
+        value: '> 입력한 주식을 개수만큼 매수합니다.',
+        inline: true
+      })
+      embed.addFields({
+        name: `\`${config.bot.prefix}주식 매도 (개수) (주식명)\``,
+        value: '> 입력한 주식을 개수만큼 매도합니다.',
+        inline: true
+      })
+      embed.addFields({
+        name: `\`${config.bot.prefix}주식 보유\``,
+        value: '> 보유중인 주식을 확인합니다.',
+        inline: true
+      })
       return message.reply({
         embeds: [embed]
       })
@@ -555,6 +654,7 @@ export default new BaseCommand(
           .setDescription('주식에 대한 도움말을 보여줍니다.')
       ),
     async execute(client, interaction) {
+      if (!interaction.inCachedGuild()) return
       await interaction.deferReply({ ephemeral: true })
       let embeds = new Embed(client, 'warn')
         .setTitle('처리중..')
@@ -580,22 +680,42 @@ export default new BaseCommand(
           return interaction.editReply({ embeds: [embed] })
         }
         embed.setTitle(`${results.items[0].name} (${results.items[0].code})`)
-        embed.addFields('현재가', `${comma(result.now)}원`, true)
-        embed.addFields(
-          '전일대비',
-          `${comma(result.diff)}원 (${
+        embed.addFields({
+          name: '현재가',
+          value: `${comma(result.now)}원`,
+          inline: true
+        })
+        embed.addFields({
+          name: '전일대비',
+          value: `${comma(result.diff)}원 (${
             result.risefall == 1 || result.risefall == 2
               ? '▴'
               : result.risefall == 3
               ? '-'
               : '▾'
           } ${comma(result.rate)}%)`,
-          true
-        )
-        embed.addFields('거래량', `${comma(result.quant)}주`, true)
-        embed.addFields('고가', `${comma(result.high)}원`, true)
-        embed.addFields('저가', `${comma(result.low)}원`, true)
-        embed.addFields('거래대금', `${comma(result.amount)}백만원`, true)
+          inline: true
+        })
+        embed.addFields({
+          name: '거래량',
+          value: `${comma(result.quant)}주`,
+          inline: true
+        })
+        embed.addFields({
+          name: '고가',
+          value: `${comma(result.high)}원`,
+          inline: true
+        })
+        embed.addFields({
+          name: '저가',
+          value: `${comma(result.low)}원`,
+          inline: true
+        })
+        embed.addFields({
+          name: '거래대금',
+          value: `${comma(result.amount)}백만원`,
+          inline: true
+        })
         embed.setImage(
           `https://ssl.pstatic.net/imgfinance/chart/item/area/day/${results.items[0].code}.png`
         )
@@ -677,33 +797,49 @@ export default new BaseCommand(
             result.now * quantity
           )}원)을 매수하시겠습니까?`
         )
-        embed.addFields('현재가', `${comma(result.now)}원`, true)
-        embed.addFields('수수료', `${comma(fee)}원 (2%)`, true)
-        embed.addFields('총계', `${comma(total)}원`, true)
+        embed.addFields({
+          name: '현재가',
+          value: `${comma(result.now)}원`,
+          inline: true
+        })
+        embed.addFields({
+          name: '수수료',
+          value: `${comma(fee)}원 (2%)`,
+          inline: true
+        })
+        embed.addFields({
+          name: '총계',
+          value: `${comma(total)}원`,
+          inline: true
+        })
         embed.setImage(
           `https://ssl.pstatic.net/imgfinance/chart/item/area/day/${results.items[0].code}.png`
         )
-        const row = new Discord.ActionRowBuilder()
+        const row = new Discord.ActionRowBuilder<ButtonBuilder>()
           .addComponents(
             new Discord.ButtonBuilder()
               .setCustomId('stock.accept')
               .setLabel('확인')
-              .setStyle('SUCCESS')
+              .setStyle(ButtonStyle.Success)
           )
           .addComponents(
             new Discord.ButtonBuilder()
               .setCustomId('stock.deny')
               .setLabel('아니요')
-              .setStyle('DANGER')
+              .setStyle(ButtonStyle.Danger)
           )
         const m = await interaction.editReply({
           embeds: [embed],
           components: [row]
         })
+        if (!interaction.channel) return
+        const collector =
+          interaction.channel.createMessageComponentCollector<ComponentType.Button>(
+            {
+              time: 10000
+            }
+          )
         // @ts-ignore
-        const collector = interaction.channel.createMessageComponentCollector({
-          time: 10000
-        })
         collector.on('collect', async (i) => {
           if (i.user.id != interaction.user.id) return
           if (i.customId == 'stock.accept') {
@@ -711,9 +847,21 @@ export default new BaseCommand(
             embed.setDescription(
               `${results.items[0].name} ${quantity}주를 매수했습니다.`
             )
-            embed.addFields('현재가', `${comma(result.now)}원`, true)
-            embed.addFields('수수료', `${comma(fee)}원 (2%)`, true)
-            embed.addFields('총계', `${comma(total)}원`, true)
+            embed.addFields({
+              name: '현재가',
+              value: `${comma(result.now)}원`,
+              inline: true
+            })
+            embed.addFields({
+              name: '수수료',
+              value: `${comma(fee)}원 (2%)`,
+              inline: true
+            })
+            embed.addFields({
+              name: '총계',
+              value: `${comma(total)}원`,
+              inline: true
+            })
             embed.setImage(
               `https://ssl.pstatic.net/imgfinance/chart/item/area/day/${results.items[0].code}.png`
             )
@@ -774,9 +922,21 @@ export default new BaseCommand(
               .setDescription(
                 `${results.items[0].name} ${quantity}주를 매수했습니다.`
               )
-              .addFields('거래금액', `${comma(total)}원`, true)
-              .addFields('수수료', `${comma(fee)}원 (2%)`, true)
-              .addFields('거래후 잔액', `${comma(user.money - total)}원`, true)
+              .addFields({
+                name: '거래금액',
+                value: `${comma(total)}원`,
+                inline: true
+              })
+              .addFields({
+                name: '수수료',
+                value: `${comma(fee)}원 (2%)`,
+                inline: true
+              })
+              .addFields({
+                name: '거래후 잔액',
+                value: `${comma(user.money - total)}원`,
+                inline: true
+              })
               .setColor('#2f3136')
             return i.update({ embeds: [successEmbed], components: [] })
           } else if (i.customId == 'stock.deny') {
@@ -790,19 +950,19 @@ export default new BaseCommand(
           interaction.editReply({
             embeds: [embed],
             components: [
-              new Discord.ActionRowBuilder()
+              new Discord.ActionRowBuilder<ButtonBuilder>()
                 .addComponents(
                   new Discord.ButtonBuilder()
                     .setCustomId('stock.accept')
                     .setLabel('확인')
-                    .setStyle('SUCCESS')
+                    .setStyle(ButtonStyle.Success)
                     .setDisabled(true)
                 )
                 .addComponents(
                   new Discord.ButtonBuilder()
                     .setCustomId('stock.deny')
                     .setLabel('아니요')
-                    .setStyle('DANGER')
+                    .setStyle(ButtonStyle.Danger)
                     .setDisabled(true)
                 )
             ]
@@ -870,33 +1030,46 @@ export default new BaseCommand(
             result.now * quantity
           )}원)을 매도하시겠습니까?`
         )
-        embed.addFields('현재가', `${comma(result.now)}원`, true)
-        embed.addFields('수수료', `${comma(fee)}원 (2%)`, true)
-        embed.addFields('총계', `${comma(total)}원`, true)
+        embed.addFields({
+          name: '현재가',
+          value: `${comma(result.now)}원`,
+          inline: true
+        })
+        embed.addFields({
+          name: '수수료',
+          value: `${comma(fee)}원 (2%)`,
+          inline: true
+        })
+        embed.addFields({
+          name: '총계',
+          value: `${comma(total)}원`,
+          inline: true
+        })
         embed.setImage(
           `https://ssl.pstatic.net/imgfinance/chart/item/area/day/${results.items[0].code}.png`
         )
-        const row = new Discord.ActionRowBuilder()
+        const row = new Discord.ActionRowBuilder<ButtonBuilder>()
           .addComponents(
             new Discord.ButtonBuilder()
               .setCustomId('stocksell.accept')
               .setLabel('확인')
-              .setStyle('SUCCESS')
+              .setStyle(ButtonStyle.Success)
           )
           .addComponents(
             new Discord.ButtonBuilder()
               .setCustomId('stocksell.deny')
               .setLabel('아니요')
-              .setStyle('DANGER')
+              .setStyle(ButtonStyle.Danger)
           )
         const m = await interaction.editReply({
           embeds: [embed],
           components: [row]
         })
-        // @ts-ignore
+        if (!interaction.channel) return
         const collector = interaction.channel.createMessageComponentCollector({
           time: 10000
         })
+        // @ts-ignore
         collector.on('collect', async (i) => {
           if (i.user.id != interaction.user.id) return
           if (i.customId == 'stocksell.accept') {
@@ -904,9 +1077,21 @@ export default new BaseCommand(
             embed.setDescription(
               `${results.items[0].name} ${quantity}주를 매도했어요!`
             )
-            embed.addFields('현재가', `${comma(result.now)}원`, true)
-            embed.addFields('수수료', `${comma(fee)}원 (2%)`, true)
-            embed.addFields('총계', `${comma(total)}원`, true)
+            embed.addFields({
+              name: '현재가',
+              value: `${comma(result.now)}원`,
+              inline: true
+            })
+            embed.addFields({
+              name: '수수료',
+              value: `${comma(fee)}원 (2%)`,
+              inline: true
+            })
+            embed.addFields({
+              name: '총계',
+              value: `${comma(total)}원`,
+              inline: true
+            })
             embed.setImage(
               `https://ssl.pstatic.net/imgfinance/chart/item/area/day/${results.items[0].code}.png`
             )
@@ -941,9 +1126,21 @@ export default new BaseCommand(
               .setDescription(
                 `${results.items[0].name} ${quantity}주를 매도했습니다.`
               )
-              .addFields('거래금액', `${comma(total)}원`, true)
-              .addFields('수수료', `${comma(fee)}원 (2%)`, true)
-              .addFields('거래후 잔액', `${comma(user.money + total)}원`, true)
+              .addFields({
+                name: '거래금액',
+                value: `${comma(total)}원`,
+                inline: true
+              })
+              .addFields({
+                name: '수수료',
+                value: `${comma(fee)}원 (2%)`,
+                inline: true
+              })
+              .addFields({
+                name: '거래후 잔액',
+                value: `${comma(user.money + total)}원`,
+                inline: true
+              })
               .setColor('#2f3136')
             return i.update({ embeds: [successEmbed], components: [] })
           } else if (i.customId == 'stocksell.deny') {
@@ -957,19 +1154,19 @@ export default new BaseCommand(
           interaction.editReply({
             embeds: [embed],
             components: [
-              new Discord.ActionRowBuilder()
+              new Discord.ActionRowBuilder<ButtonBuilder>()
                 .addComponents(
                   new Discord.ButtonBuilder()
                     .setCustomId('stock.accept')
                     .setLabel('확인')
-                    .setStyle('SUCCESS')
+                    .setStyle(ButtonStyle.Success)
                     .setDisabled(true)
                 )
                 .addComponents(
                   new Discord.ButtonBuilder()
                     .setCustomId('stock.deny')
                     .setLabel('아니요')
-                    .setStyle('DANGER')
+                    .setStyle(ButtonStyle.Danger)
                     .setDisabled(true)
                 )
             ]
@@ -1028,31 +1225,31 @@ export default new BaseCommand(
         embed.setDescription(
           '아래에 있는 명령어로 주식을 사용하실 수 있습니다.'
         )
-        embed.addFields(
-          `\`${config.bot.prefix}주식 목록 (주식명)\``,
-          '> 검색한 주식들의 목록을 확인합니다',
-          true
-        )
-        embed.addFields(
-          `\`${config.bot.prefix}주식 검색 (주식명)\``,
-          '> 검색한 주식의 상세 정보를 확인합니다.',
-          true
-        )
-        embed.addFields(
-          `\`${config.bot.prefix}주식 매수 (개수) (주식명)\``,
-          '> 입력한 주식을 개수만큼 매수합니다.',
-          true
-        )
-        embed.addFields(
-          `\`${config.bot.prefix}주식 매도 (개수) (주식명)\``,
-          '> 입력한 주식을 개수만큼 매도합니다.',
-          true
-        )
-        embed.addFields(
-          `\`${config.bot.prefix}주식 보유\``,
-          '> 보유중인 주식을 확인합니다.',
-          true
-        )
+        embed.addFields({
+          name: `\`${config.bot.prefix}주식 목록 (주식명)\``,
+          value: '> 검색한 주식들의 목록을 확인합니다',
+          inline: true
+        })
+        embed.addFields({
+          name: `\`${config.bot.prefix}주식 검색 (주식명)\``,
+          value: '> 검색한 주식의 상세 정보를 확인합니다.',
+          inline: true
+        })
+        embed.addFields({
+          name: `\`${config.bot.prefix}주식 매수 (개수) (주식명)\``,
+          value: '> 입력한 주식을 개수만큼 매수합니다.',
+          inline: true
+        })
+        embed.addFields({
+          name: `\`${config.bot.prefix}주식 매도 (개수) (주식명)\``,
+          value: '> 입력한 주식을 개수만큼 매도합니다.',
+          inline: true
+        })
+        embed.addFields({
+          name: `\`${config.bot.prefix}주식 보유\``,
+          value: '> 보유중인 주식을 확인합니다.',
+          inline: true
+        })
         return interaction.editReply({
           embeds: [embed]
         })

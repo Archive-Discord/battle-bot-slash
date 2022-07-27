@@ -8,7 +8,7 @@ import {
 import hcsDB from '../../schemas/hcsSchemas'
 import { SlashCommandBuilder } from '@discordjs/builders'
 import Embed from '../../utils/Embed'
-import { ButtonBuilder, ActionRowBuilder } from 'discord.js'
+import { ButtonBuilder, ActionRowBuilder, ButtonStyle } from 'discord.js'
 
 export default new BaseCommand(
   {
@@ -102,10 +102,18 @@ export default new BaseCommand(
         if (login.agreementRequired) {
           await updateAgreement(schoolResult[0].endpoint, login.token)
         }
-        infoEmbed.setAuthor('자가진단 등록')
-        infoEmbed.addFields('이름', name, true)
-        infoEmbed.addFields('생년월일', birthday.toString(), true)
-        infoEmbed.addFields('학교', schoolResult[0].name, true)
+        infoEmbed.setTitle('자가진단 등록')
+        infoEmbed.addFields({ name: '이름', value: name, inline: true })
+        infoEmbed.addFields({
+          name: '생년월일',
+          value: birthday.toString(),
+          inline: true
+        })
+        infoEmbed.addFields({
+          name: '학교',
+          value: schoolResult[0].name,
+          inline: true
+        })
         infoEmbed.setDescription(
           '[개인정보처리방침](https://battlebot.kr/help/privacy)에 따라 아래정보로 등록을 진행합니다 \n 동의하실경우 등록이 진행됩니다'
         )
@@ -113,15 +121,17 @@ export default new BaseCommand(
           new ButtonBuilder()
             .setCustomId('hcs.ok')
             .setLabel('동의')
-            .setStyle('SUCCESS'),
+            .setStyle(ButtonStyle.Success),
           new ButtonBuilder()
             .setCustomId('hcs.none')
             .setLabel('거부')
-            .setStyle('DANGER')
+            .setStyle(ButtonStyle.Danger)
         ]
         await interaction.editReply({
           embeds: [infoEmbed],
-          components: [new ActionRowBuilder().addComponents(buttons)]
+          components: [
+            new ActionRowBuilder<ButtonBuilder>().addComponents(buttons)
+          ]
         })
         const collector = interaction.channel?.createMessageComponentCollector({
           time: 30000

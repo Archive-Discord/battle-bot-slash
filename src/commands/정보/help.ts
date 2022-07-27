@@ -2,7 +2,12 @@ import { SlashCommandBuilder } from '@discordjs/builders'
 import config from '../../../config'
 import { BaseCommand } from '../../structures/Command'
 import Embed from '../../utils/Embed'
-import { ActionRowBuilder, ButtonBuilder, EmbedBuilder } from 'discord.js'
+import {
+  ActionRowBuilder,
+  ButtonBuilder,
+  ButtonStyle,
+  EmbedBuilder
+} from 'discord.js'
 
 export default new BaseCommand(
   {
@@ -14,8 +19,8 @@ export default new BaseCommand(
     let buttton = new ButtonBuilder()
       .setLabel('하트 누르기')
       .setURL('https://koreanbots.dev/bots/928523914890608671/vote')
-      .setStyle('LINK')
-    let row = new ActionRowBuilder().addComponents(buttton)
+      .setStyle(ButtonStyle.Link)
+    let row = new ActionRowBuilder<ButtonBuilder>().addComponents(buttton)
     let embed = new Embed(client, 'success')
       .setTitle(`${client.user?.username} 도움말`)
       .setColor('#2f3136')
@@ -25,11 +30,11 @@ export default new BaseCommand(
         embed.setDescription(
           `아래에 있는 명령어들을 이용해 도움말을 보실 수 있습니다.`
         )
-        embed.addFields(
-          `\`${config.bot.prefix}도움말 ${command}\``,
-          `> ${command}관련 명령어들을 보내드려요!`,
-          true
-        )
+        embed.addFields({
+          name: `\`${config.bot.prefix}도움말 ${command}\``,
+          value: `> ${command}관련 명령어들을 보내드려요!`,
+          inline: true
+        })
       })
       return message.reply({ embeds: [embed], components: [row] })
     } else {
@@ -53,11 +58,11 @@ export default new BaseCommand(
       }
       embed.setDescription(`${args[0]} 관련 도움말 입니다!`)
       commands.forEach((command) => {
-        embed.addFields(
-          `\`${config.bot.prefix}${command.name}\``,
-          `> ${command.description}`,
-          true
-        )
+        embed.addFields({
+          name: `\`${config.bot.prefix}${command.name}\``,
+          value: `> ${command.description}`,
+          inline: true
+        })
       })
       return message.reply({ embeds: [embed], components: [row] })
     }
@@ -80,8 +85,8 @@ export default new BaseCommand(
       let buttton = new ButtonBuilder()
         .setLabel('하트 누르기')
         .setURL('https://koreanbots.dev/bots/928523914890608671/vote')
-        .setStyle('LINK')
-      let row = new ActionRowBuilder().addComponents(buttton)
+        .setStyle(ButtonStyle.Link)
+      let row = new ActionRowBuilder<ButtonBuilder>().addComponents(buttton)
       let embed = new Embed(client, 'success')
         .setColor('#2f3136')
         .setTitle(`${client.user?.username} 도움말`)
@@ -89,11 +94,11 @@ export default new BaseCommand(
         client.categorys.forEach((category, command) => {
           if (command === 'dev') return
           embed.setDescription(`아래에 있는 명령어들을 이용해 도움말을 보세요!`)
-          embed.addFields(
-            `\`/도움말 ${command}\``,
-            `> ${command}관련 명령어들을 보내드려요!`,
-            true
-          )
+          embed.addFields({
+            name: `\`${config.bot.prefix}도움말 ${command}\``,
+            value: `> ${command}관련 명령어들을 보내드려요!`,
+            inline: true
+          })
         })
         return interaction.reply({ embeds: [embed], components: [row] })
       } else {
@@ -126,7 +131,10 @@ export default new BaseCommand(
         } else {
           commands.forEach((command) => {
             if (!command.isSlash) return
-            embed.addFields(`\`/${command.name}\``, `> ${command.description}`)
+            embed.addFields({
+              name: `\`/${command.name}\``,
+              value: `> ${command.description}`
+            })
           })
         }
         return interaction.reply({ embeds: [embed], components: [row] })

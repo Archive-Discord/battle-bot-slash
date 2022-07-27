@@ -90,7 +90,7 @@ export default new BaseCommand(
       await interaction.deferReply({ ephemeral: true })
       let member = interaction.member as GuildMember
       member = interaction.guild?.members.cache.get(member.id) as GuildMember
-      if (!member.permissions.has('MANAGE_CHANNELS'))
+      if (!member.permissions.has('ManageChannels'))
         return interaction.editReply('해당 명령어를 사용할 권한이 없습니다.')
       let reason = interaction.options.getString('사유')
       let user = interaction.options.getUser('user')
@@ -132,12 +132,16 @@ export default new BaseCommand(
           .setColor('#2f3136')
           .setTitle('경고')
           .setDescription('아래와 같이 경고가 삭감되었습니다.')
-          .addFields(
-            '유저',
-            `<@${user?.id}>` + '(' + '`' + user?.id + '`' + ')',
-            true
-          )
-          .addFields('경고 ID', warningID as string, true)
+          .addFields({
+            name: '유저',
+            value: `<@${user?.id}>` + '(' + '`' + user?.id + '`' + ')',
+            inline: true
+          })
+          .addFields({
+            name: '경고 ID',
+            value: warningID as string,
+            inline: true
+          })
         return interaction.editReply({ embeds: [embedRemove] })
       } else if (subcommand === '조회') {
         let warningID = interaction.options.getNumber('페이지')
@@ -170,11 +174,11 @@ export default new BaseCommand(
           .setDescription(
             `${user?.username}님의 ${insertResLength.length}개의 경고중 최근 5개의 경고 기록입니다.`
           )
-          .setFooter(
-            `페이지 - ${warningID ? warningID : 1}/${Math.ceil(
+          .setFooter({
+            text: `페이지 - ${warningID ? warningID : 1}/${Math.ceil(
               insertResLength.length / 5
             )}`
-          )
+          })
           .addFields(warns)
 
         return interaction.editReply({ embeds: [embedList] })

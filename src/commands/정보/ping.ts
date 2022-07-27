@@ -20,13 +20,21 @@ export default new BaseCommand(
     embed = new Embed(client, 'success')
       .setColor('#2f3136')
       .setTitle('PONG!')
-      .addFields(
-        '메세지 응답속도',
-        `${Number(m.createdAt) - Number(message.createdAt)}ms`,
-        true
-      )
-      .addFields('API 반응속도', `${client.ws.ping}ms`, true)
-      .addFields('업타임', `<t:${(Number(client.readyAt) / 1000) | 0}:R>`, true)
+      .addFields({
+        name: '메세지 응답속도',
+        value: `${Number(m.createdAt) - Number(message.createdAt)}ms`,
+        inline: true
+      })
+      .addFields({
+        name: 'API 반응속도',
+        value: `${client.ws.ping}ms`,
+        inline: true
+      })
+      .addFields({
+        name: '업타임',
+        value: `<t:${(Number(client.readyAt) / 1000) | 0}:R>`,
+        inline: true
+      })
 
     m.edit({
       embeds: [embed]
@@ -44,8 +52,16 @@ export default new BaseCommand(
       let PingEmbed = new Embed(client, 'success')
         .setColor('#2f3136')
         .setTitle('핑 측정')
-        .addFields('웹소켓 지연속도', `${client.ws.ping}ms`)
-        .addFields('업타임', `<t:${(Number(client.readyAt) / 1000) | 0}:R>`)
+        .addFields({ name: '웹소켓 지연속도', value: `${client.ws.ping}ms` })
+        .addFields({
+          name: '명령어 응답시간',
+          value: `${(Date.now() - interaction.createdTimestamp) | 0}ms`,
+          inline: true
+        })
+        .addFields({
+          name: '업타임',
+          value: `<t:${(Number(client.readyAt) / 1000) | 0}:R>`
+        })
       interaction.reply({ embeds: [PingEmbed], ephemeral: true })
     }
   }

@@ -71,7 +71,7 @@ export default new BaseCommand(
         embeds: [embed]
       })
     const random = Math.floor(Math.random() * 101)
-    if (random < 50) {
+    if (random < 30) {
       embed = new Embed(client, 'success')
         .setTitle(`❌ 도박 실패`)
         .setDescription(
@@ -79,7 +79,10 @@ export default new BaseCommand(
             money
           )}원**`
         )
-        .addFields('잔액 :', `**${comma(ehqkrduqn.money - money)}원**`)
+        .addFields({
+          name: '잔액 :',
+          value: `**${comma(ehqkrduqn.money - money)}원**`
+        })
         .setColor('#2f3136')
       m.edit({
         embeds: [embed]
@@ -96,7 +99,10 @@ export default new BaseCommand(
       embed = new Embed(client, 'success')
         .setTitle(`⭕ 도박 성공`)
         .setDescription(`도박에 성공하셨습니다. + **${comma(money)}원**`)
-        .addFields('잔액 :', `**${comma(ehqkrduqn.money + money)}원**`)
+        .addFields({
+          name: '잔액 :',
+          value: `**${comma(ehqkrduqn.money + money)}원**`
+        })
         .setColor('#2f3136')
       m.edit({
         embeds: [embed]
@@ -166,7 +172,10 @@ export default new BaseCommand(
               money
             )}원**`
           )
-          .addFields('잔액 :', `**${comma(ehqkrduqn.money - money)}원**`)
+          .addFields({
+            name: '잔액 :',
+            value: `**${comma(ehqkrduqn.money - money)}원**`
+          })
           .setColor('#2f3136')
         interaction.editReply({
           embeds: [embed]
@@ -183,7 +192,10 @@ export default new BaseCommand(
         embed = new Embed(client, 'success')
           .setTitle(`⭕ 도박 성공`)
           .setDescription(`도박에 성공하셨습니다. + **${comma(money)}원**`)
-          .addFields('잔액 :', `**${comma(ehqkrduqn.money + money)}원**`)
+          .addFields({
+            name: '잔액 :',
+            value: `**${comma(ehqkrduqn.money + money)}원**`
+          })
           .setColor('#2f3136')
         interaction.editReply({
           embeds: [embed]

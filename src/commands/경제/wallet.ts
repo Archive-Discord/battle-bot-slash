@@ -40,7 +40,7 @@ export default new BaseCommand(
     embed = new Embed(client, 'success')
       .setTitle(`${user.tag}님의 잔액`)
       .setDescription(`유저님의 잔액은 아래와 같습니다.`)
-      .addFields('잔액 :', `**${comma(wjdqh.money)}원**`)
+      .addFields({ name: '잔액 :', value: `**${comma(wjdqh.money)}원**` })
       .setColor('#2f3136')
     m.edit({
       embeds: [embed]
@@ -89,7 +89,7 @@ export default new BaseCommand(
       embed = new Embed(client, 'success')
         .setTitle(`${user.tag}님의 잔액`)
         .setDescription(`유저님의 잔액은 아래와 같습니다.`)
-        .addFields('잔액 :', `**${comma(wjdqh.money)}원**`)
+        .addFields({ name: '잔액 :', value: `**${comma(wjdqh.money)}원**` })
         .setColor('#2f3136')
       interaction.editReply({
         embeds: [embed]
