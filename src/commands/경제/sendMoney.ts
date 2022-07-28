@@ -70,7 +70,7 @@ export default new BaseCommand(
       })
     embed = new Embed(client, 'error')
       .setTitle(`❌ 에러 발생`)
-      .setDescription('1')
+      .setDescription('1000원 이상부터 송금이 가능합니다.')
       .setTimestamp()
       .setColor('#2f3136')
     if (betting < 1000)
