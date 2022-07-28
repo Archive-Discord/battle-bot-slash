@@ -1,4 +1,3 @@
-import { SlashCommandBuilder } from '@discordjs/builders'
 import config from '../../../config'
 import { BaseCommand } from '../../structures/Command'
 import Embed from '../../utils/Embed'
@@ -6,7 +5,7 @@ import {
   ActionRowBuilder,
   ButtonBuilder,
   ButtonStyle,
-  EmbedBuilder
+  SlashCommandBuilder
 } from 'discord.js'
 
 export default new BaseCommand(
@@ -74,6 +73,7 @@ export default new BaseCommand(
         option
           .setName('category')
           .setDescription('카테고리를 적어주세요')
+          .setAutocomplete(true)
           .setRequired(false)
       )
       .setDescription('봇의 도움말을 보여줍니다'),

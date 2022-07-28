@@ -1,4 +1,4 @@
-import { ChannelType } from 'discord.js'
+import { ChannelType, InteractionType } from 'discord.js'
 import ButtonManager from '../managers/ButtonManager'
 import CommandManager from '../managers/CommandManager'
 import ErrorManager from '../managers/ErrorManager'
@@ -42,6 +42,21 @@ export default new Event('interactionCreate', async (client, interaction) => {
       //await interaction.deferReply().catch(() => { })
     } catch (error: any) {
       errorManager.report(error, { executer: interaction, isSend: true })
+    }
+  }
+
+  if (interaction.type === InteractionType.ApplicationCommandAutocomplete) {
+    if (interaction.commandName === '도움말') {
+      const focusedValue = interaction.options.getFocused()
+      const choices = client.categorys
+
+      const filtered = choices.filter((command, choice) =>
+        choice.startsWith(focusedValue)
+      )
+
+      await interaction.respond(
+        filtered.map((command, choice) => ({ name: choice, value: choice }))
+      )
     }
   }
 })

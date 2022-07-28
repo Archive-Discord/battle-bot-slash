@@ -34,7 +34,7 @@
     "cors": "^2.8.5",
     "dayjs": "^1.11.4",
     "discord.js": "^14.0.3",
-    "dokdo": "pikokr/dokdo#v14",
+    "dokdo": "Archive-Discord/dokdo",
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
     "fs": "^0.0.1-security",

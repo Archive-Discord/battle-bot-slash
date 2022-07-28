@@ -1,4 +1,4 @@
-import { ApplicationCommandDataResolvable } from 'discord.js'
+import { ApplicationCommandDataResolvable, Routes } from 'discord.js'
 import { BaseCommand, Command, SlashCommand } from '../../typings/structures'
 
 import Logger from '../utils/Logger'
@@ -7,6 +7,7 @@ import fs from 'fs'
 import path from 'path'
 import BotClient from '../structures/BotClient'
 import config from '../../config'
+import { REST } from '@discordjs/rest'
 
 export default class CommandManager extends BaseManager {
   private logger = new Logger('CommandManager')
@@ -124,13 +125,12 @@ export default class CommandManager extends BaseManager {
     guildID: string
   ): Promise<ApplicationCommandDataResolvable[] | undefined> {
     this.logger.scope = 'CommandManager: SlashSetup'
+    const rest = new REST().setToken(this.client.token!)
 
     const slashCommands: any[] = []
     this.client.commands.forEach((command: BaseCommand) => {
       if (this.isSlash(command)) {
-        slashCommands.push(
-          command.slash ? command.slash?.data.toJSON() : command.data.toJSON()
-        )
+        slashCommands.push(command.slash ? command.slash?.data : command.data)
       }
     })
 
@@ -138,37 +138,35 @@ export default class CommandManager extends BaseManager {
       this.logger.warn('guildID not gived switching global command...')
       this.logger.debug(`Trying ${this.client.guilds.cache.size} guild(s)`)
 
-      for (const command of slashCommands) {
-        const commands = await this.client.application?.commands.fetch()
-        const cmd = commands?.find((cmd) => cmd.name === command.name)
-        if (!cmd) {
-          await this.client.application?.commands
-            .create(command)
-            .then((guilds) =>
-              this.logger.info(
-                `Succesfully created command ${command.name} at guild`
-              )
-            )
-        }
-      }
+      await rest
+        // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
+        .put(Routes.applicationCommands(this.client.application?.id!), {
+          body: slashCommands
+        })
+        .then(() =>
+          this.logger.info(
+            `Successfully registered application global commands.`
+          )
+        )
     } else {
       this.logger.info(`Slash Command requesting ${guildID}`)
 
-      const guild = this.client.guilds.cache.get(guildID)
-
-      for (const command of slashCommands) {
-        const commands = await guild?.commands.fetch()
-        const cmd = commands?.find((cmd) => cmd.name === command.name)
-        if (!cmd) {
-          await guild?.commands
-            .create(command)
-            .then((guild) =>
-              this.logger.info(
-                `Succesfully created command ${command.name} at ${guild.name} guild`
-              )
-            )
-        }
-      }
+      await rest
+        // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
+        .put(
+          Routes.applicationGuildCommands(
+            this.client.application?.id!,
+            guildID
+          ),
+          {
+            body: slashCommands
+          }
+        )
+        .then(() =>
+          this.logger.info(
+            `Successfully registered server ${guildID} server commands.`
+          )
+        )
 
       return slashCommands
     }
@@ -176,6 +174,7 @@ export default class CommandManager extends BaseManager {
 
   public async slashGlobalCommandSetup(): Promise<void> {
     this.logger.scope = 'CommandManager: SlashGlobalSetup'
+    const rest = new REST().setToken(this.client.token!)
 
     const slashCommands: any[] = []
     this.client.commands.forEach((command: BaseCommand) => {
@@ -194,24 +193,32 @@ export default class CommandManager extends BaseManager {
         const supportGuild = this.client.guilds.cache.get(
           config.devGuild.guildID
         )
-        await supportGuild?.commands
-          .create(command)
+        await rest
+          .put(
+            Routes.applicationGuildCommands(
+              this.client.application?.id!,
+              config.devGuild.guildID
+            ),
+            { body: [command] }
+          )
           .then(() => {
             this.logger.info(
-              `Succesfully created Developer command ${command.name} at ${supportGuild.name} guild`
+              `Succesfully created Developer command ${command.name} at ${supportGuild?.name} guild`
             )
           })
           .catch((e) => {
             console.log(e)
             this.logger.error(
-              `Error created Developer command ${command.name} at ${supportGuild.name} guild`
+              `Error created Developer command ${command.name} at ${supportGuild?.name} guild`
             )
           })
         return
       }
       if (!cmd) {
-        await this.client.application?.commands
-          .create(command)
+        await rest
+          .put(Routes.applicationCommands(this.client.application?.id!), {
+            body: [command]
+          })
           .then((guilds) =>
             this.logger.info(
               `Succesfully created command ${command.name} at ${guilds} guild`

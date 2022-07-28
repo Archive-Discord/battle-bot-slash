@@ -1005,7 +1005,7 @@ __metadata:
     cors: ^2.8.5
     dayjs: ^1.11.4
     discord.js: ^14.0.3
-    dokdo: "pikokr/dokdo#v14"
+    dokdo: Archive-Discord/dokdo
     dotenv: ^16.0.1
     eslint: ^8.20.0
     eslint-config-prettier: ^8.5.0
@@ -1708,14 +1708,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dokdo@pikokr/dokdo#v14":
+dokdo@Archive-Discord/dokdo:
   version: 0.5.1
-  resolution: "dokdo@https://github.com/pikokr/dokdo.git#commit=e30fc228fdccf7b1ae5ba83ec77f2ae8d4f609d5"
+  resolution: "dokdo@https://github.com/Archive-Discord/dokdo.git#commit=3429b70e27efabac8537ad20db0826adc033340c"
   dependencies:
     node-fetch: ^2.6.1
   peerDependencies:
     discord.js: ^14.0.2
-  checksum: e1c0fb765f574572dea95d1ee39b1108cd608a28578d46c37afe2b8631ed9a5601e79e327c38e0c88b5b5c79373bc9cee142588618ea90be776223d1e3a7b633
+  checksum: f42c7a7308026b650b9fff3de990ad47b9393dfe02974aa0b9eab589c33c8e4342fd31aaec221a1729ce52eab2888883c903d4cb136041d31ec9c276c4239d60
   languageName: node
   linkType: hard
 

@@ -14,18 +14,20 @@ export default class Embed extends EmbedBuilder {
     }
 
     super(EmbedJSON)
-    if (type === 'success') this.setColor('#57F287')
-    else if (type === 'error') this.setColor('#ED4245')
-    else if (type === 'warn') this.setColor('#FEE75C')
-    else if (type === 'info') this.setColor('#5865F2')
-    else if (type === 'default') this.setColor('#5865F2')
+
+    this.setColor(typeToColor(type))
   }
 
   setType(type: EmbedType) {
-    if (type === 'success') this.setColor('#57F287')
-    else if (type === 'error') this.setColor('#ED4245')
-    else if (type === 'warn') this.setColor('#FEE75C')
-    else if (type === 'info') this.setColor('#5865F2')
-    else if (type === 'default') this.setColor('#5865F2')
+    this.setColor(typeToColor(type))
   }
+}
+
+export function typeToColor(type: EmbedType) {
+  if (type === 'success') return '#57F287'
+  else if (type === 'error') return '#ED4245'
+  else if (type === 'warn') return '#FEE75C'
+  else if (type === 'info') return '#5865F2'
+  else if (type === 'default') return '#5865F2'
+  else return '#5865F2'
 }
