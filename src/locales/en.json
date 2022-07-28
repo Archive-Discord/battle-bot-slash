@@ -3,5 +3,12 @@
     "hello": {
       "world": "Hello World"
     }
+  },
+  "commands": {
+    "ping": {
+      "loading": {
+        "title": "Pinging..."
+      }
+    }
   }
 }

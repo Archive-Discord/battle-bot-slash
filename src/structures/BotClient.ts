@@ -17,6 +17,8 @@ import { Model } from 'mongoose'
 import { config as dotenvConfig } from 'dotenv'
 import ButtonManager from '../managers/ButtonManager'
 import web from '../server'
+import i18nManager from '../managers/i18nManager'
+import { i18n } from 'i18next'
 
 const logger = new Logger('bot')
 
@@ -43,6 +45,7 @@ export default class BotClient extends Client {
   public event: EventManager = new EventManager(this)
   public error: ErrorManager = new ErrorManager(this)
   public database: DatabaseManager = new DatabaseManager(this)
+  public i18n: i18n = new i18nManager(this).i18n
 
   public constructor(options: ClientOptions) {
     super(options)

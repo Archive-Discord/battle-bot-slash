@@ -11,7 +11,7 @@ export default new BaseCommand(
   },
   async (client, message, args) => {
     let embed = new Embed(client, 'warn')
-      .setTitle('핑 측정중...')
+      .setTitle(client.i18n.t('commands.ping.loading.title'))
       .setColor('#2f3136')
 
     let m = await message.reply({
@@ -19,19 +19,19 @@ export default new BaseCommand(
     })
     embed = new Embed(client, 'success')
       .setColor('#2f3136')
-      .setTitle('PONG!')
+      .setTitle(client.i18n.t('commands.ping.title'))
       .addFields({
-        name: '메세지 응답속도',
+        name: client.i18n.t('commands.ping.fields.message'),
         value: `${Number(m.createdAt) - Number(message.createdAt)}ms`,
         inline: true
       })
       .addFields({
-        name: 'API 반응속도',
+        name: client.i18n.t('commands.ping.fields.api'),
         value: `${client.ws.ping}ms`,
         inline: true
       })
       .addFields({
-        name: '업타임',
+        name: client.i18n.t('commands.ping.fields.uptime'),
         value: `<t:${(Number(client.readyAt) / 1000) | 0}:R>`,
         inline: true
       })
@@ -51,15 +51,18 @@ export default new BaseCommand(
     async execute(client, interaction) {
       let PingEmbed = new Embed(client, 'success')
         .setColor('#2f3136')
-        .setTitle('핑 측정')
-        .addFields({ name: '웹소켓 지연속도', value: `${client.ws.ping}ms` })
+        .setTitle(client.i18n.t('commands.ping.title'))
         .addFields({
-          name: '명령어 응답시간',
+          name: client.i18n.t('commands.ping.fields.api'),
+          value: `${client.ws.ping}ms`
+        })
+        .addFields({
+          name: client.i18n.t('commands.ping.fields.message'),
           value: `${(Date.now() - interaction.createdTimestamp) | 0}ms`,
           inline: true
         })
         .addFields({
-          name: '업타임',
+          name: client.i18n.t('commands.ping.fields.uptime'),
           value: `<t:${(Number(client.readyAt) / 1000) | 0}:R>`
         })
       interaction.reply({ embeds: [PingEmbed], ephemeral: true })

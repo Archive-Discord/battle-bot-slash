@@ -1,5 +1,4 @@
 import i18next, { i18n } from 'i18next'
-import Backend from 'i18next-fs-backend'
 import BotClient from '../structures/BotClient'
 import Logger from '../utils/Logger'
 
@@ -17,7 +16,7 @@ export default class i18nManager {
     this.i18n.on('initialized', async (lang) => {
       this.logger.info('Succesfully loaded i18n.')
     })
-    await i18next.use(Backend).init(this.client.config.i18n.options)
+    await i18next.init(this.client.config.i18n.options)
 
     const en = await this.i18n.changeLanguage('en')
 

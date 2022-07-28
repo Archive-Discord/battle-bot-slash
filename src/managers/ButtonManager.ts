@@ -16,7 +16,7 @@ export default class ButtonManager extends BaseManager {
   }
 
   public load(buttonPath: string = path.join(__dirname, '../buttons')): void {
-    this.logger.debug('Loading buttons...')
+    this.logger.info('Loading buttons...')
 
     const buttonFolder = fs.readdirSync(buttonPath)
 
@@ -41,17 +41,15 @@ export default class ButtonManager extends BaseManager {
 
               this.buttons.set(button.data.name ?? button.name, button)
 
-              this.logger.debug(`Loaded Button ${button.name}`)
+              this.logger.debug(
+                `Loaded Button ${button.data.name ?? button.name}`
+              )
             } catch (error: any) {
               this.logger.error(
                 `Error loading button '${buttonFile}'.\n` + error.stack
               )
             } finally {
-              this.logger.debug(
-                `Succesfully loaded buttons. count: ${this.buttons.size}`
-              )
-              // eslint-disable-next-line no-unsafe-finally
-              return this.buttons
+              this.logger.debug(`Loaded buttons. count: ${this.buttons.size}`)
             }
           })
         } catch (error: any) {
@@ -60,6 +58,9 @@ export default class ButtonManager extends BaseManager {
           )
         }
       })
+      this.logger.info(
+        `Succesfully loaded buttons. count: ${this.buttons.size}`
+      )
     } catch (error: any) {
       this.logger.error('Error fetching folder list.\n' + error.stack)
     }

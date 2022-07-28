@@ -21,7 +21,7 @@ export default class CommandManager extends BaseManager {
   }
 
   public load(commandPath: string = path.join(__dirname, '../commands')): void {
-    this.logger.debug('Loading commands...')
+    this.logger.info('Loading commands...')
 
     const commandFolder = fs.readdirSync(commandPath)
 
@@ -66,11 +66,7 @@ export default class CommandManager extends BaseManager {
                 `Error loading command '${commandFile}'.\n` + error.stack
               )
             } finally {
-              this.logger.debug(
-                `Succesfully loaded commands. count: ${this.commands.size}`
-              )
-              // eslint-disable-next-line no-unsafe-finally
-              return this.commands
+              this.logger.debug(`Loaded commands. count: ${this.commands.size}`)
             }
           })
         } catch (error: any) {
@@ -79,6 +75,9 @@ export default class CommandManager extends BaseManager {
           )
         }
       })
+      this.logger.info(
+        `Succesfully loaded commands. count: ${this.commands.size}`
+      )
     } catch (error: any) {
       this.logger.error('Error fetching folder list.\n' + error.stack)
     }

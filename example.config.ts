@@ -91,9 +91,14 @@ let config: IConfig = {
       debug: false,
       lng: 'ko',
       resources: {
-        ko,
-        en
-      }
+        ko: {
+          translation: ko
+        },
+        en: {
+          translation: en
+        }
+      },
+      fallbackLng: ['ko', 'en']
     }
   }
 }

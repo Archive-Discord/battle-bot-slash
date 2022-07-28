@@ -27,4 +27,5 @@ event.load(path.join(__dirname, 'events'))
 button.load(path.join(__dirname, 'buttons'))
 database.load()
 i18n.load()
+
 client.start(config.bot.token)

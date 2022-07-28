@@ -3,5 +3,18 @@
     "hello": {
       "world": "헬로 월드"
     }
+  },
+  "commands": {
+    "ping": {
+      "loading": {
+        "title": "핑 측정중..."
+      },
+      "title": "Pong!",
+      "fields": {
+        "message": "메세지 응답속도",
+        "api": "API 응답속도",
+        "uptime": "업타임"
+      }
+    }
   }
 }
