@@ -15,7 +15,7 @@ export default new BaseCommand(
     let embed = new Embed(client, 'error')
       .setTitle(`❌ 에러 발생`)
       .setDescription(
-        '해당 명령어는 슬래쉬 커맨드 ( / )로만 사용이 가능합니다.'
+        client.i18n.t('commands.game.error.description.slashcommand')
       )
     return message.reply({ embeds: [embed] })
   },
