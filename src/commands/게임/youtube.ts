@@ -13,10 +13,8 @@ export default new BaseCommand(
   },
   async (client, message, args) => {
     let embed = new Embed(client, 'error')
-      .setTitle(`❌ 에러 발생`)
-      .setDescription(
-        client.i18n.t('commands.game.error.description.slashcommand')
-      )
+      .setTitle(client.i18n.t('main.error.title'))
+      .setDescription(client.i18n.t('main.error.slashcommand'))
     return message.reply({ embeds: [embed] })
   },
   {
@@ -29,27 +27,35 @@ export default new BaseCommand(
       isSlash: true
     },
     async execute(client, interaction) {
-      const embed = new Embed(client, 'error').setTitle(`❌ 에러 발생`)
+      const embed = new Embed(client, 'error')
+        .setTitle(client.i18n.t('main.error.title'))
+        .setColor('#2f3136')
       const embedSuccess = new Embed(client, 'success')
-        .setTitle(`유튜브`)
+        .setTitle(client.i18n.t('commands.youtube.title'))
         .setColor('#2f3136')
       const guild = interaction.guild
       if (!guild) {
-        embed.setDescription('이 명령어는 서버에서만 사용이 가능합니다.')
+        embed.setDescription(
+          client.i18n.t('commands.game.error.description.server')
+        )
         return interaction.reply({ embeds: [embed], ephemeral: true })
       }
       const member = guild.members.cache.get(interaction.user.id)
       if (!member) {
-        embed.setDescription('서버에서 유저를 찾지 못했습니다.')
+        embed.setDescription(
+          client.i18n.t('commands.game.error.description.member')
+        )
         return interaction.reply({ embeds: [embed], ephemeral: true })
       }
       if (!member.voice || !member.voice.channel) {
-        embed.setDescription(`먼저 음성채널에 입장해주세요.`)
+        embed.setDescription(
+          client.i18n.t('commands.game.error.description.voice')
+        )
         return interaction.reply({ embeds: [embed], ephemeral: true })
       }
       if (member.voice.channel.type === ChannelType.GuildStageVoice) {
         embed.setDescription(
-          `스테이지 채널에서는 이 명령어를 사용할 수 없습니다.`
+          client.i18n.t('commands.game.error.description.stage')
         )
         return interaction.reply({ embeds: [embed], ephemeral: true })
       }
@@ -68,11 +74,13 @@ export default new BaseCommand(
         }
       )) as Invite
       if (!invite) {
-        embed.setDescription(`초대코드를 생성하지 못했습니다.`)
+        embed.setDescription(
+          client.i18n.t('commands.game.error.description.invite')
+        )
         return interaction.reply({ embeds: [embed], ephemeral: true })
       }
       embedSuccess.setDescription(
-        `성공적으로 유튜브같이 보기가 생성되었습니다.\n**초대코드가 활성화 되지 않을 경우 링크를 눌러주세요.**`
+        client.i18n.t('commands.youtube.description.invite')
       )
       return interaction.reply({
         embeds: [embedSuccess],

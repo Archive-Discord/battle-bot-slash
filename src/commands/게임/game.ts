@@ -14,10 +14,8 @@ export default new BaseCommand(
   },
   async (client, message, args) => {
     let embed = new Embed(client, 'error')
-      .setTitle(client.i18n.t('commands.game.error.title.error'))
-      .setDescription(
-        client.i18n.t('commands.game.error.description.slashcommand')
-      )
+      .setTitle(client.i18n.t('main.error.title'))
+      .setDescription(client.i18n.t('main.error.slashcommand'))
       .setColor('#2f3136')
     return message.reply({ embeds: [embed] })
   },
@@ -45,7 +43,7 @@ export default new BaseCommand(
     },
     async execute(client, interaction) {
       const embed = new Embed(client, 'error')
-        .setTitle(client.i18n.t('commands.game.error.title.error'))
+        .setTitle(client.i18n.t('main.error.title'))
         .setColor('#2f3136')
       const embedSuccess = new Embed(client, 'success')
         .setTitle(client.i18n.t('commands.game.title'))
