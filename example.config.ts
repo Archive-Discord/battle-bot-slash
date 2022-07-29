@@ -35,7 +35,7 @@ let config: IConfig = {
   bot: {
     sharding: false,
     options: {
-      intents: [32767],
+      intents: [130815],
       allowedMentions: { parse: ['users', 'roles'], repliedUser: false }
     },
     token: '',
