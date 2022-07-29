@@ -1,3 +1,5 @@
+import ko from './src/locales/ko.json'
+import en from './src/locales/en.json'
 import { IConfig } from './typings'
 import fs from 'fs'
 
