@@ -22,7 +22,7 @@ export default new ButtonInteraction(
     })
     if (!VerifySettingDB)
       return interaction.editReply('찾을 수 없는 서버 정보입니다')
-    if (VerifySettingDB.type === 'default') {
+    if (VerifySettingDB.type === 'any') {
       const captcha = captchaCreate()
       const captchaEmbed = new Embed(client, 'info')
         .setTitle('인증')
@@ -82,7 +82,7 @@ export default new ButtonInteraction(
             .setColor('#2f3136')
           return interaction.editReply({ embeds: [captchaTimeout] })
         })
-    } else if (VerifySettingDB.type === 'captcha') {
+    } else if (VerifySettingDB.type === 'captcha' || VerifySettingDB.type === 'default') {
       const token = anyid()
         .encode('Aa0')
         .bits(48 * 8)
