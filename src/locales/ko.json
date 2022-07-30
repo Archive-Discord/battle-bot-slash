@@ -68,8 +68,8 @@
           "fail": "❌ 도박 실패"
         },
         "description": {
-          "success": "도박에 성공하셨습니다. + **${comma(money)}원**",
-          "fail": "도박에 실패하셨습니다. 돈은 제가 가져가겠습니다. - **${comma(money)}원**"
+          "success": "도박에 성공하셨습니다. + **{money}원**",
+          "fail": "도박에 실패하셨습니다. 돈은 제가 가져가겠습니다. - **{money}원**"
         },
         "fields": {
           "name": "잔액 :",

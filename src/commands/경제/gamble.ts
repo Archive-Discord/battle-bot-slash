@@ -12,7 +12,9 @@ export default new BaseCommand(
     aliases: ['도박', 'ehqkr']
   },
   async (client, message, args) => {
-    let embed = new Embed(client, 'warn').setTitle('생각하는 중...')
+    let embed = new Embed(client, 'warn').setTitle(
+      client.i18n.t('commands.gamble.loading')
+    )
 
     let m = await message.reply({
       embeds: [embed]
@@ -21,10 +23,8 @@ export default new BaseCommand(
       userid: message.author.id
     })
     embed = new Embed(client, 'error')
-      .setTitle(`❌ 에러 발생`)
-      .setDescription(
-        '계좌가 생성되어있지 않습니다. !돈받기 입력 부탁드립니다.'
-      )
+      .setTitle(client.i18n.t('main.error.title'))
+      .setDescription(client.i18n.t('commands.gamble.error.account'))
       .setTimestamp()
       .setColor('#2f3136')
     if (!ehqkrduqn)
@@ -32,8 +32,8 @@ export default new BaseCommand(
         embeds: [embed]
       })
     embed = new Embed(client, 'error')
-      .setTitle(`❌ 에러 발생`)
-      .setDescription('도박하실 돈의 양이 입력되지 않았습니다.')
+      .setTitle(client.i18n.t('main.error.title'))
+      .setDescription(client.i18n.t('commands.gamble.error.scanmoney'))
       .setTimestamp()
       .setColor('#2f3136')
     if (!args[0])
@@ -41,8 +41,8 @@ export default new BaseCommand(
         embeds: [embed]
       })
     embed = new Embed(client, 'error')
-      .setTitle(`❌ 에러 발생`)
-      .setDescription('금액은 자연수만 입력해주세요.')
+      .setTitle(client.i18n.t('main.error.title'))
+      .setDescription(client.i18n.t('commands.gamble.error.int'))
       .setTimestamp()
       .setColor('#2f3136')
     if (args.join(' ').includes('-'))
@@ -51,8 +51,8 @@ export default new BaseCommand(
       })
     const money = parseInt(args[0])
     embed = new Embed(client, 'error')
-      .setTitle(`❌ 에러 발생`)
-      .setDescription('1000원 이상부터 도박이 가능합니다.')
+      .setTitle(client.i18n.t('main.error.title'))
+      .setDescription(client.i18n.t('commands.gamble.error.toolow'))
       .setTimestamp()
       .setColor('#2f3136')
     if (money < 1000)
@@ -73,11 +73,11 @@ export default new BaseCommand(
     const random = Math.floor(Math.random() * 101)
     if (random < 30) {
       embed = new Embed(client, 'success')
-        .setTitle(`❌ 도박 실패`)
+        .setTitle(client.i18n.t('main.error.title'))
         .setDescription(
-          `도박에 실패하셨습니다. 돈은 제가 가져가겠습니다. - **${comma(
-            money
-          )}원**`
+          client.i18n.t('commands.gamble.success.description.fail', {
+            money: comma(money)
+          })
         )
         .addFields({
           name: '잔액 :',
@@ -98,7 +98,11 @@ export default new BaseCommand(
     } else {
       embed = new Embed(client, 'success')
         .setTitle(`⭕ 도박 성공`)
-        .setDescription(`도박에 성공하셨습니다. + **${comma(money)}원**`)
+        .setDescription(
+          client.i18n.t('commands.gamble.success.description.success', {
+            money: comma(money)
+          })
+        )
         .addFields({
           name: '잔액 :',
           value: `**${comma(ehqkrduqn.money + money)}원**`
