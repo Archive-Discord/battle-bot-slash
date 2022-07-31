@@ -1009,8 +1009,9 @@ __metadata:
     mongoose: ^6.4.7
     node-cache: ^5.1.2
     node-schedule: ^2.1.0
-    nodemailer: ^6.7.7
-    prettier: ^2.7.1
+    nodemailer: ^6.7.2
+    opusscript: ^0.0.8
+    prettier: ^2.5.1
     randomstring: ^1.2.2
     request: ^2.88.2
     request-promise: ^4.2.6
@@ -3628,6 +3629,27 @@ dokdo@Archive-Discord/dokdo:
     type-check: ^0.4.0
     word-wrap: ^1.2.3
   checksum: dbc6fa065604b24ea57d734261914e697bd73b69eff7f18e967e8912aa2a40a19a9f599a507fa805be6c13c24c4eae8c71306c239d517d42d4c041c942f508a0
+  languageName: node
+  linkType: hard
+
+"opusscript@npm:^0.0.8":
+  version: 0.0.8
+  resolution: "opusscript@npm:0.0.8"
+  checksum: 0c3175a4013f5bd4578ae06f906573717ab5570d6013a15796273fb375f083530073374add3838fa944afbe242740fd27053629f7796a208d7e8be14674ba147
+  languageName: node
+  linkType: hard
+
+"ow@npm:^0.27.0":
+  version: 0.27.0
+  resolution: "ow@npm:0.27.0"
+  dependencies:
+    "@sindresorhus/is": ^4.0.1
+    callsites: ^3.1.0
+    dot-prop: ^6.0.1
+    lodash.isequal: ^4.5.0
+    type-fest: ^1.2.1
+    vali-date: ^1.0.0
+  checksum: bffd6fa43d004163bab9821fae4d2eceee92d70059ba2a5dca1ad7497cd167554224a7efab3d41476112fbab4714afa99b8866506e8b9bad5d690cf967146332
   languageName: node
   linkType: hard
 
