@@ -117,7 +117,7 @@
           "archive": "아카이브에 있는 배틀이 봇의 하트가 아직 눌려있지 않습니다.",
           "successkbl": "{message.author.username}님의 한국 디스코드 리스트에 있는 배틀이 봇의 하트인증이 완료되었습니다.",
           "successac": "{message.author.username}님의 아카이브에 있는 배틀이 봇의 하트인증이 완료되었습니다.",
-          "later": "{later} 뒤에 다시 인증해주세요!"
+          "later": "{{later}} 뒤에 다시 인증해주세요!"
         },
         "button": {
           "koreanbotslist": "한디리 인증",

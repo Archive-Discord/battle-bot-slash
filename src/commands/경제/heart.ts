@@ -209,12 +209,18 @@ export default new BaseCommand(
               } else {
                 embed = new Embed(client, 'success')
                   .setTitle(client.i18n.t('commands.heart.success.title.fail'))
+                  /*
                   .setDescription(
                     `${DateFormatting._format(
                       res.data.data.lastLike + 24 * 60 * 60 * 1000,
                       'R'
                     )} 뒤에 다시 인증해주세요!`
-                  )
+                  )*/
+                  .setDescription(
+                    client.i18n.t('commands.heart.success.description.later', {
+                      later: { DateFormatting._format(res.data.data.lastLike + 24 * 60 * 60 * 1000, 'R'), },
+                    }),
+                  ),
                   .setTimestamp()
                   .setColor('#2f3136')
                 i.reply({
