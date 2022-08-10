@@ -31,14 +31,14 @@ export default new BaseCommand(
       const keyword = args.slice(1).join(' ')
       const results = await searchStockList(keyword)
       if (!results || results?.items.length == 0) {
-        embed.setTitle(`❌ 에러 발생`)
-        embed.setDescription('검색 결과가 없습니다.')
+        embed.setTitle(client.i18n.t('main.error.title'))
+        embed.setDescription(client.i18n.t('commands.stock.nosearch'))
         return message.reply({ embeds: [embed] })
       }
       const result = await searchStock(results.items[0].code)
       if (!result) {
-        embed.setTitle(`❌ 에러발생`)
-        embed.setDescription('검색 결과가 없습니다.')
+        embed.setTitle(client.i18n.t('main.error.title'))
+        embed.setDescription(client.i18n.t('commands.stock.nosearch'))
         return message.reply({ embeds: [embed] })
       }
       embed.setTitle(`${results.items[0].name} (${results.items[0].code})`)
@@ -101,25 +101,27 @@ export default new BaseCommand(
       const keyword = args.slice(2).join(' ')
       const quantity = parseInt(args[1])
       if (!quantity) {
-        embed.setDescription(`매수하실 주식의 수량을 숫자만 입력해주세요.`)
+        embed.setDescription(client.i18n.t('commands.stock.intbuy'))
         return message.reply({ embeds: [embed] })
       }
       if (quantity < 1) {
-        embed.setDescription(
-          `매수하실 주식의 수량은 1이상의 숫자만 입력해주세요.`
-        )
+        embed.setDescription(client.i18n.t('commands.stock.up1buy'))
         return message.reply({ embeds: [embed] })
       }
       const results = await searchStockList(keyword)
       if (!results || results?.items.length == 0) {
-        embed.setTitle(`❌ 에러 발생`)
-        embed.setDescription(`${keyword} 검색 결과가 없습니다.`)
+        embed.setTitle(client.i18n.t('main.error.title'))
+        embed.setDescription(
+          client.i18n.t('commands.stock.nosearchkeyword', { keyword: keyword })
+        )
         return message.reply({ embeds: [embed] })
       }
       const result = await searchStock(results.items[0].code)
       if (!result) {
-        embed.setTitle(`❌ 에러 발생`)
-        embed.setDescription(`${keyword} 검색 결과가 없습니다.`)
+        embed.setTitle(client.i18n.t('main.error.title'))
+        embed.setDescription(
+          client.i18n.t('commands.stock.nosearchkeyword', { keyword: keyword })
+        )
         return message.reply({ embeds: [embed] })
       }
       const price = result.now * quantity
@@ -127,14 +129,17 @@ export default new BaseCommand(
       const total = price + fee
       const user = await Schema.findOne({ userid: message.author.id })
       if (!user) {
-        embed.setTitle(`❌ 에러 발생`)
+        embed.setTitle(client.i18n.t('main.error.title'))
         embed.setDescription(
-          `등록되어 있지 않은 유저인 거 같습니다. 먼저 \`${config.bot.prefix}돈받기\` 명령어로 등록을 해주세요.`
+          client.i18n.t(`commands.stock.noaccount`, {
+            prefix: config.bot.prefix,
+            y: '`'
+          })
         )
         return message.reply({ embeds: [embed] })
       }
       if (user.money < total) {
-        embed.setTitle(`❌ 에러 발생`)
+        embed.setTitle(client.i18n.t('main.error.title'))
         embed.setDescription(
           `${comma(total - user.money)}원이 부족합니다.\n잔액은 ${comma(
             user.money
@@ -260,7 +265,7 @@ export default new BaseCommand(
             )
           }
           const successEmbed = new Embed(client, 'success')
-            .setTitle(`⭕ 매수 완료`)
+            .setTitle(client.i18n.t('commands.stock.success'))
             .setDescription(
               `${results.items[0].name} ${quantity}주를 매수했습니다.`
             )
@@ -282,8 +287,8 @@ export default new BaseCommand(
             .setColor('#2f3136')
           return i.update({ embeds: [successEmbed], components: [] })
         } else if (i.customId == 'stock.deny') {
-          embed.setTitle(`❌ 매수 취소`)
-          embed.setDescription(`매수를 취소하였습니다.`)
+          embed.setTitle(client.i18n.t('commands.stock.canceltitle'))
+          embed.setDescription(client.i18n.t('commands.stock.cancel'))
           return i.update({ embeds: [embed], components: [] })
         }
       })
@@ -314,12 +319,12 @@ export default new BaseCommand(
       const keyword = args.slice(2).join(' ')
       const quantity = parseInt(args[1])
       if (!quantity) {
-        embed.setTitle(`❌ 에러 발생`)
+        embed.setTitle(client.i18n.t('main.error.title'))
         embed.setDescription(`매도하실 주식의 수량을 숫자만 입력해주세요.`)
         return message.reply({ embeds: [embed] })
       }
       if (quantity < 1) {
-        embed.setTitle(`❌ 에러 발생`)
+        embed.setTitle(client.i18n.t('main.error.title'))
         embed.setDescription(
           `매도하실 주식의 수량을 1이상의 숫자만 입력해주세요.`
         )
@@ -327,14 +332,18 @@ export default new BaseCommand(
       }
       const results = await searchStockList(keyword)
       if (!results || results?.items.length == 0) {
-        embed.setTitle(`❌ 에러 발생`)
-        embed.setDescription(`${keyword} 검색 결과가 없습니다.`)
+        embed.setTitle(client.i18n.t('main.error.title'))
+        embed.setDescription(
+          client.i18n.t('commands.stock.nosearchkeyword', { keyword: keyword })
+        )
         return message.reply({ embeds: [embed] })
       }
       const result = await searchStock(results.items[0].code)
       if (!result) {
-        embed.setTitle(`❌ 에러 발생`)
-        embed.setDescription(`${keyword} 검색 결과가 없습니다.`)
+        embed.setTitle(client.i18n.t('main.error.title'))
+        embed.setDescription(
+          client.i18n.t('commands.stock.nosearchkeyword', { keyword: keyword })
+        )
         return message.reply({ embeds: [embed] })
       }
       const stock = await StockSchema.findOne({
@@ -342,14 +351,14 @@ export default new BaseCommand(
         'stocks.code': results.items[0].code
       })
       if (!stock || stock.stocks.length === 0) {
-        embed.setTitle(`❌ 에러 발생`)
+        embed.setTitle(client.i18n.t('main.error.title'))
         embed.setDescription(
           `${results.items[0].name}을 보유하고 있지 않습니다.`
         )
         return message.reply({ embeds: [embed] })
       }
       if (stock.stocks[0].quantity < quantity) {
-        embed.setTitle(`❌ 에러 발생`)
+        embed.setTitle(client.i18n.t('main.error.title'))
         embed.setDescription(
           `${results.items[0].name}주식을 ${quantity}주만큼 보유하고 있지 않습니다. 현재 보유량: ${stock.stocks[0].quantity}주`
         )
@@ -360,9 +369,12 @@ export default new BaseCommand(
       const total = price - fee
       const user = await Schema.findOne({ userid: message.author.id })
       if (!user) {
-        embed.setTitle(`❌ 에러 발생`)
+        embed.setTitle(client.i18n.t('main.error.title'))
         embed.setDescription(
-          `등록되어 있지 않은 유저인 거 같습니다. 먼저 \`${config.bot.prefix}돈받기\` 명령어로 등록을 해주세요.`
+          client.i18n.t(`commands.stock.noaccount`, {
+            prefix: config.bot.prefix,
+            y: '`'
+          })
         )
         return message.reply({ embeds: [embed] })
       }
@@ -510,7 +522,7 @@ export default new BaseCommand(
     } else if (args[0] == '보유') {
       const nowStock = await StockSchema.findOne({ userid: message.author.id })
       if (!nowStock) {
-        embed.setTitle(`❌ 에러 발생`)
+        embed.setTitle(client.i18n.t('main.error.title'))
         embed.setDescription(
           `보유중인 주식이없습니다. 먼저 \`${config.bot.prefix}주식\` 명령어로 주식 명령어를 확인해주세요.`
         )
@@ -669,14 +681,14 @@ export default new BaseCommand(
         const keyword = interaction.options.getString('주식') || ''
         const results = await searchStockList(keyword)
         if (!results || results?.items.length == 0) {
-          embed.setTitle(`❌ 에러 발생`)
-          embed.setDescription('검색 결과가 없습니다.')
+          embed.setTitle(client.i18n.t('main.error.title'))
+          embed.setDescription(client.i18n.t('commands.stock.nosearch'))
           return interaction.editReply({ embeds: [embed] })
         }
         const result = await searchStock(results.items[0].code)
         if (!result) {
-          embed.setTitle(`❌ 에러발생`)
-          embed.setDescription('검색 결과가 없습니다.')
+          embed.setTitle(client.i18n.t('main.error.title'))
+          embed.setDescription(client.i18n.t('commands.stock.nosearch'))
           return interaction.editReply({ embeds: [embed] })
         }
         embed.setTitle(`${results.items[0].name} (${results.items[0].code})`)
@@ -751,25 +763,31 @@ export default new BaseCommand(
         const keyword = interaction.options.getString('주식명') || ''
         const quantity = Number(interaction.options.getString('개수')) || 0
         if (!quantity) {
-          embed.setDescription(`매수하실 주식의 수량을 숫자만 입력해주세요.`)
+          embed.setDescription(client.i18n.t('commands.stock.intbuy'))
           return interaction.editReply({ embeds: [embed] })
         }
         if (quantity < 1) {
-          embed.setDescription(
-            `매수하실 주식의 수량은 1이상의 숫자만 입력해주세요.`
-          )
+          embed.setDescription(client.i18n.t('commands.stock.up1buy'))
           return interaction.editReply({ embeds: [embed] })
         }
         const results = await searchStockList(keyword)
         if (!results || results?.items.length == 0) {
-          embed.setTitle(`❌ 에러 발생`)
-          embed.setDescription(`${keyword} 검색 결과가 없습니다.`)
+          embed.setTitle(client.i18n.t('main.error.title'))
+          embed.setDescription(
+            client.i18n.t('commands.stock.nosearchkeyword', {
+              keyword: keyword
+            })
+          )
           return interaction.editReply({ embeds: [embed] })
         }
         const result = await searchStock(results.items[0].code)
         if (!result) {
-          embed.setTitle(`❌ 에러 발생`)
-          embed.setDescription(`${keyword} 검색 결과가 없습니다.`)
+          embed.setTitle(client.i18n.t('main.error.title'))
+          embed.setDescription(
+            client.i18n.t('commands.stock.nosearchkeyword', {
+              keyword: keyword
+            })
+          )
           return interaction.editReply({ embeds: [embed] })
         }
         const price = result.now * quantity
@@ -777,14 +795,17 @@ export default new BaseCommand(
         const total = price + fee
         const user = await Schema.findOne({ userid: interaction.user.id })
         if (!user) {
-          embed.setTitle(`❌ 에러 발생`)
+          embed.setTitle(client.i18n.t('main.error.title'))
           embed.setDescription(
-            `등록되어 있지 않은 유저인 거 같습니다. 먼저 \`${config.bot.prefix}돈받기\` 명령어로 등록을 해주세요.`
+            client.i18n.t(`commands.stock.noaccount`, {
+              prefix: config.bot.prefix,
+              y: '`'
+            })
           )
           return interaction.editReply({ embeds: [embed] })
         }
         if (user.money < total) {
-          embed.setTitle(`❌ 에러 발생`)
+          embed.setTitle(client.i18n.t('main.error.title'))
           embed.setDescription(
             `${comma(total - user.money)}원이 부족합니다.\n잔액은 ${comma(
               user.money
@@ -918,7 +939,7 @@ export default new BaseCommand(
               )
             }
             const successEmbed = new Embed(client, 'success')
-              .setTitle(`⭕ 매수 완료`)
+              .setTitle(client.i18n.t('commands.stock.success'))
               .setDescription(
                 `${results.items[0].name} ${quantity}주를 매수했습니다.`
               )
@@ -940,8 +961,8 @@ export default new BaseCommand(
               .setColor('#2f3136')
             return i.update({ embeds: [successEmbed], components: [] })
           } else if (i.customId == 'stock.deny') {
-            embed.setTitle(`❌ 매수 취소`)
-            embed.setDescription(`매수를 취소하였습니다.`)
+            embed.setTitle(client.i18n.t('commands.stock.canceltitle'))
+            embed.setDescription(client.i18n.t('commands.stock.cancel'))
             return i.update({ embeds: [embed], components: [] })
           }
         })
@@ -973,12 +994,12 @@ export default new BaseCommand(
         const keyword = interaction.options.getString('주식명') || ''
         const quantity = Number(interaction.options.getString('개수')) || 0
         if (!quantity) {
-          embed.setTitle(`❌ 에러 발생`)
+          embed.setTitle(client.i18n.t('main.error.title'))
           embed.setDescription(`매도하실 주식의 수량을 숫자만 입력해주세요.`)
           return interaction.editReply({ embeds: [embed] })
         }
         if (quantity < 1) {
-          embed.setTitle(`❌ 에러 발생`)
+          embed.setTitle(client.i18n.t('main.error.title'))
           embed.setDescription(
             `매도하실 주식의 수량을 1이상의 숫자만 입력해주세요.`
           )
@@ -986,14 +1007,22 @@ export default new BaseCommand(
         }
         const results = await searchStockList(keyword)
         if (!results || results?.items.length == 0) {
-          embed.setTitle(`❌ 에러 발생`)
-          embed.setDescription(`${keyword} 검색 결과가 없습니다.`)
+          embed.setTitle(client.i18n.t('main.error.title'))
+          embed.setDescription(
+            client.i18n.t('commands.stock.nosearchkeyword', {
+              keyword: keyword
+            })
+          )
           return interaction.editReply({ embeds: [embed] })
         }
         const result = await searchStock(results.items[0].code)
         if (!result) {
-          embed.setTitle(`❌ 에러 발생`)
-          embed.setDescription(`${keyword} 검색 결과가 없습니다.`)
+          embed.setTitle(client.i18n.t('main.error.title'))
+          embed.setDescription(
+            client.i18n.t('commands.stock.nosearchkeyword', {
+              keyword: keyword
+            })
+          )
           return interaction.editReply({ embeds: [embed] })
         }
         const stock = await StockSchema.findOne({
@@ -1001,14 +1030,14 @@ export default new BaseCommand(
           'stocks.code': results.items[0].code
         })
         if (!stock || stock.stocks.length === 0) {
-          embed.setTitle(`❌ 에러 발생`)
+          embed.setTitle(client.i18n.t('main.error.title'))
           embed.setDescription(
             `${results.items[0].name}을 보유하고 있지 않습니다.`
           )
           return interaction.editReply({ embeds: [embed] })
         }
         if (stock.stocks[0].quantity < quantity) {
-          embed.setTitle(`❌ 에러 발생`)
+          embed.setTitle(client.i18n.t('main.error.title'))
           embed.setDescription(
             `${results.items[0].name}주식을 ${quantity}주만큼 보유하고 있지 않습니다. 현재 보유량: ${stock.stocks[0].quantity}주`
           )
@@ -1019,9 +1048,12 @@ export default new BaseCommand(
         const total = price - fee
         const user = await Schema.findOne({ userid: interaction.user.id })
         if (!user) {
-          embed.setTitle(`❌ 에러 발생`)
+          embed.setTitle(client.i18n.t('main.error.title'))
           embed.setDescription(
-            `등록되어 있지 않은 유저인 거 같습니다. 먼저 \`${config.bot.prefix}돈받기\` 명령어로 등록을 해주세요.`
+            client.i18n.t(`commands.stock.noaccount`, {
+              prefix: config.bot.prefix,
+              y: '`'
+            })
           )
           return interaction.editReply({ embeds: [embed] })
         }
@@ -1178,7 +1210,7 @@ export default new BaseCommand(
           userid: interaction.user.id
         })
         if (!nowStock) {
-          embed.setTitle(`❌ 에러 발생`)
+          embed.setTitle(client.i18n.t('main.error.title'))
           embed.setDescription(
             `보유중인 주식이없습니다. 먼저 \`${config.bot.prefix}주식\` 명령어로 주식 명령어를 확인해주세요.`
           )
