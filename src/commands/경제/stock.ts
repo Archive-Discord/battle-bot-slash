@@ -290,7 +290,7 @@ export default new BaseCommand(
             )
           }
           const successEmbed = new Embed(client, 'success')
-            .setTitle(client.i18n.t('commands.stock.success'))
+            .setTitle(client.i18n.t('commands.stock.successtitle2'))
             .setDescription(
               `${results.items[0].name} ${quantity}주를 매수했습니다.`
             )
@@ -455,7 +455,7 @@ export default new BaseCommand(
       collector.on('collect', async (i) => {
         if (i.user.id != message.author.id) return
         if (i.customId == 'stocksell.accept') {
-          embed.setTitle(client.i18n.t('commands.stock.buysuccesstitle2'))
+          embed.setTitle(client.i18n.t('commands.stock.sellsuccesstitle2'))
           embed.setDescription(
             client.i18n.t('commands.stock.sellsuccess', {
               resultitem: results.items[0].name,
@@ -546,8 +546,8 @@ export default new BaseCommand(
             .setColor('#2f3136')
           return i.update({ embeds: [successEmbed], components: [] })
         } else if (i.customId == 'stocksell.deny') {
-          embed.setTitle(`❌ 매도 취소`)
-          embed.setDescription(`매도를 취소하였습니다.`)
+          embed.setTitle(client.i18n.t('commands.stock.sellcanceltitle'))
+          embed.setDescription(client.i18n.t('commands.stock.cancel2'))
           return i.update({ embeds: [embed], components: [] })
         }
       })
@@ -560,14 +560,14 @@ export default new BaseCommand(
               .addComponents(
                 new Discord.ButtonBuilder()
                   .setCustomId('stock.accept')
-                  .setLabel('확인')
+                  .setLabel(client.i18n.t('commands.stock.accept'))
                   .setStyle(ButtonStyle.Success)
                   .setDisabled(true)
               )
               .addComponents(
                 new Discord.ButtonBuilder()
                   .setCustomId('stock.deny')
-                  .setLabel('아니요')
+                  .setLabel(client.i18n.t('commands.stock.deny'))
                   .setStyle(ButtonStyle.Danger)
                   .setDisabled(true)
               )
@@ -906,13 +906,13 @@ export default new BaseCommand(
           .addComponents(
             new Discord.ButtonBuilder()
               .setCustomId('stock.accept')
-              .setLabel('확인')
+              .setLabel(client.i18n.t('commands.stock.accept'))
               .setStyle(ButtonStyle.Success)
           )
           .addComponents(
             new Discord.ButtonBuilder()
               .setCustomId('stock.deny')
-              .setLabel('아니요')
+              .setLabel(client.i18n.t('commands.stock.deny'))
               .setStyle(ButtonStyle.Danger)
           )
         const m = await interaction.editReply({
@@ -1011,7 +1011,7 @@ export default new BaseCommand(
               )
             }
             const successEmbed = new Embed(client, 'success')
-              .setTitle(client.i18n.t('commands.stock.success'))
+              .setTitle(client.i18n.t('commands.stock.successtitle2'))
               .setDescription(
                 `${results.items[0].name} ${quantity}주를 매수했습니다.`
               )
@@ -1051,14 +1051,14 @@ export default new BaseCommand(
                 .addComponents(
                   new Discord.ButtonBuilder()
                     .setCustomId('stock.accept')
-                    .setLabel('확인')
+                    .setLabel(client.i18n.t('commands.stock.accept'))
                     .setStyle(ButtonStyle.Success)
                     .setDisabled(true)
                 )
                 .addComponents(
                   new Discord.ButtonBuilder()
                     .setCustomId('stock.deny')
-                    .setLabel('아니요')
+                    .setLabel(client.i18n.t('commands.stock.deny'))
                     .setStyle(ButtonStyle.Danger)
                     .setDisabled(true)
                 )
@@ -1071,14 +1071,12 @@ export default new BaseCommand(
         const quantity = Number(interaction.options.getString('개수')) || 0
         if (!quantity) {
           embed.setTitle(client.i18n.t('main.error.title'))
-          embed.setDescription(`매도하실 주식의 수량을 숫자만 입력해주세요.`)
+          embed.setDescription(client.i18n.t('commands.stock.intbuy'))
           return interaction.editReply({ embeds: [embed] })
         }
         if (quantity < 1) {
           embed.setTitle(client.i18n.t('main.error.title'))
-          embed.setDescription(
-            `매도하실 주식의 수량을 1이상의 숫자만 입력해주세요.`
-          )
+          embed.setDescription(client.i18n.t('commands.stock.up1buy'))
           return interaction.editReply({ embeds: [embed] })
         }
         const results = await searchStockList(keyword)
@@ -1166,13 +1164,13 @@ export default new BaseCommand(
           .addComponents(
             new Discord.ButtonBuilder()
               .setCustomId('stocksell.accept')
-              .setLabel('확인')
+              .setLabel(client.i18n.t('commands.stock.accept'))
               .setStyle(ButtonStyle.Success)
           )
           .addComponents(
             new Discord.ButtonBuilder()
               .setCustomId('stocksell.deny')
-              .setLabel('아니요')
+              .setLabel(client.i18n.t('commands.stock.deny'))
               .setStyle(ButtonStyle.Danger)
           )
         const m = await interaction.editReply({
@@ -1271,8 +1269,8 @@ export default new BaseCommand(
               .setColor('#2f3136')
             return i.update({ embeds: [successEmbed], components: [] })
           } else if (i.customId == 'stocksell.deny') {
-            embed.setTitle(`❌ 매도 취소`)
-            embed.setDescription(`매도를 취소하였습니다.`)
+            embed.setTitle(client.i18n.t('commands.stock.sellcanceltitle'))
+            embed.setDescription(client.i18n.t('commands.stock.cancel2'))
             return i.update({ embeds: [embed], components: [] })
           }
         })
