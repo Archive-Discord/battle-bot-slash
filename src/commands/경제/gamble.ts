@@ -36,7 +36,7 @@ export default new BaseCommand(
       .setDescription('도박하실 돈의 양이 입력되지 않았습니다.')
       .setTimestamp()
       .setColor('#2f3136')
-    if (!args[0])
+    if (isNaN(parseInt(args[0])) ?? !args[0])
       return m.edit({
         embeds: [embed]
       })
