@@ -1,4 +1,8 @@
-import { ApplicationCommandDataResolvable, Routes } from 'discord.js'
+import {
+  ApplicationCommandDataResolvable,
+  Routes,
+  RESTPostAPIApplicationCommandsJSONBody
+} from 'discord.js'
 import { BaseCommand, Command, SlashCommand } from '../../typings/structures'
 
 import Logger from '../utils/Logger'
@@ -177,7 +181,7 @@ export default class CommandManager extends BaseManager {
     this.logger.scope = 'CommandManager: SlashGlobalSetup'
     const rest = new REST().setToken(this.client.token!)
 
-    const slashCommands: any[] = []
+    const slashCommands: RESTPostAPIApplicationCommandsJSONBody[] = []
     this.client.commands.forEach((command: BaseCommand) => {
       if (this.isSlash(command)) {
         slashCommands.push(
@@ -190,6 +194,7 @@ export default class CommandManager extends BaseManager {
       const commands = await this.client.application?.commands.fetch()
       const cmd = commands?.find((cmd) => cmd.name === command.name)
       const category = this.categorys.get('dev')
+
       if (category?.find((c) => c.name === command.name)) {
         const supportGuild = this.client.guilds.cache.get(
           config.devGuild.guildID
@@ -213,19 +218,21 @@ export default class CommandManager extends BaseManager {
               `Error created Developer command ${command.name} at ${supportGuild?.name} guild`
             )
           })
-        return
-      }
-      if (!cmd) {
-        await rest
-          .put(Routes.applicationCommands(this.client.application?.id!), {
-            body: [command]
-          })
-          .then((guilds) =>
-            this.logger.info(
-              `Succesfully created command ${command.name} at ${guilds} guild`
-            )
-          )
       }
     }
+    await rest
+      .put(Routes.applicationCommands(this.client.application?.id!), {
+        body: slashCommands
+      })
+      .then(() =>
+        this.logger.info(
+          `Succesfully created command ${
+            slashCommands.length > 3
+              ? slashCommands.slice(0, 3).map((object) => object.name) +
+                `\ and ${slashCommands.length - 3} more command`
+              : slashCommands.map((object) => object.name + ', ')
+          } at ${this.client.guilds.cache.size} guild`
+        )
+      )
   }
 }

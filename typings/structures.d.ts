@@ -55,7 +55,7 @@ export type MessageCommandFuntion = (
 
 export type SlashCommandFunction = (
   client: BotClient,
-  interaction: ChatInputCommandInteraction
+  interaction: ChatInputCommandInteraction<'cached'>
 ) => Promise<any>
 
 export interface SlashCommandOptions {

@@ -199,8 +199,8 @@ export interface Meals {
 export interface MusicDB {
   guild_id: string
   channel_id: string
-  message_id: string
-  process_message_id: string
+  messageid_list: string
+  messageid_banner: string
   published_date: Date
 }
 
