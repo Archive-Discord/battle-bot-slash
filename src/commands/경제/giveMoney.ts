@@ -19,10 +19,10 @@ export default new BaseCommand(
     })
     const t = new Date()
     const date = '' + t.getFullYear() + t.getMonth() + t.getDate()
-    const ehqkrduqn = await schema.findOne({
+    const bettingtf = await schema.findOne({
       userid: message.author.id
     })
-    if (!ehqkrduqn) {
+    if (!bettingtf) {
       let newData = new schema({
         money: parseInt('5000'),
         userid: message.author.id,
@@ -40,11 +40,11 @@ export default new BaseCommand(
       embed = new Embed(client, 'info')
         .setDescription(`이미 오늘 돈을 받으셨어요 ㅠㅠ\n다음에 다시 와주세요!`)
         .setColor('#2f3136')
-      if (ehqkrduqn.date == date)
+      if (bettingtf.date == date)
         return m.edit({
           embeds: [embed]
         })
-      const money = parseInt(String(ehqkrduqn.money))
+      const money = parseInt(String(bettingtf.money))
       await schema.findOneAndUpdate(
         { userid: message.author.id },
         {
