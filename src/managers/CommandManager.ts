@@ -229,6 +229,7 @@ export default class CommandManager extends BaseManager {
           `Succesfully created command ${
             slashCommands.length > 3
               ? slashCommands.slice(0, 3).map((object) => object.name) +
+              /* eslint-disable */
                 `\ and ${slashCommands.length - 3} more command`
               : slashCommands.map((object) => object.name + ', ')
           } at ${this.client.guilds.cache.size} guild`
