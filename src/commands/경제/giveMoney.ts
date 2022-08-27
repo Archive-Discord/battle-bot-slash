@@ -22,7 +22,7 @@ export default new BaseCommand(
     const bettingtf = await schema.findOne({
       userid: message.author.id
     })
-    if (!ehqkrduqn) {
+    if (!bettingtf) {
       let newData = new schema({
         money: parseInt('5000'),
         userid: message.author.id,
