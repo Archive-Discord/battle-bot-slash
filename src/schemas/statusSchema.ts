@@ -1,4 +1,4 @@
-import { Schema, model } from 'mongoose'
+import { Schema, model } from 'mongoose';
 
 const StatusSchema = new Schema({
   build_number: String,
@@ -12,13 +12,13 @@ const StatusSchema = new Schema({
       shardGuild: String,
       shardMember: String,
       shardChannels: String,
-      shardUptime: String
-    }
+      shardUptime: String,
+    },
   ],
-  published_date: { type: Date, default: Date.now, expires: 3600 }
-})
+  published_date: { type: Date, default: Date.now, expires: 3600 },
+});
 
-const Status = model('status', StatusSchema, 'status')
-Status.schema.index({ published_date: 1 }, { expireAfterSeconds: 3600 })
+const Status = model('status', StatusSchema, 'status');
+Status.schema.index({ published_date: 1 }, { expireAfterSeconds: 3600 });
 
-export default Status
+export default Status;

@@ -1,16 +1,16 @@
-import { Schema, model, Model } from 'mongoose'
-import { MusicDB } from '../../typings'
+import { Schema, model, Model } from 'mongoose';
+import { MusicDB } from '../../typings';
 
 const MusicSettingSchema: Schema<MusicDB> = new Schema(
   {
     guild_id: String,
     channel_id: String,
     messageid_list: String,
-    messageid_banner: String
+    messageid_banner: String,
   },
-  { collection: 'Music' }
-)
+  { collection: 'Music' },
+);
 
-const MusicSetting: Model<MusicDB> = model('Music', MusicSettingSchema, 'Music')
+const MusicSetting: Model<MusicDB> = model('Music', MusicSettingSchema, 'music');
 
-export default MusicSetting
+export default MusicSetting;

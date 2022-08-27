@@ -1,29 +1,29 @@
-import nodemailer from 'nodemailer'
-import config from '../../config'
-import { google } from 'googleapis'
-import Logger from './Logger'
-const logger = new Logger('mailEvent')
+import nodemailer from 'nodemailer';
+import config from '../../config';
+import { google } from 'googleapis';
+import Logger from './Logger';
+const logger = new Logger('mailEvent');
 
 interface param {
-  serverName: string
-  email: string
-  code: string
+  serverName: string;
+  email: string;
+  code: string;
 }
 
 const oAuth2Client = new google.auth.OAuth2(
   config.email.Google_Client_Id,
   config.email.Google_Client_Secret,
-  config.email.Google_Redirect_Url
-)
+  config.email.Google_Redirect_Url,
+);
 oAuth2Client.setCredentials({
-  refresh_token: config.email.Google_Refresh_Token
-})
+  refresh_token: config.email.Google_Refresh_Token,
+});
 
 const mailSender = {
   // 메일발송 함수
   sendGmail: async function (param: param) {
     try {
-      const access_token = await oAuth2Client.getAccessToken()
+      const access_token = await oAuth2Client.getAccessToken();
       const transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
@@ -32,9 +32,9 @@ const mailSender = {
           clientId: config.email.Google_Client_Id,
           clientSecret: config.email.Google_Client_Secret,
           refreshToken: config.email.Google_Refresh_Token,
-          accessToken: access_token as string
-        }
-      })
+          accessToken: access_token as string,
+        },
+      });
       // 메일 옵션
       const mailOptions = {
         from: `"배틀이 인증" <${config.email.Google_Email}>`,
@@ -277,22 +277,22 @@ const mailSender = {
                   <!-- end body -->
                 
                 </body>
-                </html>` // 메일 내용
-      }
+                </html>`, // 메일 내용
+      };
 
       // 메일 발송
       transporter.sendMail(mailOptions, function (error: any, info) {
         if (error) {
-          logger.error(error)
+          logger.error(error);
         } else {
-          logger.log(info.response)
+          logger.log(info.response);
         }
-      })
+      });
     } catch (e: any) {
-      logger.error(e)
+      logger.error(e);
     }
-  }
-}
+  },
+};
 
 // 메일객체 exports
-export default mailSender
+export default mailSender;

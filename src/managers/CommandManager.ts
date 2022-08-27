@@ -1,42 +1,42 @@
 import {
   ApplicationCommandDataResolvable,
   Routes,
-  RESTPostAPIApplicationCommandsJSONBody
-} from 'discord.js'
-import { BaseCommand, Command, SlashCommand } from '../../typings/structures'
+  RESTPostAPIApplicationCommandsJSONBody,
+} from 'discord.js';
+import { BaseCommand, Command, SlashCommand } from '../../typings/structures';
 
-import Logger from '../utils/Logger'
-import BaseManager from './BaseManager'
-import fs from 'fs'
-import path from 'path'
-import BotClient from '../structures/BotClient'
-import config from '../../config'
-import { REST } from '@discordjs/rest'
+import Logger from '../utils/Logger';
+import BaseManager from './BaseManager';
+import fs from 'fs';
+import path from 'path';
+import BotClient from '../structures/BotClient';
+import config from '../../config';
+import { REST } from '@discordjs/rest';
 
 export default class CommandManager extends BaseManager {
-  private logger = new Logger('CommandManager')
-  private commands: BotClient['commands']
-  private categorys: BotClient['categorys']
+  private logger = new Logger('CommandManager');
+  private commands: BotClient['commands'];
+  private categorys: BotClient['categorys'];
 
   public constructor(client: BotClient) {
-    super(client)
+    super(client);
 
-    this.commands = client.commands
-    this.categorys = client.categorys
+    this.commands = client.commands;
+    this.categorys = client.categorys;
   }
 
   public load(commandPath: string = path.join(__dirname, '../commands')): void {
-    this.logger.debug('Loading commands...')
+    this.logger.debug('Loading commands...');
 
-    const commandFolder = fs.readdirSync(commandPath)
+    const commandFolder = fs.readdirSync(commandPath);
 
     try {
       commandFolder.forEach((folder) => {
-        if (!fs.lstatSync(path.join(commandPath, folder)).isDirectory()) return
-        this.categorys.set(folder, [])
+        if (!fs.lstatSync(path.join(commandPath, folder)).isDirectory()) return;
+        this.categorys.set(folder, []);
 
         try {
-          const commandFiles = fs.readdirSync(path.join(commandPath, folder))
+          const commandFiles = fs.readdirSync(path.join(commandPath, folder));
 
           commandFiles.forEach((commandFile) => {
             try {
@@ -47,11 +47,9 @@ export default class CommandManager extends BaseManager {
 
               const command =
                 // eslint-disable-next-line @typescript-eslint/no-var-requires
-                require(`../commands/${folder}/${commandFile}`).default
+                require(`../commands/${folder}/${commandFile}`).default;
               if (!command.data.name ?? !command.name)
-                return this.logger.debug(
-                  `Command ${commandFile} has no name. Skipping.`
-                )
+                return this.logger.debug(`Command ${commandFile} has no name. Skipping.`);
               this.categorys.get(folder)?.push({
                 name: command.data.aliases[0] ?? command.aliases[0],
                 description: command.data.description ?? command.description,
@@ -59,61 +57,52 @@ export default class CommandManager extends BaseManager {
                   ? true
                   : (command as SlashCommand)?.options?.isSlash
                   ? true
-                  : false
-              })
-              this.commands.set(command.data.name ?? command.name, command)
+                  : false,
+              });
+              this.commands.set(command.data.name ?? command.name, command);
 
-              this.logger.debug(
-                `Loaded command ${command.data.name ?? command.name}`
-              )
+              this.logger.debug(`Loaded command ${command.data.name ?? command.name}`);
             } catch (error: any) {
-              this.logger.error(
-                `Error loading command '${commandFile}'.\n` + error.stack
-              )
+              this.logger.error(`Error loading command '${commandFile}'.\n` + error.stack);
             } finally {
-              this.logger.debug(
-                `Succesfully loaded commands. count: ${this.commands.size}`
-              )
+              this.logger.debug(`Succesfully loaded commands. count: ${this.commands.size}`);
               // eslint-disable-next-line no-unsafe-finally
-              return this.commands
+              return this.commands;
             }
-          })
+          });
         } catch (error: any) {
-          this.logger.error(
-            `Error loading command folder '${folder}'.\n` + error.stack
-          )
+          this.logger.error(`Error loading command folder '${folder}'.\n` + error.stack);
         }
-      })
+      });
     } catch (error: any) {
-      this.logger.error('Error fetching folder list.\n' + error.stack)
+      this.logger.error('Error fetching folder list.\n' + error.stack);
     }
   }
 
   public get(commandName: string): BaseCommand | undefined {
-    let command
+    let command;
     if (this.client.commands.has(commandName))
-      return (command = this.client.commands.get(commandName))
+      return (command = this.client.commands.get(commandName));
 
     this.client.commands.forEach((cmd) => {
-      if (this.isSlash(cmd) && cmd.data.name === commandName)
-        return (command = cmd)
+      if (this.isSlash(cmd) && cmd.data.name === commandName) return (command = cmd);
       // @ts-ignore
-      if (cmd.data.aliases.includes(commandName)) return (command = cmd)
-    })
+      if (cmd.data.aliases.includes(commandName)) return (command = cmd);
+    });
 
-    return command
+    return command;
   }
 
   public reload(commandPath: string = path.join(__dirname, '../commands')) {
-    this.logger.debug('Reloading commands...')
+    this.logger.debug('Reloading commands...');
 
-    this.commands.clear()
+    this.commands.clear();
     try {
-      this.load(commandPath)
+      this.load(commandPath);
     } finally {
-      this.logger.debug('Succesfully reloaded commands.')
+      this.logger.debug('Succesfully reloaded commands.');
       // eslint-disable-next-line no-unsafe-finally
-      return { message: '[200] Succesfully reloaded commands.' }
+      return { message: '[200] Succesfully reloaded commands.' };
     }
   }
 
@@ -123,117 +112,96 @@ export default class CommandManager extends BaseManager {
       ? true
       : (command as SlashCommand)?.options?.isSlash
       ? true
-      : false
+      : false;
   }
 
   public async slashCommandSetup(
-    guildID: string
+    guildID: string,
   ): Promise<ApplicationCommandDataResolvable[] | undefined> {
-    this.logger.scope = 'CommandManager: SlashSetup'
-    const rest = new REST().setToken(this.client.token!)
+    this.logger.scope = 'CommandManager: SlashSetup';
+    const rest = new REST().setToken(this.client.token!);
 
-    const slashCommands: any[] = []
+    const slashCommands: any[] = [];
     this.client.commands.forEach((command: BaseCommand) => {
       if (this.isSlash(command)) {
-        slashCommands.push(command.slash ? command.slash?.data : command.data)
+        slashCommands.push(command.slash ? command.slash?.data : command.data);
       }
-    })
+    });
 
     if (!guildID) {
-      this.logger.warn('guildID not gived switching global command...')
-      this.logger.debug(`Trying ${this.client.guilds.cache.size} guild(s)`)
+      this.logger.warn('guildID not gived switching global command...');
+      this.logger.debug(`Trying ${this.client.guilds.cache.size} guild(s)`);
 
       await rest
         // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
         .put(Routes.applicationCommands(this.client.application?.id!), {
-          body: slashCommands
+          body: slashCommands,
         })
-        .then(() =>
-          this.logger.info(
-            `Successfully registered application global commands.`
-          )
-        )
+        .then(() => this.logger.info(`Successfully registered application global commands.`));
     } else {
-      this.logger.info(`Slash Command requesting ${guildID}`)
+      this.logger.info(`Slash Command requesting ${guildID}`);
 
       await rest
         // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
-        .put(
-          Routes.applicationGuildCommands(
-            this.client.application?.id!,
-            guildID
-          ),
-          {
-            body: slashCommands
-          }
-        )
-        .then(() =>
-          this.logger.info(
-            `Successfully registered server ${guildID} server commands.`
-          )
-        )
+        .put(Routes.applicationGuildCommands(this.client.application?.id!, guildID), {
+          body: slashCommands,
+        })
+        .then(() => this.logger.info(`Successfully registered server ${guildID} server commands.`));
 
-      return slashCommands
+      return slashCommands;
     }
   }
 
   public async slashGlobalCommandSetup(): Promise<void> {
-    this.logger.scope = 'CommandManager: SlashGlobalSetup'
-    const rest = new REST().setToken(this.client.token!)
+    this.logger.scope = 'CommandManager: SlashGlobalSetup';
+    const rest = new REST().setToken(this.client.token!);
 
-    const slashCommands: RESTPostAPIApplicationCommandsJSONBody[] = []
+    const slashCommands: RESTPostAPIApplicationCommandsJSONBody[] = [];
     this.client.commands.forEach((command: BaseCommand) => {
       if (this.isSlash(command)) {
-        slashCommands.push(
-          command.slash ? command.slash?.data.toJSON() : command.data.toJSON()
-        )
+        slashCommands.push(command.slash ? command.slash?.data.toJSON() : command.data.toJSON());
       }
-    })
-    this.logger.debug(`Trying ${this.client.guilds.cache.size} guild(s)`)
+    });
+    this.logger.debug(`Trying ${this.client.guilds.cache.size} guild(s)`);
     for (const command of slashCommands) {
-      const commands = await this.client.application?.commands.fetch()
-      const cmd = commands?.find((cmd) => cmd.name === command.name)
-      const category = this.categorys.get('dev')
+      const commands = await this.client.application?.commands.fetch();
+      const cmd = commands?.find((cmd) => cmd.name === command.name);
+      const category = this.categorys.get('dev');
 
       if (category?.find((c) => c.name === command.name)) {
-        const supportGuild = this.client.guilds.cache.get(
-          config.devGuild.guildID
-        )
+        const supportGuild = this.client.guilds.cache.get(config.devGuild.guildID);
         await rest
           .put(
-            Routes.applicationGuildCommands(
-              this.client.application?.id!,
-              config.devGuild.guildID
-            ),
-            { body: [command] }
+            Routes.applicationGuildCommands(this.client.application?.id!, config.devGuild.guildID),
+            { body: [command] },
           )
           .then(() => {
             this.logger.info(
-              `Succesfully created Developer command ${command.name} at ${supportGuild?.name} guild`
-            )
+              `Succesfully created Developer command ${command.name} at ${supportGuild?.name} guild`,
+            );
           })
           .catch((e) => {
-            console.log(e)
+            console.log(e);
             this.logger.error(
-              `Error created Developer command ${command.name} at ${supportGuild?.name} guild`
-            )
-          })
+              `Error created Developer command ${command.name} at ${supportGuild?.name} guild`,
+            );
+          });
       }
     }
     await rest
       .put(Routes.applicationCommands(this.client.application?.id!), {
-        body: slashCommands
+        body: slashCommands,
       })
       .then(() =>
         this.logger.info(
           `Succesfully created command ${
             slashCommands.length > 3
               ? slashCommands.slice(0, 3).map((object) => object.name) +
-              /* eslint-disable */
+                /* eslint-disable */
                 `\ and ${slashCommands.length - 3} more command`
               : slashCommands.map((object) => object.name + ', ')
-          } at ${this.client.guilds.cache.size} guild`
-        )
-      )
+          } at ${this.client.guilds.cache.size} guild`,
+        ),
+      );
   }
 }

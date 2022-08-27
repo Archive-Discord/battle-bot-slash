@@ -1,10 +1,10 @@
-import chalk from 'chalk'
-import stripColor from 'strip-ansi'
-import winston, { createLogger, format, transports, addColors } from 'winston'
-import config from '../../config'
-import { LevelType } from '../../typings'
+import chalk from 'chalk';
+import stripColor from 'strip-ansi';
+import winston, { createLogger, format, transports, addColors } from 'winston';
+import config from '../../config';
+import { LevelType } from '../../typings';
 
-const { printf, splat, colorize, timestamp, ms, combine } = format
+const { printf, splat, colorize, timestamp, ms, combine } = format;
 
 const colors = {
   fatal: chalk.bgWhite.red.bold,
@@ -13,12 +13,12 @@ const colors = {
   info: chalk.cyanBright,
   chat: (text: string) => text,
   verbose: chalk.blueBright,
-  debug: chalk.blue
-}
+  debug: chalk.blue,
+};
 
 const myFormat = printf(({ level, message, label, ms }) => {
-  const _level = stripColor(level) as LevelType
-  const colorizer = colors[_level]
+  const _level = stripColor(level) as LevelType;
+  const colorizer = colors[_level];
   return `${chalk.grey(
     `[${
       new Date().getFullYear() +
@@ -32,11 +32,11 @@ const myFormat = printf(({ level, message, label, ms }) => {
       new Date().getMinutes() +
       ':' +
       new Date().getSeconds()
-    }]`
+    }]`,
   )} ${_level === 'chat' ? '' : `[ ${label} ] `}${level} ${colorizer(
-    message
-  )} ${chalk.magentaBright(ms)}`
-})
+    message,
+  )} ${chalk.magentaBright(ms)}`;
+});
 
 const myCustomLevels = {
   levels: {
@@ -46,7 +46,7 @@ const myCustomLevels = {
     info: 3,
     chat: 4,
     verbose: 5,
-    debug: 6
+    debug: 6,
   },
   colors: {
     fatal: 'whiteBG red bold',
@@ -55,50 +55,50 @@ const myCustomLevels = {
     info: 'white',
     chat: 'grey',
     verbose: 'cyan',
-    debug: 'blue'
-  }
-}
+    debug: 'blue',
+  },
+};
 
-addColors(myCustomLevels.colors)
+addColors(myCustomLevels.colors);
 
 export default class Logger {
-  public scope: string
-  private readonly logger: winston.Logger
+  public scope: string;
+  private readonly logger: winston.Logger;
 
   constructor(scope: string) {
-    this.scope = scope
+    this.scope = scope;
     this.logger = createLogger({
       levels: myCustomLevels.levels,
       transports: [
         new transports.Console({
           level: config.logger.dev ? 'debug' : config.logger.level,
-          format: combine(splat(), colorize(), timestamp(), ms(), myFormat)
-        })
-      ]
-    })
+          format: combine(splat(), colorize(), timestamp(), ms(), myFormat),
+        }),
+      ],
+    });
   }
 
   log(message: string, ...args: any[]) {
-    this.logger.info(message, ...args, { label: this.scope })
+    this.logger.info(message, ...args, { label: this.scope });
   }
 
   info(message: string, ...args: any[]) {
-    this.logger.info(message, ...args, { label: this.scope })
+    this.logger.info(message, ...args, { label: this.scope });
   }
   warn(message: string, ...args: any[]) {
-    this.logger.warn(message, ...args, { label: this.scope })
+    this.logger.warn(message, ...args, { label: this.scope });
   }
 
   error(message: string, ...args: any[]) {
-    this.logger.error(message, ...args, { label: this.scope })
+    this.logger.error(message, ...args, { label: this.scope });
   }
 
   debug(message: string, ...args: any[]) {
-    this.logger.debug(message, ...args, { label: this.scope })
+    this.logger.debug(message, ...args, { label: this.scope });
   }
 
   fatal(message: string, ...args: any[]): never {
-    this.logger.error(message, ...args, { label: this.scope })
-    return process.exit(1)
+    this.logger.error(message, ...args, { label: this.scope });
+    return process.exit(1);
   }
 }

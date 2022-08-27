@@ -1,5 +1,5 @@
-import { Schema, model, Model } from 'mongoose'
-import { LevelDB } from '../../typings'
+import { Schema, model, Model } from 'mongoose';
+import { LevelDB } from '../../typings';
 
 const LevelSchema: Schema<LevelDB> = new Schema(
   {
@@ -8,11 +8,11 @@ const LevelSchema: Schema<LevelDB> = new Schema(
     level: Number,
     currentXP: Number,
     totalXP: Number,
-    published_date: { type: Date, default: Date.now }
+    published_date: { type: Date, default: Date.now },
   },
-  { collection: 'userlevel' }
-)
+  { collection: 'userlevel' },
+);
 
-const Level: Model<LevelDB> = model('userlevel', LevelSchema, 'userlevel')
+const Level: Model<LevelDB> = model('userlevel', LevelSchema, 'userlevel');
 
-export default Level
+export default Level;
