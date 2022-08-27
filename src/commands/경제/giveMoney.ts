@@ -12,17 +12,17 @@ export default new BaseCommand(
   },
   async (client, message, args) => {
     let embed = new Embed(client, 'warn')
-      .setTitle('처리중..')
+      .setTitle(client.i18n.t('main.title.loading'))
       .setColor('#2f3136')
     let m = await message.reply({
       embeds: [embed]
     })
     const t = new Date()
     const date = '' + t.getFullYear() + t.getMonth() + t.getDate()
-    const ehqkrduqn = await schema.findOne({
+    const bettingtf = await schema.findOne({
       userid: message.author.id
     })
-    if (!ehqkrduqn) {
+    if (!bettingtf) {
       let newData = new schema({
         money: parseInt('5000'),
         userid: message.author.id,
@@ -30,21 +30,22 @@ export default new BaseCommand(
       })
       newData.save()
       embed = new Embed(client, 'success')
-        .setTitle('환영합니다!')
-        .setDescription(`처음이시군요! 5000원을 입금해드리겠습니다!`)
+        .setTitle(client.i18n.t('commands.giveMoney.title.welcome'))
+        .setDescription(client.i18n.t('commands.giveMoney.description.first'))
         .setColor('#2f3136')
       m.edit({
         embeds: [embed]
       })
     } else {
       embed = new Embed(client, 'info')
-        .setDescription(`이미 오늘 돈을 받으셨어요 ㅠㅠ\n다음에 다시 와주세요!`)
+        .setTitle(client.i18n.t('commands.giveMoney.title.fail'))
+        .setDescription(client.i18n.t('commands.giveMoney.description.already'))
         .setColor('#2f3136')
-      if (ehqkrduqn.date == date)
+      if (bettingtf.date == date)
         return m.edit({
           embeds: [embed]
         })
-      const money = parseInt(String(ehqkrduqn.money))
+      const money = parseInt(String(bettingtf.money))
       await schema.findOneAndUpdate(
         { userid: message.author.id },
         {
@@ -55,11 +56,13 @@ export default new BaseCommand(
       )
       const f = money + 5000
       embed = new Embed(client, 'success')
-        .setTitle('입금이 완료되었습니다!')
-        .setDescription(`처음이시군요! 5000원을 입금해드리겠습니다!`)
+        .setTitle(client.i18n.t('commands.giveMoney.title.succes'))
+        .setDescription(client.i18n.t('commands.giveMoney.description.first'))
         .addFields({
-          name: `돈이 입금되었습니다!`,
-          value: `현재 잔액 : ${comma(f)}`
+          name: client.i18n.t('commands.giveMoney.fields.name'),
+          value: client.i18n.t('commands.giveMoney.fields.value', {
+            money: comma(money + 5000)
+          })
         })
         .setColor('#2f3136')
       m.edit({

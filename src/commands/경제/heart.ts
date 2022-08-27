@@ -16,16 +16,15 @@ export default new BaseCommand(
   async (client, message, args) => {
     let embed = new Embed(client, 'warn')
       .setTitle('하트인증')
-      .setDescription(
-        client.i18n.t('commands.heart.success.description.platform')
-      )
+      .setDescription(client.i18n.t('commands.heart.description.platform'))
       .setColor('#2f3136')
     const money = await Schema.findOne({ userid: message.author.id })
     if (!money) {
-      embed.setTitle(client.i18n.t('main.error.title'))
+      embed.setTitle(client.i18n.t('main.title.error'))
       embed.setDescription(
-        message.author +
-          '님의 정보가 확인되지 않습니다.\n먼저 `!돈받기`를 입력해 정보를 알려주세요!'
+        client.i18n.t('commands.heart.description.account', {
+          author: message.author
+        })
       )
       return message.reply({ embeds: [embed] })
     }
@@ -35,13 +34,13 @@ export default new BaseCommand(
         new Discord.ActionRowBuilder<ButtonBuilder>()
           .addComponents(
             new Discord.ButtonBuilder()
-              .setLabel(`한디리 인증`)
+              .setLabel(client.i18n.t('commands.heart.button.kbl'))
               .setStyle(ButtonStyle.Primary)
               .setCustomId('heart.koreanlist')
           )
           .addComponents(
             new Discord.ButtonBuilder()
-              .setLabel(`아카이브 인증`)
+              .setLabel(client.i18n.t('commands.heart.button.archive'))
               .setStyle(ButtonStyle.Primary)
               .setCustomId('heart.archive')
           )

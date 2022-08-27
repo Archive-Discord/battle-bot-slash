@@ -13,8 +13,8 @@ export default new BaseCommand(
   },
   async (client, message, args) => {
     let embed = new Embed(client, 'error')
-      .setTitle(client.i18n.t('main.error.title'))
-      .setDescription(client.i18n.t('main.error.slashcommand'))
+      .setTitle(client.i18n.t('main.title.error'))
+      .setDescription(client.i18n.t('main.descriptio.slashcommand'))
     return message.reply({ embeds: [embed] })
   },
   {
@@ -28,35 +28,27 @@ export default new BaseCommand(
     },
     async execute(client, interaction) {
       const embed = new Embed(client, 'error')
-        .setTitle(client.i18n.t('main.error.title'))
+        .setTitle(client.i18n.t('main.title.error'))
         .setColor('#2f3136')
       const embedSuccess = new Embed(client, 'success')
         .setTitle(client.i18n.t('commands.youtube.title'))
         .setColor('#2f3136')
       const guild = interaction.guild
       if (!guild) {
-        embed.setDescription(
-          client.i18n.t('commands.game.error.description.server')
-        )
+        embed.setDescription(client.i18n.t('commands.game.description.server'))
         return interaction.reply({ embeds: [embed], ephemeral: true })
       }
       const member = guild.members.cache.get(interaction.user.id)
       if (!member) {
-        embed.setDescription(
-          client.i18n.t('commands.game.error.description.member')
-        )
+        embed.setDescription(client.i18n.t('commands.game.description.member'))
         return interaction.reply({ embeds: [embed], ephemeral: true })
       }
       if (!member.voice || !member.voice.channel) {
-        embed.setDescription(
-          client.i18n.t('commands.game.error.description.voice')
-        )
+        embed.setDescription(client.i18n.t('commands.game.description.voice'))
         return interaction.reply({ embeds: [embed], ephemeral: true })
       }
       if (member.voice.channel.type === ChannelType.GuildStageVoice) {
-        embed.setDescription(
-          client.i18n.t('commands.game.error.description.stage')
-        )
+        embed.setDescription(client.i18n.t('commands.game.description.stage'))
         return interaction.reply({ embeds: [embed], ephemeral: true })
       }
       const rest = new REST({ version: '8' }).setToken(config.bot.token)
@@ -74,13 +66,11 @@ export default new BaseCommand(
         }
       )) as Invite
       if (!invite) {
-        embed.setDescription(
-          client.i18n.t('commands.game.error.description.invite')
-        )
+        embed.setDescription(client.i18n.t('commands.youtube.description.fail'))
         return interaction.reply({ embeds: [embed], ephemeral: true })
       }
       embedSuccess.setDescription(
-        client.i18n.t('commands.youtube.description.invite')
+        client.i18n.t('commands.youtube.description.success')
       )
       return interaction.reply({
         embeds: [embedSuccess],

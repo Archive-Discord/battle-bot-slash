@@ -13,7 +13,7 @@ export default new BaseCommand(
   },
   async (client, message, args) => {
     let embed = new Embed(client, 'warn')
-      .setTitle(client.i18n.t('commands.gamble.loading'))
+      .setTitle(client.i18n.t('main.title.loading'))
       .setColor('#2f3136')
     let m = await message.reply({
       embeds: [embed]
@@ -22,10 +22,8 @@ export default new BaseCommand(
       userid: message.author.id
     })
     embed = new Embed(client, 'error')
-      .setTitle(client.i18n.t('main.error.title'))
-      .setDescription(
-        client.i18n.t('commands.gamble.error.description.account')
-      )
+      .setTitle(client.i18n.t('main.title.error'))
+      .setDescription(client.i18n.t('commands.gamble.description.account'))
       .setTimestamp()
       .setColor('#2f3136')
     if (!ehqkrduqn)
@@ -33,10 +31,8 @@ export default new BaseCommand(
         embeds: [embed]
       })
     embed = new Embed(client, 'error')
-      .setTitle(client.i18n.t('main.error.title'))
-      .setDescription(
-        client.i18n.t('commands.gamble.error.description.scanmoney')
-      )
+      .setTitle(client.i18n.t('main.title.error'))
+      .setDescription(client.i18n.t('commands.gamble.description.scanmoney'))
       .setTimestamp()
       .setColor('#2f3136')
     if (!args[0])
@@ -44,8 +40,8 @@ export default new BaseCommand(
         embeds: [embed]
       })
     embed = new Embed(client, 'error')
-      .setTitle(client.i18n.t('main.error.title'))
-      .setDescription(client.i18n.t('commands.gamble.error.description.int'))
+      .setTitle(client.i18n.t('main.title.error'))
+      .setDescription(client.i18n.t('commands.gamble.description.int'))
       .setTimestamp()
       .setColor('#2f3136')
     if (args.join(' ').includes('-'))
@@ -54,8 +50,8 @@ export default new BaseCommand(
       })
     const money = parseInt(args[0])
     embed = new Embed(client, 'error')
-      .setTitle(client.i18n.t('main.error.title'))
-      .setDescription(client.i18n.t('commands.gamble.error.description.toolow'))
+      .setTitle(client.i18n.t('main.title.error'))
+      .setDescription(client.i18n.t('commands.gamble.description.toolow'))
       .setTimestamp()
       .setColor('#2f3136')
     if (money < 1000)
@@ -63,10 +59,8 @@ export default new BaseCommand(
         embeds: [embed]
       })
     embed = new Embed(client, 'error')
-      .setTitle(client.i18n.t('main.error.title'))
-      .setDescription(
-        client.i18n.t('commands.gamble.error.description.toomany')
-      )
+      .setTitle(client.i18n.t('main.title.error'))
+      .setDescription(client.i18n.t('commands.gamble.description.toomany'))
       .setTimestamp()
       .setColor('#2f3136')
     if (money > ehqkrduqn.money)
@@ -76,15 +70,15 @@ export default new BaseCommand(
     const random = Math.floor(Math.random() * 101)
     if (random < 30) {
       embed = new Embed(client, 'success')
-        .setTitle(client.i18n.t('commands.gamble.success.title.fail'))
+        .setTitle(client.i18n.t('commands.gamble.title.fail'))
         .setDescription(
-          client.i18n.t('commands.gamble.success.description.fail', {
+          client.i18n.t('commands.gamble.description.fail', {
             money: comma(money)
           })
         )
         .addFields({
-          name: client.i18n.t('commands.gamble.success.fields.name'),
-          value: client.i18n.t('commands.gamble.success.fields.value', {
+          name: client.i18n.t('commands.gamble.fields.name'),
+          value: client.i18n.t('commands.gamble.fields.value', {
             fmoney: comma(ehqkrduqn.money - money)
           })
         })
@@ -102,15 +96,15 @@ export default new BaseCommand(
       )
     } else {
       embed = new Embed(client, 'success')
-        .setTitle(client.i18n.t('commands.gamble.success.title.success'))
+        .setTitle(client.i18n.t('commands.gamble.title.success'))
         .setDescription(
-          client.i18n.t('commands.gamble.success.description.success', {
+          client.i18n.t('commands.gamble.description.success', {
             money: comma(money)
           })
         )
         .addFields({
-          name: client.i18n.t('commands.gamble.success.fields.name'),
-          value: client.i18n.t('commands.gamble.success.fields.value', {
+          name: client.i18n.t('commands.gamble.fields.name'),
+          value: client.i18n.t('commands.gamble.fields.value', {
             fmoney: comma(ehqkrduqn.money + money)
           })
         })
@@ -145,8 +139,8 @@ export default new BaseCommand(
         userid: interaction.user.id
       })
       let embed = new Embed(client, 'error')
-        .setTitle(client.i18n.t('main.error.title'))
-        .setDescription(client.i18n.t('commands.gamble.error.account'))
+        .setTitle(client.i18n.t('main.title.error'))
+        .setDescription(client.i18n.t('commands.gamble.description.account'))
         .setTimestamp()
         .setColor('#2f3136')
       if (!ehqkrduqn)
@@ -155,10 +149,8 @@ export default new BaseCommand(
         })
       let money = interaction.options.getInteger('베팅금') || 0 //parseInt();
       embed = new Embed(client, 'error')
-        .setTitle(client.i18n.t('main.error.title'))
-        .setDescription(
-          client.i18n.t('commands.gamble.error.description.toolow')
-        )
+        .setTitle(client.i18n.t('main.title.error'))
+        .setDescription(client.i18n.t('commands.gamble.description.toolow'))
         .setTimestamp()
         .setColor('#2f3136')
       if (money < 1000)
@@ -166,10 +158,8 @@ export default new BaseCommand(
           embeds: [embed]
         })
       embed = new Embed(client, 'error')
-        .setTitle(client.i18n.t('main.error.title'))
-        .setDescription(
-          client.i18n.t('commands.gamble.error.description.toomany')
-        )
+        .setTitle(client.i18n.t('main.title.error'))
+        .setDescription(client.i18n.t('commands.gamble.description.toomany'))
         .setTimestamp()
         .setColor('#2f3136')
       if (money > ehqkrduqn.money)
@@ -179,15 +169,15 @@ export default new BaseCommand(
       const random = Math.floor(Math.random() * 101)
       if (random < 50) {
         embed = new Embed(client, 'success')
-          .setTitle(client.i18n.t('commands.gamble.success.title.fail'))
+          .setTitle(client.i18n.t('commands.gamble.title.fail'))
           .setDescription(
-            client.i18n.t('commands.gamble.success.description.fail', {
+            client.i18n.t('commands.gamble.description.fail', {
               money: comma(money)
             })
           )
           .addFields({
-            name: client.i18n.t('commands.gamble.success.fields.name'),
-            value: client.i18n.t('commands.gamble.success.fields.value', {
+            name: client.i18n.t('commands.gamble.fields.name'),
+            value: client.i18n.t('commands.gamble.fields.value', {
               fmoney: comma(ehqkrduqn.money - money)
             })
           })
@@ -205,15 +195,15 @@ export default new BaseCommand(
         )
       } else {
         embed = new Embed(client, 'success')
-          .setTitle(client.i18n.t('commands.gamble.success.title.success'))
+          .setTitle(client.i18n.t('commands.gamble.title.success'))
           .setDescription(
-            client.i18n.t('commands.gamble.success.description.success', {
+            client.i18n.t('commands.gamble.description.success', {
               money: comma(money)
             })
           )
           .addFields({
-            name: client.i18n.t('commands.gamble.success.fields.name'),
-            value: client.i18n.t('commands.gamble.success.fields.value', {
+            name: client.i18n.t('commands.gamble.fields.name'),
+            value: client.i18n.t('commands.gamble.fields.value', {
               fmoney: comma(ehqkrduqn.money + money)
             })
           })

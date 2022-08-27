@@ -1,10 +1,10 @@
 {
   "main": {
-    "hello": {
-      "world": "헬로 월드"
+    "title":{
+      "error":"❌ 에러 발생",
+      "loading": "생각하는 중..."
     },
-    "error": {
-      "title": "❌ 에러 발생",
+    "description":{
       "slashcommand": "해당 명령어는 슬래쉬 커맨드 ( / )로만 사용이 가능합니다."
     }
   },
@@ -21,204 +21,83 @@
       }
     },
     "game": {
-      "error": {
-        "description": {
-          "server": "이 명령어는 서버에서만 사용이 가능합니다.",
-          "member": "서버에서 유저를 찾지 못했습니다.",
-          "voice": "먼저 음성채널에 입장해주세요.",
-          "stage": "스테이지 채널에서는 이 명령어를 사용할 수 없습니다.",
-          "invite": "초대코드를 생성하지 못했습니다.",
-          "game": "찾을 수 없는 게임 입니다."
-        }
-      },
       "title": "🎮 게임",
-      "description": {
-        "invite": "성공적으로 게임코드가 생성되었었습니다.\n**초대코드가 활성화 되지 않을 경우 링크를 눌러주세요.**"
+      "description":{
+        "server": "이 명령어는 서버에서만 사용이 가능합니다.",
+        "member": "서버에서 유저를 찾지 못했습니다.",
+        "voice": "먼저 음성채널에 입장해주세요.",
+        "stage": "스테이지 채널에서는 이 명령어를 사용할 수 없습니다.",
+        "fail": "초대코드를 생성하지 못했습니다.",
+        "game": "찾을 수 없는 게임 입니다.",
+        "success": "성공적으로 게임코드가 생성되었었습니다.\n**초대코드가 활성화 되지 않을 경우 링크를 눌러주세요.**"
       }
     },
-    "youtube": {
-      "error": {
-        "description": {
-          "server": "이 명령어는 서버에서만 사용이 가능합니다.",
-          "member": "서버에서 유저를 찾지 못했습니다.",
-          "voice": "먼저 음성채널에 입장해주세요.",
-          "stage": "스테이지 채널에서는 이 명령어를 사용할 수 없습니다.",
-          "invite": "초대코드를 생성하지 못했습니다."
-        }
+    "youtube":{
+      "title":"🎮 유튜브",
+      "description":{
+        "server": "이 명령어는 서버에서만 사용이 가능합니다.",
+        "member": "서버에서 유저를 찾지 못했습니다.",
+        "voice": "먼저 음성채널에 입장해주세요.",
+        "stage": "스테이지 채널에서는 이 명령어를 사용할 수 없습니다.",
+        "fail": "초대코드를 생성하지 못했습니다.",
+        "success": "성공적으로 유튜브 같이보기가 생성되었었습니다.\n**초대코드가 활성화 되지 않을 경우 링크를 눌러주세요.**"
+      }
+    },
+    "gamble":{
+      "title": {
+        "success": "⭕ 도박 성공",
+        "fail": "❌ 도박 실패"
       },
-      "title": "🎮 유튜브",
-      "description": {
-        "invite": "성공적으로 유튜브 같이보기가 생성되었었습니다.\n**초대코드가 활성화 되지 않을 경우 링크를 눌러주세요.**"
-      }
-    },
-    "gamble": {
-      "loading": "생각하는 중...",
-      "error": {
-        "description": {
-          "account": "계좌가 생성되어있지 않습니다. !돈받기 입력 부탁드립니다.",
-          "scanmoney": "도박하실 돈의 양이 입력되지 않았습니다.",
-          "int": "금액은 자연수만 입력해주세요.",
-          "toolow" : "1000원 이상부터 도박이 가능합니다.",
-          "toomany": "보유하신 돈보다 배팅하신 돈의 금액이 많습니다. 금액 확인 부탁드립니다."
-        }
+      "description":{
+        "success": "도박에 성공하셨습니다. + **{{money}}원**",
+        "fail": "도박에 실패하셨습니다. 돈은 제가 가져가겠습니다. - **{{money}}원**",
+        "account": "계좌가 생성되어있지 않습니다. !돈받기 입력 부탁드립니다.",
+        "scanmoney": "도박하실 돈의 양이 입력되지 않았습니다.",
+        "int": "금액은 자연수만 입력해주세요.",
+        "toolow" : "1000원 이상부터 도박이 가능합니다.",
+        "toomany": "보유하신 돈보다 배팅하신 돈의 금액이 많습니다. 금액 확인 부탁드립니다."
       },
-      "success": {
-        "title": {
-          "success": "⭕ 도박 성공",
-          "fail": "❌ 도박 실패"
-        },
-        "description": {
-          "success": "도박에 성공하셨습니다. + **{{money}}원**",
-          "fail": "도박에 실패하셨습니다. 돈은 제가 가져가겠습니다. - **{{money}}원**"
-        },
-        "fields": {
-          "name": "잔액 :",
-          "value": "**{{fmoney}}원**"
-        }
+      "fields": {
+        "name": "잔액 :",
+        "value": "**{{fmoney}}원**"
       }
     },
-    "giveMoney": {
-      "loading": "생각하는 중...",
-      "error": {
-        "title": {
-          "error": "❌ 입금 실패"
-        },
-        "description": {
-          "already": "오늘은 이미 5000원을 받으셨습니다."
-        }
+    "giveMoney":{
+      "title":{
+        "welcome":"환영합니다!",
+        "success":"⭕ 입금 완료",
+        "fail":"❌ 입금 실패"
       },
-      "success": {
-        "title": {
-          "success": "⭕ 입금 완료"
-        },
-        "description": {
-          "success": "입금이 정상적으로 완료되었습니다. + **5000원**",
-          "money" : "잔액 :  ${comma(money + 5000)}원"
-        }
-      }
-    },
-    "heart": {
-      "error": {
-        "description": {
-          "error": "하트 인증중 오류가 발생했어요! {e.message}"
-        }
+      "description":{
+        "first":"처음이시군요! 5000원을 입금해드리겠습니다!",
+        "already":"오늘은 이미 5000원을 받으셨습니다."
       },
-      "success": {
-        "title": {
-          "success": "⭕ 하트 인증 성공",
-          "fail": "❌ 하트 인증 실패",
-          "koreanbotslist": "한국 디스코드 리스트 봇 하트인증",
-          "archive": "아카이브 봇 하트인증"
-        },
-        "description": {
-          "account": "님의 정보가 확인되지 않습니다.\n먼저 `!돈받기`를 입력해 정보를 알려주세요!",
-          "platform": "하트인증 진행할 플랫폼을 선택해주세요!",
-          "koreanbotslist": "한국 디스코드 리스트에 있는 배틀이 봇의 하트가 아직 눌려있지 않습니다.",
-          "archive": "아카이브에 있는 배틀이 봇의 하트가 아직 눌려있지 않습니다.",
-          "successkbl": "{message.author.username}님의 한국 디스코드 리스트에 있는 배틀이 봇의 하트인증이 완료되었습니다.",
-          "successac": "{message.author.username}님의 아카이브에 있는 배틀이 봇의 하트인증이 완료되었습니다.",
-          "later": "{{later}} 뒤에 다시 인증해주세요!"
-        },
-        "button": {
-          "koreanbotslist": "한디리 인증",
-          "archive": "아카이브 인증",
-          "heart": "하트 누르기"
-        }
+      "fields":{
+        "name": "돈이 입금되었습니다!",
+        "value" : "잔액 :  {{money}}원"
       }
     },
-    "leaderboard": {
-      "success": {
-        "title": {
-          "rank": "돈 순위표",
-          "serverrank": "서버 돈 순위표"
-        },
-        "fields": {
-          "name": "{i + 1}. {searchuser.username}",
-          "value": "${comma(data[i].money)}원",
-          "nameserver": "${i + 1}. ${searchuser.nickname ?? searchuser.user.username}"
-        }
-      }
-    },
-    "sendmoney": {
-      "loading": "생각하는 중...",
-      "error": {
-        "description": {
-          "who": "송금할 대상이 지정되지 않았습니다.",
-          "account": "님의 계좌가 생성되지 않으셨습니다. \n계좌가 있으신 유저에게만 송금이 가능합니다.",
-          "account2": "계좌가 생성되지 않으셨습니다. \n계좌가 있으신 유저에게만 송금이 가능합니다.",
-          "use": "사용법 : !송금 @멘션 (금액)",
-          "toomany": "보내실려는 금액이 보유하신 금액보다 큽니다.",
-          "noself": "돈을 본인에게 보내실 수 없습니다.",
-          "toolow": "1000원 이상부터 송금이 가능합니다."
-        }
+    "heart":{
+      "title":{
+        "success": "⭕ 하트 인증 성공",
+        "fail": "❌ 하트 인증 실패",
+        "koreanbotslist": "한국 디스코드 리스트 봇 하트인증",
+        "archive": "아카이브 봇 하트인증"
       },
-      "success": {
-        "title": {
-          "success": "⭕ 송금 완료"
-        },
-        "fields": {
-          "sender": "송금인 잔액",
-          "value": "${comma(money - betting)}원",
-          "receiver": "받는사람 잔액",
-          "value2": "${money2 + betting}원"
-        }
-      }
-    },
-    "wallet": {
-      "loading": "생각하는 중...",
-      "error": {
-        "description": {
-          "account": "${message.author}님의 정보가 기록되어있지 않습니다. 계좌가 있으신 유저에게만 송금이 가능합니다.",
-          "": ""
-        }
+      "description":{
+        "account": "{{author}}님의 정보가 확인되지 않습니다.\n먼저 `!돈받기`를 입력해 정보를 알려주세요!",
+        "platform": "하트인증 진행할 플랫폼을 선택해주세요!",
+        "koreanbotslist": "한국 디스코드 리스트에 있는 배틀이 봇의 하트가 아직 눌려있지 않습니다.",
+        "archive": "아카이브에 있는 배틀이 봇의 하트가 아직 눌려있지 않습니다.",
+        "successkbl": "{message.author.username}님의 한국 디스코드 리스트에 있는 배틀이 봇의 하트인증이 완료되었습니다.",
+        "successac": "{message.author.username}님의 아카이브에 있는 배틀이 봇의 하트인증이 완료되었습니다.",
+        "later": "{{later}} 뒤에 다시 인증해주세요!"
       },
-      "success": {
-        "title": {
-          "user": "${user.tag}님의 잔액"
-        },
-        "description": {
-          "likethis": "유저님의 잔액은 아래와 같습니다."
-        },
-        "fields": {
-          "name": "잔액 :",
-          "value": "**${comma(wjdqh.money)}원**"
-        }
+      "button":{
+        "kbl": "한디리 인증",
+        "archive": "아카이브 인증",
+        "heart": "하트 누르기"
       }
-    },
-    "stock": {
-      "successtitle": "⭕ 매수 완료",
-      "successtitle2": "⭕ 매수 성공",
-      "canceltitle" : "❌ 매수 취소",
-      "sellsuccesstitle": "⭕ 매도 완료",
-      "sellsuccesstitle2": "⭕ 매도 성공",
-      "sellcanceltitle" : "❌ 매도 취소",
-      "cancel" : "매수를 취소하였습니다.",
-      "cancel2" : "매도를 취소하였습니다.",
-      "serach": "{{keyword}} 검색 결과",
-      "lack":"{{lackmoney}}원이 부족합니다.\n잔액은 {{money}}원입니다.",
-      "buystock": "{{resultitem}} {{quantity}}주({{totalmoney}}원)을 매수하시겠습니까?",
-      "sellstock": "{{resultitem}} {{quantity}}주({{totalmoney}}원)을 매도하시겠습니까?",
-      "buysuccess": "{{resultitem}} {{quantity}}주를 매수했습니다.",
-      "sellsuccess": "{{resultitem}} {{quantity}}주를 매도했습니다.",
-      "nowprice": "현재가",
-      "fee": "수수료",
-      "sum": "총계",
-      "quant": "거래량",
-      "high": "고가",
-      "low": "저가",
-      "quantvalue": "거래량",
-      "highvalue": "고가",
-      "lowvalue": "저가",
-      "nowpricevalue": "{{resultnow}}원",
-      "feevalue": "{{fee}}원 (2%)",
-      "total": "{{total}}원",
-      "accept": "확인",
-      "deny": "아니요",
-      "nosearch": "검색 결과가 없습니다.",
-      "nosearchkeyword": "{{keyword}} 검색 결과가 없습니다.",
-      "intbuy": "매수하실 주식의 수량을 숫자만 입력해주세요.",
-      "up1buy": "매수하실 주식의 수량은 1이상의 숫자만 입력해주세요.",
-      "noaccount": "등록되어 있지 않은 유저인 거 같습니다. 먼저 {{y}}{{prefix}}돈받기{{y}} 명령어로 등록을 해주세요."
     }
   }
 }
