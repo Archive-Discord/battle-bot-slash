@@ -1,5 +1,5 @@
-import { Schema, model, Model } from 'mongoose'
-import { VerifyDB } from '../../typings'
+import { Schema, model, Model } from 'mongoose';
+import { VerifyDB } from '../../typings';
 
 const VerifySchema: Schema<VerifyDB> = new Schema(
   {
@@ -7,11 +7,11 @@ const VerifySchema: Schema<VerifyDB> = new Schema(
     user_id: String,
     token: String,
     status: String,
-    published_date: { type: Date, default: Date.now }
+    published_date: { type: Date, default: Date.now },
   },
-  { collection: 'Verify' }
-)
+  { collection: 'Verify' },
+);
 
-const Verify: Model<VerifyDB> = model('Verify', VerifySchema, 'Verify')
+const Verify: Model<VerifyDB> = model('Verify', VerifySchema, 'Verify');
 
-export default Verify
+export default Verify;

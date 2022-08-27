@@ -1,47 +1,36 @@
-import { TextChannel } from 'discord.js'
-import LoggerSetting from '../schemas/LogSettingSchema'
-import Embed from '../utils/Embed'
-import { Event } from '../structures/Event'
+import { TextChannel } from 'discord.js';
+import LoggerSetting from '../schemas/LogSettingSchema';
+import Embed from '../utils/Embed';
+import { Event } from '../structures/Event';
 
 export default new Event('guildUpdate', async (client, oldGuild, newGuild) => {
-  const LoggerSettingDB = await LoggerSetting.findOne({ guild_id: newGuild.id })
-  if (!LoggerSettingDB) return
-  if (!LoggerSettingDB.useing.serverSetting) return
-  const logChannel = newGuild.channels.cache.get(
-    LoggerSettingDB.guild_channel_id
-  ) as TextChannel
-  if (!logChannel) return
-  let update = false
-  const embed = new Embed(client, 'warn').setTitle('서버 수정')
+  const LoggerSettingDB = await LoggerSetting.findOne({ guild_id: newGuild.id });
+  if (!LoggerSettingDB) return;
+  if (!LoggerSettingDB.useing.serverSetting) return;
+  const logChannel = newGuild.channels.cache.get(LoggerSettingDB.guild_channel_id) as TextChannel;
+  if (!logChannel) return;
+  let update = false;
+  const embed = new Embed(client, 'warn').setTitle('서버 수정');
   if (oldGuild.name != newGuild.name) {
     embed.addFields({
       name: '이름 수정',
-      value: '`' + oldGuild.name + '`' + ' -> ' + '`' + newGuild.name + '`'
-    })
-    update = true
+      value: '`' + oldGuild.name + '`' + ' -> ' + '`' + newGuild.name + '`',
+    });
+    update = true;
   }
   if (oldGuild.premiumTier !== newGuild.premiumTier) {
     embed.addFields({
-      name: `부스트 ${
-        oldGuild.premiumTier < newGuild.premiumTier ? '추가됨' : '차감됨'
-      }`,
-      value:
-        '`' +
-        oldGuild.premiumTier +
-        '`' +
-        ' -> ' +
-        '`' +
-        newGuild.premiumTier +
-        '`'
-    })
-    update = true
+      name: `부스트 ${oldGuild.premiumTier < newGuild.premiumTier ? '추가됨' : '차감됨'}`,
+      value: '`' + oldGuild.premiumTier + '`' + ' -> ' + '`' + newGuild.premiumTier + '`',
+    });
+    update = true;
   }
   if (!oldGuild.banner && newGuild.banner) {
     embed.addFields({
       name: '배너 수정',
-      value: '`' + oldGuild.banner + '`' + ' -> ' + '`' + newGuild.banner + '`'
-    })
-    update = true
+      value: '`' + oldGuild.banner + '`' + ' -> ' + '`' + newGuild.banner + '`',
+    });
+    update = true;
   }
   if (!oldGuild.afkChannel && newGuild.afkChannel) {
     embed.addFields({
@@ -53,9 +42,9 @@ export default new Event('guildUpdate', async (client, oldGuild, newGuild) => {
         ' -> ' +
         (newGuild.afkChannelId
           ? `<#${newGuild.afkChannelId}>` + '(`' + newGuild.afkChannelId + '`)'
-          : '`없음`')
-    })
-    update = true
+          : '`없음`'),
+    });
+    update = true;
   }
   if (!oldGuild.vanityURLCode && newGuild.vanityURLCode) {
     embed.addFields({
@@ -63,9 +52,9 @@ export default new Event('guildUpdate', async (client, oldGuild, newGuild) => {
       value:
         (oldGuild.vanityURLCode ? oldGuild.vanityURLCode : '`없음`') +
         ' -> ' +
-        (newGuild.vanityURLCode ? newGuild.vanityURLCode : '`없음`')
-    })
-    update = true
+        (newGuild.vanityURLCode ? newGuild.vanityURLCode : '`없음`'),
+    });
+    update = true;
   }
   if (oldGuild.afkTimeout !== newGuild.afkTimeout) {
     embed.addFields({
@@ -79,9 +68,9 @@ export default new Event('guildUpdate', async (client, oldGuild, newGuild) => {
         '`' +
         newGuild.afkTimeout / 60 +
         '분' +
-        '`'
-    })
-    update = true
+        '`',
+    });
+    update = true;
   }
   if (oldGuild.ownerId !== newGuild.ownerId) {
     embed.addFields({
@@ -95,9 +84,9 @@ export default new Event('guildUpdate', async (client, oldGuild, newGuild) => {
         `<@${newGuild.ownerId}>` +
         '(`' +
         newGuild.ownerId +
-        '`)'
-    })
-    update = true
+        '`)',
+    });
+    update = true;
   }
   if (oldGuild.systemChannelId !== newGuild.systemChannelId) {
     embed.addFields({
@@ -111,9 +100,9 @@ export default new Event('guildUpdate', async (client, oldGuild, newGuild) => {
         `<#${newGuild.systemChannelId}>` +
         '(`' +
         newGuild.systemChannelId +
-        '`)'
-    })
-    update = true
+        '`)',
+    });
+    update = true;
   }
-  if (update) return await logChannel.send({ embeds: [embed] })
-})
+  if (update) return await logChannel.send({ embeds: [embed] });
+});

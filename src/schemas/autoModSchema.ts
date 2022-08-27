@@ -1,5 +1,5 @@
-import { Schema, model, Model } from 'mongoose'
-import { AutoModDB } from '../../typings'
+import { Schema, model, Model } from 'mongoose';
+import { AutoModDB } from '../../typings';
 
 const automodSchema: Schema<AutoModDB> = new Schema(
   {
@@ -14,13 +14,13 @@ const automodSchema: Schema<AutoModDB> = new Schema(
       useCurseType: String,
       useCurseIgnoreChannel: { type: Array, default: [] },
       useResetChannel: { type: Boolean, default: false },
-      useResetChannels: { type: Array, default: [] }
+      useResetChannels: { type: Array, default: [] },
     },
-    published_date: { type: Date, default: Date.now }
+    published_date: { type: Date, default: Date.now },
   },
-  { collection: 'automod' }
-)
+  { collection: 'automod' },
+);
 
-const Automod: Model<AutoModDB> = model('automod', automodSchema, 'automod')
+const Automod: Model<AutoModDB> = model('automod', automodSchema, 'automod');
 
-export default Automod
+export default Automod;

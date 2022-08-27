@@ -1,45 +1,53 @@
-import { IConfig } from './typings'
-import fs from 'fs'
+import { IConfig } from './typings';
+import fs from 'fs';
 
-let BUILD_NUMBER: string | null = fs.readFileSync('.git/HEAD').toString().trim()
+let BUILD_NUMBER: string | null = fs.readFileSync('.git/HEAD').toString().trim();
 
 if (BUILD_NUMBER?.indexOf(':') === -1) {
-  BUILD_NUMBER
+  BUILD_NUMBER;
 } else {
   try {
     BUILD_NUMBER = fs
       .readFileSync('.git/' + BUILD_NUMBER?.substring(5))
       .toString()
       .trim()
-      .substring(0, 6)
+      .substring(0, 6);
   } catch (e) {
-    BUILD_NUMBER = null
+    BUILD_NUMBER = null;
   }
 }
 
-let config: IConfig = {
+const config: IConfig = {
   BUILD_NUMBER,
   BUILD_VERSION: '0.0.1-dev',
   githubToken: '',
   pubgapikey: '',
+  music: [
+    // If you pass a object like so the "host" property is required
+    {
+      host: 'localhost', // Optional if Lavalink is local
+      port: 2333, // Optional if Lavalink is set to default
+      password: 'youshallnotpass', // Optional if Lavalink is set to default
+    },
+  ],
   klaytnapikey: '',
   updateServer: {
     koreanbots: '', // https://koreanbots.dev
-    archive: '' // https://archiver.me
+    archive: '', // https://archiver.me
   },
   web: {
-    baseurl: ''
+    baseurl: '',
   },
   bot: {
     sharding: false,
     options: {
       intents: [130815],
-      allowedMentions: { parse: ['users', 'roles'], repliedUser: false }
+      allowedMentions: { parse: ['users', 'roles'], repliedUser: false },
     },
     token: '',
     owners: [],
     prefix: '!',
-    cooldown: 2000
+    cooldown: 2000,
   },
   report: {
     /**
@@ -47,20 +55,20 @@ let config: IConfig = {
      */
     type: 'webhook',
     webhook: {
-      url: ''
+      url: '',
     },
     text: {
       guildID: '',
-      channelID: ''
-    }
+      channelID: '',
+    },
   },
   guildAddAlert: {
     guildID: '',
-    channelID: ''
+    channelID: '',
   },
   devGuild: {
     guildID: '',
-    channelID: ''
+    channelID: '',
   },
   database: {
     /**
@@ -70,20 +78,20 @@ let config: IConfig = {
     url: 'mongodb://localhost:27017/',
     options: {
       useNewUrlParser: true,
-      useUnifiedTopology: true
-    }
+      useUnifiedTopology: true,
+    },
   },
   logger: {
     level: 'chat',
-    dev: false
+    dev: false,
   },
   email: {
     Google_Email: '',
     Google_Client_Id: '',
     Google_Client_Secret: '',
     Google_Redirect_Url: '',
-    Google_Refresh_Token: ''
-  }
-}
+    Google_Refresh_Token: '',
+  },
+};
 
-export default config
+export default config;

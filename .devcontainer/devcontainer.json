@@ -1,9 +1,9 @@
 {
-	"name": "Node.js & Mongo DB",
-	"dockerComposeFile": "docker-compose.yml",
-	"service": "app",
-	"workspaceFolder": "/workspace",
-	"forwardPorts": [3000, 27017],
-	"postCreateCommand": "yarn install",
-	"remoteUser": "node",
+  "name": "Node.js & Mongo DB",
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "app",
+  "workspaceFolder": "/workspace",
+  "forwardPorts": [3000, 27017],
+  "postCreateCommand": "yarn install",
+  "remoteUser": "node"
 }

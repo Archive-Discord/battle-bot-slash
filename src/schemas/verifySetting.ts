@@ -1,5 +1,5 @@
-import { Model, model, Schema } from 'mongoose'
-import { VerifySettingDB } from '../../typings'
+import { Model, model, Schema } from 'mongoose';
+import { VerifySettingDB } from '../../typings';
 
 const VerifySettingSchema: Schema<VerifySettingDB> = new Schema(
   {
@@ -7,15 +7,15 @@ const VerifySettingSchema: Schema<VerifySettingDB> = new Schema(
     role_id: String,
     type: String,
     del_role_id: String,
-    published_date: { type: Date, default: Date.now }
+    published_date: { type: Date, default: Date.now },
   },
-  { collection: 'VerifySetting' }
-)
+  { collection: 'VerifySetting' },
+);
 
 const VerifySetting: Model<VerifySettingDB> = model(
   'VerifySetting',
   VerifySettingSchema,
-  'VerifySetting'
-)
+  'VerifySetting',
+);
 
-export default VerifySetting
+export default VerifySetting;

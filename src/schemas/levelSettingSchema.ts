@@ -1,19 +1,15 @@
-import { Schema, model, Model } from 'mongoose'
-import { LevelGuildDB } from '../../typings'
+import { Schema, model, Model } from 'mongoose';
+import { LevelGuildDB } from '../../typings';
 
 const LevelSettingSchema: Schema<LevelGuildDB> = new Schema(
   {
     guild_id: String,
     useage: Boolean,
-    published_date: { type: Date, default: Date.now }
+    published_date: { type: Date, default: Date.now },
   },
-  { collection: 'levelsetting' }
-)
+  { collection: 'levelsetting' },
+);
 
-const Level: Model<LevelGuildDB> = model(
-  'levelsetting',
-  LevelSettingSchema,
-  'levelsetting'
-)
+const Level: Model<LevelGuildDB> = model('levelsetting', LevelSettingSchema, 'levelsetting');
 
-export default Level
+export default Level;
