@@ -13,15 +13,13 @@ export default new BaseCommand(
     message.reply('빗금으로 이전되었습니다.');
   },
   {
+    // @ts-ignore
     data: new SlashCommandBuilder()
       .setName('볼륨')
       .setDescription('설정할 볼륨을 적어주세요')
       .addIntegerOption((options) =>
         options.setName('볼륨').setDescription('설정할 볼륨을 적어주세요').setRequired(true),
       ),
-    options: {
-      isSlash: true,
-    },
     async execute(client, interaction) {
       if (!interaction.member || !interaction.member.voice.channel)
         return interaction.reply({
@@ -30,7 +28,7 @@ export default new BaseCommand(
       const queue = client.music.create({
         guild: interaction.guild.id,
         voiceChannel: interaction.member.voice.channel.id,
-        textChannel: interaction.channel.id,
+        textChannel: interaction.channel?.id!,
       });
 
       if (!queue || !queue.playing)
@@ -46,7 +44,7 @@ export default new BaseCommand(
       //       .setDescription(`명령어를 사용하시려면 ${client.user} 봇이랑 같은 음성채널에 참여해야됩니다!`)
       //   ]
       // })
-      const arg1 = interaction.options.getInteger('볼륨');
+      const arg1 = interaction.options.getInteger('볼륨', true);
 
       if (!queue || !queue.playing)
         return interaction.reply({

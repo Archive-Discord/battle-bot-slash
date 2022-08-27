@@ -14,9 +14,6 @@ export default new BaseCommand(
   },
   {
     data: new SlashCommandBuilder().setName('일시정지').setDescription('노래를 일시정지해요.'),
-    options: {
-      isSlash: true,
-    },
     async execute(client, interaction) {
       if (!interaction.member || !interaction.member.voice.channel)
         return interaction.reply({
@@ -25,7 +22,7 @@ export default new BaseCommand(
       const queue = client.music.create({
         guild: interaction.guild.id,
         voiceChannel: interaction.member.voice.channel.id,
-        textChannel: interaction.channel.id,
+        textChannel: interaction.channel?.id!,
       });
 
       if (!queue || !queue.playing)
@@ -44,7 +41,7 @@ export default new BaseCommand(
       queue.pause(true);
       let pausedembed = new Embed(client, 'success')
         .setTitle('⏸️ 일시정지 ⏸️')
-        .setDescription(`\`${queue.queue.current.title}\`(이)가 일시정지 되었습니다`)
+        .setDescription(`\`${queue.queue.current?.title}\`(이)가 일시정지 되었습니다`)
         .addFields({
           name: `요청자`,
           value: `${interaction.member.user}`,

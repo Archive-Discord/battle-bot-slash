@@ -14,9 +14,6 @@ export default new BaseCommand(
   },
   {
     data: new SlashCommandBuilder().setName('스킵').setDescription('노래를 스킵해요.'),
-    options: {
-      isSlash: true,
-    },
     async execute(client, interaction) {
       if (!interaction.member || !interaction.member.voice.channel)
         return interaction.reply({
@@ -25,7 +22,7 @@ export default new BaseCommand(
       const queue = client.music.create({
         guild: interaction.guild.id,
         voiceChannel: interaction.member.voice.channel.id,
-        textChannel: interaction.channel.id,
+        textChannel: interaction.channel?.id!,
       });
 
       if (!queue || !queue.playing)
@@ -42,12 +39,12 @@ export default new BaseCommand(
       //   ]
       // })
 
-      const currentTrack = queue.queue.current.title;
+      const currentTrack = queue.queue.current?.title;
       const success = queue.stop();
 
       return interaction.reply({
         embeds: [
-          new Embed(client, 'blue')
+          new Embed(client, 'info')
             .setTitle('🔃 스킵 🔃')
             .setDescription(`\`${currentTrack}\` (을)를 건너뛰었어요!`)
             .addFields({

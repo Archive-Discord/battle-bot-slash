@@ -16,9 +16,6 @@ export default new BaseCommand(
     data: new SlashCommandBuilder()
       .setName('반복재생')
       .setDescription('음악을 반복하여 재생합니다.'),
-    options: {
-      isSlash: true,
-    },
     async execute(client, interaction) {
       if (!interaction.member || !interaction.member.voice.channel)
         return interaction.reply({
@@ -27,7 +24,7 @@ export default new BaseCommand(
       const queue = client.music.create({
         guild: interaction.guild.id,
         voiceChannel: interaction.member.voice.channel.id,
-        textChannel: interaction.channel.id,
+        textChannel: interaction.channel?.id!,
       });
 
       if (!queue || !queue.playing)

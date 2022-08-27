@@ -14,15 +14,12 @@ export default new BaseCommand(
   },
   {
     data: new SlashCommandBuilder().setName('재개').setDescription('노래를 재개해요.'),
-    options: {
-      isSlash: true,
-    },
     async execute(client, interaction) {
       if (!interaction.member || !interaction.member.voice.channel)
         return interaction.reply({
           embeds: [new Embed(client, 'default').setDescription(`음성채널에 먼저 참여해주세요!`)],
         });
-      if (!client.user || !interaction.guild.me.voice.channel)
+      if (!client.user || !interaction.guild.members.me?.voice.channel)
         return interaction.reply({
           embeds: [
             new Embed(client, 'default').setDescription(`음... 재생중인 노래가 없어보이네요`),
@@ -31,7 +28,7 @@ export default new BaseCommand(
       const queue = client.music.create({
         guild: interaction.guild.id,
         voiceChannel: interaction.member.voice.channel.id,
-        textChannel: interaction.channel.id,
+        textChannel: interaction.channel?.id!,
       });
       // if (interaction.member.voice.channel.id !== interaction.guild.me.voice.channel.id) return interaction.reply({
       //   embeds: [
@@ -42,7 +39,7 @@ export default new BaseCommand(
       queue.pause(false);
       let pausedembed = new Embed(client, 'success')
         .setTitle('⏯️ 재개 ⏯️')
-        .setDescription(`\`${queue.queue.current.title}\`(이)가 재개 되고 있습니다`)
+        .setDescription(`\`${queue.queue.current?.title}\`(이)가 재개 되고 있습니다`)
         .addFields({
           name: `요청자`,
           value: `${interaction.member.user}`,
