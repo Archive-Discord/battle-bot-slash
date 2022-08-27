@@ -2,7 +2,6 @@ import express from 'express';
 import cors from 'cors';
 import Logger from '../utils/Logger';
 import BotClient from '../structures/BotClient';
-import authGuild from './middleware/authGuild';
 import cookieParser from 'cookie-parser';
 
 const logger = new Logger('web');

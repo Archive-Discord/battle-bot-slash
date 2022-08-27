@@ -1,4 +1,4 @@
-import { DiscordAPIError, Guild, GuildMember, Message } from 'discord.js';
+import { Guild, GuildMember, Message } from 'discord.js';
 import VerifySetting from '../../schemas/verifySetting';
 import { ButtonInteraction } from '../../structures/Command';
 import captchaCreate from '../../utils/createCapcha';

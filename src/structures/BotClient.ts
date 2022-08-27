@@ -1,4 +1,4 @@
-import { Client, ClientOptions, Collection, Message } from 'discord.js';
+import { Client, ClientOptions, Collection } from 'discord.js';
 import Dokdo from 'dokdo';
 import Logger from '../utils/Logger';
 import { BaseButton, BaseCommand, Categorys, Event, MusicEvent } from '../../typings/structures';
@@ -10,7 +10,6 @@ import DatabaseManager from '../managers/DatabaseManager';
 import { Model } from 'mongoose';
 import { config as dotenvConfig } from 'dotenv';
 import ButtonManager from '../managers/ButtonManager';
-import web from '../server';
 import { Manager } from 'erela.js';
 import { client } from '../bot';
 

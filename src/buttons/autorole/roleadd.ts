@@ -1,6 +1,5 @@
-import { DiscordAPIError, ButtonBuilder, Role } from 'discord.js';
+import { DiscordAPIError, Role } from 'discord.js';
 import AutoRole from '../../schemas/AutoRoleSchema';
-import Blacklist from '../../schemas/blacklistSchemas';
 import { ButtonInteraction } from '../../structures/Command';
 import Embed from '../../utils/Embed';
 

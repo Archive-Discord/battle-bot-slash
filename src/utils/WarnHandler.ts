@@ -1,4 +1,4 @@
-import { CommandInteraction, GuildTextBasedChannel, TextChannel } from 'discord.js';
+import { CommandInteraction, TextChannel } from 'discord.js';
 import LoggerSetting from '../schemas/LogSettingSchema';
 import Warning from '../schemas/Warning';
 import BotClient from '../structures/BotClient';

@@ -5,7 +5,7 @@ import {
   Role,
   ShardingManagerOptions,
 } from 'discord.js';
-import { ManagerOptions, NodeOptions } from 'erela.js';
+import { NodeOptions } from 'erela.js';
 
 export type LevelType = 'fatal' | 'error' | 'warn' | 'info' | 'verbose' | 'debug' | 'chat';
 

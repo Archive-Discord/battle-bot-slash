@@ -1,7 +1,4 @@
-import { Guild, GuildMember, Message } from 'discord.js';
-import VerifySetting from '../../schemas/verifySetting';
 import { ButtonInteraction } from '../../structures/Command';
-import captchaCreate from '../../utils/createCapcha';
 import Embed from '../../utils/Embed';
 import { anyid } from 'anyid';
 import config from '../../../config';

@@ -1,5 +1,5 @@
 import { Guild } from 'discord.js';
-import { NextFunction, Request, Response } from 'express';
+import { NextFunction, Response } from 'express';
 import User from '../../schemas/userSchema';
 
 const authGuild = async (req: any, res: Response, next: NextFunction) => {

@@ -1,5 +1,3 @@
-import web from './server';
-import { client } from './bot';
 import { ShardingManager } from 'discord.js';
 import config from '../config';
 import chalk from 'chalk';

@@ -20,7 +20,6 @@ import NFTGuildVerify from '../schemas/NFTGuildVerifySchema';
 import axios from 'axios';
 import config from '../../config';
 import CommandManager from '../managers/CommandManager';
-import web from '../server/index';
 import PremiumUser from '../schemas/premiumUserSchemas';
 import MusicSetting from '../schemas/musicSchema';
 import { format } from '../utils/Utils';

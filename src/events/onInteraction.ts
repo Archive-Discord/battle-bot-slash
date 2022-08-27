@@ -1,4 +1,4 @@
-import { ChannelType, InteractionType } from 'discord.js';
+import { InteractionType } from 'discord.js';
 import ButtonManager from '../managers/ButtonManager';
 import CommandManager from '../managers/CommandManager';
 import ErrorManager from '../managers/ErrorManager';
