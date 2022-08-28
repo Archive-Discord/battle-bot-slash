@@ -12,14 +12,16 @@ export default new BaseCommand(
     aliases: ['송금', 'moneysay', 'thdrma']
   },
   async (client, message, args) => {
-    let embed = new Embed(client, 'warn').setTitle('생각하는 중...')
+    let embed = new Embed(client, 'warn').setTitle(
+      client.i18n.t('main.title.loading')
+    )
     let m = await message.reply({
       embeds: [embed]
     })
     const user = message.mentions.users.first()
     embed = new Embed(client, 'error')
-      .setTitle(`❌ 에러 발생`)
-      .setDescription(`송금할 대상이 지정되지 않았습니다.`)
+      .setTitle(client.i18n.t('main.title.error'))
+      .setDescription(client.i18n.t('commands.sendMoney.description.select'))
       .setColor('#2f3136')
     if (!user)
       return m.edit({
@@ -29,8 +31,9 @@ export default new BaseCommand(
     const tkdeoqkd = await Schema.findOne({ userid: user.id })
     embed = new Embed(client, 'error')
       .setDescription(
-        message.author +
-          '님의 계좌가 생성되지 않으셨습니다. \n계좌가 있으신 유저에게만 송금이 가능합니다.'
+        client.i18n.t('commands.sendMoney.description.account', {
+          author: message.author
+        })
       )
       .setTimestamp()
       .setColor('#2f3136')
@@ -39,9 +42,7 @@ export default new BaseCommand(
         embeds: [embed]
       })
     embed = new Embed(client, 'error')
-      .setDescription(
-        '계좌가 생성되지 않으셨습니다. \n계좌가 있으신 유저에게만 송금이 가능합니다.'
-      )
+      .setDescription(client.i18n.t('commands.sendMoney.description.account2'))
       .setTimestamp()
       .setColor('#2f3136')
     if (!tkdeoqkd)
@@ -50,8 +51,8 @@ export default new BaseCommand(
       })
     const betting = parseInt(args[1])
     embed = new Embed(client, 'error')
-      .setTitle(`❌ 에러 발생`)
-      .setDescription('사용법 : !송금 @멘션 (금액)')
+      .setTitle(client.i18n.t('main.title.error'))
+      .setDescription(client.i18n.t('commands.sendMoney.description.useage'))
       .setTimestamp()
       .setColor('#2f3136')
     if (!betting)
@@ -60,8 +61,8 @@ export default new BaseCommand(
       })
 
     embed = new Embed(client, 'error')
-      .setTitle(`❌ 에러 발생`)
-      .setDescription('금액은 자연수만 입력해주세요.')
+      .setTitle(client.i18n.t('main.title.error'))
+      .setDescription(client.i18n.t('commands.sendMoney.description.int'))
       .setTimestamp()
       .setColor('#2f3136')
     if (message.content.includes('-'))
@@ -69,8 +70,8 @@ export default new BaseCommand(
         embeds: [embed]
       })
     embed = new Embed(client, 'error')
-      .setTitle(`❌ 에러 발생`)
-      .setDescription('1000원 이상부터 송금이 가능합니다.')
+      .setTitle(client.i18n.t('main.title.error'))
+      .setDescription(client.i18n.t('commands.sendMoney.description.toolow'))
       .setTimestamp()
       .setColor('#2f3136')
     if (betting < 1000)
@@ -80,8 +81,8 @@ export default new BaseCommand(
     const money = parseInt(String(sk.money))
     const money2 = parseInt(String(tkdeoqkd.money))
     embed = new Embed(client, 'error')
-      .setTitle(`❌ 에러 발생`)
-      .setDescription('보내실려는 금액이 보유하신 금액보다 큽니다.')
+      .setTitle(client.i18n.t('main.title.error'))
+      .setDescription(client.i18n.t('commands.sendMoney.description.toomany'))
       .setTimestamp()
       .setColor('#2f3136')
     if (money < betting)
@@ -89,8 +90,8 @@ export default new BaseCommand(
         embeds: [embed]
       })
     embed = new Embed(client, 'error')
-      .setTitle(`❌ 에러 발생`)
-      .setDescription('돈을 본인에게 보내실 수 없습니다.')
+      .setTitle(client.i18n.t('main.title.error'))
+      .setDescription(client.i18n.t('commands.sendMoney.description.self'))
       .setTimestamp()
       .setColor('#2f3136')
     if (message.author.id == user.id)
@@ -114,14 +115,22 @@ export default new BaseCommand(
       }
     )
     embed = new Embed(client, 'info')
-      .setTitle('⭕ 송금 완료')
+      .setTitle(client.i18n.t('commands.sendMoney.title.success'))
       .addFields(
         {
-          name: `송금인 잔액`,
-          value: `${comma(money - betting)}원`,
+          name: client.i18n.t('commands.sendMoney.fields.sender'),
+          value: client.i18n.t('commands.sendMoney.fields.won', {
+            m: comma(money - betting)
+          }),
           inline: true
         },
-        { name: `받는사람 잔액`, value: ` ${money2 + betting}원`, inline: true }
+        {
+          name: client.i18n.t('commands.sendMoney.fields.receiver'),
+          value: client.i18n.t('commands.sendMoney.fields.won2', {
+            m: money2 + betting
+          }),
+          inline: true
+        }
       )
       .setTimestamp()
       .setColor('#2f3136')
@@ -158,8 +167,8 @@ export default new BaseCommand(
       let user2 = interaction.options.getUser('유저') || interaction.user
       let betting = interaction.options.getInteger('송금액') || 0
       let embed = new Embed(client, 'error')
-        .setTitle(`❌ 에러 발생`)
-        .setDescription(`송금할 대상이 지정되지 않았습니다.`)
+        .setTitle(client.i18n.t('main.title.error'))
+        .setDescription(client.i18n.t('commands.sendMoney.description.select'))
         .setColor('#2f3136')
       if (!user)
         return interaction.editReply({
@@ -169,8 +178,9 @@ export default new BaseCommand(
       const tkdeoqkd = await Schema.findOne({ userid: user2.id })
       embed = new Embed(client, 'error')
         .setDescription(
-          interaction.user +
-            '님의 계좌가 생성되지 않으셨습니다.\n계좌가 있으신 유저에게만 송금이 가능합니다.'
+          client.i18n.t('commands.sendMoney.description.account', {
+            author: interaction.user
+          })
         )
         .setTimestamp()
         .setColor('#2f3136')
@@ -180,7 +190,7 @@ export default new BaseCommand(
         })
       embed = new Embed(client, 'error')
         .setDescription(
-          '계좌가 생성되지 않으셨습니다. \n계좌가 있으신 유저에게만 송금이 가능합니다.'
+          client.i18n.t('commands.sendMoney.description.account2')
         )
         .setTimestamp()
         .setColor('#2f3136')
@@ -189,8 +199,8 @@ export default new BaseCommand(
           embeds: [embed]
         })
       embed = new Embed(client, 'error')
-        .setTitle(`❌ 에러 발생`)
-        .setDescription('1000원 이상부터 송금이 가능합니다.')
+        .setTitle(client.i18n.t('main.title.error'))
+        .setDescription(client.i18n.t('commands.sendMoney.description.toolow'))
         .setTimestamp()
         .setColor('#2f3136')
       if (betting < 1000)
@@ -200,8 +210,8 @@ export default new BaseCommand(
       const money = parseInt(String(sk.money))
       const money2 = parseInt(String(tkdeoqkd.money))
       embed = new Embed(client, 'error')
-        .setTitle(`❌ 에러 발생`)
-        .setDescription('보내실려는 금액이 보유하신 금액보다 큽니다.')
+        .setTitle(client.i18n.t('main.title.error'))
+        .setDescription(client.i18n.t('commands.sendMoney.description.toomany'))
         .setTimestamp()
         .setColor('#2f3136')
       if (money < betting)
@@ -209,8 +219,8 @@ export default new BaseCommand(
           embeds: [embed]
         })
       embed = new Embed(client, 'error')
-        .setTitle(`❌ 에러 발생`)
-        .setDescription('돈을 본인에게 보내실 수 없습니다.')
+        .setTitle(client.i18n.t('main.title.error'))
+        .setDescription(client.i18n.t('commands.sendMoney.description.self'))
         .setTimestamp()
         .setColor('#2f3136')
       if (interaction.user.id == user2.id)
@@ -234,16 +244,20 @@ export default new BaseCommand(
         }
       )
       embed = new Embed(client, 'info')
-        .setTitle('⭕ 송금 완료')
+        .setTitle(client.i18n.t('commands.sendMoney.title.success'))
         .addFields(
           {
-            name: `송금인 잔액`,
-            value: `${comma(money - betting)}원`,
+            name: client.i18n.t('commands.sendMoney.fields.sender'),
+            value: client.i18n.t('commands.sendMoney.fields.won', {
+              m: comma(money - betting)
+            }),
             inline: true
           },
           {
-            name: `받는사람 잔액`,
-            value: ` ${money2 + betting}원`,
+            name: client.i18n.t('commands.sendMoney.fields.receiver'),
+            value: client.i18n.t('commands.sendMoney.fields.won2', {
+              m: money2 + betting
+            }),
             inline: true
           }
         )

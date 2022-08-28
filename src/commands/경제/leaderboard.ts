@@ -19,30 +19,45 @@ export default new BaseCommand(
     const embed = new Embed(client, 'info').setColor('#2f3136')
     for (let i = 0; i < data.length; i++) {
       if (type === '전체') {
-        embed.setTitle('돈 순위표')
+        embed.setTitle(client.i18n.t('commands.leaderboard.title.rank'))
         let searchuser = client.users.cache.get(data[i].userid)
         if (!searchuser) return
         embed.addFields({
-          name: `${i + 1}. ${searchuser.username}`,
-          value: `${comma(data[i].money)}원`
+          name: client.i18n.t('commands.leaderboard.fields.name', {
+            num: i + 1,
+            username: searchuser.username
+          }),
+          value: client.i18n.t('commands.leaderboard.fields.value', {
+            money: comma(data[i].money)
+          })
         })
         embed.setColor('#2f3136')
       } else if (type === '서버') {
-        embed.setTitle('서버 돈 순위표')
+        embed.setTitle(client.i18n.t('commands.leaderboard.title.srank'))
         let searchuser = message.guild?.members.cache.get(data[i].userid)
         if (!searchuser) return
         embed.addFields({
-          name: `${i + 1}. ${searchuser.nickname ?? searchuser.user.username}`,
-          value: `${comma(data[i].money)}원`
+          name: client.i18n.t('commands.leaderboard.fields.nameserver', {
+            num: i + 1,
+            username: searchuser.nickname ?? searchuser.user.username
+          }),
+          value: client.i18n.t('commands.leaderboard.fields.value', {
+            money: comma(data[i].money)
+          })
         })
         embed.setColor('#2f3136')
       } else {
-        embed.setTitle('돈 순위표')
+        embed.setTitle(client.i18n.t('commands.leaderboard.title.rank'))
         let searchuser = client.users.cache.get(data[i].userid)
         if (!searchuser) return
         embed.addFields({
-          name: `${i + 1}. ${searchuser.username}`,
-          value: `${comma(data[i].money)}원`
+          name: client.i18n.t('commands.leaderboard.fields.name', {
+            num: i + 1,
+            username: searchuser.username
+          }),
+          value: client.i18n.t('commands.leaderboard.fields.value', {
+            money: comma(data[i].money)
+          })
         })
         embed.setColor('#2f3136')
       }
@@ -75,32 +90,45 @@ export default new BaseCommand(
       const embed = new Embed(client, 'info').setColor('#2f3136')
       for (let i = 0; i < data.length; i++) {
         if (type === '전체') {
-          embed.setTitle('돈 순위표')
+          embed.setTitle(client.i18n.t('commands.leaderboard.title.rank'))
           let searchuser = client.users.cache.get(data[i].userid)
           if (!searchuser) return
           embed.addFields({
-            name: `${i + 1}. ${searchuser.username}`,
-            value: `${comma(data[i].money)}원`
+            name: client.i18n.t('commands.leaderboard.fields.name', {
+              num: i + 1,
+              username: searchuser.username
+            }),
+            value: client.i18n.t('commands.leaderboard.fields.value', {
+              money: comma(data[i].money)
+            })
           })
           embed.setColor('#2f3136')
         } else if (type === '서버') {
-          embed.setTitle('서버 돈 순위표')
+          embed.setTitle(client.i18n.t('commands.leaderboard.title.srank'))
           let searchuser = interaction.guild?.members.cache.get(data[i].userid)
           if (!searchuser) return
           embed.addFields({
-            name: `${i + 1}. ${
-              searchuser.nickname ?? searchuser.user.username
-            }`,
-            value: `${comma(data[i].money)}원`
+            name: client.i18n.t('commands.leaderboard.fields.nameserver', {
+              num: i + 1,
+              username: searchuser.nickname ?? searchuser.user.username
+            }),
+            value: client.i18n.t('commands.leaderboard.fields.value', {
+              money: comma(data[i].money)
+            })
           })
           embed.setColor('#2f3136')
         } else {
-          embed.setTitle('돈 순위표')
+          embed.setTitle(client.i18n.t('commands.leaderboard.title.rank'))
           let searchuser = client.users.cache.get(data[i].userid)
           if (!searchuser) return
           embed.addFields({
-            name: `${i + 1}. ${searchuser.username}`,
-            value: `${comma(data[i].money)}원`
+            name: client.i18n.t('commands.leaderboard.fields.name', {
+              num: i + 1,
+              username: searchuser.username
+            }),
+            value: client.i18n.t('commands.leaderboard.fields.value', {
+              money: comma(data[i].money)
+            })
           })
           embed.setColor('#2f3136')
         }
