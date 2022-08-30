@@ -1,19 +1,15 @@
-import { Schema, model, Model } from 'mongoose'
-import { PremiumDB } from '../../typings'
+import { Schema, model, Model } from 'mongoose';
+import { PremiumDB } from '../../typings';
 
-const premiumSchema = new Schema(
+const premiumSchema = new Schema<PremiumDB>(
   {
     guild_id: String,
     nextpay_date: { type: Date, default: Date.now },
-    published_date: { type: Date, default: Date.now }
+    published_date: { type: Date, default: Date.now },
   },
-  { collection: 'premiumGuild' }
-)
+  { collection: 'premiumGuild' },
+);
 
-const Premium: Model<PremiumDB> = model(
-  'premiumGuild',
-  premiumSchema,
-  'premiumGuild'
-)
+const Premium: Model<PremiumDB> = model('premiumGuild', premiumSchema, 'premiumGuild');
 
-export default Premium
+export default Premium;

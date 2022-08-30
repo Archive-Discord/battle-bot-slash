@@ -1,4 +1,4 @@
-import { Schema, model } from 'mongoose'
+import { Schema, model } from 'mongoose';
 
 const blacklistSchema = new Schema(
   {
@@ -7,11 +7,11 @@ const blacklistSchema = new Schema(
     reason: String,
     status: String,
     message: String,
-    published_date: { type: Date, default: Date.now }
+    published_date: { type: Date, default: Date.now },
   },
-  { collection: 'blacklist' }
-)
+  { collection: 'blacklist' },
+);
 
-const Blacklist = model('blacklist', blacklistSchema, 'blacklist')
+const Blacklist = model('blacklist', blacklistSchema, 'blacklist');
 
-export default Blacklist
+export default Blacklist;

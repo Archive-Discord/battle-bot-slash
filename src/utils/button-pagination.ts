@@ -1,75 +1,85 @@
 import {
-  MessageButton,
-  MessageEmbed,
-  MessageActionRow,
-  ButtonInteraction,
-  CommandInteraction,
-  MessageComponentInteraction
-} from 'discord.js'
+  ButtonBuilder,
+  EmbedBuilder,
+  ActionRowBuilder,
+  ButtonStyle,
+  ChatInputCommandInteraction,
+} from 'discord.js';
 
 const paginationEmbed = async (
-  interaction: CommandInteraction,
-  pages: MessageEmbed[],
-  buttonList: MessageButton[],
-  timeout = 120000
+  interaction: ChatInputCommandInteraction,
+  pages: EmbedBuilder[],
+  buttonList: ButtonBuilder[],
+  timeout = 120000,
 ) => {
-  if (!pages) throw new Error('Pages are not given.')
-  if (!buttonList) throw new Error('Buttons are not given.')
-  if (buttonList[0].style === 'LINK' || buttonList[1].style === 'LINK')
-    throw new Error('링크 버튼은 사용이 불가능합니다')
-  if (buttonList.length !== 2) throw new Error('2개의 버튼이 필요합니다')
+  if (!pages) throw new Error('Pages are not given.');
+  if (!buttonList) throw new Error('Buttons are not given.');
+  if (
+    buttonList[0].data.style === ButtonStyle.Link ||
+    buttonList[1].data.style === ButtonStyle.Link
+  )
+    throw new Error('링크 버튼은 사용이 불가능합니다');
+  if (buttonList.length !== 2) throw new Error('2개의 버튼이 필요합니다');
 
-  let page = 0
+  let page = 0;
 
-  const row = new MessageActionRow().addComponents(buttonList)
+  const row = new ActionRowBuilder<ButtonBuilder>().addComponents(buttonList);
 
   const curPage = await interaction.editReply({
-    embeds: [pages[page].setFooter(`페이지 ${page + 1} / ${pages.length}`)],
-    components: [row]
-  })
+    embeds: [pages[page].setFooter({ text: `페이지 ${page + 1} / ${pages.length}` })],
+    components: [row],
+  });
 
-  const filter = (i: MessageComponentInteraction) =>
+  const filter = (i: any) =>
+    // @ts-ignore
     i.customId === buttonList[0].customId ||
-    i.customId === buttonList[1].customId
+    // @ts-ignore
+    i.customId === buttonList[1].customId;
 
   const collector = await interaction.channel?.createMessageComponentCollector({
     filter,
-    time: timeout
-  })
+    time: timeout,
+  });
 
-  collector?.on('collect', async (i: ButtonInteraction) => {
+  collector?.on('collect', async (i) => {
     switch (i.customId) {
+      // @ts-ignore
       case buttonList[0].customId:
-        page = page > 0 ? --page : pages.length - 1
-        break
+        page = page > 0 ? --page : pages.length - 1;
+        break;
+      // @ts-ignore
       case buttonList[1].customId:
-        page = page + 1 < pages.length ? ++page : 0
-        break
+        page = page + 1 < pages.length ? ++page : 0;
+        break;
       default:
-        break
+        break;
     }
-    await i.deferUpdate()
+    await i.deferUpdate();
     await i.editReply({
-      embeds: [pages[page].setFooter(`페이지 ${page + 1} / ${pages.length}`)],
-      components: [row]
-    })
-    collector.resetTimer()
-  })
+      embeds: [pages[page].setFooter({ text: `페이지 ${page + 1} / ${pages.length}` })],
+      components: [row],
+    });
+    collector.resetTimer();
+  });
 
   collector?.on('end', (_, reason) => {
     if (reason !== 'messageDelete') {
-      const disabledRow = new MessageActionRow().addComponents(
+      const disabledRow = new ActionRowBuilder<ButtonBuilder>().addComponents(
         buttonList[0].setDisabled(true),
-        buttonList[1].setDisabled(true)
-      )
+        buttonList[1].setDisabled(true),
+      );
       interaction.editReply({
-        embeds: [pages[page].setFooter(`페이지 ${page + 1} / ${pages.length}`)],
-        components: [disabledRow]
-      })
+        embeds: [
+          pages[page].setFooter({
+            text: `페이지 ${page + 1} / ${pages.length}`,
+          }),
+        ],
+        components: [disabledRow],
+      });
     }
-  })
+  });
 
-  return curPage
-}
+  return curPage;
+};
 
-export default paginationEmbed
+export default paginationEmbed;

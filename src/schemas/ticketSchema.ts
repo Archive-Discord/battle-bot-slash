@@ -1,4 +1,4 @@
-import { Schema, model } from 'mongoose'
+import { Schema, model } from 'mongoose';
 
 const ticketSchema = new Schema(
   {
@@ -8,11 +8,11 @@ const ticketSchema = new Schema(
     userId: String,
     ticketId: String,
     messages: Array,
-    published_date: { type: Date, default: Date.now }
+    published_date: { type: Date, default: Date.now },
   },
-  { collection: 'ticket' }
-)
+  { collection: 'ticket' },
+);
 
-const Ticket = model('ticket', ticketSchema, 'ticket')
+const Ticket = model('ticket', ticketSchema, 'ticket');
 
-export default Ticket
+export default Ticket;

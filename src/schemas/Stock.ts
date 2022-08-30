@@ -1,20 +1,20 @@
-import { Schema, model } from 'mongoose'
+import { Schema, model } from 'mongoose';
 interface StockSchema {
-  userid: string
-  stocks: Stock[]
+  userid: string;
+  stocks: Stock[];
 }
 
 export interface Stock {
-  code: string
-  name: string
-  price: number
-  quantity: number
+  code: string;
+  name: string;
+  price: number;
+  quantity: number;
 }
 const schema = new Schema<StockSchema>({
   userid: { type: String },
-  stocks: { type: [] }
-})
+  stocks: { type: [] },
+});
 
-const StockSchema = model<StockSchema>('stock', schema, 'stock')
+const StockSchema = model<StockSchema>('stock', schema, 'stock');
 
-export default StockSchema
+export default StockSchema;

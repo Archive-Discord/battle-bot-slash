@@ -1,4 +1,4 @@
-import { Schema, model } from 'mongoose'
+import { Schema, model } from 'mongoose';
 
 const AlertSchema = new Schema({
   user_id: String,
@@ -9,14 +9,16 @@ const AlertSchema = new Schema({
       title: String,
       message: String,
       button: {
+        required: false,
+
         url: String,
-        value: String
-      }
-    }
+        value: String,
+      },
+    },
   ],
-  published_date: { type: Date, default: Date.now }
-})
+  published_date: { type: Date, default: Date.now },
+});
 
-const Alert = model('alerts', AlertSchema, 'alerts')
+const Alert = model('alerts', AlertSchema, 'alerts');
 
-export default Alert
+export default Alert;

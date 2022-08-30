@@ -1,5 +1,5 @@
 name: ESlint style check
-on: [push, pull_request]
+on: [push]
 
 jobs:
   lint:
@@ -27,4 +27,4 @@ jobs:
       - name: Commit changes
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
-          commit_message: "style(eslint): Fixed eslint style format"
+          commit_message: 'style(eslint): Fixed eslint style format'

@@ -1,5 +1,5 @@
-import { Schema, model, Model } from 'mongoose'
-import { HcsDB } from '../../typings'
+import { Schema, model, Model } from 'mongoose';
+import { HcsDB } from '../../typings';
 
 const hcsSchema: Schema<HcsDB> = new Schema(
   {
@@ -8,11 +8,11 @@ const hcsSchema: Schema<HcsDB> = new Schema(
     birthday: String,
     password: String,
     name: String,
-    published_date: { type: Date, default: Date.now }
+    published_date: { type: Date, default: Date.now },
   },
-  { collection: 'hcs' }
-)
+  { collection: 'hcs' },
+);
 
-const hcs: Model<HcsDB> = model('hcs', hcsSchema, 'hcs')
+const hcs: Model<HcsDB> = model('hcs', hcsSchema, 'hcs');
 
-export default hcs
+export default hcs;
