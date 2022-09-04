@@ -21,6 +21,7 @@ export default new BaseCommand(
       .addStringOption((options) =>
         options.setName('query').setDescription('노래 이름을 적어주세요').setRequired(true),
       ),
+      .setRequired(true)
     async execute(client, interaction) {
       await interaction.deferReply();
       const search = interaction.options.getString('query');
