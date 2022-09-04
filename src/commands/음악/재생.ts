@@ -18,9 +18,12 @@ export default new BaseCommand(
     data: new SlashCommandBuilder()
       .setName('재생')
       .setDescription('노래를 재생해요.')
-      .addStringOption((options) =>
-        options.setName('query').setDescription('노래 이름을 적어주세요').setRequired(true),
-      ),
+      .addStringOption((option) =>
+          option
+            .setName('query')
+            .setDescription('재생할 노래 재목 또는 링크를 적어주세요')
+            .setRequired(true)
+      )
     async execute(client, interaction) {
       await interaction.deferReply();
       const search = interaction.options.getString('query');
