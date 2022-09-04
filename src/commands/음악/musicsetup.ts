@@ -26,7 +26,7 @@ export default new BaseCommand(
               .setDescription(`서버에 관리자 권한이 부족하여 사용이 불가능합니다.`),
           ],
         });
-      const find = await Schema.findOne({ guildid: interaction.guild.id });
+      const find = await Schema.findOne({ guild_id: interaction.guild.id });
       if (find) {
         const embed1 = new Embed(client, 'error')
           .setTitle('❌ 에러 발생')

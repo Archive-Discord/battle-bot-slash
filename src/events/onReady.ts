@@ -57,7 +57,7 @@ export default new Event(
       .on('trackStart', async (player, track) => {
         if (!player.guild) return;
         const guild = await client.guilds.fetch(player.guild);
-        const find = await MusicSetting.findOne({ guildid: guild.id });
+        const find = await MusicSetting.findOne({ guild_id: guild.id });
         const gdid = guild.id;
         const gdname = guild.name;
         const gdicon = guild.iconURL();
@@ -102,6 +102,7 @@ export default new Event(
 
           const msg_list = await channel.messages.fetch(msgid_list);
           const msg_banner = await channel.messages.fetch(msgid_banner);
+          if (!msg_list || !msg_banner) return
           const tracks = player.queue;
           const maxTracks = 10; //tracks / Queue Page
           const songs = tracks.slice(0, maxTracks);
@@ -133,19 +134,19 @@ export default new Event(
               .addFields(
                 {
                   name: `**\` N. \` *${player.queue.length > maxTracks
-                      ? player.queue.length - maxTracks
-                      : player.queue.length
+                    ? player.queue.length - maxTracks
+                    : player.queue.length
                     } 개의 노래가 대기중 ...***`,
                   value: `\u200b`,
                 },
                 {
                   name: `**\` 0. \` __재생중인 노래__**`,
                   value: `**${player.queue.current?.uri
-                      ? `[${player.queue.current.title
-                        .substring(0, 60)
-                        .replace(/\[/giu, '\\[')
-                        .replace(/\]/giu, '\\]')}](${player.queue.current.uri})`
-                      : player.queue.current?.title
+                    ? `[${player.queue.current.title
+                      .substring(0, 60)
+                      .replace(/\[/giu, '\\[')
+                      .replace(/\]/giu, '\\]')}](${player.queue.current.uri})`
+                    : player.queue.current?.title
                     }** - \`${player.queue.current?.isStream
                       ? `LIVE STREAM`
                       : format(player.queue.current?.duration!).split(` | `)[0]
@@ -200,19 +201,19 @@ export default new Event(
               .addFields(
                 {
                   name: `**\` N. \` *${player.queue.length > maxTracks
-                      ? player.queue.length - maxTracks
-                      : player.queue.length
+                    ? player.queue.length - maxTracks
+                    : player.queue.length
                     } 개의 노래가 대기중 ...***`,
                   value: `\u200b`,
                 },
                 {
                   name: `**\` 0. \` __재생중인 노래__**`,
                   value: `**${player.queue.current?.uri
-                      ? `[${player.queue.current.title
-                        .substring(0, 60)
-                        .replace(/\[/giu, '\\[')
-                        .replace(/\]/giu, '\\]')}](${player.queue.current.uri})`
-                      : player.queue.current?.title
+                    ? `[${player.queue.current.title
+                      .substring(0, 60)
+                      .replace(/\[/giu, '\\[')
+                      .replace(/\]/giu, '\\]')}](${player.queue.current.uri})`
+                    : player.queue.current?.title
                     }** - \`${player.queue.current?.isStream
                       ? `LIVE STREAM`
                       : format(player.queue.current?.duration!).split(` | `)[0]
@@ -293,6 +294,7 @@ export default new Event(
           const channel = client.channels.cache.get(chid) as TextBasedChannel;
           const msg_list = await channel.messages.fetch(msgid_list);
           const msg_banner = await channel.messages.fetch(msgid_banner);
+          if (!msg_list || !msg_banner) return
           if (guild.iconURL()) {
             const ss = new Embed(client, 'info')
               .setAuthor({
