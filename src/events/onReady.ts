@@ -76,7 +76,16 @@ export default new Event(
             { name: `게시자`, value: `${track.author}`, inline: true },
           )
           .setThumbnail(`${track.thumbnail}`);
-        channel.send({ embeds: [playl] });
+        channel.send({ embeds: [playl] }).then((message) => {
+          if (!message) return;
+          setTimeout(async () => {
+            try {
+              await message.delete()
+            } catch (e) {
+              console.log(e)
+            }
+          }, 5000);
+        });
         // const voic = guild.member.voice.channel.id
         // const textc = guild.channel.id
         if (find) {
