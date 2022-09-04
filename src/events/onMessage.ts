@@ -91,9 +91,7 @@ const musicPlayer = async (client: BotClient, message: Message) => {
       })
     }
   }
-  const song = await client.music.search(message.content, {
-    requestedBy: message.author
-  })
+  const song = await client.music.search(message.content, message.author)
   if (!song || !song.tracks.length) {
     errembed.setTitle(`❌ ${message.content}를 찾지 못했어요!`)
     return message.channel.send({ embeds: [errembed] }).then((m) => {
