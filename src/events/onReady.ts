@@ -293,7 +293,16 @@ export default new Event(
       .on('queueEnd', async (player, track) => {
         const channel = client.channels.cache.get(player.textChannel!) as TextBasedChannel;
         const playl = new Embed(client, 'info').setTitle('끝!').setDescription(`노래가 끝났어요!`);
-        channel.send({ embeds: [playl] });
+        channel.send({ embeds: [playl] }).then((message) => {
+          if (!message) return;
+          setTimeout(async () => {
+            try {
+              await message.delete()
+            } catch (e) {
+              console.log(e)
+            }
+          }, 5000);
+        });;
         const guild = await client.guilds.fetch(player.guild);
         const find = await MusicSetting.findOne({ guildid: guild.id });
         if (find) {
