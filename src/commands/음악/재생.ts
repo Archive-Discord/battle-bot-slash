@@ -20,8 +20,8 @@ export default new BaseCommand(
       .setDescription('노래를 재생해요.')
       .addStringOption((options) =>
         options.setName('query').setDescription('노래 이름을 적어주세요').setRequired(true),
-      ),
-      .setRequired(true)
+      )
+      .setRequired(true),
     async execute(client, interaction) {
       await interaction.deferReply();
       const search = interaction.options.getString('query');
