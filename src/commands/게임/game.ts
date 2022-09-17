@@ -15,7 +15,7 @@ export default new BaseCommand(
   async (client, message, args) => {
     let embed = new Embed(client, 'error')
       .setTitle(client.i18n.t('main.title.error'))
-      .setDescription(client.i18n.t('main.error.slashcommand'))
+      .setDescription(client.i18n.t('main.description.slashcommand'))
       .setColor('#2f3136')
     return message.reply({ embeds: [embed] })
   },

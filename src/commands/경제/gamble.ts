@@ -68,7 +68,7 @@ export default new BaseCommand(
         embeds: [embed]
       })
     const random = Math.floor(Math.random() * 101)
-    if (random < 30) {
+    if (random < 56) {
       embed = new Embed(client, 'success')
         .setTitle(client.i18n.t('commands.gamble.title.fail'))
         .setDescription(
@@ -167,7 +167,7 @@ export default new BaseCommand(
           embeds: [embed]
         })
       const random = Math.floor(Math.random() * 101)
-      if (random < 50) {
+      if (random < 56) {
         embed = new Embed(client, 'success')
           .setTitle(client.i18n.t('commands.gamble.title.fail'))
           .setDescription(

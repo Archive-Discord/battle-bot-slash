@@ -24,7 +24,7 @@ export default new BaseCommand(
     })
     if (!bettingtf) {
       let newData = new schema({
-        money: parseInt('5000'),
+        money: parseInt('50000'),
         userid: message.author.id,
         date: date
       })
@@ -32,6 +32,12 @@ export default new BaseCommand(
       embed = new Embed(client, 'success')
         .setTitle(client.i18n.t('commands.giveMoney.title.welcome'))
         .setDescription(client.i18n.t('commands.giveMoney.description.first'))
+        .addFields({
+          name: client.i18n.t('commands.giveMoney.fields.name'),
+          value: client.i18n.t('commands.giveMoney.fields.value', {
+            money: 50000
+          })
+        })
         .setColor('#2f3136')
       m.edit({
         embeds: [embed]
@@ -49,19 +55,18 @@ export default new BaseCommand(
       await schema.findOneAndUpdate(
         { userid: message.author.id },
         {
-          money: money + 5000,
+          money: money + 10000,
           userid: message.author.id,
           date: date
         }
       )
-      const f = money + 5000
+      const f = money + 10000
       embed = new Embed(client, 'success')
-        .setTitle(client.i18n.t('commands.giveMoney.title.succes'))
-        .setDescription(client.i18n.t('commands.giveMoney.description.first'))
+        .setTitle(client.i18n.t('commands.giveMoney.title.success'))
         .addFields({
           name: client.i18n.t('commands.giveMoney.fields.name'),
           value: client.i18n.t('commands.giveMoney.fields.value', {
-            money: comma(money + 5000)
+            money: comma(money + 10000)
           })
         })
         .setColor('#2f3136')

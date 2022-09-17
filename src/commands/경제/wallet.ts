@@ -13,7 +13,7 @@ export default new BaseCommand(
   },
   async (client, message, args) => {
     let embed = new Embed(client, 'warn')
-      .setTitle('처리중..')
+      .setTitle(client.i18n.t('main.title.loading'))
       .setColor('#2f3136')
     let m = await message.reply({
       embeds: [embed]
@@ -24,10 +24,13 @@ export default new BaseCommand(
       message.author
     const wjdqh = await Schema.findOne({ userid: user.id })
     embed = new Embed(client, 'success')
-      .setTitle(`정보 오류`)
+      .setTitle(client.i18n.t('main.title.error'))
       .setDescription(
-        `${message.author}님의 정보가 기록되어있지 않습니다. 계좌가 있으신 유저에게만 송금이 가능합니다.`
+        client.i18n.t('commands.wallet.description.account', {
+          author: user
+        })
       )
+      .setColor('#2f3136')
     if (!wjdqh)
       return m.edit({
         embeds: [embed]
@@ -38,9 +41,18 @@ export default new BaseCommand(
     if (wjdqh.date == date) i = '돈을 받음'
     else i = '돈을 받지않음'
     embed = new Embed(client, 'success')
-      .setTitle(`${user.tag}님의 잔액`)
-      .setDescription(`유저님의 잔액은 아래와 같습니다.`)
-      .addFields({ name: '잔액 :', value: `**${comma(wjdqh.money)}원**` })
+      .setTitle(
+        client.i18n.t('commands.wallet.title.have', {
+          tag: user.tag
+        })
+      )
+      .setDescription(client.i18n.t('commands.wallet.description.have'))
+      .addFields({
+        name: client.i18n.t('commands.wallet.fields.name'),
+        value: client.i18n.t('commands.wallet.fields.value', {
+          m: comma(wjdqh.money)
+        })
+      })
       .setColor('#2f3136')
     m.edit({
       embeds: [embed]
@@ -63,19 +75,16 @@ export default new BaseCommand(
     },
     async execute(client, interaction) {
       await interaction.deferReply({ ephemeral: true })
-      let embed = new Embed(client, 'warn')
-        .setTitle('처리중..')
-        .setColor('#2f3136')
-      let m = await interaction.editReply({
-        embeds: [embed]
-      })
       let user = interaction.options.getUser('유저') || interaction.user
       const wjdqh = await Schema.findOne({ userid: user.id })
-      embed = new Embed(client, 'success')
-        .setTitle(`정보 오류`)
+      let embed = new Embed(client, 'success')
+        .setTitle(client.i18n.t('main.title.error'))
         .setDescription(
-          `${interaction.user}님의 정보가 기록되어있지 않습니다. 계좌가 있으신 유저에게만 송금이 가능합니다.`
+          client.i18n.t('commands.wallet.description.account', {
+            author: user
+          })
         )
+        .setColor('#2f3136')
 
       if (!wjdqh)
         return interaction.editReply({
@@ -87,9 +96,18 @@ export default new BaseCommand(
       if (wjdqh.date == date) i = '돈을 받음'
       else i = '돈을 받지않음'
       embed = new Embed(client, 'success')
-        .setTitle(`${user.tag}님의 잔액`)
-        .setDescription(`유저님의 잔액은 아래와 같습니다.`)
-        .addFields({ name: '잔액 :', value: `**${comma(wjdqh.money)}원**` })
+        .setTitle(
+          client.i18n.t('commands.wallet.title.have', {
+            tag: user.tag
+          })
+        )
+        .setDescription(client.i18n.t('commands.wallet.description.have'))
+        .addFields({
+          name: client.i18n.t('commands.wallet.fields.name'),
+          value: client.i18n.t('commands.wallet.fields.value', {
+            m: comma(wjdqh.money)
+          })
+        })
         .setColor('#2f3136')
       interaction.editReply({
         embeds: [embed]

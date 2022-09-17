@@ -15,7 +15,7 @@ export default new BaseCommand(
   },
   async (client, message, args) => {
     let embed = new Embed(client, 'warn')
-      .setTitle('하트인증')
+      .setTitle(client.i18n.t('commands.heart.title.heart'))
       .setDescription(client.i18n.t('commands.heart.description.platform'))
       .setColor('#2f3136')
     const money = await Schema.findOne({ userid: message.author.id })

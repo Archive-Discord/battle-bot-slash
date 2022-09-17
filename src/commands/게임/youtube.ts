@@ -14,7 +14,7 @@ export default new BaseCommand(
   async (client, message, args) => {
     let embed = new Embed(client, 'error')
       .setTitle(client.i18n.t('main.title.error'))
-      .setDescription(client.i18n.t('main.descriptio.slashcommand'))
+      .setDescription(client.i18n.t('main.description.slashcommand'))
     return message.reply({ embeds: [embed] })
   },
   {
