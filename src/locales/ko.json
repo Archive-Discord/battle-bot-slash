@@ -135,7 +135,9 @@
     },
     "wallet":{
       "title":{
-        "have":"{{tag}}님의 잔액"
+        "have":"{{tag}}님의 잔액",
+        "buysuccess":"⭕ 매수 성공",
+        "buycancel":"❌ 매수 취소"
       },
       "description":{
         "account":"<@{{author}}>님의 정보가 기록되어있지 않습니다. 계좌가 있으신 유저에게만 송금이 가능합니다.",
@@ -144,6 +146,68 @@
       "fields":{
         "name":"잔액 :",
         "value": "{{m}}원"
+      }
+    },
+    "stock":{
+      "title":{
+        "search":"{{keyword}} 검색 결과",
+        "ahave":"{{message.author.username}}님의 보유중인 주식",
+        "stockhelp":"주식 도움말"
+      },
+      "description":{
+        "notfound":"검색 결과가 없습니다.",
+        "bint":"매수하실 주식의 수량을 숫자만 입력해주세요.",
+        "bupto1":"매수하실 주식의 수량은 1이상의 숫자만 입력해주세요.",
+        "notfound2":"{{keyword}} 검색 결과가 없습니다.",
+        "accountnf":"등록되어 있지 않은 유저인 거 같습니다. 먼저 `{{config.bot.prefix}}돈받기` 명령어로 등록을 해주세요.",
+        "lack":"{{comma(total - user.money)}}원이 부족합니다.\n잔액은 {{comma(user.money)}}원입니다.",
+        "buy":"{{results.items[0].name}} {{quantity}}주({{comma(result.now * quantity)}}원)을 매수하시겠습니까?",
+        "bsuccess":"{{results.items[0].name}} {{quantity}}주를 매수했습니다.",
+        "bcancel":"매수를 취소하였습니다.",
+        "sint":"매도하실 주식의 수량을 숫자만 입력해주세요.",
+        "supto1":"매도하실 주식의 수량을 1이상의 숫자만 입력해주세요.",
+        "dhave":"{{results.items[0].name}} 을 보유하고 있지 않습니다.",
+        "dhave2":"{{results.items[0].name}}주식을 {{quantity}}주만큼 보유하고 있지 않습니다. 현재 보유량: {{stock.stocks[0].quantity}}주",
+        "sell":"{{results.items[0].name}} {{quantity}}주({{comma(result.now * quantity)}}원)을 매도하시겠습니까?",
+        "ssuccess":"{{results.items[0].name}} {{quantity}}주를 매도했습니다.",
+        "scancel":"매도를 취소하였습니다.",
+        "dhave3":"보유중인 주식이없습니다. 먼저 `{{config.bot.prefix}}주식` 명령어로 주식 명령어를 확인해주세요.",
+        "message":"- {{index + 1}}. {{stock.name}} {{stock.quantity}}주 {{comma(Math.round(stock.price * stock.quantity))}}원 (실시간 정보 확인불가)",
+        "help":"아래에 있는 명령어로 주식을 사용하실 수 있습니다."
+      },
+      "fields":{
+        "nowprice":"현재가",
+        "nowpricev":"{{comma(result.now)}}원",
+        "dtd":"전일대비",
+        "dtdv":"{{comma(result.diff)}}원 ({{result.risefall == 1 || result.risefall == 2? '▴': result.risefall == 3? '-': '▾'}} {{comma(result.rate)}}%)",
+        "trade":"거래량",
+        "tradev":"{{comma(result.quant)}}주",
+        "highp":"고가",
+        "highpv":"{{comma(result.high)}}원",
+        "lowp":"저가",
+        "lowpv":"{{comma(result.low)}}원",
+        "tamount":"거래대금",
+        "tamountv":"{{comma(result.amount)}}백만원",
+        "fee":"수수료",
+        "feev":"{{comma(fee)}}원 (2%)",
+        "sum":"총계",
+        "sumv":"{{comma(total)}}원",
+        "balance":"거래후 잔액",
+        "balancev":"{{comma(user.money - total)}}원",
+        "helplist":"`{{config.bot.prefix}}주식 목록 (주식명)`",
+        "helplistv":"> 검색한 주식들의 목록을 확인합니다",
+        "helpsearch":"`${config.bot.prefix}주식 검색 (주식명)`",
+        "helpsearchv":"> 검색한 주식의 상세 정보를 확인합니다.",
+        "helpbuy":"`${config.bot.prefix}주식 매수 (개수) (주식명)`",
+        "helpbuyv":"> 입력한 주식을 개수만큼 매수합니다.",
+        "helpsell":"`${config.bot.prefix}주식 매도 (개수) (주식명)`",
+        "helpsellv":"> 입력한 주식을 개수만큼 매도합니다.",
+        "helphave":"`${config.bot.prefix}주식 보유`",
+        "helphavev":"> 보유중인 주식을 확인합니다."
+      },
+      "button":{
+        "accept":"확인",
+        "cancel":"아니요"
       }
     }
   }
