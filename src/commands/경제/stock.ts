@@ -334,15 +334,19 @@ export default new BaseCommand(
               inline: true
             })
             .addFields({
-              name: '거래후 잔액',
-              value: `${comma(user.money - total)}원`,
+              name: client.i18n.t('commands.stock.fields.balance'),
+              value: client.i18n.t('commands.stock.fields.balancev', {
+                minus: comma(user.money - total)
+              }),
               inline: true
             })
             .setColor('#2f3136')
           return i.update({ embeds: [successEmbed], components: [] })
         } else if (i.customId == 'stock.deny') {
-          embed.setTitle(`❌ 매수 취소`)
-          embed.setDescription(`매수를 취소하였습니다.`)
+          embed.setTitle(client.i18n.t('commands.stock.title.cancel'))
+          embed.setDescription(
+            client.i18n.t('commands.stock.description.bcancel')
+          )
           return i.update({ embeds: [embed], components: [] })
         }
       })
@@ -1072,15 +1076,19 @@ export default new BaseCommand(
                 inline: true
               })
               .addFields({
-                name: '거래후 잔액',
-                value: `${comma(user.money - total)}원`,
+                name: client.i18n.t('commands.stock.fields.balance'),
+                value: client.i18n.t('commands.stock.fields.balancev', {
+                  minus: comma(user.money - total)
+                }),
                 inline: true
               })
               .setColor('#2f3136')
             return i.update({ embeds: [successEmbed], components: [] })
           } else if (i.customId == 'stock.deny') {
-            embed.setTitle(`❌ 매수 취소`)
-            embed.setDescription(`매수를 취소하였습니다.`)
+            embed.setTitle(client.i18n.t('commands.stock.title.cancel'))
+            embed.setDescription(
+              client.i18n.t('commands.stock.description.bcancel')
+            )
             return i.update({ embeds: [embed], components: [] })
           }
         })

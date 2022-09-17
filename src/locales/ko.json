@@ -153,7 +153,8 @@
         "search":"{{keyword}} 검색 결과",
         "ahave":"{{message.author.username}}님의 보유중인 주식",
         "stockhelp":"주식 도움말",
-        "success": "⭕ 매수 성공"
+        "success": "⭕ 매수 성공",
+        "cancel": "❌ 매수 취소"
       },
       "description":{
         "notfound":"검색 결과가 없습니다.",
@@ -196,7 +197,7 @@
         "sum":"총계",
         "sumv":"{{total}}원",
         "balance":"거래후 잔액",
-        "balancev":"{{comma(user.money - total)}}원",
+        "balancev":"{{minus}}원",
         "helplist":"`{{config.bot.prefix}}주식 목록 (주식명)`",
         "helplistv":"> 검색한 주식들의 목록을 확인합니다",
         "helpsearch":"`${config.bot.prefix}주식 검색 (주식명)`",
