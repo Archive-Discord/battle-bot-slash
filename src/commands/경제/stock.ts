@@ -49,39 +49,52 @@ export default new BaseCommand(
       embed.addFields(
         {
           name: client.i18n.t('commands.stock.fields.nowprice'),
-          value: `${comma(result.now)}원`,
+          value: client.i18n.t('commands.stock.fields.nowpricev', {
+            now: comma(result.now)
+          }),
           inline: true
         },
         {
-          name: '전일대비',
-          value: `${comma(result.diff)}원 (${
-            result.risefall == 1 || result.risefall == 2
-              ? '▴'
-              : result.risefall == 3
-              ? '-'
-              : '▾'
-          } ${comma(result.rate)}%)`,
+          name: client.i18n.t('commands.stock.fields.dtd'),
+          value: client.i18n.t('commands.stock.fields.dtdv', {
+            diff: comma(result.diff),
+            check:
+              result.risefall == 1 || result.risefall == 2
+                ? '▴'
+                : result.risefall == 3
+                ? '-'
+                : '▾',
+            rate: comma(result.rate)
+          }),
           inline: true
         }
       )
       embed.addFields({
-        name: '거래량',
-        value: `${comma(result.quant)}주`,
+        name: client.i18n.t('commands.stock.fields.trade'),
+        value: client.i18n.t('commands.stock.fields.tradev', {
+          quant: comma(result.quant)
+        }),
         inline: true
       })
       embed.addFields({
-        name: '고가',
-        value: `${comma(result.high)}원`,
+        name: client.i18n.t('commands.stock.fields.highp'),
+        value: client.i18n.t('commands.stock.fields.highpv', {
+          high: comma(result.high)
+        }),
         inline: true
       })
       embed.addFields({
-        name: '저가',
-        value: `${comma(result.low)}원`,
+        name: client.i18n.t('commands.stock.fields.lowp'),
+        value: client.i18n.t('commands.stock.fields.lowpv', {
+          low: comma(result.low)
+        }),
         inline: true
       })
       embed.addFields({
-        name: '거래대금',
-        value: `${comma(result.amount)}백만원`,
+        name: client.i18n.t('commands.stock.fields.tamount'),
+        value: client.i18n.t('commands.stock.fields.tamountv', {
+          amount: comma(result.amount)
+        }),
         inline: true
       })
       embed.setImage(
@@ -93,7 +106,11 @@ export default new BaseCommand(
     } else if (type === '목록') {
       const keyword = args.slice(1).join(' ')
       const result = await searchStocks(keyword)
-      embed.setTitle(`${keyword} 검색 결과`)
+      embed.setTitle(
+        client.i18n.t('commands.stock.title.search', {
+          keyword: keyword
+        })
+      )
       const results = result?.result.d.map((stock, index) => {
         return `${
           stock.rf == '1' || stock.rf == '2' ? '+' : stock.rf == '3' ? ' ' : '-'
@@ -109,25 +126,31 @@ export default new BaseCommand(
       const keyword = args.slice(2).join(' ')
       const quantity = parseInt(args[1])
       if (!quantity) {
-        embed.setDescription(`매수하실 주식의 수량을 숫자만 입력해주세요.`)
+        embed.setDescription(client.i18n.t('commands.stock.description.bint'))
         return message.reply({ embeds: [embed] })
       }
       if (quantity < 1) {
-        embed.setDescription(
-          `매수하실 주식의 수량은 1이상의 숫자만 입력해주세요.`
-        )
+        embed.setDescription(client.i18n.t('commands.stock.description.bupto1'))
         return message.reply({ embeds: [embed] })
       }
       const results = await searchStockList(keyword)
       if (!results || results?.items.length == 0) {
         embed.setTitle(client.i18n.t('main.title.error'))
-        embed.setDescription(`${keyword} 검색 결과가 없습니다.`)
+        embed.setDescription(
+          client.i18n.t('commands.stock.description.notfound2', {
+            keyword: keyword
+          })
+        )
         return message.reply({ embeds: [embed] })
       }
       const result = await searchStock(results.items[0].code)
       if (!result) {
         embed.setTitle(client.i18n.t('main.title.error'))
-        embed.setDescription(`${keyword} 검색 결과가 없습니다.`)
+        embed.setDescription(
+          client.i18n.t('commands.stock.description.notfound2', {
+            keyword: keyword
+          })
+        )
         return message.reply({ embeds: [embed] })
       }
       const price = result.now * quantity
@@ -137,37 +160,48 @@ export default new BaseCommand(
       if (!user) {
         embed.setTitle(client.i18n.t('main.title.error'))
         embed.setDescription(
-          `등록되어 있지 않은 유저인 거 같습니다. 먼저 \`${config.bot.prefix}돈받기\` 명령어로 등록을 해주세요.`
+          client.i18n.t('commands.stock.description.accountnf', {
+            prefix: config.bot.prefix
+          })
         )
         return message.reply({ embeds: [embed] })
       }
       if (user.money < total) {
         embed.setTitle(client.i18n.t('main.title.error'))
         embed.setDescription(
-          `${comma(total - user.money)}원이 부족합니다.\n잔액은 ${comma(
-            user.money
-          )}원입니다.`
+          client.i18n.t('commands.stock.description.lack', {
+            howlack: comma(total - user.money),
+            howhave: comma(user.money)
+          })
         )
         return message.reply({ embeds: [embed] })
       }
       embed.setDescription(
-        `${results.items[0].name} ${quantity}주(${comma(
-          result.now * quantity
-        )}원)을 매수하시겠습니까?`
+        client.i18n.t('commands.stock.description.buy', {
+          item: results.items[0].name,
+          quantity: quantity,
+          rnow: comma(result.now * quantity)
+        })
       )
       embed.addFields({
         name: client.i18n.t('commands.stock.fields.nowprice'),
-        value: `${comma(result.now)}원`,
+        value: client.i18n.t('commands.stock.fields.nowpricev', {
+          now: comma(result.now)
+        }),
         inline: true
       })
       embed.addFields({
-        name: '수수료',
-        value: `${comma(fee)}원 (2%)`,
+        name: client.i18n.t('commands.stock.fields.fee'),
+        value: client.i18n.t('commands.stock.fields.feev', {
+          fee: comma(fee)
+        }),
         inline: true
       })
       embed.addFields({
-        name: '총계',
-        value: `${comma(total)}원`,
+        name: client.i18n.t('commands.stock.fields.sum'),
+        value: client.i18n.t('commands.stock.fields.sumv', {
+          total: comma(total)
+        }),
         inline: true
       })
       embed.setImage(
@@ -177,13 +211,13 @@ export default new BaseCommand(
         .addComponents(
           new Discord.ButtonBuilder()
             .setCustomId('stock.accept')
-            .setLabel('확인')
+            .setLabel(client.i18n.t('commands.stock.button.accept'))
             .setStyle(ButtonStyle.Success)
         )
         .addComponents(
           new Discord.ButtonBuilder()
             .setCustomId('stock.deny')
-            .setLabel('아니요')
+            .setLabel(client.i18n.t('commands.stock.button.cancel'))
             .setStyle(ButtonStyle.Danger)
         )
       const m = await message.reply({ embeds: [embed], components: [row] })
@@ -194,23 +228,32 @@ export default new BaseCommand(
       collector.on('collect', async (i) => {
         if (i.user.id != message.author.id) return
         if (i.customId == 'stock.accept') {
-          embed.setTitle(`⭕ 매수 성공`)
+          embed.setTitle(client.i18n.t('commands.stock.title.success'))
           embed.setDescription(
-            `${results.items[0].name} ${quantity}주를 매수했습니다.`
+            client.i18n.t('commands.stock.description.bsuccess', {
+              item: results.items[0].name,
+              quantity: quantity
+            })
           )
           embed.addFields({
             name: client.i18n.t('commands.stock.fields.nowprice'),
-            value: `${comma(result.now)}원`,
+            value: client.i18n.t('commands.stock.fields.nowpricev', {
+              now: comma(result.now)
+            }),
             inline: true
           })
           embed.addFields({
-            name: '수수료',
-            value: `${comma(fee)}원 (2%)`,
+            name: client.i18n.t('commands.stock.fields.fee'),
+            value: client.i18n.t('commands.stock.fields.feev', {
+              fee: comma(fee)
+            }),
             inline: true
           })
           embed.addFields({
-            name: '총계',
-            value: `${comma(total)}원`,
+            name: client.i18n.t('commands.stock.fields.sum'),
+            value: client.i18n.t('commands.stock.fields.sumv', {
+              total: comma(total)
+            }),
             inline: true
           })
           embed.setImage(
@@ -268,18 +311,26 @@ export default new BaseCommand(
             )
           }
           const successEmbed = new Embed(client, 'success')
-            .setTitle(`⭕ 매수 완료`)
+          successEmbed.setTitle(client.i18n.t('commands.stock.title.success'))
+          successEmbed
             .setDescription(
-              `${results.items[0].name} ${quantity}주를 매수했습니다.`
+              client.i18n.t('commands.stock.description.bsuccess', {
+                item: results.items[0].name,
+                quantity: quantity
+              })
             )
             .addFields({
-              name: '거래금액',
-              value: `${comma(total)}원`,
+              name: client.i18n.t('commands.stock.fields.tamount2'),
+              value: client.i18n.t('commands.stock.fields.tamount2v', {
+                total: comma(total)
+              }),
               inline: true
             })
             .addFields({
-              name: '수수료',
-              value: `${comma(fee)}원 (2%)`,
+              name: client.i18n.t('commands.stock.fields.fee'),
+              value: client.i18n.t('commands.stock.fields.feev', {
+                fee: comma(fee)
+              }),
               inline: true
             })
             .addFields({
@@ -304,14 +355,14 @@ export default new BaseCommand(
               .addComponents(
                 new Discord.ButtonBuilder()
                   .setCustomId('stock.accept')
-                  .setLabel('확인')
+                  .setLabel(client.i18n.t('commands.stock.button.accept'))
                   .setStyle(ButtonStyle.Success)
                   .setDisabled(true)
               )
               .addComponents(
                 new Discord.ButtonBuilder()
                   .setCustomId('stock.deny')
-                  .setLabel('아니요')
+                  .setLabel(client.i18n.t('commands.stock.button.cancel'))
                   .setStyle(ButtonStyle.Danger)
                   .setDisabled(true)
               )
@@ -336,13 +387,21 @@ export default new BaseCommand(
       const results = await searchStockList(keyword)
       if (!results || results?.items.length == 0) {
         embed.setTitle(client.i18n.t('main.title.error'))
-        embed.setDescription(`${keyword} 검색 결과가 없습니다.`)
+        embed.setDescription(
+          client.i18n.t('commands.stock.description.notfound2', {
+            keyword: keyword
+          })
+        )
         return message.reply({ embeds: [embed] })
       }
       const result = await searchStock(results.items[0].code)
       if (!result) {
         embed.setTitle(client.i18n.t('main.title.error'))
-        embed.setDescription(`${keyword} 검색 결과가 없습니다.`)
+        embed.setDescription(
+          client.i18n.t('commands.stock.description.notfound2', {
+            keyword: keyword
+          })
+        )
         return message.reply({ embeds: [embed] })
       }
       const stock = await StockSchema.findOne({
@@ -370,7 +429,9 @@ export default new BaseCommand(
       if (!user) {
         embed.setTitle(client.i18n.t('main.title.error'))
         embed.setDescription(
-          `등록되어 있지 않은 유저인 거 같습니다. 먼저 \`${config.bot.prefix}돈받기\` 명령어로 등록을 해주세요.`
+          client.i18n.t('commands.stock.description.accountnf', {
+            prefix: config.bot.prefix
+          })
         )
         return message.reply({ embeds: [embed] })
       }
@@ -381,17 +442,23 @@ export default new BaseCommand(
       )
       embed.addFields({
         name: client.i18n.t('commands.stock.fields.nowprice'),
-        value: `${comma(result.now)}원`,
+        value: client.i18n.t('commands.stock.fields.nowpricev', {
+          now: comma(result.now)
+        }),
         inline: true
       })
       embed.addFields({
-        name: '수수료',
-        value: `${comma(fee)}원 (2%)`,
+        name: client.i18n.t('commands.stock.fields.fee'),
+        value: client.i18n.t('commands.stock.fields.feev', {
+          fee: comma(fee)
+        }),
         inline: true
       })
       embed.addFields({
-        name: '총계',
-        value: `${comma(total)}원`,
+        name: client.i18n.t('commands.stock.fields.sum'),
+        value: client.i18n.t('commands.stock.fields.sumv', {
+          total: comma(total)
+        }),
         inline: true
       })
       embed.setImage(
@@ -401,13 +468,13 @@ export default new BaseCommand(
         .addComponents(
           new Discord.ButtonBuilder()
             .setCustomId('stocksell.accept')
-            .setLabel('확인')
+            .setLabel(client.i18n.t('commands.stock.button.accept'))
             .setStyle(ButtonStyle.Success)
         )
         .addComponents(
           new Discord.ButtonBuilder()
             .setCustomId('stocksell.deny')
-            .setLabel('아니요')
+            .setLabel(client.i18n.t('commands.stock.button.cancel'))
             .setStyle(ButtonStyle.Danger)
         )
       const m = await message.reply({ embeds: [embed], components: [row] })
@@ -422,17 +489,23 @@ export default new BaseCommand(
           )
           embed.addFields({
             name: client.i18n.t('commands.stock.fields.nowprice'),
-            value: `${comma(result.now)}원`,
+            value: client.i18n.t('commands.stock.fields.nowpricev', {
+              now: comma(result.now)
+            }),
             inline: true
           })
           embed.addFields({
-            name: '수수료',
-            value: `${comma(fee)}원 (2%)`,
+            name: client.i18n.t('commands.stock.fields.fee'),
+            value: client.i18n.t('commands.stock.fields.feev', {
+              fee: comma(fee)
+            }),
             inline: true
           })
           embed.addFields({
-            name: '총계',
-            value: `${comma(total)}원`,
+            name: client.i18n.t('commands.stock.fields.sum'),
+            value: client.i18n.t('commands.stock.fields.sumv', {
+              total: comma(total)
+            }),
             inline: true
           })
           embed.setImage(
@@ -470,13 +543,17 @@ export default new BaseCommand(
               `${results.items[0].name} ${quantity}주를 매도했습니다.`
             )
             .addFields({
-              name: '거래금액',
-              value: `${comma(total)}원`,
+              name: client.i18n.t('commands.stock.fields.tamount2'),
+              value: client.i18n.t('commands.stock.fields.tamount2v', {
+                total: comma(total)
+              }),
               inline: true
             })
             .addFields({
-              name: '수수료',
-              value: `${comma(fee)}원 (2%)`,
+              name: client.i18n.t('commands.stock.fields.fee'),
+              value: client.i18n.t('commands.stock.fields.feev', {
+                fee: comma(fee)
+              }),
               inline: true
             })
             .addFields({
@@ -501,14 +578,14 @@ export default new BaseCommand(
               .addComponents(
                 new Discord.ButtonBuilder()
                   .setCustomId('stock.accept')
-                  .setLabel('확인')
+                  .setLabel(client.i18n.t('commands.stock.button.accept'))
                   .setStyle(ButtonStyle.Success)
                   .setDisabled(true)
               )
               .addComponents(
                 new Discord.ButtonBuilder()
                   .setCustomId('stock.deny')
-                  .setLabel('아니요')
+                  .setLabel(client.i18n.t('commands.stock.button.cancel'))
                   .setStyle(ButtonStyle.Danger)
                   .setDisabled(true)
               )
@@ -693,38 +770,51 @@ export default new BaseCommand(
         embed.setTitle(`${results.items[0].name} (${results.items[0].code})`)
         embed.addFields({
           name: client.i18n.t('commands.stock.fields.nowprice'),
-          value: `${comma(result.now)}원`,
+          value: client.i18n.t('commands.stock.fields.nowpricev', {
+            now: comma(result.now)
+          }),
           inline: true
         })
         embed.addFields({
-          name: '전일대비',
-          value: `${comma(result.diff)}원 (${
-            result.risefall == 1 || result.risefall == 2
-              ? '▴'
-              : result.risefall == 3
-              ? '-'
-              : '▾'
-          } ${comma(result.rate)}%)`,
+          name: client.i18n.t('commands.stock.fields.dtd'),
+          value: client.i18n.t('commands.stock.fields.dtdv', {
+            diff: comma(result.diff),
+            check:
+              result.risefall == 1 || result.risefall == 2
+                ? '▴'
+                : result.risefall == 3
+                ? '-'
+                : '▾',
+            rate: comma(result.rate)
+          }),
           inline: true
         })
         embed.addFields({
-          name: '거래량',
-          value: `${comma(result.quant)}주`,
+          name: client.i18n.t('commands.stock.fields.trade'),
+          value: client.i18n.t('commands.stock.fields.tradev', {
+            quant: comma(result.quant)
+          }),
           inline: true
         })
         embed.addFields({
-          name: '고가',
-          value: `${comma(result.high)}원`,
+          name: client.i18n.t('commands.stock.fields.highp'),
+          value: client.i18n.t('commands.stock.fields.highpv', {
+            high: comma(result.high)
+          }),
           inline: true
         })
         embed.addFields({
-          name: '저가',
-          value: `${comma(result.low)}원`,
+          name: client.i18n.t('commands.stock.fields.lowp'),
+          value: client.i18n.t('commands.stock.fields.lowpv', {
+            low: comma(result.low)
+          }),
           inline: true
         })
         embed.addFields({
-          name: '거래대금',
-          value: `${comma(result.amount)}백만원`,
+          name: client.i18n.t('commands.stock.fields.tamount'),
+          value: client.i18n.t('commands.stock.fields.tamountv', {
+            amount: comma(result.amount)
+          }),
           inline: true
         })
         embed.setImage(
@@ -737,7 +827,11 @@ export default new BaseCommand(
       if (type === '목록') {
         const keyword = interaction.options.getString('주식') || ''
         const result = await searchStocks(keyword)
-        embed.setTitle(`${keyword} 검색 결과`)
+        embed.setTitle(
+          client.i18n.t('commands.stock.title.search', {
+            keyword: keyword
+          })
+        )
         const results = result?.result.d.map((stock, index) => {
           return `${
             stock.rf == '1' || stock.rf == '2'
@@ -745,7 +839,7 @@ export default new BaseCommand(
               : stock.rf == '3'
               ? ' '
               : '-'
-          } ${index + 1}. ${stock.nm} (${stock.cd}) [ ${comma(stock.nv)}원 (${
+          } ${index + 1}. ${stock.nm} (${stock.cd}) [ ${comma(stock.nv)}₩ (${
             stock.rf == '1' || stock.rf == '2'
               ? '▴'
               : stock.rf == '3'
@@ -762,25 +856,33 @@ export default new BaseCommand(
         const keyword = interaction.options.getString('주식명') || ''
         const quantity = Number(interaction.options.getString('개수')) || 0
         if (!quantity) {
-          embed.setDescription(`매수하실 주식의 수량을 숫자만 입력해주세요.`)
+          embed.setDescription(client.i18n.t('commands.stock.description.bint'))
           return interaction.editReply({ embeds: [embed] })
         }
         if (quantity < 1) {
           embed.setDescription(
-            `매수하실 주식의 수량은 1이상의 숫자만 입력해주세요.`
+            client.i18n.t('commands.stock.description.bupto1')
           )
           return interaction.editReply({ embeds: [embed] })
         }
         const results = await searchStockList(keyword)
         if (!results || results?.items.length == 0) {
           embed.setTitle(client.i18n.t('main.title.error'))
-          embed.setDescription(`${keyword} 검색 결과가 없습니다.`)
+          embed.setDescription(
+            client.i18n.t('commands.stock.description.notfound2', {
+              keyword: keyword
+            })
+          )
           return interaction.editReply({ embeds: [embed] })
         }
         const result = await searchStock(results.items[0].code)
         if (!result) {
           embed.setTitle(client.i18n.t('main.title.error'))
-          embed.setDescription(`${keyword} 검색 결과가 없습니다.`)
+          embed.setDescription(
+            client.i18n.t('commands.stock.description.notfound2', {
+              keyword: keyword
+            })
+          )
           return interaction.editReply({ embeds: [embed] })
         }
         const price = result.now * quantity
@@ -790,16 +892,19 @@ export default new BaseCommand(
         if (!user) {
           embed.setTitle(client.i18n.t('main.title.error'))
           embed.setDescription(
-            `등록되어 있지 않은 유저인 거 같습니다. 먼저 \`${config.bot.prefix}돈받기\` 명령어로 등록을 해주세요.`
+            client.i18n.t('commands.stock.description.accountnf', {
+              prefix: config.bot.prefix
+            })
           )
           return interaction.editReply({ embeds: [embed] })
         }
         if (user.money < total) {
           embed.setTitle(client.i18n.t('main.title.error'))
           embed.setDescription(
-            `${comma(total - user.money)}원이 부족합니다.\n잔액은 ${comma(
-              user.money
-            )}원이에요.`
+            client.i18n.t('commands.stock.description.lack', {
+              howlack: comma(total - user.money),
+              howhave: comma(user.money)
+            })
           )
           return interaction.editReply({ embeds: [embed] })
         }
@@ -810,17 +915,23 @@ export default new BaseCommand(
         )
         embed.addFields({
           name: client.i18n.t('commands.stock.fields.nowprice'),
-          value: `${comma(result.now)}원`,
+          value: client.i18n.t('commands.stock.fields.nowpricev', {
+            now: comma(result.now)
+          }),
           inline: true
         })
         embed.addFields({
-          name: '수수료',
-          value: `${comma(fee)}원 (2%)`,
+          name: client.i18n.t('commands.stock.fields.fee'),
+          value: client.i18n.t('commands.stock.fields.feev', {
+            fee: comma(fee)
+          }),
           inline: true
         })
         embed.addFields({
-          name: '총계',
-          value: `${comma(total)}원`,
+          name: client.i18n.t('commands.stock.fields.sum'),
+          value: client.i18n.t('commands.stock.fields.sumv', {
+            total: comma(total)
+          }),
           inline: true
         })
         embed.setImage(
@@ -830,13 +941,13 @@ export default new BaseCommand(
           .addComponents(
             new Discord.ButtonBuilder()
               .setCustomId('stock.accept')
-              .setLabel('확인')
+              .setLabel(client.i18n.t('commands.stock.button.accept'))
               .setStyle(ButtonStyle.Success)
           )
           .addComponents(
             new Discord.ButtonBuilder()
               .setCustomId('stock.deny')
-              .setLabel('아니요')
+              .setLabel(client.i18n.t('commands.stock.button.cancel'))
               .setStyle(ButtonStyle.Danger)
           )
         const m = await interaction.editReply({
@@ -854,23 +965,32 @@ export default new BaseCommand(
         collector.on('collect', async (i) => {
           if (i.user.id != interaction.user.id) return
           if (i.customId == 'stock.accept') {
-            embed.setTitle(`⭕ 매수 성공`)
+            embed.setTitle(client.i18n.t('commands.stock.title.success'))
             embed.setDescription(
-              `${results.items[0].name} ${quantity}주를 매수했습니다.`
+              client.i18n.t('commands.stock.description.bsuccess', {
+                item: results.items[0].name,
+                quantity: quantity
+              })
             )
             embed.addFields({
               name: client.i18n.t('commands.stock.fields.nowprice'),
-              value: `${comma(result.now)}원`,
+              value: client.i18n.t('commands.stock.fields.nowpricev', {
+                now: comma(result.now)
+              }),
               inline: true
             })
             embed.addFields({
-              name: '수수료',
-              value: `${comma(fee)}원 (2%)`,
+              name: client.i18n.t('commands.stock.fields.fee'),
+              value: client.i18n.t('commands.stock.fields.feev', {
+                fee: comma(fee)
+              }),
               inline: true
             })
             embed.addFields({
-              name: '총계',
-              value: `${comma(total)}원`,
+              name: client.i18n.t('commands.stock.fields.sum'),
+              value: client.i18n.t('commands.stock.fields.sumv', {
+                total: comma(total)
+              }),
               inline: true
             })
             embed.setImage(
@@ -929,18 +1049,26 @@ export default new BaseCommand(
               )
             }
             const successEmbed = new Embed(client, 'success')
-              .setTitle(`⭕ 매수 완료`)
+            successEmbed.setTitle(client.i18n.t('commands.stock.title.success'))
+            successEmbed
               .setDescription(
-                `${results.items[0].name} ${quantity}주를 매수했습니다.`
+                client.i18n.t('commands.stock.description.bsuccess', {
+                  item: results.items[0].name,
+                  quantity: quantity
+                })
               )
               .addFields({
-                name: '거래금액',
-                value: `${comma(total)}원`,
+                name: client.i18n.t('commands.stock.fields.tamount2'),
+                value: client.i18n.t('commands.stock.fields.tamount2v', {
+                  total: comma(total)
+                }),
                 inline: true
               })
               .addFields({
-                name: '수수료',
-                value: `${comma(fee)}원 (2%)`,
+                name: client.i18n.t('commands.stock.fields.fee'),
+                value: client.i18n.t('commands.stock.fields.feev', {
+                  fee: comma(fee)
+                }),
                 inline: true
               })
               .addFields({
@@ -965,14 +1093,14 @@ export default new BaseCommand(
                 .addComponents(
                   new Discord.ButtonBuilder()
                     .setCustomId('stock.accept')
-                    .setLabel('확인')
+                    .setLabel(client.i18n.t('commands.stock.button.accept'))
                     .setStyle(ButtonStyle.Success)
                     .setDisabled(true)
                 )
                 .addComponents(
                   new Discord.ButtonBuilder()
                     .setCustomId('stock.deny')
-                    .setLabel('아니요')
+                    .setLabel(client.i18n.t('commands.stock.button.cancel'))
                     .setStyle(ButtonStyle.Danger)
                     .setDisabled(true)
                 )
@@ -998,13 +1126,21 @@ export default new BaseCommand(
         const results = await searchStockList(keyword)
         if (!results || results?.items.length == 0) {
           embed.setTitle(client.i18n.t('main.title.error'))
-          embed.setDescription(`${keyword} 검색 결과가 없습니다.`)
+          embed.setDescription(
+            client.i18n.t('commands.stock.description.notfound2', {
+              keyword: keyword
+            })
+          )
           return interaction.editReply({ embeds: [embed] })
         }
         const result = await searchStock(results.items[0].code)
         if (!result) {
           embed.setTitle(client.i18n.t('main.title.error'))
-          embed.setDescription(`${keyword} 검색 결과가 없습니다.`)
+          embed.setDescription(
+            client.i18n.t('commands.stock.description.notfound2', {
+              keyword: keyword
+            })
+          )
           return interaction.editReply({ embeds: [embed] })
         }
         const stock = await StockSchema.findOne({
@@ -1032,7 +1168,9 @@ export default new BaseCommand(
         if (!user) {
           embed.setTitle(client.i18n.t('main.title.error'))
           embed.setDescription(
-            `등록되어 있지 않은 유저인 거 같습니다. 먼저 \`${config.bot.prefix}돈받기\` 명령어로 등록을 해주세요.`
+            client.i18n.t('commands.stock.description.accountnf', {
+              prefix: config.bot.prefix
+            })
           )
           return interaction.editReply({ embeds: [embed] })
         }
@@ -1043,17 +1181,23 @@ export default new BaseCommand(
         )
         embed.addFields({
           name: client.i18n.t('commands.stock.fields.nowprice'),
-          value: `${comma(result.now)}원`,
+          value: client.i18n.t('commands.stock.fields.nowpricev', {
+            now: comma(result.now)
+          }),
           inline: true
         })
         embed.addFields({
-          name: '수수료',
-          value: `${comma(fee)}원 (2%)`,
+          name: client.i18n.t('commands.stock.fields.fee'),
+          value: client.i18n.t('commands.stock.fields.feev', {
+            fee: comma(fee)
+          }),
           inline: true
         })
         embed.addFields({
-          name: '총계',
-          value: `${comma(total)}원`,
+          name: client.i18n.t('commands.stock.fields.sum'),
+          value: client.i18n.t('commands.stock.fields.sumv', {
+            total: comma(total)
+          }),
           inline: true
         })
         embed.setImage(
@@ -1063,13 +1207,13 @@ export default new BaseCommand(
           .addComponents(
             new Discord.ButtonBuilder()
               .setCustomId('stocksell.accept')
-              .setLabel('확인')
+              .setLabel(client.i18n.t('commands.stock.button.accept'))
               .setStyle(ButtonStyle.Success)
           )
           .addComponents(
             new Discord.ButtonBuilder()
               .setCustomId('stocksell.deny')
-              .setLabel('아니요')
+              .setLabel(client.i18n.t('commands.stock.button.cancel'))
               .setStyle(ButtonStyle.Danger)
           )
         const m = await interaction.editReply({
@@ -1090,17 +1234,23 @@ export default new BaseCommand(
             )
             embed.addFields({
               name: client.i18n.t('commands.stock.fields.nowprice'),
-              value: `${comma(result.now)}원`,
+              value: client.i18n.t('commands.stock.fields.nowpricev', {
+                now: comma(result.now)
+              }),
               inline: true
             })
             embed.addFields({
-              name: '수수료',
-              value: `${comma(fee)}원 (2%)`,
+              name: client.i18n.t('commands.stock.fields.fee'),
+              value: client.i18n.t('commands.stock.fields.feev', {
+                fee: comma(fee)
+              }),
               inline: true
             })
             embed.addFields({
-              name: '총계',
-              value: `${comma(total)}원`,
+              name: client.i18n.t('commands.stock.fields.sum'),
+              value: client.i18n.t('commands.stock.fields.sumv', {
+                total: comma(total)
+              }),
               inline: true
             })
             embed.setImage(
@@ -1138,13 +1288,17 @@ export default new BaseCommand(
                 `${results.items[0].name} ${quantity}주를 매도했습니다.`
               )
               .addFields({
-                name: '거래금액',
-                value: `${comma(total)}원`,
+                name: client.i18n.t('commands.stock.fields.tamount2'),
+                value: client.i18n.t('commands.stock.fields.tamount2v', {
+                  total: comma(total)
+                }),
                 inline: true
               })
               .addFields({
-                name: '수수료',
-                value: `${comma(fee)}원 (2%)`,
+                name: client.i18n.t('commands.stock.fields.fee'),
+                value: client.i18n.t('commands.stock.fields.feev', {
+                  fee: comma(fee)
+                }),
                 inline: true
               })
               .addFields({
@@ -1169,14 +1323,14 @@ export default new BaseCommand(
                 .addComponents(
                   new Discord.ButtonBuilder()
                     .setCustomId('stock.accept')
-                    .setLabel('확인')
+                    .setLabel(client.i18n.t('commands.stock.button.accept'))
                     .setStyle(ButtonStyle.Success)
                     .setDisabled(true)
                 )
                 .addComponents(
                   new Discord.ButtonBuilder()
                     .setCustomId('stock.deny')
-                    .setLabel('아니요')
+                    .setLabel(client.i18n.t('commands.stock.button.cancel'))
                     .setStyle(ButtonStyle.Danger)
                     .setDisabled(true)
                 )
