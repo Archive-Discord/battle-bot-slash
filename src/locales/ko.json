@@ -5,7 +5,8 @@
       "loading": "생각하는 중..."
     },
     "description":{
-      "slashcommand": "해당 명령어는 슬래쉬 커맨드 ( / )로만 사용이 가능합니다."
+      "slashcommand": "해당 명령어는 슬래쉬 커맨드 ( / )로만 사용이 가능합니다.",
+      "onlyserver": "이 명령어는 서버에서만 사용 가능합니다"
     }
   },
   "commands": {
@@ -238,6 +239,16 @@
         "no":"해당 유저의 경고 기록이 없습니다."
       },
       "footer":"페이지 - {{warn}}/{{warn2}}"
+    },
+    "level":{
+      "title":{
+        "levelinfo":"{{username}}님의 레벨 정보"
+      },
+      "description":{
+        "nextlevel":"현재 `LV.{{level}}`입니다. 다음 레벨까지 `{{nxp)}}XP / {{fxp}}XP` 남았습니다.",
+        "new":"현재 `LV.0`입니다. 다음 레벨까지 `0XP / 15XP` 남았습니다.",
+        "noaccept":"해당 서버는 레벨 기능이 활성화되지 않은 서버입니다."
+      }
     }
   }
 }

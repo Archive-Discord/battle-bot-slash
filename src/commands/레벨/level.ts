@@ -14,61 +14,98 @@ export default new BaseCommand(
     aliases: ['레벨', 'fpqpf']
   },
   async (client, message, args) => {
-    return message.reply('해당 명령어는 슬래쉬 커맨드 ( / )로만 사용이 가능합니다.')
+    let embed = new Embed(client, 'error')
+      .setTitle(client.i18n.t('main.title.error'))
+      .setDescription(client.i18n.t('main.description.slashcommand'))
+      .setColor('#2f3136')
+    return message.reply({ embeds: [embed] })
   },
   {
     data: new SlashCommandBuilder()
-    .setName('레벨')
-    .addUserOption(option =>
-      option
-        .setName("유저")
-        .setDescription("확인할 유저를 입력해주세요.")
-        .setRequired(false)
-    )
-    .setDescription('유저의 레벨 정보를 확인합니다.'),
+      .setName('레벨')
+      .addUserOption((option) =>
+        option
+          .setName('유저')
+          .setDescription('확인할 유저를 입력해주세요.')
+          .setRequired(false)
+      )
+      .setDescription('유저의 레벨 정보를 확인합니다.'),
     options: {
       name: '레벨',
       isSlash: true
     },
     async execute(client, interaction) {
       await interaction.deferReply({ ephemeral: true })
-      let errEmbed = new Embed(client, 'error')
-        .setColor('#2f3136')
-      let successEmbed = new Embed(client, 'success')
-        .setColor('#2f3136')
+      let errEmbed = new Embed(client, 'error').setColor('#2f3136')
+      let successEmbed = new Embed(client, 'success').setColor('#2f3136')
       let user = interaction.options.getUser('유저', false)
       const isPremium = await checkUserPremium(client, interaction.user)
       if (!interaction.guild) {
-        errEmbed.setTitle(`❌ 에러 발생`)
-        errEmbed.setDescription('이 명령어는 서버에서만 사용 가능합니다')
-        return interaction.editReply({embeds: [errEmbed]})
+        errEmbed.setTitle(client.i18n.t('main.title.error'))
+        errEmbed.setDescription(client.i18n.t('main.description.onlyserver'))
+        return interaction.editReply({ embeds: [errEmbed] })
       }
-      if(!user) {
-        const levelDB = await Level.findOne({guild_id: interaction.guild.id, user_id: interaction.user.id})
-        if(!levelDB) {
-          successEmbed.setTitle(`${interaction.user.username}님의 레벨 정보`)
-          successEmbed.setDescription(`현재 \`LV.0\`입니다. 다음 레벨까지 \`0XP / 15XP\` 남았습니다.\n
-          ${isPremium? "**배틀이 프리미엄으로 30% 경험치 부스터가 적용되었어요**" : `**[여기](${config.web.baseurl}/premium)에서 프리미엄을 사용하시면 레벨 30% 부스터를 사용할 수 있습니다.**`}`)
+      if (!user) {
+        const levelDB = await Level.findOne({
+          guild_id: interaction.guild.id,
+          user_id: interaction.user.id
+        })
+        if (!levelDB) {
+          successEmbed.setTitle(
+            client.i18n.t('commands.level.title.levelinfo', {
+              username: interaction.user.username
+            })
+          )
+          successEmbed.setDescription(
+            client.i18n.t('commands.level.description.noaccept')
+          )
           return interaction.editReply({ embeds: [successEmbed] })
         } else {
-          successEmbed.setTitle(`${interaction.user.username}님의 레벨 정보`)
-          successEmbed.setDescription(`현재 \`LV.${levelDB.level ? levelDB.level : 0}\`입니다. 다음 레벨까지 \`${levelDB.currentXP.toFixed(1)}XP / ${(!levelDB.level ? 1 : levelDB.level + 1) * 13}XP\` 남았습니다.\n
-          ${isPremium? "**배틀이 프리미엄으로 30% 경험치 부스터가 적용되었어요**" : `**[여기](${config.web.baseurl}/premium)에서 프리미엄을 사용하시면 레벨 30% 부스터를 사용할 수 있습니다.**`}`)
-          return interaction.editReply({embeds: [successEmbed]})
+          successEmbed.setTitle(
+            client.i18n.t('commands.level.title.levelinfo', {
+              username: interaction.user.username
+            })
+          )
+          successEmbed.setDescription(
+            client.i18n.t('commands.level.description.nextlevel', {
+              level: levelDB.level ? levelDB.level : 0,
+              nxp: levelDB.currentXP.toFixed(1),
+              fxp: (!levelDB.level ? 1 : levelDB.level + 1) * 13
+            })
+          )
+          return interaction.editReply({ embeds: [successEmbed] })
         }
       } else {
-        const levelDB = await Level.findOne({guild_id: interaction.guild.id, user_id: user.id})
-        if(!levelDB) {
-          successEmbed.setTitle(`${user.username}님의 레벨 정보`)
-          successEmbed.setDescription(`현재 \`LV.0\`입니다. 다음 레벨까지 \`0XP / 15XP\` 남았습니다.`)
-          return interaction.editReply({embeds: [successEmbed]})
+        const levelDB = await Level.findOne({
+          guild_id: interaction.guild.id,
+          user_id: user.id
+        })
+        if (!levelDB) {
+          successEmbed.setTitle(
+            client.i18n.t('commands.level.title.levelinfo', {
+              username: user.username
+            })
+          )
+          successEmbed.setDescription(
+            client.i18n.t('commands.level.description.new')
+          )
+          return interaction.editReply({ embeds: [successEmbed] })
         } else {
-          successEmbed.setTitle(`${user.username}님의 레벨 정보`)
-          successEmbed.setDescription(`현재 \`LV.${levelDB.level ? levelDB.level : 0}\`입니다. 다음 레벨까지 \`${levelDB.currentXP.toFixed(1)}XP / ${(!levelDB.level ? 1 : levelDB.level + 1) * 13}XP\` 남았습니다.`)
-          return interaction.editReply({embeds: [successEmbed]})
+          successEmbed.setTitle(
+            client.i18n.t('commands.level.title.levelinfo', {
+              username: user.username
+            })
+          )
+          successEmbed.setDescription(
+            client.i18n.t('commands.level.description.nextlevel', {
+              level: levelDB.level ? levelDB.level : 0,
+              nxp: levelDB.currentXP.toFixed(1),
+              fxp: (!levelDB.level ? 1 : levelDB.level + 1) * 13
+            })
+          )
+          return interaction.editReply({ embeds: [successEmbed] })
         }
       }
     }
   }
 )
-
