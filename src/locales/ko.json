@@ -217,6 +217,27 @@
         "message":"- {{i}}. {{name}} {{quantity}}주 {{sum}}원 (실시간 정보 확인불가)",
         "message2": "{{first}} {{i}}. {{name}} {{quantity}}주 [ {{second}} {{sum}}원 ]"
       }
+    },
+    "Warning":{
+      "title":{
+        "warn":"경고"
+      },
+      "description":{
+        "deleted":"아래와 같이 경고가 삭감되었습니다.",
+        "warn":"{{username}}}님의 {{length}}개의 경고 중 5개의 경고 기록입니다."
+      },
+      "fields":{
+        "user":"유저",
+        "userv":"<@{{id}}> (`{{id}}`)",
+        "id":"경고 ID",
+        "reasonv":"사유 : {{reason}}"
+      },
+      "message":{
+        "permission": "해당 명령어를 사용할 권한이 없습니다.",
+        "notfound":"찾을 수 없는 경고 아이디 입니다.",
+        "no":"해당 유저의 경고 기록이 없습니다."
+      },
+      "footer":"페이지 - {{warn}}/{{warn2}}"
     }
   }
 }

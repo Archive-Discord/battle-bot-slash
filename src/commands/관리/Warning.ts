@@ -20,10 +20,8 @@ export default new BaseCommand(
   },
   async (client, message, args) => {
     let embed = new Embed(client, 'error')
-      .setTitle(`❌ 에러 발생`)
-      .setDescription(
-        '해당 명령어는 슬래쉬 커맨드 ( / )로만 사용이 가능합니다.'
-      )
+      .setTitle(client.i18n.t('main.title.error'))
+      .setDescription(client.i18n.t('main.description.slashcommand'))
     return message.reply({ embeds: [embed] })
   },
   {
@@ -91,10 +89,12 @@ export default new BaseCommand(
       let member = interaction.member as GuildMember
       member = interaction.guild?.members.cache.get(member.id) as GuildMember
       if (!member.permissions.has('ManageChannels'))
-        return interaction.editReply('해당 명령어를 사용할 권한이 없습니다.')
+        return interaction.editReply(
+          client.i18n.t('commands.Warning.message.permission')
+        )
       let reason = interaction.options.getString('사유')
       let user = interaction.options.getUser('user')
-      if (!reason) reason = '없음'
+      if (!reason) reason = 'None'
 
       let subcommand = interaction.options.getSubcommand()
       if (subcommand === '지급') {
@@ -110,7 +110,9 @@ export default new BaseCommand(
         let warningID = interaction.options.getString('id')
         // @ts-ignore
         if (!ObjectId.isValid(warningID as string))
-          return interaction.editReply('찾을 수 없는 경고 아이디 입니다.')
+          return interaction.editReply(
+            client.i18n.t('commands.Warning.message.notfound')
+          )
         // @ts-ignore
         let warningIDtoObject = warningID.toObjectId()
         let findWarnDB = await Warning.findOne({
@@ -120,7 +122,9 @@ export default new BaseCommand(
         })
 
         if (!findWarnDB)
-          return interaction.editReply('찾을 수 없는 경고 아이디 입니다.')
+          return interaction.editReply(
+            client.i18n.t('commands.Warning.message.notfound')
+          )
 
         await Warning.deleteOne({
           userId: user?.id,
@@ -130,15 +134,17 @@ export default new BaseCommand(
 
         const embedRemove = new EmbedBuilder()
           .setColor('#2f3136')
-          .setTitle('경고')
-          .setDescription('아래와 같이 경고가 삭감되었습니다.')
+          .setTitle(client.i18n.t('commands.Warning.title.warn'))
+          .setDescription(client.i18n.t('commands.Warning.description.deleted'))
           .addFields({
-            name: '유저',
-            value: `<@${user?.id}>` + '(' + '`' + user?.id + '`' + ')',
+            name: client.i18n.t('commands.Warning.fields.user'),
+            value: client.i18n.t('commands.Warning.fields.userv', {
+              id: user?.id
+            }),
             inline: true
           })
           .addFields({
-            name: '경고 ID',
+            name: client.i18n.t('commands.Warning.fields.id'),
             value: warningID as string,
             inline: true
           })
@@ -159,25 +165,33 @@ export default new BaseCommand(
         let warns = new Array()
 
         if (insertRes.length == 0)
-          return interaction.editReply('해당 유저의 경고 기록이 없습니다.')
+          return interaction.editReply(
+            client.i18n.t('commands.Warning.message.no')
+          )
 
         insertRes.forEach((reasons) =>
           warns.push({
             name: 'ID: ' + reasons._id.toString(),
-            value: '사유: ' + reasons.reason
+            value: client.i18n.t('commands.Warning.fields.reasonv', {
+              reason: reasons.reason
+            })
           })
         )
 
         const embedList = new EmbedBuilder()
           .setColor('#2f3136')
-          .setTitle('경고')
+          .setTitle(client.i18n.t('commands.Warning.title.warn'))
           .setDescription(
-            `${user?.username}님의 ${insertResLength.length}개의 경고중 최근 5개의 경고 기록입니다.`
+            client.i18n.t('commands.Warning.description.warn', {
+              username: user?.username,
+              length: insertResLength.length
+            })
           )
           .setFooter({
-            text: `페이지 - ${warningID ? warningID : 1}/${Math.ceil(
-              insertResLength.length / 5
-            )}`
+            text: client.i18n.t('commands.Warning.footer', {
+              warn: warningID ? warningID : 1,
+              warn2: Math.ceil(insertResLength.length / 5)
+            })
           })
           .addFields(warns)
 
