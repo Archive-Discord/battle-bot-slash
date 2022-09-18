@@ -378,14 +378,12 @@ export default new BaseCommand(
       const quantity = parseInt(args[1])
       if (!quantity) {
         embed.setTitle(client.i18n.t('main.title.error'))
-        embed.setDescription(`매도하실 주식의 수량을 숫자만 입력해주세요.`)
+        embed.setDescription(client.i18n.t('commands.stock.description.sint'))
         return message.reply({ embeds: [embed] })
       }
       if (quantity < 1) {
         embed.setTitle(client.i18n.t('main.title.error'))
-        embed.setDescription(
-          `매도하실 주식의 수량을 1이상의 숫자만 입력해주세요.`
-        )
+        embed.setDescription(client.i18n.t('commands.stock.description.supto1'))
         return message.reply({ embeds: [embed] })
       }
       const results = await searchStockList(keyword)
@@ -415,14 +413,20 @@ export default new BaseCommand(
       if (!stock || stock.stocks.length === 0) {
         embed.setTitle(client.i18n.t('main.title.error'))
         embed.setDescription(
-          `${results.items[0].name}을 보유하고 있지 않습니다.`
+          client.i18n.t('commands.stock.description.dhave', {
+            item: results.items[0].name
+          })
         )
         return message.reply({ embeds: [embed] })
       }
       if (stock.stocks[0].quantity < quantity) {
         embed.setTitle(client.i18n.t('main.title.error'))
         embed.setDescription(
-          `${results.items[0].name}주식을 ${quantity}주만큼 보유하고 있지 않습니다. 현재 보유량: ${stock.stocks[0].quantity}주`
+          client.i18n.t('commands.stock.description.dhave2', {
+            item: results.items[0].name,
+            quantity: quantity,
+            nowhave: stock.stocks[0].quantity
+          })
         )
         return message.reply({ embeds: [embed] })
       }
@@ -440,9 +444,11 @@ export default new BaseCommand(
         return message.reply({ embeds: [embed] })
       }
       embed.setDescription(
-        `${results.items[0].name} ${quantity}주(${comma(
-          result.now * quantity
-        )}원)을 매도하시겠습니까?`
+        client.i18n.t('commands.stock.description.sell', {
+          item: results.items[0].name,
+          quantity: quantity,
+          rnow: comma(result.now * quantity)
+        })
       )
       embed.addFields({
         name: client.i18n.t('commands.stock.fields.nowprice'),
@@ -487,9 +493,12 @@ export default new BaseCommand(
       collector.on('collect', async (i) => {
         if (i.user.id != message.author.id) return
         if (i.customId == 'stocksell.accept') {
-          embed.setTitle(`⭕ 매도 성공`)
+          embed.setTitle(client.i18n.t('commands.stock.title.success2'))
           embed.setDescription(
-            `${results.items[0].name} ${quantity}주를 매도했습니다.`
+            client.i18n.t('commands.stock.description.ssuccess', {
+              item: results.items[0].name,
+              quantity: quantity
+            })
           )
           embed.addFields({
             name: client.i18n.t('commands.stock.fields.nowprice'),
@@ -542,9 +551,12 @@ export default new BaseCommand(
             }
           )
           const successEmbed = new Embed(client, 'success')
-            .setTitle(`⭕ 매도 성공`)
+            .setTitle(client.i18n.t('commands.stock.title.success2'))
             .setDescription(
-              `${results.items[0].name} ${quantity}주를 매도했습니다.`
+              client.i18n.t('commands.stock.description.ssuccess', {
+                item: results.items[0].name,
+                quantity: quantity
+              })
             )
             .addFields({
               name: client.i18n.t('commands.stock.fields.tamount2'),
@@ -561,15 +573,19 @@ export default new BaseCommand(
               inline: true
             })
             .addFields({
-              name: '거래후 잔액',
-              value: `${comma(user.money + total)}원`,
+              name: client.i18n.t('commands.stock.fields.balance'),
+              value: client.i18n.t('commands.stock.fields.balancev', {
+                minus: comma(user.money + total)
+              }),
               inline: true
             })
             .setColor('#2f3136')
           return i.update({ embeds: [successEmbed], components: [] })
         } else if (i.customId == 'stocksell.deny') {
-          embed.setTitle(`❌ 매도 취소`)
-          embed.setDescription(`매도를 취소하였습니다.`)
+          embed.setTitle(client.i18n.t('commands.stock.title.cancel2'))
+          embed.setDescription(
+            client.i18n.t('commands.stock.description.scancel')
+          )
           return i.update({ embeds: [embed], components: [] })
         }
       })
@@ -601,36 +617,50 @@ export default new BaseCommand(
       if (!nowStock) {
         embed.setTitle(client.i18n.t('main.title.error'))
         embed.setDescription(
-          `보유중인 주식이없습니다. 먼저 \`${config.bot.prefix}주식\` 명령어로 주식 명령어를 확인해주세요.`
+          client.i18n.t('commands.stock.description.dhave', {
+            prefix: config.bot.prefix
+          })
         )
         return message.reply({
           embeds: [embed]
         })
       } else {
-        embed.setTitle(`${message.author.username}님의 보유중인 주식`)
+        embed.setTitle(
+          client.i18n.t('commands.stock.title.ahave', {
+            author: message.author.username
+          })
+        )
 
         const results = await Promise.all(
           nowStock.stocks.map(async (stock, index) => {
             const stockSearch = await searchStock(stock.code)
             if (!stockSearch)
-              return `- ${index + 1}. ${stock.name} ${stock.quantity}주 ${comma(
+              return client.i18n.t('commands.stock.message.message', {
+                i: index + 1,
+                name: stock.name,
+                quantity: stock.quantity,
+                sum: comma(Math.round(stock.price * stock.quantity))
+              })
+            return client.i18n.t('commands.stock.message.message2', {
+              i: index + 1,
+              name: stock.name,
+              quantity: stock.quantity,
+              sum: comma(Math.round(stock.price * stock.quantity)),
+              first:
+                Math.round(stockSearch.now) > Math.round(stock.price)
+                  ? '-'
+                  : Math.round(stockSearch.now) < Math.round(stock.price)
+                  ? '+'
+                  : ' ',
+              second:
+                Math.round(stockSearch.now * stock.quantity) >
                 Math.round(stock.price * stock.quantity)
-              )}원 (실시간 정보 확인불가)`
-            return `${
-              Math.round(stockSearch.now) > Math.round(stock.price)
-                ? '-'
-                : Math.round(stockSearch.now) < Math.round(stock.price)
-                ? '+'
-                : ' '
-            } ${index + 1}. ${stock.name} ${stock.quantity}주 [ ${
-              Math.round(stockSearch.now * stock.quantity) >
-              Math.round(stock.price * stock.quantity)
-                ? '▾'
-                : Math.round(stockSearch.now * stock.quantity) <
-                  Math.round(stock.price * stock.quantity)
-                ? '▴'
-                : '-'
-            } ${comma(Math.round(stock.price * stock.quantity))}원 ]`
+                  ? '▾'
+                  : Math.round(stockSearch.now * stock.quantity) <
+                    Math.round(stock.price * stock.quantity)
+                  ? '▴'
+                  : '-'
+            })
           })
         )
         embed.setDescription('```diff\n' + results.join('\n') + '```')
@@ -639,31 +669,41 @@ export default new BaseCommand(
         })
       }
     } else {
-      embed.setTitle('주식 도움말')
-      embed.setDescription('아래에 있는 명령어로 주식을 사용하실 수 있습니다.')
+      embed.setTitle(client.i18n.t('commands.stock.title.stockhelp'))
+      embed.setDescription(client.i18n.t('commands.stock.description.help'))
       embed.addFields({
-        name: `\`${config.bot.prefix}주식 목록 (주식명)\``,
-        value: '> 검색한 주식들의 목록을 확인합니다',
+        name: client.i18n.t('commands.stock.fields.helplist', {
+          prefix: config.bot.prefix
+        }),
+        value: client.i18n.t('commands.stock.fields.helplistv'),
         inline: true
       })
       embed.addFields({
-        name: `\`${config.bot.prefix}주식 검색 (주식명)\``,
-        value: '> 검색한 주식의 상세 정보를 확인합니다.',
+        name: client.i18n.t('commands.stock.fields.helpsearch', {
+          prefix: config.bot.prefix
+        }),
+        value: client.i18n.t('commands.stock.fields.helpsearchv'),
         inline: true
       })
       embed.addFields({
-        name: `\`${config.bot.prefix}주식 매수 (개수) (주식명)\``,
-        value: '> 입력한 주식을 개수만큼 매수합니다.',
+        name: client.i18n.t('commands.stock.fields.helpbuy', {
+          prefix: config.bot.prefix
+        }),
+        value: client.i18n.t('commands.stock.fields.helpbuyv'),
         inline: true
       })
       embed.addFields({
-        name: `\`${config.bot.prefix}주식 매도 (개수) (주식명)\``,
-        value: '> 입력한 주식을 개수만큼 매도합니다.',
+        name: client.i18n.t('commands.stock.fields.helpsell', {
+          prefix: config.bot.prefix
+        }),
+        value: client.i18n.t('commands.stock.fields.helpsellv'),
         inline: true
       })
       embed.addFields({
-        name: `\`${config.bot.prefix}주식 보유\``,
-        value: '> 보유중인 주식을 확인합니다.',
+        name: client.i18n.t('commands.stock.fields.helphave', {
+          prefix: config.bot.prefix
+        }),
+        value: client.i18n.t('commands.stock.fields.helphavev'),
         inline: true
       })
       return message.reply({
@@ -1121,13 +1161,13 @@ export default new BaseCommand(
         const quantity = Number(interaction.options.getString('개수')) || 0
         if (!quantity) {
           embed.setTitle(client.i18n.t('main.title.error'))
-          embed.setDescription(`매도하실 주식의 수량을 숫자만 입력해주세요.`)
+          embed.setDescription(client.i18n.t('commands.stock.description.sint'))
           return interaction.editReply({ embeds: [embed] })
         }
         if (quantity < 1) {
           embed.setTitle(client.i18n.t('main.title.error'))
           embed.setDescription(
-            `매도하실 주식의 수량을 1이상의 숫자만 입력해주세요.`
+            client.i18n.t('commands.stock.description.supto1')
           )
           return interaction.editReply({ embeds: [embed] })
         }
@@ -1158,14 +1198,20 @@ export default new BaseCommand(
         if (!stock || stock.stocks.length === 0) {
           embed.setTitle(client.i18n.t('main.title.error'))
           embed.setDescription(
-            `${results.items[0].name}을 보유하고 있지 않습니다.`
+            client.i18n.t('commands.stock.description.dhave', {
+              item: results.items[0].name
+            })
           )
           return interaction.editReply({ embeds: [embed] })
         }
         if (stock.stocks[0].quantity < quantity) {
           embed.setTitle(client.i18n.t('main.title.error'))
           embed.setDescription(
-            `${results.items[0].name}주식을 ${quantity}주만큼 보유하고 있지 않습니다. 현재 보유량: ${stock.stocks[0].quantity}주`
+            client.i18n.t('commands.stock.description.dhave2', {
+              item: results.items[0].name,
+              quantity: quantity,
+              nowhave: stock.stocks[0].quantity
+            })
           )
           return interaction.editReply({ embeds: [embed] })
         }
@@ -1183,9 +1229,11 @@ export default new BaseCommand(
           return interaction.editReply({ embeds: [embed] })
         }
         embed.setDescription(
-          `${results.items[0].name} ${quantity}주(${comma(
-            result.now * quantity
-          )}원)을 매도하시겠습니까?`
+          client.i18n.t('commands.stock.description.sell', {
+            item: results.items[0].name,
+            quantity: quantity,
+            rnow: comma(result.now * quantity)
+          })
         )
         embed.addFields({
           name: client.i18n.t('commands.stock.fields.nowprice'),
@@ -1236,9 +1284,12 @@ export default new BaseCommand(
         collector.on('collect', async (i) => {
           if (i.user.id != interaction.user.id) return
           if (i.customId == 'stocksell.accept') {
-            embed.setTitle(`⭕ 매도 성공`)
+            embed.setTitle(client.i18n.t('commands.stock.title.success2'))
             embed.setDescription(
-              `${results.items[0].name} ${quantity}주를 매도했어요!`
+              client.i18n.t('commands.stock.description.ssuccess', {
+                item: results.items[0].name,
+                quantity: quantity
+              })
             )
             embed.addFields({
               name: client.i18n.t('commands.stock.fields.nowprice'),
@@ -1291,9 +1342,12 @@ export default new BaseCommand(
               }
             )
             const successEmbed = new Embed(client, 'success')
-              .setTitle(`⭕ 매도 성공`)
+              .setTitle(client.i18n.t('commands.stock.title.success2'))
               .setDescription(
-                `${results.items[0].name} ${quantity}주를 매도했습니다.`
+                client.i18n.t('commands.stock.description.ssuccess', {
+                  item: results.items[0].name,
+                  quantity: quantity
+                })
               )
               .addFields({
                 name: client.i18n.t('commands.stock.fields.tamount2'),
@@ -1310,15 +1364,19 @@ export default new BaseCommand(
                 inline: true
               })
               .addFields({
-                name: '거래후 잔액',
-                value: `${comma(user.money + total)}원`,
+                name: client.i18n.t('commands.stock.fields.balance'),
+                value: client.i18n.t('commands.stock.fields.balancev', {
+                  minus: comma(user.money + total)
+                }),
                 inline: true
               })
               .setColor('#2f3136')
             return i.update({ embeds: [successEmbed], components: [] })
           } else if (i.customId == 'stocksell.deny') {
-            embed.setTitle(`❌ 매도 취소`)
-            embed.setDescription(`매도를 취소하였습니다.`)
+            embed.setTitle(client.i18n.t('commands.stock.title.cancel2'))
+            embed.setDescription(
+              client.i18n.t('commands.stock.description.scancel')
+            )
             return i.update({ embeds: [embed], components: [] })
           }
         })
@@ -1353,38 +1411,50 @@ export default new BaseCommand(
         if (!nowStock) {
           embed.setTitle(client.i18n.t('main.title.error'))
           embed.setDescription(
-            `보유중인 주식이없습니다. 먼저 \`${config.bot.prefix}주식\` 명령어로 주식 명령어를 확인해주세요.`
+            client.i18n.t('commands.stock.description.dhave', {
+              prefix: config.bot.prefix
+            })
           )
           return interaction.editReply({
             embeds: [embed]
           })
         } else {
-          embed.setTitle(`${interaction.user.username}님의 보유중인 주식`)
+          embed.setTitle(
+            client.i18n.t('commands.stock.title.ahave', {
+              author: interaction.user.username
+            })
+          )
 
           const results = await Promise.all(
             nowStock.stocks.map(async (stock, index) => {
               const stockSearch = await searchStock(stock.code)
               if (!stockSearch)
-                return `- ${index + 1}. ${stock.name} ${
-                  stock.quantity
-                }주 ${comma(
+                return client.i18n.t('commands.stock.message.message', {
+                  i: index + 1,
+                  name: stock.name,
+                  quantity: stock.quantity,
+                  sum: comma(Math.round(stock.price * stock.quantity))
+                })
+              return client.i18n.t('commands.stock.message.message2', {
+                i: index + 1,
+                name: stock.name,
+                quantity: stock.quantity,
+                sum: comma(Math.round(stock.price * stock.quantity)),
+                first:
+                  Math.round(stockSearch.now) > Math.round(stock.price)
+                    ? '-'
+                    : Math.round(stockSearch.now) < Math.round(stock.price)
+                    ? '+'
+                    : ' ',
+                second:
+                  Math.round(stockSearch.now * stock.quantity) >
                   Math.round(stock.price * stock.quantity)
-                )}원 (실시간 정보 확인불가)`
-              return `${
-                Math.round(stockSearch.now) > Math.round(stock.price)
-                  ? '-'
-                  : Math.round(stockSearch.now) < Math.round(stock.price)
-                  ? '+'
-                  : ' '
-              } ${index + 1}. ${stock.name} ${stock.quantity}주 [ ${
-                Math.round(stockSearch.now * stock.quantity) >
-                Math.round(stock.price * stock.quantity)
-                  ? '▾'
-                  : Math.round(stockSearch.now * stock.quantity) <
-                    Math.round(stock.price * stock.quantity)
-                  ? '▴'
-                  : '-'
-              } ${comma(Math.round(stock.price * stock.quantity))}원 ]`
+                    ? '▾'
+                    : Math.round(stockSearch.now * stock.quantity) <
+                      Math.round(stock.price * stock.quantity)
+                    ? '▴'
+                    : '-'
+              })
             })
           )
           embed.setDescription('```diff\n' + results.join('\n') + '```')
@@ -1394,33 +1464,41 @@ export default new BaseCommand(
         }
       }
       if (type === '도움말') {
-        embed.setTitle('주식 도움말')
-        embed.setDescription(
-          '아래에 있는 명령어로 주식을 사용하실 수 있습니다.'
-        )
+        embed.setTitle(client.i18n.t('commands.stock.title.stockhelp'))
+        embed.setDescription(client.i18n.t('commands.stock.description.help'))
         embed.addFields({
-          name: `\`${config.bot.prefix}주식 목록 (주식명)\``,
-          value: '> 검색한 주식들의 목록을 확인합니다',
+          name: client.i18n.t('commands.stock.fields.helplist', {
+            prefix: config.bot.prefix
+          }),
+          value: client.i18n.t('commands.stock.fields.helplistv'),
           inline: true
         })
         embed.addFields({
-          name: `\`${config.bot.prefix}주식 검색 (주식명)\``,
-          value: '> 검색한 주식의 상세 정보를 확인합니다.',
+          name: client.i18n.t('commands.stock.fields.helpsearch', {
+            prefix: config.bot.prefix
+          }),
+          value: client.i18n.t('commands.stock.fields.helpsearchv'),
           inline: true
         })
         embed.addFields({
-          name: `\`${config.bot.prefix}주식 매수 (개수) (주식명)\``,
-          value: '> 입력한 주식을 개수만큼 매수합니다.',
+          name: client.i18n.t('commands.stock.fields.helpbuy', {
+            prefix: config.bot.prefix
+          }),
+          value: client.i18n.t('commands.stock.fields.helpbuyv'),
           inline: true
         })
         embed.addFields({
-          name: `\`${config.bot.prefix}주식 매도 (개수) (주식명)\``,
-          value: '> 입력한 주식을 개수만큼 매도합니다.',
+          name: client.i18n.t('commands.stock.fields.helpsell', {
+            prefix: config.bot.prefix
+          }),
+          value: client.i18n.t('commands.stock.fields.helpsellv'),
           inline: true
         })
         embed.addFields({
-          name: `\`${config.bot.prefix}주식 보유\``,
-          value: '> 보유중인 주식을 확인합니다.',
+          name: client.i18n.t('commands.stock.fields.helphave', {
+            prefix: config.bot.prefix
+          }),
+          value: client.i18n.t('commands.stock.fields.helphavev'),
           inline: true
         })
         return interaction.editReply({

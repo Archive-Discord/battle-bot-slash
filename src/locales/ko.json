@@ -151,30 +151,30 @@
     "stock":{
       "title":{
         "search":"{{keyword}} 검색 결과",
-        "ahave":"{{message.author.username}}님의 보유중인 주식",
+        "ahave":"{{author}}님의 보유중인 주식",
         "stockhelp":"주식 도움말",
         "success": "⭕ 매수 성공",
-        "cancel": "❌ 매수 취소"
+        "cancel": "❌ 매수 취소",
+        "success2": "⭕ 매도 성공",
+        "cancel2": "❌ 매도 취소"
       },
       "description":{
         "notfound":"검색 결과가 없습니다.",
         "bint":"매수하실 주식의 수량을 숫자만 입력해주세요.",
         "bupto1":"매수하실 주식의 수량은 1이상의 숫자만 입력해주세요.",
-        "notfound2":"{{keyword}} 검색 결과가 없습니다.",
+        "notfound2":"`{{keyword}}` 검색 결과가 없습니다.",
         "accountnf":"등록되어 있지 않은 유저인 거 같습니다. 먼저 `{{prefix}}돈받기` 명령어로 등록을 해주세요.",
-        "lack":"{{howlack}}원이 부족합니다.\n잔액은 {{howhave}}원입니다.",
-        "buy":"{{item}} {{quantity}}주({{rnow}}원)을 매수하시겠습니까?",
-        "bsuccess":"{{item}} {{quantity}}주를 매수했습니다.",
+        "lack":"`{{howlack}}`원이 부족합니다.\n잔액은 `{{howhave}}`원입니다.",
+        "bsuccess":"`{{item}}` `{{quantity}}`주를 매수했습니다.",
         "bcancel":"매수를 취소하였습니다.",
         "sint":"매도하실 주식의 수량을 숫자만 입력해주세요.",
         "supto1":"매도하실 주식의 수량을 1이상의 숫자만 입력해주세요.",
-        "dhave":"{{results.items[0].name}} 을 보유하고 있지 않습니다.",
-        "dhave2":"{{results.items[0].name}}주식을 {{quantity}}주만큼 보유하고 있지 않습니다. 현재 보유량: {{stock.stocks[0].quantity}}주",
-        "sell":"{{results.items[0].name}} {{quantity}}주({{comma(result.now * quantity)}}원)을 매도하시겠습니까?",
-        "ssuccess":"{{results.items[0].name}} {{quantity}}주를 매도했습니다.",
+        "dhave":"`{{item}}`을(를) 보유하고 있지 않습니다.",
+        "dhave2":"`{{item}}`주식을 `{{quantity}}`주만큼 보유하고 있지 않습니다. 현재 보유량: `{{nowhave}}`주",
+        "sell":"`{{item}}` `{{quantity}}`주(`{{rnow}}원`)을 매도하시겠습니까?",
+        "ssuccess":"`{{item}}` `{{quantity}}`주를 매도했습니다.",
         "scancel":"매도를 취소하였습니다.",
-        "dhave3":"보유중인 주식이없습니다. 먼저 `{{config.bot.prefix}}주식` 명령어로 주식 명령어를 확인해주세요.",
-        "message":"- {{index + 1}}. {{stock.name}} {{stock.quantity}}주 {{comma(Math.round(stock.price * stock.quantity))}}원 (실시간 정보 확인불가)",
+        "dhave3":"보유중인 주식이없습니다. 먼저 `{{prefix}}주식` 명령어로 주식 명령어를 확인해주세요.",
         "help":"아래에 있는 명령어로 주식을 사용하실 수 있습니다."
       },
       "fields":{
@@ -198,20 +198,24 @@
         "sumv":"{{total}}원",
         "balance":"거래후 잔액",
         "balancev":"{{minus}}원",
-        "helplist":"`{{config.bot.prefix}}주식 목록 (주식명)`",
+        "helplist":"`{{prefix}}주식 목록 (주식명)`",
         "helplistv":"> 검색한 주식들의 목록을 확인합니다",
-        "helpsearch":"`${config.bot.prefix}주식 검색 (주식명)`",
+        "helpsearch":"`{{prefix}}주식 검색 (주식명)`",
         "helpsearchv":"> 검색한 주식의 상세 정보를 확인합니다.",
-        "helpbuy":"`${config.bot.prefix}주식 매수 (개수) (주식명)`",
+        "helpbuy":"`{{prefix}}주식 매수 (개수) (주식명)`",
         "helpbuyv":"> 입력한 주식을 개수만큼 매수합니다.",
-        "helpsell":"`${config.bot.prefix}주식 매도 (개수) (주식명)`",
+        "helpsell":"`{{prefix}}주식 매도 (개수) (주식명)`",
         "helpsellv":"> 입력한 주식을 개수만큼 매도합니다.",
-        "helphave":"`${config.bot.prefix}주식 보유`",
+        "helphave":"`{{prefix}}주식 보유`",
         "helphavev":"> 보유중인 주식을 확인합니다."
       },
       "button":{
         "accept":"확인",
         "cancel":"아니요"
+      },
+      "message":{
+        "message":"- {{i}}. {{name}} {{quantity}}주 {{sum}}원 (실시간 정보 확인불가)",
+        "message2": "{{first}} {{i}}. {{name}} {{quantity}}주 [ {{second}} {{sum}}원 ]"
       }
     }
   }
