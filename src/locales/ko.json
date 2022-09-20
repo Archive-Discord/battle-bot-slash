@@ -249,6 +249,41 @@
         "new":"현재 `LV.0`입니다. 다음 레벨까지 `0XP / 15XP` 남았습니다.",
         "noaccept":"해당 서버는 레벨 기능이 활성화되지 않은 서버입니다."
       }
+    },
+    "profile":{
+      "title":{
+        "userinfo":"{{username}}님의 정보"
+      },
+      "description":{
+        "notfound": "찾을 수 없는 유저입니다"
+      },
+      "fields":{
+        "user":"유저",
+        "id": "아이디",
+        "status":"상태",
+        "statusv1": "없음",
+        "statusv2": "오프라인",
+        "serverjoin": "서버 가입일",
+        "accountcreate": "계정 생성일",
+        "webjoin": "{{username}} 웹 가입일",
+        "webjoinv": "미가입"
+      }
+    },
+    "lol":{
+      "matchinfo":{
+        "win":"+ 승리",
+        "lose": "- 패배"
+      },
+      "title":{
+        "arg":"`{{args}}`의 프로필"
+      },
+      "description":{
+        "info":"{{first}} - {{second}} {{third}} ({{fourth}}LP) \n {{wins}}승 / {{loses}}패 / {{fifth}}%",
+        "unrank": "**언랭크**"
+      },
+      "fields":{
+        "lately":"최근 10판 전적"
+      }
     }
   }
 }

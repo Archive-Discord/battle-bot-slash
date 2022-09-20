@@ -13,8 +13,8 @@ export default new BaseCommand(
   async (client, message, args) => {
     if (!message.guild) {
       let embed = new Embed(client, 'error')
-      embed.setTitle(`❌ 에러 발생`)
-      embed.setDescription('이 명령어는 서버에서만 사용 가능합니다')
+      embed.setTitle(client.i18n.t('main.title.error'))
+      embed.setDescription(client.i18n.t('main.description.slashcommand'))
       embed.setColor('#2f3136')
       return message.reply({ embeds: [embed] })
     }
@@ -26,42 +26,57 @@ export default new BaseCommand(
       )
     if (!user) {
       let embed = new Embed(client, 'error')
-      embed.setTitle(`❌ 에러 발생`)
-      embed.setDescription('찾을 수 없는 유저입니다')
+      embed.setTitle(client.i18n.t('main.title.error'))
+      embed.setDescription(
+        client.i18n.t('commands.profile.description.notfound')
+      )
       embed.setColor('#2f3136')
       return message.reply({ embeds: [embed] })
     }
     let userdb = await UserDB.findOne({ id: user.id })
-
     let embed = new Embed(client, 'success')
-      .setTitle(`${user.user.username}님의 정보`)
+      .setTitle(
+        client.i18n.t('commands.profile.title.userinfo', {
+          username: user.user.username
+        })
+      )
       .setThumbnail(user.displayAvatarURL())
-      .addFields({ name: `유저`, value: userMention(user.id), inline: true })
-      .addFields({ name: `아이디`, value: `\`${user.id}\``, inline: true })
       .addFields({
-        name: `상태`,
-        value: user.presence
-          ? user.presence.activities.length === 0
-            ? '없음'
-            : user.presence.activities.join(', ')
-          : '오프라인',
+        name: client.i18n.t('commands.profile.fields.user'),
+        value: userMention(user.id),
         inline: true
       })
       .addFields({
-        name: `서버 가입일`,
+        name: client.i18n.t('commands.profile.fields.id'),
+        value: `\`${user.id}\``,
+        inline: true
+      })
+      .addFields({
+        name: client.i18n.t('commands.profile.fields.status'),
+        value: user.presence
+          ? user.presence.activities.length === 0
+            ? client.i18n.t('commands.profile.fields.statusv1')
+            : user.presence.activities.join(', ')
+          : client.i18n.t('commands.profile.fields.statusv2'),
+        inline: true
+      })
+      .addFields({
+        name: client.i18n.t('commands.profile.fields.serverjoin'),
         value: DateFormatting._format(user.joinedAt as Date, ''),
         inline: true
       })
       .addFields({
-        name: `계정 생성일`,
+        name: client.i18n.t('commands.profile.fields.accountcreate'),
         value: DateFormatting._format(user.user.createdAt as Date, ''),
         inline: true
       })
       .addFields({
-        name: `${client.user?.username} 웹 가입일`,
+        name: client.i18n.t('commands.profile.fields.webjoin', {
+          username: client.user?.username
+        }),
         value: userdb
           ? DateFormatting._format(userdb.published_date, '')
-          : '미가입'
+          : client.i18n.t('commands.profile.fields.webjoinv')
       })
       .setColor('#2f3136')
     return message.reply({ embeds: [embed] })
@@ -83,8 +98,8 @@ export default new BaseCommand(
     async execute(client, interaction) {
       if (!interaction.guild) {
         let embed = new Embed(client, 'error')
-        embed.setTitle('❌ 에러 발생')
-        embed.setDescription('이 명령어는 서버에서만 사용 가능합니다')
+        embed.setTitle(client.i18n.t('main.title.error'))
+        embed.setDescription(client.i18n.t('main.description.slashcommand'))
         embed.setColor('#2f3136')
         return interaction.reply({ embeds: [embed], ephemeral: true })
       }
@@ -92,42 +107,58 @@ export default new BaseCommand(
       let user = interaction.guild.members.cache.get(seluser?.id as string)
       if (!user) {
         let embed = new Embed(client, 'error')
-        embed.setTitle('❌ 에러 발생')
-        embed.setDescription('찾을 수 없는 유저입니다')
+        embed.setTitle(client.i18n.t('main.title.error'))
+        embed.setDescription(
+          client.i18n.t('commands.profile.description.notfound')
+        )
         embed.setColor('#2f3136')
         return interaction.reply({ embeds: [embed] })
       }
       let userdb = await UserDB.findOne({ id: user.id })
 
       let embed = new Embed(client, 'success')
-        .setTitle(`${user.user.username}님의 정보`)
+        .setTitle(
+          client.i18n.t('commands.profile.title.userinfo', {
+            username: user.user.username
+          })
+        )
         .setThumbnail(user.displayAvatarURL())
-        .addFields({ name: `유저`, value: userMention(user.id), inline: true })
-        .addFields({ name: `아이디`, value: `\`${user.id}\``, inline: true })
         .addFields({
-          name: `상태`,
-          value: user.presence
-            ? user.presence.activities.length === 0
-              ? '없음'
-              : user.presence.activities.join(', ')
-            : '오프라인',
+          name: client.i18n.t('commands.profile.fields.user'),
+          value: userMention(user.id),
           inline: true
         })
         .addFields({
-          name: `서버 가입일`,
+          name: client.i18n.t('commands.profile.fields.id'),
+          value: `\`${user.id}\``,
+          inline: true
+        })
+        .addFields({
+          name: client.i18n.t('commands.profile.fields.status'),
+          value: user.presence
+            ? user.presence.activities.length === 0
+              ? client.i18n.t('commands.profile.fields.statusv1')
+              : user.presence.activities.join(', ')
+            : client.i18n.t('commands.profile.fields.statusv2'),
+          inline: true
+        })
+        .addFields({
+          name: client.i18n.t('commands.profile.fields.serverjoin'),
           value: DateFormatting._format(user.joinedAt as Date, ''),
           inline: true
         })
         .addFields({
-          name: `계정 생성일`,
+          name: client.i18n.t('commands.profile.fields.accountcreate'),
           value: DateFormatting._format(user.user.createdAt as Date, ''),
           inline: true
         })
         .addFields({
-          name: `${client.user?.username} 웹 가입일`,
+          name: client.i18n.t('commands.profile.fields.webjoin', {
+            username: client.user?.username
+          }),
           value: userdb
             ? DateFormatting._format(userdb.published_date, '')
-            : '미가입'
+            : client.i18n.t('commands.profile.fields.webjoinv')
         })
         .setColor('#2f3136')
       return interaction.reply({ embeds: [embed] })

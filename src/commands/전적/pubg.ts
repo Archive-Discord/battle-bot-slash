@@ -1,4 +1,5 @@
 import { BaseCommand } from '../../structures/Command'
+import Embed from '../../utils/Embed'
 import { playerStats } from '../../utils/pubg'
 import { SlashCommandBuilder } from '@discordjs/builders'
 
@@ -9,9 +10,11 @@ export default new BaseCommand(
     aliases: ['전적배그', 'pubgstat']
   },
   async (client, message, args) => {
-    return message.reply(
-      `해당 명령어는 슬래쉬 커맨드 ( / )로만 사용이 가능합니다.`
-    )
+    let embed = new Embed(client, 'error')
+      .setTitle(client.i18n.t('main.title.error'))
+      .setDescription(client.i18n.t('main.description.slashcommand'))
+      .setColor('#2f3136')
+    return message.reply({ embeds: [embed] })
   },
   {
     // @ts-ignore

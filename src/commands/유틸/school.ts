@@ -21,7 +21,7 @@ export default new BaseCommand(
     if (!args[0]) {
       let embed = new Embed(client, 'error')
         .setColor('#2f3136')
-        .setTitle(`❌ 에러 발생`)
+        .setTitle(client.i18n.t('main.title.error'))
         .setDescription(
           `학교 이름을 적어주세요 \n\n \`${config.bot.prefix}급식 <학교명>\``
         )
@@ -88,7 +88,7 @@ export default new BaseCommand(
                   .catch(async (e: AxiosError) => {
                     if (e.response?.status === 404) {
                       let mealembed = new Embed(client, 'warn')
-                        .setTitle(`❌ 에러 발생`)
+                        .setTitle(client.i18n.t('main.title.error'))
                         .setDescription(
                           `어라... ${value[2]}의 급식을 찾을 수 없어요...`
                         )
@@ -107,7 +107,7 @@ export default new BaseCommand(
         .catch(async (e: AxiosError) => {
           if (e.response?.status === 404) {
             let mealembed = new Embed(client, 'warn')
-              .setTitle(`❌ 에러 발생`)
+              .setTitle(client.i18n.t('main.title.error'))
               .setDescription(`어라... ${args[0]}을 찾을 수 없어요...`)
               .setColor('#2f3136')
             await msg.edit({ embeds: [mealembed], components: [] })
@@ -133,7 +133,7 @@ export default new BaseCommand(
       let school = interaction.options.getString('school')
       if (!school) {
         let embed = new Embed(client, 'error')
-          .setTitle(`❌ 에러 발생`)
+          .setTitle(client.i18n.t('main.title.error'))
           .setDescription(
             `학교 이름을 적어주세요 \n\n \`${config.bot.prefix}급식 <학교명>\``
           )
@@ -191,19 +191,19 @@ export default new BaseCommand(
                     .then(async (data) => {
                       let meal: SchoolMealResponse = data.data
                       let mealembed = new Embed(client, 'success')
-                        .setTitle(`❌ 에러 발생`)
+                        .setTitle(client.i18n.t('main.title.error'))
                         .setDescription(
                           `${meal.meals[0].meal.join('\n')} \n\n ${
                             meal.meals[0].calories
                           }`
                         )
                         .setColor('#2f3136')
-                      await i.reply({ embeds: [mealembed] })
+                      await i.reply({ embeds: [mealembed], ephemeral: true })
                     })
                     .catch(async (e: AxiosError) => {
                       if (e.response?.status === 404) {
                         let mealembed = new Embed(client, 'warn')
-                          .setTitle(`❌ 에러 발생`)
+                          .setTitle(client.i18n.t('main.title.error'))
                           .setDescription(
                             `어라... ${value[2]}의 급식을 찾을 수 없어요...`
                           )
@@ -222,7 +222,7 @@ export default new BaseCommand(
           .catch(async (e: AxiosError) => {
             if (e.response?.status === 404) {
               let mealembed = new Embed(client, 'warn')
-                .setTitle(`❌ 에러 발생`)
+                .setTitle(client.i18n.t('main.title.error'))
                 .setDescription(`어라... ${school}을 찾을 수 없어요...`)
                 .setColor('#2f3136')
               return await interaction.editReply({
