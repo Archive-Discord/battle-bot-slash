@@ -18,7 +18,7 @@ export default new BaseCommand(
   },
   async (client, message, args) => {
     let buttton = new ButtonBuilder()
-      .setLabel('하트 누르기')
+      .setLabel(client.i18n.t('main.button.heart'))
       .setURL('https://koreanbots.dev/bots/928523914890608671/vote')
       .setStyle(ButtonStyle.Link)
     let row = new ActionRowBuilder<ButtonBuilder>().addComponents(buttton)
@@ -67,7 +67,7 @@ export default new BaseCommand(
     },
     async execute(client, interaction) {
       let buttton = new ButtonBuilder()
-        .setLabel('하트 누르기')
+        .setLabel(client.i18n.t('main.button.heart'))
         .setURL('https://koreanbots.dev/bots/928523914890608671/vote')
         .setStyle(ButtonStyle.Link)
       let row = new ActionRowBuilder<ButtonBuilder>().addComponents(buttton)

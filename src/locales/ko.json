@@ -7,6 +7,9 @@
     "description":{
       "slashcommand": "해당 명령어는 슬래쉬 커맨드 ( / )로만 사용이 가능합니다.",
       "onlyserver": "이 명령어는 서버에서만 사용 가능합니다"
+    },
+    "button":{
+      "heart":"하트 누르기"
     }
   },
   "commands": {
@@ -98,8 +101,7 @@
       },
       "button":{
         "kbl": "한디리 인증",
-        "archive": "아카이브 인증",
-        "heart": "하트 누르기"
+        "archive": "아카이브 인증"
       }
     },
     "leaderboard":{
@@ -284,6 +286,40 @@
       "fields":{
         "lately":"최근 10판 전적"
       }
+    },
+    "help":{
+      "title":{
+        "help":"{{username}} 도움말"
+      },
+      "description":{
+        "helpdes":"아래에 있는 명령어들을 이용해 도움말을 보실 수 있습니다.",
+        "notfound":"존재하지 않는 카테고리입니다.",
+        "args":"{{arg}} 관련 도움말 입니다!",
+        "notfound2":"{{category}} 카테고리에는 사용 가능한 (/) 명령어가 없어요"
+      },
+      "fields":{
+        "help":"`{{prefix}}도움말 {{command}}`",
+        "helpv":"> {{command}}관련 명령어들을 보내드려요!"
+      }
+    },
+    "info":{
+      "title":{
+        "info":"{{client.user?.username}} 정보"
+      },
+      "description":{
+
+      },
+      "fields":{
+        "server":"서버 수",
+        "serverv":"{{client.guilds.cache.size}}서버",
+        "user":"유저 수",
+        "userv": "{{client.guilds.cache.reduce((a, b) => a + b.memberCount, 0)}}명",
+        "uptime": "업타임",
+        "systeminfo": "시스템정보",
+        "usefullink": "유용한 링크",
+        "usefullink2": "[서포트 서버](https://discord.gg/WtGq7D7BZm) | [웹 대시보드]({{config.web.baseurl}}) | [깃허브]({{repository}}) | [개인정보처리방침]({{config.web.baseurl}}/help/privacy) | [상태]({{config.web.baseurl}}/status)"
+      },
+      "shardEmbed":"**서버의 Shard ID#{{message.guild?.shard.id}} {{client.ws.ping}}ms**\n"
     }
   }
 }

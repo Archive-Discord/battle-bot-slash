@@ -73,7 +73,7 @@ export default new BaseCommand(
                     .setURL(
                       `https://koreanbots.dev/bots/${client.user?.id}/vote`
                     )
-                    .setLabel(client.i18n.t('commands.heart.button.heart'))
+                    .setLabel(client.i18n.t('main.button.heart'))
                     .setStyle(ButtonStyle.Link)
                 )
               i.reply({
@@ -166,7 +166,7 @@ export default new BaseCommand(
                 new Discord.ActionRowBuilder<ButtonBuilder>().addComponents(
                   new Discord.ButtonBuilder()
                     .setURL(`https://archiver.me/bots/${client.user?.id}/like`)
-                    .setLabel(client.i18n.t('commands.heart.button.heart'))
+                    .setLabel(client.i18n.t('main.button.heart'))
                     .setStyle(ButtonStyle.Link)
                 )
               i.reply({

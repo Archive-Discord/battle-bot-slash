@@ -16,22 +16,29 @@ export default new BaseCommand(
   },
   async (client, message, args) => {
     let buttton = new ButtonBuilder()
-      .setLabel('하트 누르기')
+      .setLabel(client.i18n.t('main.button.heart'))
       .setURL('https://koreanbots.dev/bots/928523914890608671/vote')
       .setStyle(ButtonStyle.Link)
     let row = new ActionRowBuilder<ButtonBuilder>().addComponents(buttton)
     let embed = new Embed(client, 'success')
-      .setTitle(`${client.user?.username} 도움말`)
+      .setTitle(
+        client.i18n.t('commands.help.title.help', {
+          username: client.user?.username
+        })
+      )
       .setColor('#2f3136')
     if (!args[0]) {
       client.categorys.forEach((category, command) => {
         if (command === 'dev') return
-        embed.setDescription(
-          `아래에 있는 명령어들을 이용해 도움말을 보실 수 있습니다.`
-        )
+        embed.setDescription(client.i18n.t('commands.help.description.helpdes'))
         embed.addFields({
-          name: `\`${config.bot.prefix}도움말 ${command}\``,
-          value: `> ${command}관련 명령어들을 보내드려요!`,
+          name: client.i18n.t('commands.help.fields.help', {
+            prefix: config.bot.prefix,
+            command: command
+          }),
+          value: client.i18n.t('commands.help.fields.helpv', {
+            command: command
+          }),
           inline: true
         })
       })
@@ -42,20 +49,24 @@ export default new BaseCommand(
         // @ts-ignore
         if (!client.dokdo.owners.includes(message.author.id)) {
           embed
-            .setTitle(`❌ 에러 발생`)
-            .setDescription(`존재하지 않는 카테고리입니다.`)
+            .setTitle(client.i18n.t('main.title.error'))
+            .setDescription(client.i18n.t('commands.help.description.notfound'))
             .setType('error')
           return message.reply({ embeds: [embed], components: [row] })
         }
       }
       if (!commands) {
         embed
-          .setTitle(`❌ 에러 발생`)
-          .setDescription(`존재하지 않는 카테고리입니다.`)
+          .setTitle(client.i18n.t('main.title.error'))
+          .setDescription(client.i18n.t('commands.help.description.notfound'))
           .setType('error')
         return message.reply({ embeds: [embed], components: [row] })
       }
-      embed.setDescription(`${args[0]} 관련 도움말 입니다!`)
+      embed.setDescription(
+        client.i18n.t('commands.help.description.args', {
+          arg: args[0]
+        })
+      )
       commands.forEach((command) => {
         embed.addFields({
           name: `\`${config.bot.prefix}${command.name}\``,
@@ -83,20 +94,29 @@ export default new BaseCommand(
     },
     async execute(client, interaction) {
       let buttton = new ButtonBuilder()
-        .setLabel('하트 누르기')
+        .setLabel(client.i18n.t('main.button.heart'))
         .setURL('https://koreanbots.dev/bots/928523914890608671/vote')
         .setStyle(ButtonStyle.Link)
       let row = new ActionRowBuilder<ButtonBuilder>().addComponents(buttton)
-      let embed = new Embed(client, 'success')
-        .setColor('#2f3136')
-        .setTitle(`${client.user?.username} 도움말`)
+      let embed = new Embed(client, 'success').setColor('#2f3136').setTitle(
+        client.i18n.t('commands.help.title.help', {
+          username: client.user?.username
+        })
+      )
       if (!interaction.options.getString('category')) {
         client.categorys.forEach((category, command) => {
           if (command === 'dev') return
-          embed.setDescription(`아래에 있는 명령어들을 이용해 도움말을 보세요!`)
+          embed.setDescription(
+            client.i18n.t('commands.help.description.helpdes')
+          )
           embed.addFields({
-            name: `\`${config.bot.prefix}도움말 ${command}\``,
-            value: `> ${command}관련 명령어들을 보내드려요!`,
+            name: client.i18n.t('commands.help.title.help', {
+              prefix: config.bot.prefix,
+              command: command
+            }),
+            value: client.i18n.t('commands.help.title.helpv', {
+              command: command
+            }),
             inline: true
           })
         })
@@ -107,8 +127,10 @@ export default new BaseCommand(
           // @ts-ignore
           if (!client.dokdo.owners.includes(message.author.id)) {
             embed
-              .setTitle(`❌ 에러 발생`)
-              .setDescription(`존재하지 않는 카테고리입니다.`)
+              .setTitle(client.i18n.t('main.title.error'))
+              .setDescription(
+                client.i18n.t('commands.help.description.notfound')
+              )
               .setType('error')
             return interaction.reply({ embeds: [embed], components: [row] })
           }
@@ -116,17 +138,23 @@ export default new BaseCommand(
         let commands = client.categorys.get(category as string)
         if (!commands) {
           embed
-            .setTitle(`❌ 에러 발생`)
-            .setDescription(`존재하지 않는 카테고리입니다.`)
+            .setTitle(client.i18n.t('main.title.error'))
+            .setDescription(client.i18n.t('commands.help.description.notfound'))
             .setType('error')
           return interaction.reply({ embeds: [embed], components: [row] })
         }
-        embed.setDescription(`${category} 관련 도움말 입니다!`)
+        embed.setDescription(
+          client.i18n.t('commands.help.description.args', {
+            arg: category
+          })
+        )
         let isSlash = commands?.filter((x) => x.isSlash)
         if (isSlash?.length === 0) {
-          embed.setTitle(`❌ 에러 발생`)
+          embed.setTitle(client.i18n.t('main.title.error'))
           embed.setDescription(
-            `${category} 카테고리에는 사용 가능한 (/) 명령어가 없어요`
+            client.i18n.t('commands.help.description.notfound2', {
+              category: category
+            })
           )
         } else {
           commands.forEach((command) => {

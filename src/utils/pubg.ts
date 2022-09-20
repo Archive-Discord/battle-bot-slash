@@ -414,11 +414,9 @@ const rankStatEmbed = (
     embed.setDescription(
       `\`${nickname}\`님의 ${mode} 스쿼드 전적을 찾을 수 없습니다`
     )
-    embed
-      .setColor('#ED4245')
-      .setFooter({
-        text: `마지막 업데이트: ${Day(last_update).fromNow(false)}`
-      })
+    embed.setColor('#ED4245').setFooter({
+      text: `마지막 업데이트: ${Day(last_update).fromNow(false)}`
+    })
     return embed
   }
   embed
