@@ -304,22 +304,21 @@
     },
     "info":{
       "title":{
-        "info":"{{client.user?.username}} 정보"
+        "info":"{{username}} 정보"
       },
       "description":{
-
+        "shardEmbed":"**서버의 Shard ID#{{id}} {{ping}}ms**\n"
       },
       "fields":{
         "server":"서버 수",
-        "serverv":"{{client.guilds.cache.size}}서버",
+        "serverv":"{{size}}서버",
         "user":"유저 수",
-        "userv": "{{client.guilds.cache.reduce((a, b) => a + b.memberCount, 0)}}명",
+        "userv": "{{usercount}}명",
         "uptime": "업타임",
         "systeminfo": "시스템정보",
         "usefullink": "유용한 링크",
-        "usefullink2": "[서포트 서버](https://discord.gg/WtGq7D7BZm) | [웹 대시보드]({{config.web.baseurl}}) | [깃허브]({{repository}}) | [개인정보처리방침]({{config.web.baseurl}}/help/privacy) | [상태]({{config.web.baseurl}}/status)"
-      },
-      "shardEmbed":"**서버의 Shard ID#{{message.guild?.shard.id}} {{client.ws.ping}}ms**\n"
+        "usefullinkv": "[서포트 서버](https://discord.gg/WtGq7D7BZm) | [웹 대시보드](https://battlebot.kr) | [깃허브](https://github.com/Archive-Discord/battle-bot-slash) | [개인정보처리방침](https://battlebot.kr/help/privacy) | [상태](https://battlebot.kr/status)"
+      }
     }
   }
 }

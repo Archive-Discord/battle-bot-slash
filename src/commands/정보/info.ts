@@ -23,37 +23,48 @@ export default new BaseCommand(
       .setStyle(ButtonStyle.Link)
     let row = new ActionRowBuilder<ButtonBuilder>().addComponents(buttton)
     let embed = new Embed(client, 'default')
-      .setTitle(`${client.user?.username} 정보`)
+      .setTitle(
+        client.i18n.t('commands.info.title.info', {
+          username: client.user?.username
+        })
+      )
       .setColor('#2f3136')
-    let shardEmbed
-    shardEmbed = `**서버의 Shard ID#${message.guild?.shard.id} ${client.ws.ping}ms**\n`
-    embed.setDescription(shardEmbed)
+    embed.setDescription(
+      client.i18n.t('commands.info.description.shardEmbed', {
+        id: message.guild?.shard.id,
+        ping: client.ws.ping
+      })
+    )
     embed.addFields({
-      name: '서버 수',
-      value: `${client.guilds.cache.size}서버`,
+      name: client.i18n.t('commands.info.fields.server'),
+      value: client.i18n.t('commands.info.fields.serverv', {
+        size: client.guilds.cache.size
+      }),
       inline: true
     })
     embed.addFields({
-      name: '유저 수',
-      value: `${client.guilds.cache.reduce((a, b) => a + b.memberCount, 0)}명`,
+      name: client.i18n.t('commands.info.fields.user'),
+      value: client.i18n.t('commands.info.fields.userv', {
+        usercount: client.guilds.cache.reduce((a, b) => a + b.memberCount, 0)
+      }),
       inline: true
     })
     embed.addFields({
-      name: '업타임',
+      name: client.i18n.t('commands.info.fields.uptime'),
       value: `${DateFormatting.relative(
         new Date(Date.now() - process.uptime() * 1000)
       )}`,
       inline: true
     })
     embed.addFields({
-      name: '시스템정보',
+      name: client.i18n.t('commands.info.fields.systeminfo'),
       value: `\`\`\`diff\n- Discord.js: ${version} \n- Node.js: ${
         process.version
       }\n- OS: ${process.platform} - Memory: ${memory()} \`\`\``
     })
     embed.addFields({
-      name: '유용한 링크',
-      value: `[서포트 서버](https://discord.gg/WtGq7D7BZm) | [웹 대시보드](${config.web.baseurl}) | [깃허브](${repository}) | [개인정보처리방침](${config.web.baseurl}/help/privacy) | [상태](${config.web.baseurl}/status)`
+      name: client.i18n.t('commands.info.fields.usefullink'),
+      value: client.i18n.t('commands.info.fields.usefullinkv')
     })
     return message.reply({ embeds: [embed], components: [row] })
   },
@@ -72,40 +83,48 @@ export default new BaseCommand(
         .setStyle(ButtonStyle.Link)
       let row = new ActionRowBuilder<ButtonBuilder>().addComponents(buttton)
       let embed = new Embed(client, 'default')
-        .setTitle(`${client.user?.username} 정보`)
+        .setTitle(
+          client.i18n.t('commands.info.title.info', {
+            username: client.user?.username
+          })
+        )
         .setColor('#2f3136')
-      let shardEmbed
-      shardEmbed = `**서버의 Shard ID#${interaction.guild?.shard.id} ${client.ws.ping}ms**\n`
-      embed.setDescription(shardEmbed)
+      embed.setDescription(
+        client.i18n.t('commands.info.description.shardEmbed', {
+          id: interaction.guild?.shard.id,
+          ping: client.ws.ping
+        })
+      )
       embed.addFields({
-        name: '서버 수',
-        value: `${client.guilds.cache.size}서버`,
+        name: client.i18n.t('commands.info.fields.server'),
+        value: client.i18n.t('commands.info.fields.serverv', {
+          size: client.guilds.cache.size
+        }),
         inline: true
       })
       embed.addFields({
-        name: '유저 수',
-        value: `${client.guilds.cache.reduce(
-          (a, b) => a + b.memberCount,
-          0
-        )}명`,
+        name: client.i18n.t('commands.info.fields.user'),
+        value: client.i18n.t('commands.info.fields.userv', {
+          usercount: client.guilds.cache.reduce((a, b) => a + b.memberCount, 0)
+        }),
         inline: true
       })
       embed.addFields({
-        name: '업타임',
+        name: client.i18n.t('commands.info.fields.uptime'),
         value: `${DateFormatting.relative(
           new Date(Date.now() - process.uptime() * 1000)
         )}`,
         inline: true
       })
       embed.addFields({
-        name: '시스템정보',
+        name: client.i18n.t('commands.info.fields.systeminfo'),
         value: `\`\`\`diff\n- Discord.js: ${version} \n- Node.js: ${
           process.version
         }\n- OS: ${process.platform} - Memory: ${memory()} \`\`\``
       })
       embed.addFields({
-        name: '유용한 링크',
-        value: `[서포트 서버](https://discord.gg/WtGq7D7BZm) | [웹 대시보드](${config.web.baseurl}) | [깃허브](${repository}) | [개인정보처리방침](${config.web.baseurl}/help/privacy) | [상태](${config.web.baseurl}/status)`
+        name: client.i18n.t('commands.info.fields.usefullink'),
+        value: client.i18n.t('commands.info.fields.usefullinkv')
       })
       return interaction.reply({
         embeds: [embed],

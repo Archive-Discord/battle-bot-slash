@@ -110,17 +110,21 @@ export default new BaseCommand(
             client.i18n.t('commands.help.description.helpdes')
           )
           embed.addFields({
-            name: client.i18n.t('commands.help.title.help', {
+            name: client.i18n.t('commands.help.fields.help', {
               prefix: config.bot.prefix,
               command: command
             }),
-            value: client.i18n.t('commands.help.title.helpv', {
+            value: client.i18n.t('commands.help.fields.helpv', {
               command: command
             }),
             inline: true
           })
         })
-        return interaction.reply({ embeds: [embed], components: [row] })
+        return interaction.reply({
+          embeds: [embed],
+          components: [row],
+          ephemeral: true
+        })
       } else {
         let category = interaction.options.getString('category')?.toLowerCase()
         if (category === 'dev') {
@@ -132,7 +136,11 @@ export default new BaseCommand(
                 client.i18n.t('commands.help.description.notfound')
               )
               .setType('error')
-            return interaction.reply({ embeds: [embed], components: [row] })
+            return interaction.reply({
+              embeds: [embed],
+              components: [row],
+              ephemeral: true
+            })
           }
         }
         let commands = client.categorys.get(category as string)
@@ -141,7 +149,11 @@ export default new BaseCommand(
             .setTitle(client.i18n.t('main.title.error'))
             .setDescription(client.i18n.t('commands.help.description.notfound'))
             .setType('error')
-          return interaction.reply({ embeds: [embed], components: [row] })
+          return interaction.reply({
+            embeds: [embed],
+            components: [row],
+            ephemeral: true
+          })
         }
         embed.setDescription(
           client.i18n.t('commands.help.description.args', {
@@ -165,7 +177,11 @@ export default new BaseCommand(
             })
           })
         }
-        return interaction.reply({ embeds: [embed], components: [row] })
+        return interaction.reply({
+          embeds: [embed],
+          components: [row],
+          ephemeral: true
+        })
       }
     }
   }
