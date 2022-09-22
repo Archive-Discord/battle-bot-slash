@@ -13,10 +13,7 @@ export default new MessageCommand(
   },
   async (client, message, args) => {
     // @ts-ignore
-    if (!client.dokdo.owners.includes(message.author.id))
-      return message.reply(
-        `해당 명령어는 ${client.user?.username}의 주인이 사용할 수 있는 명령어입니다.`
-      )
+    if (!client.dokdo.owners.includes(message.author.id)) return
 
     let LoadingEmbed = new Embed(client, 'warn')
       .setColor('#2f3136')

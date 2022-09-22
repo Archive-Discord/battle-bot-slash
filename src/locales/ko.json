@@ -319,6 +319,16 @@
         "usefullink": "유용한 링크",
         "usefullinkv": "[서포트 서버](https://discord.gg/WtGq7D7BZm) | [웹 대시보드](https://battlebot.kr) | [깃허브](https://github.com/Archive-Discord/battle-bot-slash) | [개인정보처리방침](https://battlebot.kr/help/privacy) | [상태](https://battlebot.kr/status)"
       }
+    },
+    "premium":{
+      "title":{
+        "premium":"{{username}} 프리미엄"
+      },
+      "description":{
+        "premium":"이 서버는 프리미엄을 사용한 기록이 없습니다. [여기](https://battlebot.kr/premium) 에서 프리미엄을 구매해주세요.",
+        "premiumdate": "이 서버는 프리미엄이 {{year}}년 {{month}}월 {{date}}일에 만료 되었습니다 [여기](https://battlebot.kr/premium) 에서 프리미엄을 구매해주세요.",
+        "premiumdate2": "이 서버의 프리미엄 만료일은 {{year}}년 {{month}}월 {{date}}일 입니다."
+      }
     }
   }
 }

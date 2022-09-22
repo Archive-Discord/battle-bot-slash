@@ -19,10 +19,7 @@ export default new MessageCommand(
   },
   async (client, message, args) => {
     // @ts-ignore
-    if (!client.dokdo.owners.includes(message.author.id))
-      return message.reply(
-        `해당 명령어는 ${client.user?.username}의 주인이 사용할 수 있는 명령어입니다.`
-      )
+    if (!client.dokdo.owners.includes(message.author.id)) return
 
     let LoadingEmbed = new Embed(client, 'warn')
       .setTitle('잠시만 기다려주십시요')
@@ -41,16 +38,13 @@ export default new MessageCommand(
     }
 
     let repo = repository.replaceAll('https://github.com/', '')
-    const res = await fetch(
-      `https://api.github.com/repos/${repo}/commits`,
-      {
-        headers: {
-          Authorization: client.config.githubToken
-            ? `token ${client.config.githubToken}`
-            : ''
-        }
+    const res = await fetch(`https://api.github.com/repos/${repo}/commits`, {
+      headers: {
+        Authorization: client.config.githubToken
+          ? `token ${client.config.githubToken}`
+          : ''
       }
-    )
+    })
 
     if (res.status === 400) {
       LoadingEmbed.setTitle('이런...')
