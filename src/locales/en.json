@@ -10,6 +10,9 @@
     },
     "button":{
       "heart":"Pressing hearts"
+    },
+    "hello":{
+      "world":"Hello World."
     }
   },
   "commands": {

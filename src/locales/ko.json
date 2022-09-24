@@ -10,6 +10,9 @@
     },
     "button":{
       "heart":"하트 누르기"
+    },
+    "hello":{
+      "world":"안녕하세요."
     }
   },
   "commands": {
