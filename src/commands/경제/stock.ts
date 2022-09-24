@@ -27,7 +27,7 @@ export default new BaseCommand(
   async (client, message, args) => {
     const type = args[0]
     const embed = new Embed(client, 'info').setColor('#2f3136')
-    if (type === '검색') {
+    if (type === '검색' || type == 'search') {
       const keyword = args.slice(1).join(' ')
       const results = await searchStockList(keyword)
       if (!results || results?.items.length == 0) {
@@ -103,7 +103,7 @@ export default new BaseCommand(
       return message.reply({
         embeds: [embed]
       })
-    } else if (type === '목록') {
+    } else if (type === '목록' || type === 'list') {
       const keyword = args.slice(1).join(' ')
       const result = await searchStocks(keyword)
       embed.setTitle(
@@ -122,7 +122,7 @@ export default new BaseCommand(
       return message.reply({
         embeds: [embed]
       })
-    } else if (type === '매수') {
+    } else if (type === '매수' || type === 'buy') {
       const keyword = args.slice(2).join(' ')
       const quantity = parseInt(args[1])
       if (!quantity) {
@@ -373,7 +373,7 @@ export default new BaseCommand(
           ]
         })
       })
-    } else if (type === '매도') {
+    } else if (type === '매도' || type === 'sell') {
       const keyword = args.slice(2).join(' ')
       const quantity = parseInt(args[1])
       if (!quantity) {
@@ -1404,7 +1404,7 @@ export default new BaseCommand(
           })
         })
       }
-      if (type === '보유') {
+      if (type === '보유' || type === 'have') {
         const nowStock = await StockSchema.findOne({
           userid: interaction.user.id
         })

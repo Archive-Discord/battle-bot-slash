@@ -50,7 +50,7 @@ export default new BaseCommand(
         .setColor('#2f3136')
       const guild = interaction.guild
       if (!guild) {
-        embed.setDescription(client.i18n.t('commands.game.description.server'))
+        embed.setDescription(client.i18n.t('main.description.onlyserver'))
         return interaction.reply({ embeds: [embed], ephemeral: true })
       }
       const member = guild.members.cache.get(interaction.user.id)

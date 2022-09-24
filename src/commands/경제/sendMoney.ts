@@ -9,7 +9,7 @@ export default new BaseCommand(
   {
     name: 'sendMoney',
     description: '자신의 돈을 확인합니다.',
-    aliases: ['송금', 'moneysay', 'thdrma']
+    aliases: ['송금', 'moneysend', 'thdrma']
   },
   async (client, message, args) => {
     let embed = new Embed(client, 'warn').setTitle(

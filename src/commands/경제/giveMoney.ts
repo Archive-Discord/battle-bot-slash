@@ -8,7 +8,7 @@ export default new BaseCommand(
   {
     name: 'givemoney',
     description: '자신의 돈을 확인합니다.',
-    aliases: ['돈받기', 'moneyget', 'ehswnj', '돈줘']
+    aliases: ['돈받기', 'moneyget', 'ehswnj', '돈줘', 'getmoney']
   },
   async (client, message, args) => {
     let embed = new Embed(client, 'warn')

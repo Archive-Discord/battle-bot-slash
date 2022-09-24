@@ -205,10 +205,12 @@ export default new BaseCommand(
                 embed = new Embed(client, 'success')
                   .setTitle(client.i18n.t('commands.heart.title.fail'))
                   .setDescription(
-                    `${DateFormatting._format(
-                      res.data.data.lastVote + 12 * 60 * 60 * 1000,
-                      'R'
-                    )}` + client.i18n.t('commands.heart.description.later')
+                    client.i18n.t('commands.heart.description.later', {
+                      dataformat: DateFormatting._format(
+                        res.data.data.lastVote + 12 * 60 * 60 * 1000,
+                        'R'
+                      )
+                    })
                   )
                   .setTimestamp()
                   .setColor('#2f3136')
