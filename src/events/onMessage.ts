@@ -130,6 +130,7 @@ const musicPlayer = async (client: BotClient, message: Message) => {
       name: '재생목록에 아래 노래들을 추가했어요!'
     })
     sucessembed.setDescription(songs.join(', '))
+    sucessembed.setColor('#2f3136')
 
     player.queue.add(song.tracks)
     if (!player.playing) await player.play()
@@ -147,6 +148,7 @@ const musicPlayer = async (client: BotClient, message: Message) => {
       `[${song.tracks[0].title}](${song.tracks[0].uri}) ${song.tracks[0].duration} - ${song.tracks[0].requester}`
     )
     sucessembed.setThumbnail(song.tracks[0].thumbnail)
+    sucessembed.setColor('#2f3136')
     if (!player.playing) await player.play()
     return message.channel.send({ embeds: [sucessembed] }).then((m) => {
       setTimeout(() => {

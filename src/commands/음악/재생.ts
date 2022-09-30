@@ -19,10 +19,10 @@ export default new BaseCommand(
       .setName('재생')
       .setDescription('노래를 재생해요.')
       .addStringOption((option) =>
-          option
-            .setName('query')
-            .setDescription('재생할 노래 재목 또는 링크를 적어주세요')
-            .setRequired(true)
+        option
+          .setName('query')
+          .setDescription('재생할 노래 재목 또는 링크를 적어주세요')
+          .setRequired(true)
       ),
     async execute(client, interaction) {
       await interaction.deferReply();
@@ -71,7 +71,8 @@ export default new BaseCommand(
           },
           { name: `게시자`, value: `${res.tracks[0].author}`, inline: true },
         )
-        .setThumbnail(`${res.tracks[0].thumbnail}`);
+        .setThumbnail(`${res.tracks[0].thumbnail}`)
+        .setColor('#2f3136');
       interaction.followUp({ embeds: [embed] });
     },
   },

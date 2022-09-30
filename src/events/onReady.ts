@@ -65,6 +65,7 @@ export default new Event(
         const playl = new Embed(client, 'default')
           .setTitle('🎶 노래를 재생합니다! 🎶')
           .setURL(`${track.uri}`)
+          .setColor('#2f3136')
           .setDescription(`\`${track.title}\`` + `(이)가 지금 재생되고 있습니다!`)
           .setFields(
             {
@@ -140,6 +141,7 @@ export default new Event(
               })
               .setTitle(`📃 재생목록 __**${guild.name}**__`)
               .setThumbnail(guild.iconURL())
+              .setColor('#2f3136')
               .addFields(
                 {
                   name: `**\` N. \` *${player.queue.length > maxTracks
@@ -207,6 +209,7 @@ export default new Event(
                   'https://images-ext-1.discordapp.net/external/n83quR20ZzWm4y8bO4lnFUWouP0c4rtao8TbXckuvTc/%3Fv%3D1/https/cdn.discordapp.com/emojis/667750713698549781.gif',
               })
               .setTitle(`📃 재생목록 __**${guild.name}**__`)
+              .setColor('#2f3136')
               .addFields(
                 {
                   name: `**\` N. \` *${player.queue.length > maxTracks
@@ -252,6 +255,7 @@ export default new Event(
           const embed = new Embed(client, 'info');
           if (guild.iconURL()) {
             embed
+              .setColor('#2f3136')
               .setTitle('지금 재생중인 노래')
               .addFields(
                 {
@@ -269,6 +273,7 @@ export default new Event(
           }
           if (!guild.iconURL()) {
             embed
+              .setColor('#2f3136')
               .setTitle('지금 재생중인 노래')
               .addFields(
                 {
@@ -321,9 +326,11 @@ export default new Event(
               })
               .setTitle(`📃 재생목록 __**${guild.name}**__`)
               .setThumbnail(guild.iconURL())
+              .setColor('#2f3136')
               .setDescription(`대기중인 노래가 없습니다.`);
             const gg = new Embed(client, 'default')
               .setTitle('재생중인 노래가 없어요')
+              .setColor('#2f3136')
               .setDescription(
                 `❌ **노래가 재생 중이지 않아요!\n해당 채널에 노래 제목을 입력해주세요!**\n[대시보드](https://battlebot.kr/) | [서포트 서버](https://discord.gg/WtGq7D7BZm) | [상태](https://battlebot.kr/status)`,
               )
@@ -340,6 +347,7 @@ export default new Event(
                 iconURL: `https://images-ext-1.discordapp.net/external/n83quR20ZzWm4y8bO4lnFUWouP0c4rtao8TbXckuvTc/%3Fv%3D1/https/cdn.discordapp.com/emojis/667750713698549781.gif`,
               })
               .setTitle(`📃 재생목록 __**${guild.name}**__`)
+              .setColor('#2f3136')
               .setDescription(`대기중인 노래가 없습니다.`);
             const gg = new Embed(client, 'default')
               .setTitle('재생중인 노래가 없어요')

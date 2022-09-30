@@ -23,7 +23,7 @@ export default new BaseCommand(
     async execute(client, interaction) {
       if (!interaction.member || !interaction.member.voice.channel)
         return interaction.reply({
-          embeds: [new Embed(client, 'default').setDescription(`음성채널에 먼저 참여해주세요!`)],
+          embeds: [new Embed(client, 'default').setDescription(`음성채널에 먼저 참여해주세요!`).setColor('#2f3136')],
         });
       const queue = client.music.create({
         guild: interaction.guild.id,
@@ -34,7 +34,7 @@ export default new BaseCommand(
       if (!queue || !queue.playing)
         return interaction.reply({
           embeds: [
-            new Embed(client, 'default').setDescription(`현재 재생되고 있는 음악이 없습니다.`),
+            new Embed(client, 'default').setDescription(`현재 재생되고 있는 음악이 없습니다.`).setColor('#2f3136'),
           ],
         });
 
@@ -48,19 +48,19 @@ export default new BaseCommand(
 
       if (!queue || !queue.playing)
         return interaction.reply({
-          embeds: [new Embed(client, 'warn').setDescription(`재생중인 노래가 없습니다.`)],
+          embeds: [new Embed(client, 'warn').setDescription(`재생중인 노래가 없습니다.`).setColor('#2f3136')],
         });
 
       if (arg1 < 0 || arg1 > 150)
         return void interaction.reply({
           embeds: [
-            new Embed(client, 'warn').setDescription(`볼륨은 0~150까지만 조절 할 수 있습니다`),
+            new Embed(client, 'warn').setDescription(`볼륨은 0~150까지만 조절 할 수 있습니다`).setColor('#2f3136'),
           ],
         });
       queue.setVolume(Number(arg1));
 
       return interaction.reply({
-        embeds: [new Embed(client, 'success').setTitle('🎧 볼륨 🎧').setDescription(`${arg1}%`)],
+        embeds: [new Embed(client, 'success').setTitle('🎧 볼륨 🎧').setDescription(`${arg1}%`).setColor('#2f3136')],
       });
     },
   },

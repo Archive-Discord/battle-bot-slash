@@ -17,7 +17,7 @@ export default new BaseCommand(
     async execute(client, interaction) {
       if (!interaction.member || !interaction.member.voice.channel)
         return interaction.reply({
-          embeds: [new Embed(client, 'default').setDescription(`음성채널에 먼저 참여해주세요!`)],
+          embeds: [new Embed(client, 'default').setDescription(`음성채널에 먼저 참여해주세요!`).setColor('#2f3136')],
         });
       const queue = client.music.create({
         guild: interaction.guild.id,
@@ -28,7 +28,7 @@ export default new BaseCommand(
       if (!queue || !queue.playing)
         return interaction.reply({
           embeds: [
-            new Embed(client, 'default').setDescription(`현재 재생되고 있는 음악이 없습니다.`),
+            new Embed(client, 'default').setDescription(`현재 재생되고 있는 음악이 없습니다.`).setColor('#2f3136'),
           ],
         });
 
@@ -51,7 +51,8 @@ export default new BaseCommand(
               name: `요청자`,
               value: `${interaction.user}`,
               inline: true,
-            }),
+            })
+            .setColor('#2f3136')
         ],
       });
     },

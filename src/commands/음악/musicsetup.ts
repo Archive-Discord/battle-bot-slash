@@ -23,7 +23,8 @@ export default new BaseCommand(
           embeds: [
             new Embed(client, 'error')
               .setTitle('권한이 없습니다.')
-              .setDescription(`서버에 관리자 권한이 부족하여 사용이 불가능합니다.`),
+              .setDescription(`서버에 관리자 권한이 부족하여 사용이 불가능합니다.`)
+              .setColor('#2f3136'),
           ],
         });
       const find = await Schema.findOne({ guild_id: interaction.guild.id });
@@ -32,7 +33,8 @@ export default new BaseCommand(
           .setTitle('❌ 에러 발생')
           .setDescription(
             `이미 <#${find.channel_id}>로 음악기능이 설정되어있는거 같습니다.\n채널을 삭제하셨거나 다시 설정을 원하시면 \`!뮤직설정헤제\` 입력 후 다시 시도해주세요.`,
-          );
+          )
+          .setColor('#2f3136');
         return interaction.reply({ embeds: [embed1] });
       }
       const set = await interaction.guild.channels
@@ -41,8 +43,8 @@ export default new BaseCommand(
           const ss = new Embed(client, 'default')
             .setTitle(`📃 재생목록 __**${interaction.guild.name}**__`)
             .setThumbnail(interaction.guild.iconURL())
-            .setDescription(`**현재 대기열에 __0곡__이 있습니다.**`);
-
+            .setDescription(`**현재 대기열에 __0곡__이 있습니다.**`)
+            .setColor('#2f3136');
           const channel = interaction.guild.channels.cache.get(result.id);
 
           if (!channel)
@@ -70,6 +72,7 @@ export default new BaseCommand(
               .setDescription(
                 '❌ **노래가 재생 중이지 않아요!\n해당 채널에 노래 제목을 입력해주세요!**\n[대시보드](https://battlebot.kr/)|[서포트 서버](https://discord.gg/WtGq7D7BZm)|[상태](https://battlebot.kr/status)',
               )
+              .setColor('#2f3136')
               .setImage(
                 'https://cdn.discordapp.com/attachments/901745892418256910/941301364095586354/46144c4d9e1cf2e6.png',
               );
