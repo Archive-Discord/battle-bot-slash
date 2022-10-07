@@ -50,6 +50,4 @@ export default new Event(
       updated = true
     }
     if (updated) return await logChannel.send({ embeds: [embed] })
-  }
-  if (updated) return await logChannel.send({ embeds: [embed] });
-});
+  })

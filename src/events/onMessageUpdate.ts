@@ -59,5 +59,4 @@ export default new Event(
     );
 
     return await logChannel.send({ embeds: [embed] });
-  }
-});
+  })
