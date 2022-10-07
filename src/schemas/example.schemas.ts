@@ -1,16 +1,16 @@
-import { Schema, model } from 'mongoose'
+import { Schema, model } from 'mongoose';
 
 let schema = new Schema({
   user: {
     id: {
       type: String,
-      required: true
+      required: true,
     },
     name: {
       type: String,
-      required: true
-    }
-  }
-})
+      required: true,
+    },
+  },
+});
 
-export default model('user', schema, 'user')
+export default model('user', schema, 'user');

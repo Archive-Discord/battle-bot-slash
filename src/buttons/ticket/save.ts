@@ -1,15 +1,15 @@
-import config from '../../../config'
-import { Collection, Message } from 'discord.js'
-import Ticket from '../../schemas/ticketSchema'
-import { ButtonInteraction } from '../../structures/Command'
-import Embed from '../../utils/Embed'
+import config from '../../../config';
+import { Collection, Message } from 'discord.js';
+import Ticket from '../../schemas/ticketSchema';
+import { ButtonInteraction } from '../../structures/Command';
+import Embed from '../../utils/Embed';
 
 export default new ButtonInteraction(
   {
-    name: 'save'
+    name: 'save',
   },
   async (client, interaction) => {
-    await interaction.deferReply({ ephemeral: true })
+    await interaction.deferReply({ ephemeral: true });
     const ticket = await Ticket.findOne({
       guildId: interaction.guild?.id,
       channelId: interaction.channel?.id
@@ -34,11 +34,11 @@ export default new ButtonInteraction(
     await interaction.editReply({ embeds: [LoadingEmbed] })
     while (channelMessages?.size === 100) {
       channelMessages = await interaction.channel?.messages.fetch({
-        limit: 100
-      })
-      if (channelMessages) messages = messages.concat(channelMessages)
+        limit: 100,
+      });
+      if (channelMessages) messages = messages.concat(channelMessages);
     }
-    let MessageDB = [] as any[]
+    let MessageDB = [] as any[];
     messages.forEach(async (msg: Message) => {
       MessageDB.push({
         author: msg.author,
@@ -54,14 +54,14 @@ export default new ButtonInteraction(
     await interaction.editReply({ embeds: [SaveingEmbed] })
     await Ticket.updateOne(
       { guildId: interaction.guild?.id, channelId: interaction.channel?.id },
-      { $set: { messages: MessageDB } }
-    )
+      { $set: { messages: MessageDB } },
+    );
     const successembed = new Embed(client, 'success')
       .setTitle('티켓이 저장되었습니다')
       .setDescription(
-        `[여기](${config.web?.baseurl}/guilds/${interaction.guild?.id}/ticket/${ticket.ticketId})에서 확인할 수 있습니다`
+        `[여기](${config.web?.baseurl}/guilds/${interaction.guild?.id}/ticket/${ticket.ticketId})에서 확인할 수 있습니다`,
       )
-      .setColor('#2f3136')
-    await interaction.editReply({ embeds: [successembed] })
-  }
-)
+      .setColor('#2f3136');
+    await interaction.editReply({ embeds: [successembed] });
+  },
+);

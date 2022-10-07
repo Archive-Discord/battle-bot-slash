@@ -23,7 +23,7 @@ const paginationEmbed = async (
     throw new Error('링크 버튼은 사용이 불가능합니다')
   if (buttonList.length !== 2) throw new Error('2개의 버튼이 필요합니다')
 
-  let page = 0
+  let page = 0;
 
   const row = new ActionRowBuilder<ButtonBuilder>().addComponents(buttonList)
 
@@ -42,8 +42,8 @@ const paginationEmbed = async (
 
   const collector = await interaction.channel?.createMessageComponentCollector({
     filter,
-    time: timeout
-  })
+    time: timeout,
+  });
 
   collector?.on('collect', async (i) => {
     switch (i.customId) {
@@ -53,12 +53,12 @@ const paginationEmbed = async (
         break
       // @ts-ignore
       case buttonList[1].customId:
-        page = page + 1 < pages.length ? ++page : 0
-        break
+        page = page + 1 < pages.length ? ++page : 0;
+        break;
       default:
-        break
+        break;
     }
-    await i.deferUpdate()
+    await i.deferUpdate();
     await i.editReply({
       embeds: [
         pages[page].setFooter({ text: `페이지 ${page + 1} / ${pages.length}` })
@@ -72,8 +72,8 @@ const paginationEmbed = async (
     if (reason !== 'messageDelete') {
       const disabledRow = new ActionRowBuilder<ButtonBuilder>().addComponents(
         buttonList[0].setDisabled(true),
-        buttonList[1].setDisabled(true)
-      )
+        buttonList[1].setDisabled(true),
+      );
       interaction.editReply({
         embeds: [
           pages[page].setFooter({
@@ -83,9 +83,9 @@ const paginationEmbed = async (
         components: [disabledRow]
       })
     }
-  })
+  });
 
-  return curPage
-}
+  return curPage;
+};
 
-export default paginationEmbed
+export default paginationEmbed;

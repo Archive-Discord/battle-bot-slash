@@ -1,13 +1,13 @@
-import { BaseCommand } from '../../structures/Command'
-import Discord from 'discord.js'
-import Embed from '../../utils/Embed'
-import { SlashCommandBuilder } from '@discordjs/builders'
+import { BaseCommand } from '../../structures/Command';
+import Discord from 'discord.js';
+import Embed from '../../utils/Embed';
+import { SlashCommandBuilder } from '@discordjs/builders';
 
 export default new BaseCommand(
   {
     name: 'ping',
     description: '핑을 측정합니다.',
-    aliases: ['핑', '측정', 'vld']
+    aliases: ['핑', '측정', 'vld'],
   },
   async (client, message, args) => {
     let embed = new Embed(client, 'warn')
@@ -15,8 +15,8 @@ export default new BaseCommand(
       .setColor('#2f3136')
 
     let m = await message.reply({
-      embeds: [embed]
-    })
+      embeds: [embed],
+    });
     embed = new Embed(client, 'success')
       .setColor('#2f3136')
       .setTitle(client.i18n.t('commands.ping.title'))
@@ -37,16 +37,14 @@ export default new BaseCommand(
       })
 
     m.edit({
-      embeds: [embed]
-    })
+      embeds: [embed],
+    });
   },
   {
-    data: new SlashCommandBuilder()
-      .setName('핑')
-      .setDescription('핑을 측정합니다.'),
+    data: new SlashCommandBuilder().setName('핑').setDescription('핑을 측정합니다.'),
     options: {
       name: '핑',
-      isSlash: true
+      isSlash: true,
     },
     async execute(client, interaction) {
       let PingEmbed = new Embed(client, 'success')

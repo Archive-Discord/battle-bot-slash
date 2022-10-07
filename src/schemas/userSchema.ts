@@ -1,5 +1,5 @@
-import { Model, model, Schema } from 'mongoose'
-import { DataBaseUser } from '../../typings'
+import { Model, model, Schema } from 'mongoose';
+import { DataBaseUser } from '../../typings';
 
 const UserSchema: Schema<DataBaseUser> = new Schema(
   {
@@ -17,10 +17,10 @@ const UserSchema: Schema<DataBaseUser> = new Schema(
     expires_in: Number,
     google_accessToken: String,
     google_refreshToken: String,
-    published_date: { type: Date, default: Date.now }
+    published_date: { type: Date, default: Date.now },
   },
-  { collection: 'userData' }
-)
+  { collection: 'userData' },
+);
 
-const User: Model<DataBaseUser> = model('userData', UserSchema, 'userData')
-export default User
+const User: Model<DataBaseUser> = model('userData', UserSchema, 'userData');
+export default User;

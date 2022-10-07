@@ -7,7 +7,7 @@ export default new BaseCommand(
   {
     name: '배그전적',
     description: '배틀그라운드 전적을 확인합니다.',
-    aliases: ['전적배그', 'pubgstat']
+    aliases: ['전적배그', 'pubgstat'],
   },
   async (client, message, args) => {
     let embed = new Embed(client, 'error')
@@ -41,7 +41,7 @@ export default new BaseCommand(
       ),
     options: {
       name: '배그전적',
-      isSlash: true
+      isSlash: true,
     },
     async execute(client, interaction) {
       await interaction.deferReply({ ephemeral: true })

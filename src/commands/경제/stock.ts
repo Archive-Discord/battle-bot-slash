@@ -22,7 +22,7 @@ export default new BaseCommand(
   {
     name: 'stock',
     description: '주식을 거래합니다. (검색, 매수, 매도, 목록)',
-    aliases: ['주식', 'stock', '주식거래', '주식거래하기']
+    aliases: ['주식', 'stock', '주식거래', '주식거래하기'],
   },
   async (client, message, args) => {
     const type = args[0]
@@ -37,7 +37,7 @@ export default new BaseCommand(
         )
         return message.reply({ embeds: [embed] })
       }
-      const result = await searchStock(results.items[0].code)
+      const result = await searchStock(results.items[0].code);
       if (!result) {
         embed.setTitle(client.i18n.t('main.title.error'))
         embed.setDescription(
@@ -62,8 +62,8 @@ export default new BaseCommand(
               result.risefall == 1 || result.risefall == 2
                 ? '▴'
                 : result.risefall == 3
-                ? '-'
-                : '▾',
+                  ? '-'
+                  : '▾',
             rate: comma(result.rate)
           }),
           inline: true
@@ -98,8 +98,8 @@ export default new BaseCommand(
         inline: true
       })
       embed.setImage(
-        `https://ssl.pstatic.net/imgfinance/chart/item/area/day/${results.items[0].code}.png`
-      )
+        `https://ssl.pstatic.net/imgfinance/chart/item/area/day/${results.items[0].code}.png`,
+      );
       return message.reply({
         embeds: [embed]
       })
@@ -112,11 +112,9 @@ export default new BaseCommand(
         })
       )
       const results = result?.result.d.map((stock, index) => {
-        return `${
-          stock.rf == '1' || stock.rf == '2' ? '+' : stock.rf == '3' ? ' ' : '-'
-        } ${index + 1}. ${stock.nm} (${stock.cd}) [ ${comma(stock.nv)}₩ (${
-          stock.rf == '1' || stock.rf == '2' ? '▴' : stock.rf == '3' ? '-' : '▾'
-        } ${stock.cr}%) ]`
+        return `${stock.rf == '1' || stock.rf == '2' ? '+' : stock.rf == '3' ? ' ' : '-'
+          } ${index + 1}. ${stock.nm} (${stock.cd}) [ ${comma(stock.nv)}₩ (${stock.rf == '1' || stock.rf == '2' ? '▴' : stock.rf == '3' ? '-' : '▾'
+          } ${stock.cr}%) ]`
       })
       embed.setDescription('```diff\n' + results?.join('\n') + '```')
       return message.reply({
@@ -133,7 +131,7 @@ export default new BaseCommand(
         embed.setDescription(client.i18n.t('commands.stock.description.bupto1'))
         return message.reply({ embeds: [embed] })
       }
-      const results = await searchStockList(keyword)
+      const results = await searchStockList(keyword);
       if (!results || results?.items.length == 0) {
         embed.setTitle(client.i18n.t('main.title.error'))
         embed.setDescription(
@@ -143,7 +141,7 @@ export default new BaseCommand(
         )
         return message.reply({ embeds: [embed] })
       }
-      const result = await searchStock(results.items[0].code)
+      const result = await searchStock(results.items[0].code);
       if (!result) {
         embed.setTitle(client.i18n.t('main.title.error'))
         embed.setDescription(
@@ -153,10 +151,10 @@ export default new BaseCommand(
         )
         return message.reply({ embeds: [embed] })
       }
-      const price = result.now * quantity
-      const fee = price * 0.02
-      const total = price + fee
-      const user = await Schema.findOne({ userid: message.author.id })
+      const price = result.now * quantity;
+      const fee = price * 0.02;
+      const total = price + fee;
+      const user = await Schema.findOne({ userid: message.author.id });
       if (!user) {
         embed.setTitle(client.i18n.t('main.title.error'))
         embed.setDescription(
@@ -226,7 +224,7 @@ export default new BaseCommand(
       )
       // @ts-ignore
       collector.on('collect', async (i) => {
-        if (i.user.id != message.author.id) return
+        if (i.user.id != message.author.id) return;
         if (i.customId == 'stock.accept') {
           embed.setTitle(client.i18n.t('commands.stock.title.success'))
           embed.setDescription(
@@ -257,21 +255,21 @@ export default new BaseCommand(
             inline: true
           })
           embed.setImage(
-            `https://ssl.pstatic.net/imgfinance/chart/item/area/day/${results.items[0].code}.png`
-          )
-          await m.edit({ embeds: [embed] })
+            `https://ssl.pstatic.net/imgfinance/chart/item/area/day/${results.items[0].code}.png`,
+          );
+          await m.edit({ embeds: [embed] });
           await Schema.findOneAndUpdate(
             {
-              userid: message.author.id
+              userid: message.author.id,
             },
             {
-              $inc: { money: -total }
-            }
-          )
+              $inc: { money: -total },
+            },
+          );
           const nowStock = await StockSchema.findOne({
             userid: message.author.id,
-            'stocks.code': results.items[0].code
-          })
+            'stocks.code': results.items[0].code,
+          });
           if (!nowStock) {
             await StockSchema.updateOne(
               { userid: message.author.id },
@@ -281,17 +279,17 @@ export default new BaseCommand(
                     code: results.items[0].code,
                     quantity,
                     name: results.items[0].name,
-                    price: result.now
-                  }
-                }
+                    price: result.now,
+                  },
+                },
               },
-              { upsert: true }
-            )
+              { upsert: true },
+            );
           } else {
             await StockSchema.findOneAndUpdate(
               { userid: message.author.id },
-              { $pull: { stocks: { code: results.items[0].code } } }
-            )
+              { $pull: { stocks: { code: results.items[0].code } } },
+            );
             await StockSchema.updateOne(
               { userid: message.author.id },
               {
@@ -303,12 +301,12 @@ export default new BaseCommand(
                     price:
                       (nowStock.stocks[0].quantity * nowStock.stocks[0].price +
                         result.now * quantity) /
-                      (nowStock.stocks[0].quantity + quantity)
-                  }
-                }
+                      (nowStock.stocks[0].quantity + quantity),
+                  },
+                },
               },
-              { upsert: true }
-            )
+              { upsert: true },
+            );
           }
           const successEmbed = new Embed(client, 'success')
           successEmbed.setTitle(client.i18n.t('commands.stock.title.success'))
@@ -349,9 +347,9 @@ export default new BaseCommand(
           )
           return i.update({ embeds: [embed], components: [] })
         }
-      })
+      });
       collector.on('end', (collected) => {
-        if (collected.size == 1) return
+        if (collected.size == 1) return;
         m.edit({
           embeds: [embed],
           components: [
@@ -386,7 +384,7 @@ export default new BaseCommand(
         embed.setDescription(client.i18n.t('commands.stock.description.supto1'))
         return message.reply({ embeds: [embed] })
       }
-      const results = await searchStockList(keyword)
+      const results = await searchStockList(keyword);
       if (!results || results?.items.length == 0) {
         embed.setTitle(client.i18n.t('main.title.error'))
         embed.setDescription(
@@ -396,7 +394,7 @@ export default new BaseCommand(
         )
         return message.reply({ embeds: [embed] })
       }
-      const result = await searchStock(results.items[0].code)
+      const result = await searchStock(results.items[0].code);
       if (!result) {
         embed.setTitle(client.i18n.t('main.title.error'))
         embed.setDescription(
@@ -408,8 +406,8 @@ export default new BaseCommand(
       }
       const stock = await StockSchema.findOne({
         userid: message.author.id,
-        'stocks.code': results.items[0].code
-      })
+        'stocks.code': results.items[0].code,
+      });
       if (!stock || stock.stocks.length === 0) {
         embed.setTitle(client.i18n.t('main.title.error'))
         embed.setDescription(
@@ -430,10 +428,10 @@ export default new BaseCommand(
         )
         return message.reply({ embeds: [embed] })
       }
-      const price = result.now * quantity
-      const fee = price * 0.02
-      const total = price - fee
-      const user = await Schema.findOne({ userid: message.author.id })
+      const price = result.now * quantity;
+      const fee = price * 0.02;
+      const total = price - fee;
+      const user = await Schema.findOne({ userid: message.author.id });
       if (!user) {
         embed.setTitle(client.i18n.t('main.title.error'))
         embed.setDescription(
@@ -491,7 +489,7 @@ export default new BaseCommand(
       const collector = m.createMessageComponentCollector({ time: 10000 })
       // @ts-ignore
       collector.on('collect', async (i) => {
-        if (i.user.id != message.author.id) return
+        if (i.user.id != message.author.id) return;
         if (i.customId == 'stocksell.accept') {
           embed.setTitle(client.i18n.t('commands.stock.title.success2'))
           embed.setDescription(
@@ -522,21 +520,21 @@ export default new BaseCommand(
             inline: true
           })
           embed.setImage(
-            `https://ssl.pstatic.net/imgfinance/chart/item/area/day/${results.items[0].code}.png`
-          )
-          await m.edit({ embeds: [embed] })
+            `https://ssl.pstatic.net/imgfinance/chart/item/area/day/${results.items[0].code}.png`,
+          );
+          await m.edit({ embeds: [embed] });
           await Schema.findOneAndUpdate(
             {
-              userid: message.author.id
+              userid: message.author.id,
             },
             {
-              $inc: { money: +total }
-            }
-          )
+              $inc: { money: +total },
+            },
+          );
           await StockSchema.findOneAndUpdate(
             { userid: message.author.id },
-            { $pull: { stocks: { code: stock.stocks[0].code } } }
-          )
+            { $pull: { stocks: { code: stock.stocks[0].code } } },
+          );
           await StockSchema.updateOne(
             { userid: message.author.id },
             {
@@ -545,11 +543,11 @@ export default new BaseCommand(
                   code: results.items[0].code,
                   quantity: stock.stocks[0].quantity - quantity,
                   name: results.items[0].name,
-                  price: stock.stocks[0].price
-                }
-              }
-            }
-          )
+                  price: stock.stocks[0].price,
+                },
+              },
+            },
+          );
           const successEmbed = new Embed(client, 'success')
             .setTitle(client.i18n.t('commands.stock.title.success2'))
             .setDescription(
@@ -588,9 +586,9 @@ export default new BaseCommand(
           )
           return i.update({ embeds: [embed], components: [] })
         }
-      })
+      });
       collector.on('end', (collected) => {
-        if (collected.size == 1) return
+        if (collected.size == 1) return;
         m.edit({
           embeds: [embed],
           components: [
@@ -613,7 +611,7 @@ export default new BaseCommand(
         })
       })
     } else if (args[0] == '보유') {
-      const nowStock = await StockSchema.findOne({ userid: message.author.id })
+      const nowStock = await StockSchema.findOne({ userid: message.author.id });
       if (!nowStock) {
         embed.setTitle(client.i18n.t('main.title.error'))
         embed.setDescription(
@@ -622,8 +620,8 @@ export default new BaseCommand(
           })
         )
         return message.reply({
-          embeds: [embed]
-        })
+          embeds: [embed],
+        });
       } else {
         embed.setTitle(
           client.i18n.t('commands.stock.title.ahave', {
@@ -633,7 +631,7 @@ export default new BaseCommand(
 
         const results = await Promise.all(
           nowStock.stocks.map(async (stock, index) => {
-            const stockSearch = await searchStock(stock.code)
+            const stockSearch = await searchStock(stock.code);
             if (!stockSearch)
               return client.i18n.t('commands.stock.message.message', {
                 i: index + 1,
@@ -650,23 +648,23 @@ export default new BaseCommand(
                 Math.round(stockSearch.now) > Math.round(stock.price)
                   ? '-'
                   : Math.round(stockSearch.now) < Math.round(stock.price)
-                  ? '+'
-                  : ' ',
+                    ? '+'
+                    : ' ',
               second:
                 Math.round(stockSearch.now * stock.quantity) >
-                Math.round(stock.price * stock.quantity)
+                  Math.round(stock.price * stock.quantity)
                   ? '▾'
                   : Math.round(stockSearch.now * stock.quantity) <
                     Math.round(stock.price * stock.quantity)
-                  ? '▴'
-                  : '-'
+                    ? '▴'
+                    : '-'
             })
           })
         )
         embed.setDescription('```diff\n' + results.join('\n') + '```')
         return message.reply({
-          embeds: [embed]
-        })
+          embeds: [embed],
+        });
       }
     } else {
       embed.setTitle(client.i18n.t('commands.stock.title.stockhelp'))
@@ -803,7 +801,7 @@ export default new BaseCommand(
           )
           return interaction.editReply({ embeds: [embed] })
         }
-        const result = await searchStock(results.items[0].code)
+        const result = await searchStock(results.items[0].code);
         if (!result) {
           embed.setTitle(client.i18n.t('main.title.error'))
           embed.setDescription(
@@ -827,8 +825,8 @@ export default new BaseCommand(
               result.risefall == 1 || result.risefall == 2
                 ? '▴'
                 : result.risefall == 3
-                ? '-'
-                : '▾',
+                  ? '-'
+                  : '▾',
             rate: comma(result.rate)
           }),
           inline: true
@@ -862,11 +860,11 @@ export default new BaseCommand(
           inline: true
         })
         embed.setImage(
-          `https://ssl.pstatic.net/imgfinance/chart/item/area/day/${results.items[0].code}.png`
-        )
+          `https://ssl.pstatic.net/imgfinance/chart/item/area/day/${results.items[0].code}.png`,
+        );
         return interaction.editReply({
-          embeds: [embed]
-        })
+          embeds: [embed],
+        });
       }
       if (type === '목록') {
         const keyword = interaction.options.getString('주식') || ''
@@ -877,24 +875,22 @@ export default new BaseCommand(
           })
         )
         const results = result?.result.d.map((stock, index) => {
-          return `${
-            stock.rf == '1' || stock.rf == '2'
+          return `${stock.rf == '1' || stock.rf == '2'
               ? '+'
               : stock.rf == '3'
-              ? ' '
-              : '-'
-          } ${index + 1}. ${stock.nm} (${stock.cd}) [ ${comma(stock.nv)}₩ (${
-            stock.rf == '1' || stock.rf == '2'
+                ? ' '
+                : '-'
+            } ${index + 1}. ${stock.nm} (${stock.cd}) [ ${comma(stock.nv)}₩ (${stock.rf == '1' || stock.rf == '2'
               ? '▴'
               : stock.rf == '3'
-              ? '-'
-              : '▾'
-          } ${stock.cr}%) ]`
+                ? '-'
+                : '▾'
+            } ${stock.cr}%) ]`
         })
         embed.setDescription('```diff\n' + results?.join('\n') + '```')
         return interaction.editReply({
-          embeds: [embed]
-        })
+          embeds: [embed],
+        });
       }
       if (type === '매수') {
         const keyword = interaction.options.getString('주식명') || ''
@@ -909,7 +905,7 @@ export default new BaseCommand(
           )
           return interaction.editReply({ embeds: [embed] })
         }
-        const results = await searchStockList(keyword)
+        const results = await searchStockList(keyword);
         if (!results || results?.items.length == 0) {
           embed.setTitle(client.i18n.t('main.title.error'))
           embed.setDescription(
@@ -919,7 +915,7 @@ export default new BaseCommand(
           )
           return interaction.editReply({ embeds: [embed] })
         }
-        const result = await searchStock(results.items[0].code)
+        const result = await searchStock(results.items[0].code);
         if (!result) {
           embed.setTitle(client.i18n.t('main.title.error'))
           embed.setDescription(
@@ -929,10 +925,10 @@ export default new BaseCommand(
           )
           return interaction.editReply({ embeds: [embed] })
         }
-        const price = result.now * quantity
-        const fee = price * 0.02
-        const total = price + fee
-        const user = await Schema.findOne({ userid: interaction.user.id })
+        const price = result.now * quantity;
+        const fee = price * 0.02;
+        const total = price + fee;
+        const user = await Schema.findOne({ userid: interaction.user.id });
         if (!user) {
           embed.setTitle(client.i18n.t('main.title.error'))
           embed.setDescription(
@@ -1007,7 +1003,7 @@ export default new BaseCommand(
           )
         // @ts-ignore
         collector.on('collect', async (i) => {
-          if (i.user.id != interaction.user.id) return
+          if (i.user.id != interaction.user.id) return;
           if (i.customId == 'stock.accept') {
             embed.setTitle(client.i18n.t('commands.stock.title.success'))
             embed.setDescription(
@@ -1038,21 +1034,21 @@ export default new BaseCommand(
               inline: true
             })
             embed.setImage(
-              `https://ssl.pstatic.net/imgfinance/chart/item/area/day/${results.items[0].code}.png`
-            )
-            await interaction.editReply({ embeds: [embed] })
+              `https://ssl.pstatic.net/imgfinance/chart/item/area/day/${results.items[0].code}.png`,
+            );
+            await interaction.editReply({ embeds: [embed] });
             await Schema.findOneAndUpdate(
               {
-                userid: interaction.user.id
+                userid: interaction.user.id,
               },
               {
-                $inc: { money: -total }
-              }
-            )
+                $inc: { money: -total },
+              },
+            );
             const nowStock = await StockSchema.findOne({
               userid: interaction.user.id,
-              'stocks.code': results.items[0].code
-            })
+              'stocks.code': results.items[0].code,
+            });
             if (!nowStock) {
               await StockSchema.updateOne(
                 { userid: interaction.user.id },
@@ -1062,17 +1058,17 @@ export default new BaseCommand(
                       code: results.items[0].code,
                       quantity,
                       name: results.items[0].name,
-                      price: result.now
-                    }
-                  }
+                      price: result.now,
+                    },
+                  },
                 },
-                { upsert: true }
-              )
+                { upsert: true },
+              );
             } else {
               await StockSchema.findOneAndUpdate(
                 { userid: interaction.user.id },
-                { $pull: { stocks: { code: results.items[0].code } } }
-              )
+                { $pull: { stocks: { code: results.items[0].code } } },
+              );
               await StockSchema.updateOne(
                 { userid: interaction.user.id },
                 {
@@ -1085,12 +1081,12 @@ export default new BaseCommand(
                         (nowStock.stocks[0].quantity *
                           nowStock.stocks[0].price +
                           result.now * quantity) /
-                        (nowStock.stocks[0].quantity + quantity)
-                    }
-                  }
+                        (nowStock.stocks[0].quantity + quantity),
+                    },
+                  },
                 },
-                { upsert: true }
-              )
+                { upsert: true },
+              );
             }
             const successEmbed = new Embed(client, 'success')
             successEmbed.setTitle(client.i18n.t('commands.stock.title.success'))
@@ -1131,9 +1127,9 @@ export default new BaseCommand(
             )
             return i.update({ embeds: [embed], components: [] })
           }
-        })
+        });
         collector.on('end', (collected) => {
-          if (collected.size == 1) return
+          if (collected.size == 1) return;
           interaction.editReply({
             embeds: [embed],
             components: [
@@ -1171,7 +1167,7 @@ export default new BaseCommand(
           )
           return interaction.editReply({ embeds: [embed] })
         }
-        const results = await searchStockList(keyword)
+        const results = await searchStockList(keyword);
         if (!results || results?.items.length == 0) {
           embed.setTitle(client.i18n.t('main.title.error'))
           embed.setDescription(
@@ -1181,7 +1177,7 @@ export default new BaseCommand(
           )
           return interaction.editReply({ embeds: [embed] })
         }
-        const result = await searchStock(results.items[0].code)
+        const result = await searchStock(results.items[0].code);
         if (!result) {
           embed.setTitle(client.i18n.t('main.title.error'))
           embed.setDescription(
@@ -1193,8 +1189,8 @@ export default new BaseCommand(
         }
         const stock = await StockSchema.findOne({
           userid: interaction.user.id,
-          'stocks.code': results.items[0].code
-        })
+          'stocks.code': results.items[0].code,
+        });
         if (!stock || stock.stocks.length === 0) {
           embed.setTitle(client.i18n.t('main.title.error'))
           embed.setDescription(
@@ -1215,10 +1211,10 @@ export default new BaseCommand(
           )
           return interaction.editReply({ embeds: [embed] })
         }
-        const price = result.now * quantity
-        const fee = price * 0.02
-        const total = price - fee
-        const user = await Schema.findOne({ userid: interaction.user.id })
+        const price = result.now * quantity;
+        const fee = price * 0.02;
+        const total = price - fee;
+        const user = await Schema.findOne({ userid: interaction.user.id });
         if (!user) {
           embed.setTitle(client.i18n.t('main.title.error'))
           embed.setDescription(
@@ -1282,7 +1278,7 @@ export default new BaseCommand(
         })
         // @ts-ignore
         collector.on('collect', async (i) => {
-          if (i.user.id != interaction.user.id) return
+          if (i.user.id != interaction.user.id) return;
           if (i.customId == 'stocksell.accept') {
             embed.setTitle(client.i18n.t('commands.stock.title.success2'))
             embed.setDescription(
@@ -1313,21 +1309,21 @@ export default new BaseCommand(
               inline: true
             })
             embed.setImage(
-              `https://ssl.pstatic.net/imgfinance/chart/item/area/day/${results.items[0].code}.png`
-            )
-            await interaction.editReply({ embeds: [embed] })
+              `https://ssl.pstatic.net/imgfinance/chart/item/area/day/${results.items[0].code}.png`,
+            );
+            await interaction.editReply({ embeds: [embed] });
             await Schema.findOneAndUpdate(
               {
-                userid: interaction.user.id
+                userid: interaction.user.id,
               },
               {
-                $inc: { money: +total }
-              }
-            )
+                $inc: { money: +total },
+              },
+            );
             await StockSchema.findOneAndUpdate(
               { userid: interaction.user.id },
-              { $pull: { stocks: { code: stock.stocks[0].code } } }
-            )
+              { $pull: { stocks: { code: stock.stocks[0].code } } },
+            );
             await StockSchema.updateOne(
               { userid: interaction.user.id },
               {
@@ -1336,11 +1332,11 @@ export default new BaseCommand(
                     code: results.items[0].code,
                     quantity: stock.stocks[0].quantity - quantity,
                     name: results.items[0].name,
-                    price: stock.stocks[0].price
-                  }
-                }
-              }
-            )
+                    price: stock.stocks[0].price,
+                  },
+                },
+              },
+            );
             const successEmbed = new Embed(client, 'success')
               .setTitle(client.i18n.t('commands.stock.title.success2'))
               .setDescription(
@@ -1379,9 +1375,9 @@ export default new BaseCommand(
             )
             return i.update({ embeds: [embed], components: [] })
           }
-        })
+        });
         collector.on('end', (collected) => {
-          if (collected.size == 1) return
+          if (collected.size == 1) return;
           interaction.editReply({
             embeds: [embed],
             components: [
@@ -1416,8 +1412,8 @@ export default new BaseCommand(
             })
           )
           return interaction.editReply({
-            embeds: [embed]
-          })
+            embeds: [embed],
+          });
         } else {
           embed.setTitle(
             client.i18n.t('commands.stock.title.ahave', {
@@ -1427,7 +1423,7 @@ export default new BaseCommand(
 
           const results = await Promise.all(
             nowStock.stocks.map(async (stock, index) => {
-              const stockSearch = await searchStock(stock.code)
+              const stockSearch = await searchStock(stock.code);
               if (!stockSearch)
                 return client.i18n.t('commands.stock.message.message', {
                   i: index + 1,
@@ -1444,23 +1440,23 @@ export default new BaseCommand(
                   Math.round(stockSearch.now) > Math.round(stock.price)
                     ? '-'
                     : Math.round(stockSearch.now) < Math.round(stock.price)
-                    ? '+'
-                    : ' ',
+                      ? '+'
+                      : ' ',
                 second:
                   Math.round(stockSearch.now * stock.quantity) >
-                  Math.round(stock.price * stock.quantity)
+                    Math.round(stock.price * stock.quantity)
                     ? '▾'
                     : Math.round(stockSearch.now * stock.quantity) <
                       Math.round(stock.price * stock.quantity)
-                    ? '▴'
-                    : '-'
+                      ? '▴'
+                      : '-'
               })
             })
           )
           embed.setDescription('```diff\n' + results.join('\n') + '```')
           return interaction.editReply({
-            embeds: [embed]
-          })
+            embeds: [embed],
+          });
         }
       }
       if (type === '도움말') {
@@ -1502,9 +1498,9 @@ export default new BaseCommand(
           inline: true
         })
         return interaction.editReply({
-          embeds: [embed]
-        })
+          embeds: [embed],
+        });
       }
-    }
-  }
-)
+    },
+  },
+);

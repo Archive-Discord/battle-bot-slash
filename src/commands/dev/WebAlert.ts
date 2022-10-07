@@ -14,29 +14,28 @@ export default new BaseCommand(
   {
     name: 'webalert',
     description: '웹 알림을 보냅니다',
-    aliases: ['웹알림', '알림추가']
+    aliases: ['웹알림', '알림추가'],
   },
   async (client, message, args) => {
     // @ts-ignore
     if (!client.dokdo.owners.includes(message.author.id))
       return message.reply(
-        `해당 명령어는 ${client.user?.username}의 주인이 사용할 수 있는 명령어입니다.`
-      )
+        `해당 명령어는 ${client.user?.username}의 주인이 사용할 수 있는 명령어입니다.`,
+      );
   },
   {
-    data: new SlashCommandBuilder()
-      .setName('웹알림')
-      .setDescription('웹에 알림을 보냅니다'),
+    data: new SlashCommandBuilder().setName('웹알림').setDescription('웹에 알림을 보냅니다'),
     options: {
       name: '웹알림',
-      isSlash: true
+      isSlash: true,
     },
     async execute(client, interaction) {
       // @ts-ignore
       if (!client.dokdo.owners.includes(interaction.user.id))
         return interaction.reply(
-          `해당 명령어는 ${client.user?.username}의 주인이 사용할 수 있는 명령어입니다.`
-        )
+          `해당 명령어는 ${client.user?.username}의 주인이 사용할 수 있는 명령어입니다.`,
+        );
+
       const title = new TextInputBuilder()
         .setCustomId('modal.webalert.title')
         .setLabel('제목')
@@ -103,53 +102,41 @@ export default new BaseCommand(
       client.on('interactionCreate', async (modal) => {
         if (modal.type !== InteractionType.ModalSubmit) return
         if (modal.customId === 'modal.webalert') {
-          const webalertTitle = modal.fields.getTextInputValue(
-            'modal.webalert.title'
-          )
-          const webalertDescription = modal.fields.getTextInputValue(
-            'modal.webalert.description'
-          )
-          const webalertLinktitle = modal.fields.getTextInputValue(
-            'modal.webalert.linktitle'
-          )
-          const webalertLink = modal.fields.getTextInputValue(
-            'modal.webalert.link'
-          )
-          const webalertUser = modal.fields.getTextInputValue(
-            'modal.webalert.user'
-          )
-          await modal.deferReply({ ephemeral: true })
+          const webalertTitle = modal.fields.getTextInputValue('modal.webalert.title');
+          const webalertDescription = modal.fields.getTextInputValue('modal.webalert.description');
+          const webalertLinktitle = modal.fields.getTextInputValue('modal.webalert.linktitle');
+          const webalertLink = modal.fields.getTextInputValue('modal.webalert.link');
+          const webalertUser = modal.fields.getTextInputValue('modal.webalert.user');
+          await modal.deferReply({ ephemeral: true });
           if (webalertLinktitle && !webalertLink) {
             modal.followUp({
-              content:
-                '링크를 넣을경우 링크 제목과 링크 향목을 필수로 입력해야합니다',
-              ephemeral: true
-            })
+              content: '링크를 넣을경우 링크 제목과 링크 향목을 필수로 입력해야합니다',
+              ephemeral: true,
+            });
           }
           if (!webalertLinktitle && webalertLink) {
             modal.followUp({
-              content:
-                '링크를 넣을경우 링크 제목과 링크 향목을 필수로 입력해야합니다',
-              ephemeral: true
-            })
+              content: '링크를 넣을경우 링크 제목과 링크 향목을 필수로 입력해야합니다',
+              ephemeral: true,
+            });
           }
           await alertSender(
             webalertTitle,
             webalertDescription,
             { url: webalertLink, value: webalertLinktitle },
-            webalertUser
+            webalertUser,
           )
             .then(() => {
               return modal.followUp({
                 content: '성공적으로 알림을 추가했습니다',
-                ephemeral: true
-              })
+                ephemeral: true,
+              });
             })
             .catch((e: any) => {
-              return modal.followUp({ content: e.message, ephemeral: true })
-            })
+              return modal.followUp({ content: e.message, ephemeral: true });
+            });
         }
-      })
-    }
-  }
-)
+      });
+    },
+  },
+);

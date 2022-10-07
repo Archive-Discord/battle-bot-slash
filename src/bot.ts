@@ -8,12 +8,12 @@ import DatabaseManager from './managers/DatabaseManager'
 import ButtonManager from './managers/ButtonManager'
 import i18nManager from './managers/i18nManager'
 
-const logger = new Logger('main')
+const logger = new Logger('main');
 
-logger.log('Starting up...')
+logger.log('Starting up...');
 
-process.on('uncaughtException', (e) => logger.error(e.stack as string))
-process.on('unhandledRejection', (e: Error) => logger.error(e.stack as string))
+process.on('uncaughtException', (e) => logger.error(e.stack as string));
+process.on('unhandledRejection', (e: Error) => logger.error(e.stack as string));
 
 export const client = new BotClient(config.bot.options)
 const command = new CommandManager(client)
@@ -28,4 +28,4 @@ button.load(path.join(__dirname, 'buttons'))
 database.load()
 i18n.load()
 
-client.start(config.bot.token)
+client.start(config.bot.token);

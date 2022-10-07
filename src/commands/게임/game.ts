@@ -10,7 +10,7 @@ export default new BaseCommand(
   {
     name: 'game',
     description: '디스코드에서 게임을 플레이합니다.',
-    aliases: ['게임']
+    aliases: ['게임'],
   },
   async (client, message, args) => {
     let embed = new Embed(client, 'error')
@@ -39,7 +39,7 @@ export default new BaseCommand(
       ),
     options: {
       name: '게임',
-      isSlash: true
+      isSlash: true,
     },
     async execute(client, interaction) {
       const embed = new Embed(client, 'error')
@@ -204,6 +204,6 @@ export default new BaseCommand(
         embed.setDescription(client.i18n.t('commands.game.description.game'))
         return interaction.reply({ embeds: [embed], ephemeral: true })
       }
-    }
-  }
-)
+    },
+  },
+);

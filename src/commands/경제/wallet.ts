@@ -1,15 +1,15 @@
-import { BaseCommand, SlashCommand } from '../../structures/Command'
-import Discord from 'discord.js'
-import Embed from '../../utils/Embed'
-import comma from 'comma-number'
-import Schema from '../../schemas/Money'
-import { SlashCommandBuilder, userMention } from '@discordjs/builders'
+import { BaseCommand, SlashCommand } from '../../structures/Command';
+import Discord from 'discord.js';
+import Embed from '../../utils/Embed';
+import comma from 'comma-number';
+import Schema from '../../schemas/Money';
+import { SlashCommandBuilder, userMention } from '@discordjs/builders';
 
 export default new BaseCommand(
   {
     name: 'wallet',
     description: '자신의 돈을 확인합니다.',
-    aliases: ['잔액', 'money', 'ehs', 'wlrkq', '지갑', '돈']
+    aliases: ['잔액', 'money', 'ehs', 'wlrkq', '지갑', '돈'],
   },
   async (client, message, args) => {
     let embed = new Embed(client, 'warn')
@@ -55,8 +55,8 @@ export default new BaseCommand(
       })
       .setColor('#2f3136')
     m.edit({
-      embeds: [embed]
-    })
+      embeds: [embed],
+    });
   },
   {
     // @ts-ignore
@@ -71,7 +71,7 @@ export default new BaseCommand(
       ),
     options: {
       name: '돈',
-      isSlash: true
+      isSlash: true,
     },
     async execute(client, interaction) {
       await interaction.deferReply({ ephemeral: true })

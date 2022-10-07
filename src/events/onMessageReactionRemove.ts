@@ -1,7 +1,7 @@
-import { Event } from '../structures/Event'
-import LoggerSetting from '../schemas/LogSettingSchema'
-import Embed from '../utils/Embed'
-import { TextChannel } from 'discord.js'
+import { Event } from '../structures/Event';
+import LoggerSetting from '../schemas/LogSettingSchema';
+import Embed from '../utils/Embed';
+import { TextChannel } from 'discord.js';
 
 export default new Event(
   'messageReactionRemove',

@@ -11,7 +11,7 @@ export default new BaseCommand(
   {
     name: '롤전적',
     description: '리그오브레전드 전적을 확인합니다.',
-    aliases: ['롤전적', 'lolstat']
+    aliases: ['롤전적', 'lolstat'],
   },
   async (client, message, args) => {
     let embed = new Embed(client, 'error')
@@ -24,15 +24,12 @@ export default new BaseCommand(
     data: new SlashCommandBuilder()
       .setName('롤전적')
       .addStringOption((user) =>
-        user
-          .setName('user')
-          .setDescription('리그오브레전드 닉네임을 적어주세요')
-          .setRequired(true)
+        user.setName('user').setDescription('리그오브레전드 닉네임을 적어주세요').setRequired(true),
       )
       .setDescription('유저의 리그오브레전드 전적을 확인합니다'),
     options: {
       name: '롤전적',
-      isSlash: true
+      isSlash: true,
     },
     async execute(client, interaction) {
       await interaction.deferReply({ ephemeral: true })
@@ -65,7 +62,7 @@ async function getStat(args: string) {
     console.log('error')
     return 'error'
   }
-  var $ = cheerio.load(html)
+  var $ = cheerio.load(html);
   // @ts-ignore
   let data = JSON.parse($(`#__NEXT_DATA__`).contents()[0].data).props.pageProps
     .data
@@ -79,20 +76,16 @@ async function getStat(args: string) {
     if (match.myData.stats.result === 'LOSE') {
       matchinfo.push(
         client.i18n.t('commands.lol.matchinfo.lose') +
-          ` / ${match.queue_info.queue_translate} / ${
-            championRes.name
-          } / <KDA ${match.myData.stats.kill}/${match.myData.stats.death}/${
-            match.myData.stats.assist
-          }> ${match.myData.position ? '/ ' + match.myData.position : ''}`
+        ` / ${match.queue_info.queue_translate} / ${championRes.name
+        } / <KDA ${match.myData.stats.kill}/${match.myData.stats.death}/${match.myData.stats.assist
+        }> ${match.myData.position ? '/ ' + match.myData.position : ''}`
       )
     } else {
       matchinfo.push(
         client.i18n.t('commands.lol.matchinfo.win') +
-          ` / ${match.queue_info.queue_translate} / ${
-            championRes.name
-          } / <KDA ${match.myData.stats.kill}/${match.myData.stats.death}/${
-            match.myData.stats.assist
-          }> ${match.myData.position ? '/ ' + match.myData.position : ''}`
+        ` / ${match.queue_info.queue_translate} / ${championRes.name
+        } / <KDA ${match.myData.stats.kill}/${match.myData.stats.death}/${match.myData.stats.assist
+        }> ${match.myData.position ? '/ ' + match.myData.position : ''}`
       )
     }
   })

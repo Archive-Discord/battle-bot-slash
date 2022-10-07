@@ -15,7 +15,7 @@ export default new BaseCommand(
   {
     name: 'schoolmeal',
     description: '학교의 급식정보를 보여줍니다',
-    aliases: ['급식', 'rmqtlr']
+    aliases: ['급식', 'rmqtlr'],
   },
   async (client, message, args) => {
     if (!args[0]) {
@@ -78,8 +78,7 @@ export default new BaseCommand(
                     let mealembed = new Embed(client, 'success')
                       .setTitle(`${value[2]} 급식`)
                       .setDescription(
-                        `${meal.meals[0].meal.join('\n')} \n\n ${
-                          meal.meals[0].calories
+                        `${meal.meals[0].meal.join('\n')} \n\n ${meal.meals[0].calories
                         }`
                       )
                       .setColor('#2f3136')
@@ -95,7 +94,7 @@ export default new BaseCommand(
                         .setColor('#2f3136')
                       await i.reply({ embeds: [mealembed], components: [] })
                     }
-                  })
+                  });
               }
             } else {
               i.reply(
@@ -112,25 +111,22 @@ export default new BaseCommand(
               .setColor('#2f3136')
             await msg.edit({ embeds: [mealembed], components: [] })
           }
-        })
+        });
     }
   },
   {
     data: new SlashCommandBuilder()
       .setName('급식')
       .addStringOption((option) =>
-        option
-          .setName('school')
-          .setDescription('학교이름을 적어주세요')
-          .setRequired(true)
+        option.setName('school').setDescription('학교이름을 적어주세요').setRequired(true),
       )
       .setDescription('학교의 급식정보를 보여줍니다'),
     options: {
       name: '급식',
-      isSlash: true
+      isSlash: true,
     },
     async execute(client, interaction) {
-      let school = interaction.options.getString('school')
+      let school = interaction.options.getString('school');
       if (!school) {
         let embed = new Embed(client, 'error')
           .setTitle(client.i18n.t('main.title.error'))
@@ -193,8 +189,7 @@ export default new BaseCommand(
                       let mealembed = new Embed(client, 'success')
                         .setTitle(client.i18n.t('main.title.error'))
                         .setDescription(
-                          `${meal.meals[0].meal.join('\n')} \n\n ${
-                            meal.meals[0].calories
+                          `${meal.meals[0].meal.join('\n')} \n\n ${meal.meals[0].calories
                           }`
                         )
                         .setColor('#2f3136')
@@ -210,7 +205,7 @@ export default new BaseCommand(
                           .setColor('#2f3136')
                         await i.reply({ embeds: [mealembed], components: [] })
                       }
-                    })
+                    });
                 }
               } else {
                 i.editReply(
@@ -230,7 +225,7 @@ export default new BaseCommand(
                 components: []
               })
             }
-          })
+          });
       }
     }
   }

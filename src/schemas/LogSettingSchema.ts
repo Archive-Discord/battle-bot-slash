@@ -1,5 +1,5 @@
-import { Schema, model, Model } from 'mongoose'
-import { loggerDB } from '../../typings'
+import { Schema, model, Model } from 'mongoose';
+import { loggerDB } from '../../typings';
 
 const LoggerSettingSchema = new Schema<loggerDB>(
   {
@@ -23,17 +23,13 @@ const LoggerSettingSchema = new Schema<loggerDB>(
       eventCreate: { type: Boolean, default: false },
       eventEdit: { type: Boolean, default: false },
       eventDelete: { type: Boolean, default: false },
-      memberUpdate: { type: Boolean, default: false }
+      memberUpdate: { type: Boolean, default: false },
     },
-    published_date: { type: Date, default: Date.now }
+    published_date: { type: Date, default: Date.now },
   },
-  { collection: 'LogChannel' }
-)
+  { collection: 'LogChannel' },
+);
 
-const LoggerSetting: Model<loggerDB> = model(
-  'LogChannel',
-  LoggerSettingSchema,
-  'LogChannel'
-)
+const LoggerSetting: Model<loggerDB> = model('LogChannel', LoggerSettingSchema, 'LogChannel');
 
-export default LoggerSetting
+export default LoggerSetting;

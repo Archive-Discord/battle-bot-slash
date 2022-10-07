@@ -9,7 +9,7 @@ export default new BaseCommand(
   {
     name: 'youtube',
     description: '디스코드에서 유튜브를 같이 볼 수 있습니다.',
-    aliases: ['유튜브', 'dbxbqm', '유튜브보기', '유튜브보기용', '유튭']
+    aliases: ['유튜브', 'dbxbqm', '유튜브보기', '유튜브보기용', '유튭'],
   },
   async (client, message, args) => {
     let embed = new Embed(client, 'error')
@@ -24,7 +24,7 @@ export default new BaseCommand(
       .setDescription('디스코드에서 유튜브를 같이 볼 수 있습니다.'),
     options: {
       name: '유튜브',
-      isSlash: true
+      isSlash: true,
     },
     async execute(client, interaction) {
       const embed = new Embed(client, 'error')

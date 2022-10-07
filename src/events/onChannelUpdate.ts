@@ -4,11 +4,11 @@ import {
   GuildAuditLogsEntry,
   GuildChannel,
   TextChannel,
-  User
-} from 'discord.js'
-import LoggerSetting from '../schemas/LogSettingSchema'
-import Embed from '../utils/Embed'
-import { Event } from '../structures/Event'
+  User,
+} from 'discord.js';
+import LoggerSetting from '../schemas/LogSettingSchema';
+import Embed from '../utils/Embed';
+import { Event } from '../structures/Event';
 
 export default new Event(
   'channelUpdate',

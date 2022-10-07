@@ -1,7 +1,7 @@
-import { Event } from '../structures/Event'
-import LoggerSetting from '../schemas/LogSettingSchema'
-import Embed from '../utils/Embed'
-import { TextChannel } from 'discord.js'
+import { Event } from '../structures/Event';
+import LoggerSetting from '../schemas/LogSettingSchema';
+import Embed from '../utils/Embed';
+import { TextChannel } from 'discord.js';
 
 export default new Event(
   'voiceStateUpdate',
@@ -51,4 +51,5 @@ export default new Event(
     }
     if (updated) return await logChannel.send({ embeds: [embed] })
   }
-)
+  if (updated) return await logChannel.send({ embeds: [embed] });
+});

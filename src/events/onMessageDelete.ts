@@ -5,26 +5,25 @@ import Embed from '../utils/Embed'
 import { AuditLogEvent, TextChannel, User } from 'discord.js'
 
 export default new Event('messageDelete', async (client, message) => {
-  if (!message) return
-  if (!message.content) return
-  if (message.content.startsWith(config.bot.prefix)) return
-  if (message.author?.id == client.user?.id) return
-  if (!message.guild) return
-  if (!message.content && message.attachments.size == 0 && message.embeds[0])
-    return
+  if (!message) return;
+  if (!message.content) return;
+  if (message.content.startsWith(config.bot.prefix)) return;
+  if (message.author?.id == client.user?.id) return;
+  if (!message.guild) return;
+  if (!message.content && message.attachments.size == 0 && message.embeds[0]) return;
   const LoggerSettingDB = await LoggerSetting.findOne({
-    guild_id: message.guild.id
-  })
-  if (!LoggerSettingDB) return
-  if (!LoggerSettingDB.useing.deleteMessage) return
+    guild_id: message.guild.id,
+  });
+  if (!LoggerSettingDB) return;
+  if (!LoggerSettingDB.useing.deleteMessage) return;
   const logChannel = message.guild.channels.cache.get(
-    LoggerSettingDB.guild_channel_id
-  ) as TextChannel
-  if (!logChannel) return
-  if (message.partial) message = await message.fetch()
-  if (!message.author) return
+    LoggerSettingDB.guild_channel_id,
+  ) as TextChannel;
+  if (!logChannel) return;
+  if (message.partial) message = await message.fetch();
+  if (!message.author) return;
   if (message.content.length > 1024) {
-    message.content = message.content.slice(0, 700) + '...'
+    message.content = message.content.slice(0, 700) + '...';
   }
   const embed = new Embed(client, 'error').setTitle('메시지 삭제')
   embed.addFields(
@@ -67,5 +66,5 @@ export default new Event('messageDelete', async (client, message) => {
     })
     return await logChannel.send({ embeds: [embed] })
   }
-  return await logChannel.send({ embeds: [embed] })
-})
+  return await logChannel.send({ embeds: [embed] });
+});

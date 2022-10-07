@@ -1,15 +1,15 @@
-import { BaseCommand } from '../../structures/Command'
-import Discord from 'discord.js'
-import Embed from '../../utils/Embed'
-import { SlashCommandBuilder } from '@discordjs/builders'
-import Premium from '../../schemas/premiumSchemas'
-import config from '../../../config'
+import { BaseCommand } from '../../structures/Command';
+import Discord from 'discord.js';
+import Embed from '../../utils/Embed';
+import { SlashCommandBuilder } from '@discordjs/builders';
+import Premium from '../../schemas/premiumSchemas';
+import config from '../../../config';
 
 export default new BaseCommand(
   {
     name: 'premium',
     description: '서버의 프리미엄 만료일을 보여줍니다',
-    aliases: ['프리미엄', 'vmflaldja']
+    aliases: ['프리미엄', 'vmflaldja'],
   },
   async (client, message, args) => {
     let embed = new Embed(client, 'success').setColor('#2f3136').setTitle(
@@ -57,7 +57,7 @@ export default new BaseCommand(
       .setDescription('서버의 프리미엄 정보를 확인합니다'),
     options: {
       name: '프리미엄',
-      isSlash: true
+      isSlash: true,
     },
     async execute(client, interaction) {
       await interaction.deferReply({ ephemeral: true })
@@ -99,6 +99,6 @@ export default new BaseCommand(
           return interaction.editReply({ embeds: [embed] })
         }
       }
-    }
-  }
-)
+    },
+  },
+);

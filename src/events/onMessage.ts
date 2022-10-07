@@ -13,8 +13,8 @@ import { userWarnAdd } from '../utils/WarnHandler'
 const LevelCooldown = new Map()
 
 export default new Event('messageCreate', async (client, message) => {
-  const commandManager = new CommandManager(client)
-  const errorManager = new ErrorManager(client)
+  const commandManager = new CommandManager(client);
+  const errorManager = new ErrorManager(client);
 
   if (message.author.bot) return
   if (message.channel.type === ChannelType.DM) return
@@ -22,38 +22,34 @@ export default new Event('messageCreate', async (client, message) => {
   LevelSystem(client, message)
   if (!message.content.startsWith(client.config.bot.prefix)) return
 
-  const args = message.content
-    .slice(client.config.bot.prefix.length)
-    .trim()
-    .split(/ +/g)
-  const commandName = args.shift()?.toLowerCase()
-  const command = commandManager.get(commandName as string) as MessageCommand
+  const args = message.content.slice(client.config.bot.prefix.length).trim().split(/ +/g);
+  const commandName = args.shift()?.toLowerCase();
+  const command = commandManager.get(commandName as string) as MessageCommand;
 
-  await client.dokdo.run(message)
+  await client.dokdo.run(message);
   try {
-    await command?.execute(client, message, args)
+    await command?.execute(client, message, args);
   } catch (error: any) {
     if (error?.code === RESTJSONErrorCodes.MissingPermissions) {
       return
     }
-    errorManager.report(error, { executer: message, isSend: true })
+    errorManager.report(error, { executer: message, isSend: true });
   }
-})
+});
 
 const profanityFilter = async (client: BotClient, message: Message) => {
-  if (!message.content) return
-  const automodDB = await Automod.findOne({ guild_id: message.guild?.id })
-  if (!automodDB) return
-  if (!automodDB.useing.useCurse) return
-  if (!automodDB.useing.useCurseType) return
-  if (automodDB.useing.useCurseIgnoreChannel?.includes(message.channel.id))
-    return
+  if (!message.content) return;
+  const automodDB = await Automod.findOne({ guild_id: message.guild?.id });
+  if (!automodDB) return;
+  if (!automodDB.useing.useCurse) return;
+  if (!automodDB.useing.useCurseType) return;
+  if (automodDB.useing.useCurseIgnoreChannel?.includes(message.channel.id)) return;
   if (check(message.content)) {
-    findCurse(automodDB, message, client)
+    findCurse(automodDB, message, client);
   } else {
-    return
+    return;
   }
-}
+};
 
 const findCurse = async (
   automodDB: any,
@@ -119,57 +115,55 @@ const findCurse = async (
 }
 
 const LevelSystem = async (client: BotClient, message: Message) => {
-  if (!message.guild) return
+  if (!message.guild) return;
   if (
     [client.config.bot.prefix, '!', '.', '$', '%', '&', '=', ';;'].find((x) =>
-      message.content.toLowerCase().startsWith(x)
+      message.content.toLowerCase().startsWith(x),
     )
   )
-    return
+    return;
   const levelSetting = await LevelSetting.findOne({
-    guild_id: message.guild.id
-  })
-  if (!levelSetting) return
-  if (!levelSetting.useage) return
+    guild_id: message.guild.id,
+  });
+  if (!levelSetting) return;
+  if (!levelSetting.useage) return;
   if (!LevelCooldown.has(`${message.guild.id}_${message.author.id}`))
-    LevelCooldown.set(`${message.guild.id}_${message.author.id}`, Date.now())
-  const cooldown = LevelCooldown.get(`${message.guild.id}_${message.author.id}`)
+    LevelCooldown.set(`${message.guild.id}_${message.author.id}`, Date.now());
+  const cooldown = LevelCooldown.get(`${message.guild.id}_${message.author.id}`);
   if (cooldown && Date.now() - cooldown > 1000) {
-    const isPremium = await checkUserPremium(client, message.author)
-    LevelCooldown.set(`${message.guild.id}_${message.author.id}`, Date.now())
+    const isPremium = await checkUserPremium(client, message.author);
+    LevelCooldown.set(`${message.guild.id}_${message.author.id}`, Date.now());
     const levelData = await Level.findOne({
       guild_id: message.guild.id,
-      user_id: message.author.id
-    })
-    const level = levelData ? levelData.level : 1
-    const nextLevelXP = (!level ? 1 : level + 1) * 13
-    const xpPerLevel = '1'.toString().includes('-') ? '1'.split('-') : '1'
-    const min = parseInt(xpPerLevel[0])
-    const max = parseInt(xpPerLevel[1])
+      user_id: message.author.id,
+    });
+    const level = levelData ? levelData.level : 1;
+    const nextLevelXP = (!level ? 1 : level + 1) * 13;
+    const xpPerLevel = '1'.toString().includes('-') ? '1'.split('-') : '1';
+    const min = parseInt(xpPerLevel[0]);
+    const max = parseInt(xpPerLevel[1]);
     let xpToAdd = Array.isArray(xpPerLevel)
       ? min + Math.floor((max - min) * Math.random())
-      : xpPerLevel
-    if (isPremium) xpToAdd = Number(xpToAdd) * 1.3
+      : xpPerLevel;
+    if (isPremium) xpToAdd = Number(xpToAdd) * 1.3;
     if (!levelData || (levelData && levelData.currentXP < nextLevelXP))
       return await Level.findOneAndUpdate(
         { guild_id: message.guild.id, user_id: message.author.id },
         { $inc: { totalXP: xpToAdd, currentXP: xpToAdd } },
-        { upsert: true }
-      )
+        { upsert: true },
+      );
     const newData = await Level.findOneAndUpdate(
       { guild_id: message.guild.id, user_id: message.author.id },
       { $inc: { level: 1 }, $set: { currentXP: 0 } },
-      { upsert: true, new: true }
-    )
+      { upsert: true, new: true },
+    );
     /*const levelEmbed = new Embed(client, 'info')
     levelEmbed.setTitle(`${message.author.username}님의 레벨이 올랐어요!`)
     levelEmbed.setDescription(
       `레벨이 \`LV.${level ? level : 0} -> LV.${newData.level}\`로 올랐어요!`
     )*/
     return message.reply(
-      `${message.author}님의 레벨이 \`LV.${level ? level : 0} -> LV.${
-        newData.level
-      }\`로 올랐어요!`
-    )
+      `${message.author}님의 레벨이 \`LV.${level ? level : 0} -> LV.${newData.level}\`로 올랐어요!`,
+    );
   }
-}
+};

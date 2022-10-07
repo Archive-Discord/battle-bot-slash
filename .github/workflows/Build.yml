@@ -14,10 +14,10 @@ jobs:
         with:
           node-version: 17
           cache: yarn
-          
+
       - name: Copy config file
         run: cp example.config.ts config.ts
-        
+
       - name: Install dependencies
         run: yarn install --frozen-lockfile
 

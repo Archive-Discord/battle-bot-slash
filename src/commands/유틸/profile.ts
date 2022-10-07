@@ -1,14 +1,14 @@
-import { BaseCommand, SlashCommand } from '../../structures/Command'
-import UserDB from '../../schemas/userSchema'
-import Embed from '../../utils/Embed'
-import { SlashCommandBuilder, userMention } from '@discordjs/builders'
-import DateFormatting from '../../utils/DateFormatting'
+import { BaseCommand, SlashCommand } from '../../structures/Command';
+import UserDB from '../../schemas/userSchema';
+import Embed from '../../utils/Embed';
+import { SlashCommandBuilder, userMention } from '@discordjs/builders';
+import DateFormatting from '../../utils/DateFormatting';
 
 export default new BaseCommand(
   {
     name: 'profile',
     description: '유저의 정보를 확인합니다.',
-    aliases: ['프로필', 'vmfhvlf', 'vmfhvlf']
+    aliases: ['프로필', 'vmfhvlf', 'vmfhvlf'],
   },
   async (client, message, args) => {
     if (!message.guild) {
@@ -93,7 +93,7 @@ export default new BaseCommand(
       .setDescription('유저의 프로필을 확인합니다'),
     options: {
       name: '프로필',
-      isSlash: true
+      isSlash: true,
     },
     async execute(client, interaction) {
       if (!interaction.guild) {

@@ -1,5 +1,5 @@
-import { Schema, model, Model } from 'mongoose'
-import { VoteDB } from '../../typings'
+import { Schema, model, Model } from 'mongoose';
+import { VoteDB } from '../../typings';
 
 const VoteSchema: Schema<VoteDB> = new Schema(
   {
@@ -10,15 +10,15 @@ const VoteSchema: Schema<VoteDB> = new Schema(
         item_id: String,
         item_name: String,
         vote: Number,
-        voted: [String]
-      }
+        voted: [String],
+      },
     ],
     status: String,
-    published_date: { type: Date, default: Date.now }
+    published_date: { type: Date, default: Date.now },
   },
-  { collection: 'votes' }
-)
+  { collection: 'votes' },
+);
 
-const Votes: Model<VoteDB> = model('votes', VoteSchema, 'votes')
+const Votes: Model<VoteDB> = model('votes', VoteSchema, 'votes');
 
-export default Votes
+export default Votes;

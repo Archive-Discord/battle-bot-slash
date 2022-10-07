@@ -14,7 +14,7 @@ export default new BaseCommand(
   {
     name: 'info',
     description: '봇의 정보를 보여줍니다',
-    aliases: ['정보', 'info', 'wjdqh']
+    aliases: ['정보', 'info', 'wjdqh'],
   },
   async (client, message, args) => {
     let buttton = new ButtonBuilder()
@@ -58,9 +58,8 @@ export default new BaseCommand(
     })
     embed.addFields({
       name: client.i18n.t('commands.info.fields.systeminfo'),
-      value: `\`\`\`diff\n- Discord.js: ${version} \n- Node.js: ${
-        process.version
-      }\n- OS: ${process.platform} - Memory: ${memory()} \`\`\``
+      value: `\`\`\`diff\n- Discord.js: ${version} \n- Node.js: ${process.version
+        }\n- OS: ${process.platform} - Memory: ${memory()} \`\`\``
     })
     embed.addFields({
       name: client.i18n.t('commands.info.fields.usefullink'),
@@ -69,12 +68,10 @@ export default new BaseCommand(
     return message.reply({ embeds: [embed], components: [row] })
   },
   {
-    data: new SlashCommandBuilder()
-      .setName('정보')
-      .setDescription('봇의 정보를 보여줍니다'),
+    data: new SlashCommandBuilder().setName('정보').setDescription('봇의 정보를 보여줍니다'),
     options: {
       name: '정보',
-      isSlash: true
+      isSlash: true,
     },
     async execute(client, interaction) {
       let buttton = new ButtonBuilder()
@@ -118,9 +115,8 @@ export default new BaseCommand(
       })
       embed.addFields({
         name: client.i18n.t('commands.info.fields.systeminfo'),
-        value: `\`\`\`diff\n- Discord.js: ${version} \n- Node.js: ${
-          process.version
-        }\n- OS: ${process.platform} - Memory: ${memory()} \`\`\``
+        value: `\`\`\`diff\n- Discord.js: ${version} \n- Node.js: ${process.version
+          }\n- OS: ${process.platform} - Memory: ${memory()} \`\`\``
       })
       embed.addFields({
         name: client.i18n.t('commands.info.fields.usefullink'),

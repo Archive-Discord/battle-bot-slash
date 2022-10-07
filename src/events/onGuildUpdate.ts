@@ -1,18 +1,16 @@
-import { TextChannel } from 'discord.js'
-import LoggerSetting from '../schemas/LogSettingSchema'
-import Embed from '../utils/Embed'
-import { Event } from '../structures/Event'
+import { TextChannel } from 'discord.js';
+import LoggerSetting from '../schemas/LogSettingSchema';
+import Embed from '../utils/Embed';
+import { Event } from '../structures/Event';
 
 export default new Event('guildUpdate', async (client, oldGuild, newGuild) => {
-  const LoggerSettingDB = await LoggerSetting.findOne({ guild_id: newGuild.id })
-  if (!LoggerSettingDB) return
-  if (!LoggerSettingDB.useing.serverSetting) return
-  const logChannel = newGuild.channels.cache.get(
-    LoggerSettingDB.guild_channel_id
-  ) as TextChannel
-  if (!logChannel) return
-  let update = false
-  const embed = new Embed(client, 'warn').setTitle('서버 수정')
+  const LoggerSettingDB = await LoggerSetting.findOne({ guild_id: newGuild.id });
+  if (!LoggerSettingDB) return;
+  if (!LoggerSettingDB.useing.serverSetting) return;
+  const logChannel = newGuild.channels.cache.get(LoggerSettingDB.guild_channel_id) as TextChannel;
+  if (!logChannel) return;
+  let update = false;
+  const embed = new Embed(client, 'warn').setTitle('서버 수정');
   if (oldGuild.name != newGuild.name) {
     embed.addFields({
       name: '이름 수정',
@@ -22,9 +20,8 @@ export default new Event('guildUpdate', async (client, oldGuild, newGuild) => {
   }
   if (oldGuild.premiumTier !== newGuild.premiumTier) {
     embed.addFields({
-      name: `부스트 ${
-        oldGuild.premiumTier < newGuild.premiumTier ? '추가됨' : '차감됨'
-      }`,
+      name: `부스트 ${oldGuild.premiumTier < newGuild.premiumTier ? '추가됨' : '차감됨'
+        }`,
       value:
         '`' +
         oldGuild.premiumTier +
@@ -115,5 +112,5 @@ export default new Event('guildUpdate', async (client, oldGuild, newGuild) => {
     })
     update = true
   }
-  if (update) return await logChannel.send({ embeds: [embed] })
-})
+  if (update) return await logChannel.send({ embeds: [embed] });
+});

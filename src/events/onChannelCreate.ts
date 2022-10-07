@@ -11,14 +11,14 @@ import { Event } from '../structures/Event'
 
 export default new Event('channelCreate', async (client, channel) => {
   const LoggerSettingDB = await LoggerSetting.findOne({
-    guild_id: channel.guild.id
-  })
-  if (!LoggerSettingDB) return
-  if (!LoggerSettingDB.useing.createChannel) return
+    guild_id: channel.guild.id,
+  });
+  if (!LoggerSettingDB) return;
+  if (!LoggerSettingDB.useing.createChannel) return;
   const logChannel = channel.guild.channels.cache.get(
-    LoggerSettingDB.guild_channel_id
-  ) as TextChannel
-  if (!logChannel) return
+    LoggerSettingDB.guild_channel_id,
+  ) as TextChannel;
+  if (!logChannel) return;
   const fetchedLogs = await channel.guild.fetchAuditLogs({
     limit: 1,
     type: AuditLogEvent.ChannelCreate
@@ -26,7 +26,7 @@ export default new Event('channelCreate', async (client, channel) => {
   const embed = new Embed(client, 'success').setTitle('채널 생성').addFields(
     {
       name: '채널',
-      value: `<#${channel.id}>` + '(`' + channel.id + '`)'
+      value: `<#${channel.id}>` + '(`' + channel.id + '`)',
     },
     {
       name: '카테고리',
@@ -45,6 +45,6 @@ export default new Event('channelCreate', async (client, channel) => {
     })
     return await logChannel.send({ embeds: [embed] })
   } else {
-    return await logChannel.send({ embeds: [embed] })
+    return await logChannel.send({ embeds: [embed] });
   }
-})
+});

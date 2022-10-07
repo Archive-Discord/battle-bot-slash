@@ -20,12 +20,12 @@ import web from '../server'
 import i18nManager from '../managers/i18nManager'
 import { i18n } from 'i18next'
 
-const logger = new Logger('bot')
+const logger = new Logger('bot');
 
 export default class BotClient extends Client {
-  public readonly VERSION: string
-  public readonly BUILD_NUMBER: string | null
-  public readonly config = config
+  public readonly VERSION: string;
+  public readonly BUILD_NUMBER: string | null;
+  public readonly config = config;
 
   public commands: Collection<string, BaseCommand> = new Collection()
   public buttons: Collection<string, BaseButton> = new Collection()
@@ -48,13 +48,13 @@ export default class BotClient extends Client {
   public i18n: i18n = new i18nManager(this).i18n
 
   public constructor(options: ClientOptions) {
-    super(options)
-    dotenvConfig()
+    super(options);
+    dotenvConfig();
 
-    logger.info('Loading config data...')
+    logger.info('Loading config data...');
 
-    this.VERSION = config.BUILD_VERSION
-    this.BUILD_NUMBER = config.BUILD_NUMBER
+    this.VERSION = config.BUILD_VERSION;
+    this.BUILD_NUMBER = config.BUILD_NUMBER;
   }
 
   public async start(token: string = config.bot.token): Promise<void> {
@@ -62,27 +62,20 @@ export default class BotClient extends Client {
     await this.login(token)
   }
 
-  public async setStatus(
-    status: 'dev' | 'online' = 'online',
-    name = '점검중...'
-  ) {
+  public async setStatus(status: 'dev' | 'online' = 'online', name = '점검중...') {
     if (status.includes('dev')) {
-      logger.warn('Changed status to Developent mode')
+      logger.warn('Changed status to Developent mode');
       this.user?.setPresence({
-        activities: [
-          { name: `${this.config.bot.prefix}help | ${this.VERSION} : ${name}` }
-        ],
-        status: 'dnd'
-      })
+        activities: [{ name: `${this.config.bot.prefix}help | ${this.VERSION} : ${name}` }],
+        status: 'dnd',
+      });
     } else if (status.includes('online')) {
-      logger.info('Changed status to Online mode')
+      logger.info('Changed status to Online mode');
 
       this.user?.setPresence({
-        activities: [
-          { name: `${this.config.bot.prefix}help | ${this.VERSION}` }
-        ],
-        status: 'online'
-      })
+        activities: [{ name: `${this.config.bot.prefix}help | ${this.VERSION}` }],
+        status: 'online',
+      });
     }
   }
 }

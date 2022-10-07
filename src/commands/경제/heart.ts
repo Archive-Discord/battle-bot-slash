@@ -11,7 +11,7 @@ export default new BaseCommand(
   {
     name: '하트인증',
     description: '한디리, 아카이브 하트를 인증합니다',
-    aliases: ['하트인증', 'ㅎㅌㅇㅈ', 'heart']
+    aliases: ['하트인증', 'ㅎㅌㅇㅈ', 'heart'],
   },
   async (client, message, args) => {
     let embed = new Embed(client, 'warn')
@@ -48,7 +48,7 @@ export default new BaseCommand(
     })
     const collector = m.createMessageComponentCollector({ time: 10000 })
     collector.on('collect', async (i) => {
-      if (i.user.id != message.author.id) return
+      if (i.user.id != message.author.id) return;
       if (i.customId == 'heart.koreanlist') {
         axios
           .get(
@@ -56,9 +56,9 @@ export default new BaseCommand(
             {
               headers: {
                 Authorization: config.updateServer.koreanbots,
-                'Content-Type': 'application/json'
-              }
-            }
+                'Content-Type': 'application/json',
+              },
+            },
           )
           .then(async (res) => {
             if (!res.data.data.voted) {
@@ -78,23 +78,20 @@ export default new BaseCommand(
                 )
               i.reply({
                 embeds: [embed],
-                components: [link]
-              })
-              return m.edit({ components: [] })
+                components: [link],
+              });
+              return m.edit({ components: [] });
             } else {
               const heartData = await HeartSchema.findOne({
                 userid: message.author.id,
-                platform: 'koreanlist'
-              })
+                platform: 'koreanlist',
+              });
               if (!heartData) {
-                await Schema.updateOne(
-                  { userid: message.author.id },
-                  { $inc: { money: 50000 } }
-                )
+                await Schema.updateOne({ userid: message.author.id }, { $inc: { money: 50000 } });
                 await HeartSchema.create({
                   userid: message.author.id,
-                  platform: 'koreanlist'
-                })
+                  platform: 'koreanlist',
+                });
                 embed = new Embed(client, 'success')
                   .setTitle(client.i18n.t('commands.heart.title.success'))
                   .setDescription(
@@ -105,9 +102,9 @@ export default new BaseCommand(
                   .setTimestamp()
                   .setColor('#2f3136')
                 i.reply({
-                  embeds: [embed]
-                })
-                return m.edit({ components: [] })
+                  embeds: [embed],
+                });
+                return m.edit({ components: [] });
               } else {
                 embed = new Embed(client, 'success')
                   .setTitle(client.i18n.t('commands.heart.title.fail'))
@@ -118,11 +115,11 @@ export default new BaseCommand(
                     )}` + client.i18n.t('commands.heart.description.later')
                   )
                   .setTimestamp()
-                  .setColor('#2f3136')
+                  .setColor('#2f3136');
                 i.reply({
-                  embeds: [embed]
-                })
-                return m.edit({ components: [] })
+                  embeds: [embed],
+                });
+                return m.edit({ components: [] });
               }
             }
           })
@@ -136,23 +133,20 @@ export default new BaseCommand(
               )
               .setFooter({ text: `${message.author.tag}` })
               .setTimestamp()
-              .setColor('#2f3136')
+              .setColor('#2f3136');
             i.reply({
-              embeds: [embed]
-            })
-            return m.edit({ components: [] })
-          })
+              embeds: [embed],
+            });
+            return m.edit({ components: [] });
+          });
       } else if (i.customId == 'heart.archive') {
         axios
-          .get(
-            `https://api.archiver.me/bots/${client.user?.id}/like/${message.author.id}`,
-            {
-              headers: {
-                Authorization: 'Bearer ' + config.updateServer.archive,
-                'Content-Type': 'application/json'
-              }
-            }
-          )
+          .get(`https://api.archiver.me/bots/${client.user?.id}/like/${message.author.id}`, {
+            headers: {
+              Authorization: 'Bearer ' + config.updateServer.archive,
+              'Content-Type': 'application/json',
+            },
+          })
           .then(async (res) => {
             if (!res.data.data.like) {
               embed = new Embed(client, 'warn')
@@ -171,23 +165,20 @@ export default new BaseCommand(
                 )
               i.reply({
                 embeds: [embed],
-                components: [link]
-              })
-              return m.edit({ components: [] })
+                components: [link],
+              });
+              return m.edit({ components: [] });
             } else {
               const heartData = await HeartSchema.findOne({
                 userid: message.author.id,
-                platform: 'archive'
-              })
+                platform: 'archive',
+              });
               if (!heartData) {
-                await Schema.updateOne(
-                  { userid: message.author.id },
-                  { $inc: { money: 50000 } }
-                )
+                await Schema.updateOne({ userid: message.author.id }, { $inc: { money: 50000 } });
                 await HeartSchema.create({
                   userid: message.author.id,
-                  platform: 'archive'
-                })
+                  platform: 'archive',
+                });
                 embed = new Embed(client, 'success')
                   .setTitle(client.i18n.t('commands.heart.title.success'))
                   .setDescription(
@@ -196,11 +187,11 @@ export default new BaseCommand(
                     })
                   )
                   .setTimestamp()
-                  .setColor('#2f3136')
+                  .setColor('#2f3136');
                 i.reply({
-                  embeds: [embed]
-                })
-                return m.edit({ components: [] })
+                  embeds: [embed],
+                });
+                return m.edit({ components: [] });
               } else {
                 embed = new Embed(client, 'success')
                   .setTitle(client.i18n.t('commands.heart.title.fail'))
@@ -213,11 +204,11 @@ export default new BaseCommand(
                     })
                   )
                   .setTimestamp()
-                  .setColor('#2f3136')
+                  .setColor('#2f3136');
                 i.reply({
-                  embeds: [embed]
-                })
-                return m.edit({ components: [] })
+                  embeds: [embed],
+                });
+                return m.edit({ components: [] });
               }
             }
           })
@@ -231,16 +222,16 @@ export default new BaseCommand(
               )
               .setFooter({ text: `${message.author.tag}` })
               .setTimestamp()
-              .setColor('#2f3136')
+              .setColor('#2f3136');
             i.reply({
-              embeds: [embed]
-            })
-            return m.edit({ components: [] })
-          })
+              embeds: [embed],
+            });
+            return m.edit({ components: [] });
+          });
       }
-    })
+    });
     collector.on('end', (collected) => {
-      if (collected.size == 1) return
+      if (collected.size == 1) return;
       m.edit({
         embeds: [embed],
         components: [
@@ -250,17 +241,17 @@ export default new BaseCommand(
                 .setLabel(client.i18n.t('commands.heart.button.kbl'))
                 .setStyle(ButtonStyle.Primary)
                 .setCustomId('heart.koreanlist')
-                .setDisabled(true)
+                .setDisabled(true),
             )
             .addComponents(
               new Discord.ButtonBuilder()
                 .setLabel(client.i18n.t('commands.heart.button.archive'))
                 .setStyle(ButtonStyle.Primary)
                 .setCustomId('heart.archive')
-                .setDisabled(true)
-            )
-        ]
-      })
-    })
-  }
-)
+                .setDisabled(true),
+            ),
+        ],
+      });
+    });
+  },
+);

@@ -10,7 +10,7 @@ import {
 } from 'discord.js'
 export default new ButtonInteraction(
   {
-    name: 'close'
+    name: 'close',
   },
   async (client, interaction) => {
     if (!interaction.inCachedGuild()) return
@@ -23,18 +23,18 @@ export default new ButtonInteraction(
     const ticketDB = await Ticket.findOne({
       guildId: interaction.guild?.id,
       channelId: interaction.channel?.id,
-      status: 'open'
-    })
+      status: 'open',
+    });
     if (!ticketDB)
       return await interaction.channel?.send({
-        content: '이미 닫힌 티켓이거나 티켓 정보를 찾을 수 없습니다'
-      })
+        content: '이미 닫힌 티켓이거나 티켓 정보를 찾을 수 없습니다',
+      });
     setTimeout(async () => {
       await Ticket.updateOne(
         {
           guildId: interaction.guild?.id,
           channelId: interaction.channel?.id,
-          status: 'open'
+          status: 'open',
         },
         { $set: { status: 'close' } }
       )
@@ -67,12 +67,12 @@ export default new ButtonInteraction(
       channel.setName(`closed-ticket-${ticketDB.ticketId?.slice(0, 5)}`)
       interaction.channel?.send({
         embeds: [replyCloseTicket],
-        components: [componets]
-      })
+        components: [componets],
+      });
       return interaction.editReply({
         embeds: [replyCloseTicket],
-        components: [componets]
-      })
-    }, 5000)
-  }
-)
+        components: [componets],
+      });
+    }, 5000);
+  },
+);

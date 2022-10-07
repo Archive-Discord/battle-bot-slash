@@ -1,26 +1,26 @@
-import { BaseCommand } from '../../structures/Command'
-import Discord from 'discord.js'
-import Embed from '../../utils/Embed'
-import comma from 'comma-number'
-import Schema from '../../schemas/Money'
-import { SlashCommandBuilder, userMention } from '@discordjs/builders'
+import { BaseCommand } from '../../structures/Command';
+import Discord from 'discord.js';
+import Embed from '../../utils/Embed';
+import comma from 'comma-number';
+import Schema from '../../schemas/Money';
+import { SlashCommandBuilder, userMention } from '@discordjs/builders';
 
 export default new BaseCommand(
   {
     name: 'gamble',
     description: '자신의 돈을 확인합니다.',
-    aliases: ['도박', 'ehqkr']
+    aliases: ['도박', 'ehqkr'],
   },
   async (client, message, args) => {
     let embed = new Embed(client, 'warn')
       .setTitle(client.i18n.t('main.title.loading'))
       .setColor('#2f3136')
     let m = await message.reply({
-      embeds: [embed]
-    })
+      embeds: [embed],
+    });
     const ehqkrduqn = await Schema.findOne({
-      userid: message.author.id
-    })
+      userid: message.author.id,
+    });
     embed = new Embed(client, 'error')
       .setTitle(client.i18n.t('main.title.error'))
       .setDescription(client.i18n.t('commands.gamble.description.account'))

@@ -1,22 +1,20 @@
-import { BaseCommand } from '../../structures/Command'
-import Discord from 'discord.js'
-import Embed from '../../utils/Embed'
-import comma from 'comma-number'
-import Schema from '../../schemas/Money'
-import { SlashCommandBuilder, userMention } from '@discordjs/builders'
+import { BaseCommand } from '../../structures/Command';
+import Discord from 'discord.js';
+import Embed from '../../utils/Embed';
+import comma from 'comma-number';
+import Schema from '../../schemas/Money';
+import { SlashCommandBuilder, userMention } from '@discordjs/builders';
 
 export default new BaseCommand(
   {
     name: 'leaderboard',
     description: '자신의 돈을 확인합니다. (서버, 전체)',
-    aliases: ['순위', 'moneylist', 'tnsdnl', '랭킹', '돈순위']
+    aliases: ['순위', 'moneylist', 'tnsdnl', '랭킹', '돈순위'],
   },
   async (client, message, args) => {
-    const type = args[0]
-    const data = await Schema.find()
-      .sort({ money: -1, descending: -1 })
-      .limit(10)
-    const embed = new Embed(client, 'info').setColor('#2f3136')
+    const type = args[0];
+    const data = await Schema.find().sort({ money: -1, descending: -1 }).limit(10);
+    const embed = new Embed(client, 'info').setColor('#2f3136');
     for (let i = 0; i < data.length; i++) {
       if (type === '전체') {
         embed.setTitle(client.i18n.t('commands.leaderboard.title.rank'))
@@ -63,8 +61,8 @@ export default new BaseCommand(
       }
     }
     message.reply({
-      embeds: [embed]
-    })
+      embeds: [embed],
+    });
   },
   {
     // @ts-ignore

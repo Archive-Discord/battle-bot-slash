@@ -97,5 +97,55 @@ export default new Event(
       }
     }
     if (update) return await logChannel.send({ embeds: [embed] })
-  }
-)
+
+    if (!oldMember.premiumSince && newMember.premiumSince) {
+      embed.addFields({
+        name: '서버 부스트',
+        value:
+          `<@${newMember.user.id}>` +
+          '(`' +
+          newMember.user.id +
+          '`)' +
+          ' 님이 서버를 부스트 했습니다',
+      });
+      update = true;
+    }
+    if (oldMember.roles.cache.size !== newMember.roles.cache.size) {
+      const fetchedLogs = await newMember.guild.fetchAuditLogs({
+        limit: 1,
+        type: AuditLogEvent.MemberRoleUpdate,
+      });
+      const deletionLog = fetchedLogs.entries.first();
+      if (deletionLog) {
+        const executor = deletionLog.executor as User;
+        const target = deletionLog.target as User;
+        if (target.id === newMember.id)
+          embed.addFields({
+            name: '수정유저',
+            value: `<@${executor.id}>` + '(`' + executor.id + '`)',
+          });
+      }
+      if (oldMember.roles.cache.size > newMember.roles.cache.size) {
+        oldMember.roles.cache.forEach((role) => {
+          if (!newMember.roles.cache.has(role.id)) {
+            embed.addFields({
+              name: '역할 삭제',
+              value: `<@&${role.id}>` + '(`' + role.id + '`)',
+            });
+            update = true;
+          }
+        });
+      } else if (oldMember.roles.cache.size < newMember.roles.cache.size) {
+        newMember.roles.cache.forEach((role) => {
+          if (!oldMember.roles.cache.has(role.id)) {
+            embed.addFields({
+              name: '역할 추가',
+              value: `<@&${role.id}>` + '(`' + role.id + '`)',
+            });
+            update = true;
+          }
+        });
+      }
+    }
+    if (update) return await logChannel.send({ embeds: [embed] });
+  });

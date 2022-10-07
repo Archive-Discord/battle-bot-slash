@@ -1,17 +1,17 @@
-import { BaseCommand, SlashCommand } from '../../structures/Command'
-import UserDB from '../../schemas/userSchema'
-import Embed from '../../utils/Embed'
-import { SlashCommandBuilder, userMention } from '@discordjs/builders'
-import DateFormatting from '../../utils/DateFormatting'
-import Level from '../../schemas/levelSchema'
-import config from '../../../config'
-import { checkUserPremium } from '../../utils/checkPremium'
+import { BaseCommand, SlashCommand } from '../../structures/Command';
+import UserDB from '../../schemas/userSchema';
+import Embed from '../../utils/Embed';
+import { SlashCommandBuilder, userMention } from '@discordjs/builders';
+import DateFormatting from '../../utils/DateFormatting';
+import Level from '../../schemas/levelSchema';
+import config from '../../../config';
+import { checkUserPremium } from '../../utils/checkPremium';
 
 export default new BaseCommand(
   {
     name: 'level',
     description: '유저의 레벨 정보를 확인합니다.',
-    aliases: ['레벨', 'fpqpf']
+    aliases: ['레벨', 'fpqpf'],
   },
   async (client, message, args) => {
     let embed = new Embed(client, 'error')
@@ -32,7 +32,7 @@ export default new BaseCommand(
       .setDescription('유저의 레벨 정보를 확인합니다.'),
     options: {
       name: '레벨',
-      isSlash: true
+      isSlash: true,
     },
     async execute(client, interaction) {
       await interaction.deferReply({ ephemeral: true })

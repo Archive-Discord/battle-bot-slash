@@ -12,7 +12,7 @@ export default new BaseCommand(
   {
     name: 'help',
     description: '봇의 도움말을 보여줍니다',
-    aliases: ['도움말', 'ehdna', 'ehdnaakf', '도움']
+    aliases: ['도움말', 'ehdna', 'ehdnaakf', '도움'],
   },
   async (client, message, args) => {
     let buttton = new ButtonBuilder()
@@ -44,7 +44,7 @@ export default new BaseCommand(
       })
       return message.reply({ embeds: [embed], components: [row] })
     } else {
-      let commands = client.categorys.get(args[0])
+      let commands = client.categorys.get(args[0]);
       if (args[0] === 'dev') {
         // @ts-ignore
         if (!client.dokdo.owners.includes(message.author.id)) {
@@ -90,7 +90,7 @@ export default new BaseCommand(
       .setDescription('봇의 도움말을 보여줍니다'),
     options: {
       name: '도움말',
-      isSlash: true
+      isSlash: true,
     },
     async execute(client, interaction) {
       let buttton = new ButtonBuilder()
@@ -126,7 +126,7 @@ export default new BaseCommand(
           ephemeral: true
         })
       } else {
-        let category = interaction.options.getString('category')?.toLowerCase()
+        let category = interaction.options.getString('category')?.toLowerCase();
         if (category === 'dev') {
           // @ts-ignore
           if (!client.dokdo.owners.includes(message.author.id)) {
@@ -143,7 +143,7 @@ export default new BaseCommand(
             })
           }
         }
-        let commands = client.categorys.get(category as string)
+        let commands = client.categorys.get(category as string);
         if (!commands) {
           embed
             .setTitle(client.i18n.t('main.title.error'))
@@ -183,6 +183,6 @@ export default new BaseCommand(
           ephemeral: true
         })
       }
-    }
-  }
-)
+    },
+  },
+);
