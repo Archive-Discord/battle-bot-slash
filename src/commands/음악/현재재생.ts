@@ -62,7 +62,7 @@ export default new BaseCommand(
       const embed = new Embed(client, 'success')
         .setAuthor({
           name: `${client.user?.tag}`,
-          iconURL: interaction.guild.iconURL()!,
+          iconURL: interaction.guild?.iconURL()!,
         })
         .setThumbnail(`https://img.youtube.com/vi/${queue.queue.current?.identifier}/mqdefault.jpg`)
         .setURL(queue.queue.current?.uri!)

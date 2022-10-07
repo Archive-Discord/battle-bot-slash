@@ -1,4 +1,4 @@
-import { ApplicationCommandDataResolvable, Routes } from 'discord.js'
+import { ApplicationCommandDataResolvable, RESTPostAPIApplicationCommandsJSONBody, Routes } from 'discord.js'
 import { BaseCommand, Command, SlashCommand } from '../../typings/structures'
 
 import Logger from '../utils/Logger'

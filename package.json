@@ -11,7 +11,7 @@
     "dev": "ts-node-dev --transpile-only --respawn --trace-warnings --trace-uncaught --exit-child -- ./src/index.ts",
     "build": "tsc --project tsconfig.json",
     "lint": "eslint . --ext .ts",
-    "lint:fix": "eslint . --ext .ts --fix",
+    "lint:fix": "eslint . --ext .ts --fix && prettier --write .",
     "format": "prettier --check .",
     "format:fix": "prettier --write .",
     "test": "yarn run lint:fix && yarn run format:fix && yarn run build",
