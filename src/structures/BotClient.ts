@@ -1,23 +1,17 @@
-import { Client, ClientOptions, Collection } from 'discord.js'
-import Dokdo from 'dokdo'
-import Logger from '../utils/Logger'
-import {
-  BaseButton,
-  BaseCommand,
-  Categorys,
-  Event,
-  MusicEvent
-} from '../../typings/structures'
-import config from '../../config'
-import CommandManager from '../managers/CommandManager'
-import EventManager from '../managers/EventManager'
-import ErrorManager from '../managers/ErrorManager'
-import DatabaseManager from '../managers/DatabaseManager'
-import { Model } from 'mongoose'
-import { config as dotenvConfig } from 'dotenv'
-import ButtonManager from '../managers/ButtonManager'
-import i18nManager from '../managers/i18nManager'
-import { i18n } from 'i18next'
+import { Client, ClientOptions, Collection } from 'discord.js';
+import Dokdo from 'dokdo';
+import Logger from '../utils/Logger';
+import { BaseButton, BaseCommand, Categorys, Event, MusicEvent } from '../../typings/structures';
+import config from '../../config';
+import CommandManager from '../managers/CommandManager';
+import EventManager from '../managers/EventManager';
+import ErrorManager from '../managers/ErrorManager';
+import DatabaseManager from '../managers/DatabaseManager';
+import { Model } from 'mongoose';
+import { config as dotenvConfig } from 'dotenv';
+import ButtonManager from '../managers/ButtonManager';
+import i18nManager from '../managers/i18nManager';
+import { i18n } from 'i18next';
 
 const logger = new Logger('bot');
 
@@ -26,25 +20,25 @@ export default class BotClient extends Client {
   public readonly BUILD_NUMBER: string | null;
   public readonly config = config;
 
-  public commands: Collection<string, BaseCommand> = new Collection()
-  public buttons: Collection<string, BaseButton> = new Collection()
-  public categorys: Collection<string, Categorys[]> = new Collection()
-  public events: Collection<string, Event> = new Collection()
-  public musicEvents: Collection<string, MusicEvent> = new Collection()
-  public errors: Collection<string, string> = new Collection()
+  public commands: Collection<string, BaseCommand> = new Collection();
+  public buttons: Collection<string, BaseButton> = new Collection();
+  public categorys: Collection<string, Categorys[]> = new Collection();
+  public events: Collection<string, Event> = new Collection();
+  public musicEvents: Collection<string, MusicEvent> = new Collection();
+  public errors: Collection<string, string> = new Collection();
   public dokdo: Dokdo = new Dokdo(this, {
     prefix: this.config.bot.prefix,
     owners: config.bot.owners,
-    noPerm: (message) => message.reply('당신은 Dokdo 를 이용할수 없습니다.')
-  })
-  public db: any
-  public schemas: Collection<string, Model<any>> = new Collection()
-  public command: CommandManager = new CommandManager(this)
-  public button: ButtonManager = new ButtonManager(this)
-  public event: EventManager = new EventManager(this)
-  public error: ErrorManager = new ErrorManager(this)
-  public database: DatabaseManager = new DatabaseManager(this)
-  public i18n: i18n = new i18nManager(this).i18n
+    noPerm: (message) => message.reply('당신은 Dokdo 를 이용할수 없습니다.'),
+  });
+  public db: any;
+  public schemas: Collection<string, Model<any>> = new Collection();
+  public command: CommandManager = new CommandManager(this);
+  public button: ButtonManager = new ButtonManager(this);
+  public event: EventManager = new EventManager(this);
+  public error: ErrorManager = new ErrorManager(this);
+  public database: DatabaseManager = new DatabaseManager(this);
+  public i18n: i18n = new i18nManager(this).i18n;
 
   public constructor(options: ClientOptions) {
     super(options);
@@ -57,8 +51,8 @@ export default class BotClient extends Client {
   }
 
   public async start(token: string = config.bot.token): Promise<void> {
-    logger.info('Logging in bot...')
-    await this.login(token)
+    logger.info('Logging in bot...');
+    await this.login(token);
   }
 
   public async setStatus(status: 'dev' | 'online' = 'online', name = '점검중...') {

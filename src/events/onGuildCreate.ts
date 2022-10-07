@@ -1,9 +1,9 @@
-import { TextChannel } from 'discord.js'
-import Embed from '../utils/Embed'
-import Logger from '../utils/Logger'
-import { Event } from '../structures/Event'
-import config from '../../config'
-const log = new Logger('GuildCreateEvent')
+import { TextChannel } from 'discord.js';
+import Embed from '../utils/Embed';
+import Logger from '../utils/Logger';
+import { Event } from '../structures/Event';
+import config from '../../config';
+const log = new Logger('GuildCreateEvent');
 
 export default new Event('guildCreate', async (client, guild) => {
   const owner = await guild.fetchOwner();

@@ -1,20 +1,20 @@
-import { ChannelType } from 'discord.js'
-import Status from '../schemas/statusSchema'
-import BotClient from '../structures/BotClient'
-import { Event } from '../structures/Event'
-import Embed from '../utils/Embed'
-import Logger from '../utils/Logger'
-import Premium from '../schemas/premiumSchemas'
-import schedule from 'node-schedule'
-import DateFormatting from '../utils/DateFormatting'
-import Automod from '../schemas/autoModSchema'
-import { GuildChannel } from 'discord.js'
-import NFTUserWallet from '../schemas/NFTUserWalletSchema'
-import NFTGuildVerify from '../schemas/NFTGuildVerifySchema'
-import axios from 'axios'
-import config from '../../config'
-import CommandManager from '../managers/CommandManager'
-import PremiumUser from '../schemas/premiumUserSchemas'
+import { ChannelType } from 'discord.js';
+import Status from '../schemas/statusSchema';
+import BotClient from '../structures/BotClient';
+import { Event } from '../structures/Event';
+import Embed from '../utils/Embed';
+import Logger from '../utils/Logger';
+import Premium from '../schemas/premiumSchemas';
+import schedule from 'node-schedule';
+import DateFormatting from '../utils/DateFormatting';
+import Automod from '../schemas/autoModSchema';
+import { GuildChannel } from 'discord.js';
+import NFTUserWallet from '../schemas/NFTUserWalletSchema';
+import NFTGuildVerify from '../schemas/NFTGuildVerifySchema';
+import axios from 'axios';
+import config from '../../config';
+import CommandManager from '../managers/CommandManager';
+import PremiumUser from '../schemas/premiumUserSchemas';
 
 const logger = new Logger('bot');
 
@@ -25,8 +25,8 @@ export default new Event(
       StatusUpdate(client);
     }, 60 * 1000 * 5);
     setInterval(async () => {
-      ServerCountUpdate(client)
-    }, 60 * 1000 * 10)
+      ServerCountUpdate(client);
+    }, 60 * 1000 * 10);
     schedule.scheduleJob('0 0 0 * * *', () => {
       PremiumAlert(client);
       automodResetChannel(client);
@@ -357,17 +357,16 @@ export default new Event(
 
     logger.info(`Logged ${client.user?.username}`);
   },
-  { once: true }
-)
+  { once: true },
+);
 async function StatusUpdate(client: BotClient) {
-  const totalShard = client.shard?.count
-  const shardInfo = await ShardInfo(client)
-  const status = new Status()
-  status.build_number = client.BUILD_NUMBER!
-    ; (status.commands = String(client.commands.size)),
-      (status.totalShard = String(totalShard))
+  const totalShard = client.shard?.count;
+  const shardInfo = await ShardInfo(client);
+  const status = new Status();
+  status.build_number = client.BUILD_NUMBER!;
+  (status.commands = String(client.commands.size)), (status.totalShard = String(totalShard));
   // @ts-ignore
-  status.shard = shardInfo
+  status.shard = shardInfo;
   status.save((err: any) => {
     if (err) logger.error(`봇 상태 업데이트 오류: ${err}`);
   });
@@ -475,8 +474,8 @@ async function automodResetChannel(client: BotClient) {
     if (!guild) return;
     const newChannels: string[] = [];
     for await (const resetchannel of useing.useResetChannels) {
-      const channel = guild?.channels.cache.get(resetchannel) as GuildChannel
-      if (!channel) return
+      const channel = guild?.channels.cache.get(resetchannel) as GuildChannel;
+      if (!channel) return;
       const newchannel = await guild?.channels.create({
         name: channel.name,
         type: ChannelType.GuildText,
@@ -552,12 +551,10 @@ async function ServerCountUpdate(client: BotClient) {
       },
     )
     .then((data) => {
-      logger.info('아카이브: 서버 수 업데이트 완료')
+      logger.info('아카이브: 서버 수 업데이트 완료');
     })
     .catch((e: any) => {
-      logger.error(
-        `아카이브: 서버 수 업데이트 오류: ${e.response?.data.message}`
-      )
+      logger.error(`아카이브: 서버 수 업데이트 오류: ${e.response?.data.message}`);
     })
     .catch((e: any) => {
       logger.error(`아카이브: 서버 수 업데이트 오류: ${e.response?.data.message}`);
@@ -575,10 +572,10 @@ async function ServerCountUpdate(client: BotClient) {
       },
     )
     .then((data) => {
-      logger.info('한디리: 서버 수 업데이트 완료')
+      logger.info('한디리: 서버 수 업데이트 완료');
     })
     .catch((e: any) => {
-      logger.error(`한디리: 서버 수 업데이트 오류: ${e.response?.data.message}`)
+      logger.error(`한디리: 서버 수 업데이트 오류: ${e.response?.data.message}`);
     })
     .catch((e: any) => {
       logger.error(`한디리: 서버 수 업데이트 오류: ${e.response?.data.message}`);

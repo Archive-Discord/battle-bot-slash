@@ -1,8 +1,8 @@
-import { Event } from '../structures/Event'
-import config from '../../config'
-import LoggerSetting from '../schemas/LogSettingSchema'
-import Embed from '../utils/Embed'
-import { AuditLogEvent, TextChannel, User } from 'discord.js'
+import { Event } from '../structures/Event';
+import config from '../../config';
+import LoggerSetting from '../schemas/LogSettingSchema';
+import Embed from '../utils/Embed';
+import { AuditLogEvent, TextChannel, User } from 'discord.js';
 
 export default new Event('messageDelete', async (client, message) => {
   if (!message) return;
@@ -25,36 +25,35 @@ export default new Event('messageDelete', async (client, message) => {
   if (message.content.length > 1024) {
     message.content = message.content.slice(0, 700) + '...';
   }
-  const embed = new Embed(client, 'error').setTitle('메시지 삭제')
+  const embed = new Embed(client, 'error').setTitle('메시지 삭제');
   embed.addFields(
     {
       name: '채널',
-      value: `<#${message.channel.id}>` + '(`' + message.channel.id + '`)'
+      value: `<#${message.channel.id}>` + '(`' + message.channel.id + '`)',
     },
     {
       name: '작성자',
-      value: `<@${message.author.id}>` + '(`' + message.author.id + '`)'
-    }
-  )
-  if (message.content.length > 0)
-    embed.addFields({ name: '내용', value: `${message.content}` })
+      value: `<@${message.author.id}>` + '(`' + message.author.id + '`)',
+    },
+  );
+  if (message.content.length > 0) embed.addFields({ name: '내용', value: `${message.content}` });
   if (message.attachments.size > 0) {
     embed.addFields({
       name: '파일',
-      value: message.attachments.map((file) => `[링크](${file.url})`).join('\n')
-    })
+      value: message.attachments.map((file) => `[링크](${file.url})`).join('\n'),
+    });
   }
   const fetchedLogs = await message.guild?.fetchAuditLogs({
     limit: 1,
-    type: AuditLogEvent.MessageDelete
-  })
-  if (!fetchedLogs) return await logChannel.send({ embeds: [embed] })
-  const deletionLog = fetchedLogs.entries.first()
-  if (!deletionLog) return await logChannel.send({ embeds: [embed] })
-  const target = deletionLog.target as User
-  const executor = deletionLog.executor as User
-  const extra = deletionLog.extra as any
-  if (!deletionLog) return await logChannel.send({ embeds: [embed] })
+    type: AuditLogEvent.MessageDelete,
+  });
+  if (!fetchedLogs) return await logChannel.send({ embeds: [embed] });
+  const deletionLog = fetchedLogs.entries.first();
+  if (!deletionLog) return await logChannel.send({ embeds: [embed] });
+  const target = deletionLog.target as User;
+  const executor = deletionLog.executor as User;
+  const extra = deletionLog.extra as any;
+  if (!deletionLog) return await logChannel.send({ embeds: [embed] });
   if (
     extra.channel.id === message.channel.id &&
     target.id === message.author.id &&
@@ -62,9 +61,9 @@ export default new Event('messageDelete', async (client, message) => {
   ) {
     embed.addFields({
       name: '삭제유저',
-      value: `<@${executor.id}>` + '(`' + executor.id + '`)'
-    })
-    return await logChannel.send({ embeds: [embed] })
+      value: `<@${executor.id}>` + '(`' + executor.id + '`)',
+    });
+    return await logChannel.send({ embeds: [embed] });
   }
   return await logChannel.send({ embeds: [embed] });
 });

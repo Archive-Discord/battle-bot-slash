@@ -1,13 +1,17 @@
-import { ApplicationCommandDataResolvable, RESTPostAPIApplicationCommandsJSONBody, Routes } from 'discord.js'
-import { BaseCommand, Command, SlashCommand } from '../../typings/structures'
+import {
+  ApplicationCommandDataResolvable,
+  RESTPostAPIApplicationCommandsJSONBody,
+  Routes,
+} from 'discord.js';
+import { BaseCommand, Command, SlashCommand } from '../../typings/structures';
 
-import Logger from '../utils/Logger'
-import BaseManager from './BaseManager'
-import fs from 'fs'
-import path from 'path'
-import BotClient from '../structures/BotClient'
-import config from '../../config'
-import { REST } from '@discordjs/rest'
+import Logger from '../utils/Logger';
+import BaseManager from './BaseManager';
+import fs from 'fs';
+import path from 'path';
+import BotClient from '../structures/BotClient';
+import config from '../../config';
+import { REST } from '@discordjs/rest';
 
 export default class CommandManager extends BaseManager {
   private logger = new Logger('CommandManager');
@@ -22,7 +26,7 @@ export default class CommandManager extends BaseManager {
   }
 
   public load(commandPath: string = path.join(__dirname, '../commands')): void {
-    this.logger.info('Loading commands...')
+    this.logger.info('Loading commands...');
 
     const commandFolder = fs.readdirSync(commandPath);
 
@@ -43,7 +47,7 @@ export default class CommandManager extends BaseManager {
 
               const command =
                 // eslint-disable-next-line @typescript-eslint/no-var-requires
-                require(`../commands/${folder}/${commandFile}`).default
+                require(`../commands/${folder}/${commandFile}`).default;
               if (!command.data.name ?? !command.name)
                 return this.logger.debug(`Command ${commandFile} has no name. Skipping.`);
               this.categorys.get(folder)?.push({
@@ -52,27 +56,23 @@ export default class CommandManager extends BaseManager {
                 isSlash: (command as Command)?.slash
                   ? true
                   : (command as SlashCommand)?.options?.isSlash
-                    ? true
-                    : false,
+                  ? true
+                  : false,
               });
               this.commands.set(command.data.name ?? command.name, command);
 
-              this.logger.debug(
-                `Loaded command ${command.data.name ?? command.name}`
-              )
+              this.logger.debug(`Loaded command ${command.data.name ?? command.name}`);
             } catch (error: any) {
               this.logger.error(`Error loading command '${commandFile}'.\n` + error.stack);
             } finally {
-              this.logger.debug(`Loaded commands. count: ${this.commands.size}`)
+              this.logger.debug(`Loaded commands. count: ${this.commands.size}`);
             }
           });
         } catch (error: any) {
           this.logger.error(`Error loading command folder '${folder}'.\n` + error.stack);
         }
-      })
-      this.logger.info(
-        `Succesfully loaded commands. count: ${this.commands.size}`
-      )
+      });
+      this.logger.info(`Succesfully loaded commands. count: ${this.commands.size}`);
     } catch (error: any) {
       this.logger.error('Error fetching folder list.\n' + error.stack);
     }
@@ -110,20 +110,20 @@ export default class CommandManager extends BaseManager {
     return (command as Command)?.slash
       ? true
       : (command as SlashCommand)?.options?.isSlash
-        ? true
-        : false;
+      ? true
+      : false;
   }
 
   public async slashCommandSetup(
     guildID: string,
   ): Promise<ApplicationCommandDataResolvable[] | undefined> {
-    this.logger.scope = 'CommandManager: SlashSetup'
-    const rest = new REST().setToken(this.client.token!)
+    this.logger.scope = 'CommandManager: SlashSetup';
+    const rest = new REST().setToken(this.client.token!);
 
     const slashCommands: any[] = [];
     this.client.commands.forEach((command: BaseCommand) => {
       if (this.isSlash(command)) {
-        slashCommands.push(command.slash ? command.slash?.data : command.data)
+        slashCommands.push(command.slash ? command.slash?.data : command.data);
       }
     });
 
@@ -134,40 +134,26 @@ export default class CommandManager extends BaseManager {
       await rest
         // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
         .put(Routes.applicationCommands(this.client.application?.id!), {
-          body: slashCommands
+          body: slashCommands,
         })
-        .then(() =>
-          this.logger.info(
-            `Successfully registered application global commands.`
-          )
-        )
+        .then(() => this.logger.info(`Successfully registered application global commands.`));
     } else {
       this.logger.info(`Slash Command requesting ${guildID}`);
 
       await rest
         // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
-        .put(
-          Routes.applicationGuildCommands(
-            this.client.application?.id!,
-            guildID
-          ),
-          {
-            body: slashCommands
-          }
-        )
-        .then(() =>
-          this.logger.info(
-            `Successfully registered server ${guildID} server commands.`
-          )
-        )
+        .put(Routes.applicationGuildCommands(this.client.application?.id!, guildID), {
+          body: slashCommands,
+        })
+        .then(() => this.logger.info(`Successfully registered server ${guildID} server commands.`));
 
-      return slashCommands
+      return slashCommands;
     }
   }
 
   public async slashGlobalCommandSetup(): Promise<void> {
-    this.logger.scope = 'CommandManager: SlashGlobalSetup'
-    const rest = new REST().setToken(this.client.token!)
+    this.logger.scope = 'CommandManager: SlashGlobalSetup';
+    const rest = new REST().setToken(this.client.token!);
 
     const slashCommands: RESTPostAPIApplicationCommandsJSONBody[] = [];
     this.client.commands.forEach((command: BaseCommand) => {
@@ -182,40 +168,33 @@ export default class CommandManager extends BaseManager {
       const category = this.categorys.get('dev');
 
       if (category?.find((c) => c.name === command.name)) {
-        const supportGuild = this.client.guilds.cache.get(
-          config.devGuild.guildID
-        )
+        const supportGuild = this.client.guilds.cache.get(config.devGuild.guildID);
         await rest
           .put(
-            Routes.applicationGuildCommands(
-              this.client.application?.id!,
-              config.devGuild.guildID
-            ),
-            { body: [command] }
+            Routes.applicationGuildCommands(this.client.application?.id!, config.devGuild.guildID),
+            { body: [command] },
           )
           .then(() => {
             this.logger.info(
-              `Succesfully created Developer command ${command.name} at ${supportGuild?.name} guild`
-            )
+              `Succesfully created Developer command ${command.name} at ${supportGuild?.name} guild`,
+            );
           })
           .catch((e) => {
             console.log(e);
             this.logger.error(
-              `Error created Developer command ${command.name} at ${supportGuild?.name} guild`
-            )
-          })
-        return
+              `Error created Developer command ${command.name} at ${supportGuild?.name} guild`,
+            );
+          });
+        return;
       }
       if (!cmd) {
         await rest
           .put(Routes.applicationCommands(this.client.application?.id!), {
-            body: [command]
+            body: [command],
           })
           .then((guilds) =>
-            this.logger.info(
-              `Succesfully created command ${command.name} at ${guilds} guild`
-            )
-          )
+            this.logger.info(`Succesfully created command ${command.name} at ${guilds} guild`),
+          );
       }
     }
     await rest
@@ -224,11 +203,12 @@ export default class CommandManager extends BaseManager {
       })
       .then(() =>
         this.logger.info(
-          `Succesfully created command ${slashCommands.length > 3
-            ? slashCommands.slice(0, 3).map((object) => object.name) +
-            /* eslint-disable */
-            `\ and ${slashCommands.length - 3} more command`
-            : slashCommands.map((object) => object.name + ', ')
+          `Succesfully created command ${
+            slashCommands.length > 3
+              ? slashCommands.slice(0, 3).map((object) => object.name) +
+                /* eslint-disable */
+                `\ and ${slashCommands.length - 3} more command`
+              : slashCommands.map((object) => object.name + ', ')
           } at ${this.client.guilds.cache.size} guild`,
         ),
       );

@@ -13,7 +13,7 @@ export default new MessageCommand(
   },
   async (client, message, args) => {
     // @ts-ignore
-    if (!client.dokdo.owners.includes(message.author.id)) return
+    if (!client.dokdo.owners.includes(message.author.id)) return;
 
     let LoadingEmbed = new Embed(client, 'warn')
       .setColor('#2f3136')
@@ -43,7 +43,8 @@ export default new MessageCommand(
         .setColor('#2f3136')
         .setTitle('프리미엄')
         .setDescription(
-          `관리자 ${message.author.username}에 의하여 ${guild.name}서버의 프리미엄 만료일이 ${date.getFullYear() + '년 ' + (date.getMonth() + 1) + '월 ' + date.getDate() + '일'
+          `관리자 ${message.author.username}에 의하여 ${guild.name}서버의 프리미엄 만료일이 ${
+            date.getFullYear() + '년 ' + (date.getMonth() + 1) + '월 ' + date.getDate() + '일'
           } 로 설정되었습니다`,
         );
       try {
@@ -54,7 +55,8 @@ export default new MessageCommand(
         logger.error(e);
       }
       logger.info(
-        `관리자 ${message.author.username}에 의하여 ${guild.name}서버의 프리미엄 만료일이 ${date.getFullYear() + '년 ' + (date.getMonth() + 1) + '월 ' + date.getDate() + '일'
+        `관리자 ${message.author.username}에 의하여 ${guild.name}서버의 프리미엄 만료일이 ${
+          date.getFullYear() + '년 ' + (date.getMonth() + 1) + '월 ' + date.getDate() + '일'
         } 로 설정되었습니다`,
       );
       return await msg.edit({ embeds: [successEmbed] });
@@ -64,7 +66,8 @@ export default new MessageCommand(
         .setColor('#2f3136')
         .setTitle('프리미엄')
         .setDescription(
-          `관리자 ${message.author.username}에 의하여 ${guild.name}서버의 프리미엄 만료일이 ${date.getFullYear() + '년 ' + (date.getMonth() + 1) + '월 ' + date.getDate() + '일'
+          `관리자 ${message.author.username}에 의하여 ${guild.name}서버의 프리미엄 만료일이 ${
+            date.getFullYear() + '년 ' + (date.getMonth() + 1) + '월 ' + date.getDate() + '일'
           } 로 설정되었습니다`,
         );
       try {
@@ -75,7 +78,8 @@ export default new MessageCommand(
         logger.error(e);
       }
       logger.info(
-        `관리자 ${message.author.username}에 의하여 ${guild.name}서버의 프리미엄 만료일이 ${date.getFullYear() + '년 ' + (date.getMonth() + 1) + '월 ' + date.getDate() + '일'
+        `관리자 ${message.author.username}에 의하여 ${guild.name}서버의 프리미엄 만료일이 ${
+          date.getFullYear() + '년 ' + (date.getMonth() + 1) + '월 ' + date.getDate() + '일'
         } 로 설정되었습니다`,
       );
       return await msg.edit({ embeds: [successEmbed] });

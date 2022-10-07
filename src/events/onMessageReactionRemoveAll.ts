@@ -12,19 +12,15 @@ export default new Event('messageReactionRemoveAll', async (client, message) => 
   if (!LoggerSettingDB) return;
   if (!LoggerSettingDB.useing.reactMessage) return;
 
-  const logChannel = guild.channels.cache.get(
-    LoggerSettingDB.guild_channel_id
-  ) as TextChannel
-  if (!logChannel) return
-  const embed = new Embed(client, 'error')
-    .setTitle('모든 반응 삭제')
-    .addFields(
-      {
-        name: '채널',
-        value: `<#${message.channel.id}>` + '(`' + message.channel.id + '`)'
-      },
-      { name: '메시지', value: `[메시지](${message.url})` }
-    )
+  const logChannel = guild.channels.cache.get(LoggerSettingDB.guild_channel_id) as TextChannel;
+  if (!logChannel) return;
+  const embed = new Embed(client, 'error').setTitle('모든 반응 삭제').addFields(
+    {
+      name: '채널',
+      value: `<#${message.channel.id}>` + '(`' + message.channel.id + '`)',
+    },
+    { name: '메시지', value: `[메시지](${message.url})` },
+  );
 
   return await logChannel.send({ embeds: [embed] });
 });

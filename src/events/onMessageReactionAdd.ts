@@ -18,9 +18,9 @@ export default new Event('messageReactionAdd', async (client, messageReaction, u
   if (!LoggerSettingDB.useing.reactMessage) return;
 
   const logChannel = messageReaction.message.guild?.channels.cache.get(
-    LoggerSettingDB.guild_channel_id
-  ) as TextChannel
-  if (!logChannel) return
+    LoggerSettingDB.guild_channel_id,
+  ) as TextChannel;
+  if (!logChannel) return;
   const embed = new Embed(client, 'success').setTitle('반응 추가').addFields(
     {
       name: '채널',
@@ -28,15 +28,14 @@ export default new Event('messageReactionAdd', async (client, messageReaction, u
         `<#${messageReaction.message.channel.id}>` +
         '(`' +
         messageReaction.message.channel.id +
-        '`)'
+        '`)',
     },
     { name: '메시지', value: `[메시지](${messageReaction.message.url})` },
     { name: '유저', value: `<@${user.id}>` + '(`' + user.id + '`)' },
     {
       name: '반응 이모지',
-      value: messageReaction.emoji.toString()
-    }
-  )
-  return await logChannel.send({ embeds: [embed] })
-}
-)
+      value: messageReaction.emoji.toString(),
+    },
+  );
+  return await logChannel.send({ embeds: [embed] });
+});

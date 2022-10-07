@@ -1,8 +1,8 @@
-import Discord, { DiscordAPIError, RESTJSONErrorCodes } from 'discord.js'
-import CommandManager from '../../managers/CommandManager'
-import Embed from '../../utils/Embed'
-import ErrorManager from '../../managers/ErrorManager'
-import { BaseCommand } from '../../structures/Command'
+import Discord, { DiscordAPIError, RESTJSONErrorCodes } from 'discord.js';
+import CommandManager from '../../managers/CommandManager';
+import Embed from '../../utils/Embed';
+import ErrorManager from '../../managers/ErrorManager';
+import { BaseCommand } from '../../structures/Command';
 
 export default new BaseCommand(
   {
@@ -14,14 +14,13 @@ export default new BaseCommand(
     let commandManager = new CommandManager(client);
     let errorManager = new ErrorManager(client);
 
-    let row =
-      new Discord.ActionRowBuilder<Discord.ButtonBuilder>().addComponents(
-        new Discord.ButtonBuilder()
-          .setCustomId('accept')
-          .setLabel('동의합니다.')
-          .setStyle(Discord.ButtonStyle.Primary)
-          .setEmoji('✅')
-      )
+    let row = new Discord.ActionRowBuilder<Discord.ButtonBuilder>().addComponents(
+      new Discord.ButtonBuilder()
+        .setCustomId('accept')
+        .setLabel('동의합니다.')
+        .setStyle(Discord.ButtonStyle.Primary)
+        .setEmoji('✅'),
+    );
     let embed = new Embed(client, 'warn')
       .setTitle('잠시만요!')
       .setDescription(
@@ -39,11 +38,10 @@ export default new BaseCommand(
           .setDescription('Slash Command 로딩중...')
           .setAuthor({
             name: '잠시만 기다려주십시요...',
-            iconURL:
-              'https://cdn.discordapp.com/emojis/667750713698549781.gif?v=1'
+            iconURL: 'https://cdn.discordapp.com/emojis/667750713698549781.gif?v=1',
           })
-          .setColor('#2f3136')
-        await i.update({ embeds: [loading], components: [] })
+          .setColor('#2f3136');
+        await i.update({ embeds: [loading], components: [] });
 
         commandManager
           .slashCommandSetup(message.guild?.id as string)
@@ -59,7 +57,7 @@ export default new BaseCommand(
             });
           })
           .catch((error) => {
-            m.delete()
+            m.delete();
             if (error.code === RESTJSONErrorCodes.MissingAccess) {
               message.channel.send({
                 embeds: [

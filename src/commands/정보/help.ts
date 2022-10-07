@@ -1,12 +1,7 @@
-import config from '../../../config'
-import { BaseCommand } from '../../structures/Command'
-import Embed from '../../utils/Embed'
-import {
-  ActionRowBuilder,
-  ButtonBuilder,
-  ButtonStyle,
-  SlashCommandBuilder
-} from 'discord.js'
+import config from '../../../config';
+import { BaseCommand } from '../../structures/Command';
+import Embed from '../../utils/Embed';
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle, SlashCommandBuilder } from 'discord.js';
 
 export default new BaseCommand(
   {
@@ -18,31 +13,31 @@ export default new BaseCommand(
     let buttton = new ButtonBuilder()
       .setLabel(client.i18n.t('main.button.heart'))
       .setURL('https://koreanbots.dev/bots/928523914890608671/vote')
-      .setStyle(ButtonStyle.Link)
-    let row = new ActionRowBuilder<ButtonBuilder>().addComponents(buttton)
+      .setStyle(ButtonStyle.Link);
+    let row = new ActionRowBuilder<ButtonBuilder>().addComponents(buttton);
     let embed = new Embed(client, 'success')
       .setTitle(
         client.i18n.t('commands.help.title.help', {
-          username: client.user?.username
-        })
+          username: client.user?.username,
+        }),
       )
-      .setColor('#2f3136')
+      .setColor('#2f3136');
     if (!args[0]) {
       client.categorys.forEach((category, command) => {
-        if (command === 'dev') return
-        embed.setDescription(client.i18n.t('commands.help.description.helpdes'))
+        if (command === 'dev') return;
+        embed.setDescription(client.i18n.t('commands.help.description.helpdes'));
         embed.addFields({
           name: client.i18n.t('commands.help.fields.help', {
             prefix: config.bot.prefix,
-            command: command
+            command: command,
           }),
           value: client.i18n.t('commands.help.fields.helpv', {
-            command: command
+            command: command,
           }),
-          inline: true
-        })
-      })
-      return message.reply({ embeds: [embed], components: [row] })
+          inline: true,
+        });
+      });
+      return message.reply({ embeds: [embed], components: [row] });
     } else {
       let commands = client.categorys.get(args[0]);
       if (args[0] === 'dev') {
@@ -51,30 +46,30 @@ export default new BaseCommand(
           embed
             .setTitle(client.i18n.t('main.title.error'))
             .setDescription(client.i18n.t('commands.help.description.notfound'))
-            .setType('error')
-          return message.reply({ embeds: [embed], components: [row] })
+            .setType('error');
+          return message.reply({ embeds: [embed], components: [row] });
         }
       }
       if (!commands) {
         embed
           .setTitle(client.i18n.t('main.title.error'))
           .setDescription(client.i18n.t('commands.help.description.notfound'))
-          .setType('error')
-        return message.reply({ embeds: [embed], components: [row] })
+          .setType('error');
+        return message.reply({ embeds: [embed], components: [row] });
       }
       embed.setDescription(
         client.i18n.t('commands.help.description.args', {
-          arg: args[0]
-        })
-      )
+          arg: args[0],
+        }),
+      );
       commands.forEach((command) => {
         embed.addFields({
           name: `\`${config.bot.prefix}${command.name}\``,
           value: `> ${command.description}`,
-          inline: true
-        })
-      })
-      return message.reply({ embeds: [embed], components: [row] })
+          inline: true,
+        });
+      });
+      return message.reply({ embeds: [embed], components: [row] });
     }
   },
   {
@@ -85,7 +80,7 @@ export default new BaseCommand(
           .setName('category')
           .setDescription('카테고리를 적어주세요')
           .setAutocomplete(true)
-          .setRequired(false)
+          .setRequired(false),
       )
       .setDescription('봇의 도움말을 보여줍니다'),
     options: {
@@ -96,35 +91,33 @@ export default new BaseCommand(
       let buttton = new ButtonBuilder()
         .setLabel(client.i18n.t('main.button.heart'))
         .setURL('https://koreanbots.dev/bots/928523914890608671/vote')
-        .setStyle(ButtonStyle.Link)
-      let row = new ActionRowBuilder<ButtonBuilder>().addComponents(buttton)
+        .setStyle(ButtonStyle.Link);
+      let row = new ActionRowBuilder<ButtonBuilder>().addComponents(buttton);
       let embed = new Embed(client, 'success').setColor('#2f3136').setTitle(
         client.i18n.t('commands.help.title.help', {
-          username: client.user?.username
-        })
-      )
+          username: client.user?.username,
+        }),
+      );
       if (!interaction.options.getString('category')) {
         client.categorys.forEach((category, command) => {
-          if (command === 'dev') return
-          embed.setDescription(
-            client.i18n.t('commands.help.description.helpdes')
-          )
+          if (command === 'dev') return;
+          embed.setDescription(client.i18n.t('commands.help.description.helpdes'));
           embed.addFields({
             name: client.i18n.t('commands.help.fields.help', {
               prefix: config.bot.prefix,
-              command: command
+              command: command,
             }),
             value: client.i18n.t('commands.help.fields.helpv', {
-              command: command
+              command: command,
             }),
-            inline: true
-          })
-        })
+            inline: true,
+          });
+        });
         return interaction.reply({
           embeds: [embed],
           components: [row],
-          ephemeral: true
-        })
+          ephemeral: true,
+        });
       } else {
         let category = interaction.options.getString('category')?.toLowerCase();
         if (category === 'dev') {
@@ -132,15 +125,13 @@ export default new BaseCommand(
           if (!client.dokdo.owners.includes(message.author.id)) {
             embed
               .setTitle(client.i18n.t('main.title.error'))
-              .setDescription(
-                client.i18n.t('commands.help.description.notfound')
-              )
-              .setType('error')
+              .setDescription(client.i18n.t('commands.help.description.notfound'))
+              .setType('error');
             return interaction.reply({
               embeds: [embed],
               components: [row],
-              ephemeral: true
-            })
+              ephemeral: true,
+            });
           }
         }
         let commands = client.categorys.get(category as string);
@@ -148,40 +139,40 @@ export default new BaseCommand(
           embed
             .setTitle(client.i18n.t('main.title.error'))
             .setDescription(client.i18n.t('commands.help.description.notfound'))
-            .setType('error')
+            .setType('error');
           return interaction.reply({
             embeds: [embed],
             components: [row],
-            ephemeral: true
-          })
+            ephemeral: true,
+          });
         }
         embed.setDescription(
           client.i18n.t('commands.help.description.args', {
-            arg: category
-          })
-        )
-        let isSlash = commands?.filter((x) => x.isSlash)
+            arg: category,
+          }),
+        );
+        let isSlash = commands?.filter((x) => x.isSlash);
         if (isSlash?.length === 0) {
-          embed.setTitle(client.i18n.t('main.title.error'))
+          embed.setTitle(client.i18n.t('main.title.error'));
           embed.setDescription(
             client.i18n.t('commands.help.description.notfound2', {
-              category: category
-            })
-          )
+              category: category,
+            }),
+          );
         } else {
           commands.forEach((command) => {
-            if (!command.isSlash) return
+            if (!command.isSlash) return;
             embed.addFields({
               name: `\`/${command.name}\``,
-              value: `> ${command.description}`
-            })
-          })
+              value: `> ${command.description}`,
+            });
+          });
         }
         return interaction.reply({
           embeds: [embed],
           components: [row],
-          ephemeral: true
-        })
+          ephemeral: true,
+        });
       }
     },
   },

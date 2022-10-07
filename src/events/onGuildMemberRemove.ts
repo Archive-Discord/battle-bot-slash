@@ -17,14 +17,14 @@ const GreetingEvent = async (client: BotClient, member: GuildMember | PartialGui
   if (!WelcomeSettingDB) return;
   if (!WelcomeSettingDB.outting_message || WelcomeSettingDB.outting_message == '') return;
   const WelcomeChannel = member.guild.channels.cache.get(
-    WelcomeSettingDB.channel_id!
-  ) as TextChannel
-  if (!WelcomeChannel) return
-  const embed = new Embed(client, 'warn')
+    WelcomeSettingDB.channel_id!,
+  ) as TextChannel;
+  if (!WelcomeChannel) return;
+  const embed = new Embed(client, 'warn');
   embed
     .setAuthor({
       name: member.user.username,
-      iconURL: member.user.displayAvatarURL()
+      iconURL: member.user.displayAvatarURL(),
     })
     .setDescription(
       new String(WelcomeSettingDB.outting_message)
@@ -33,11 +33,11 @@ const GreetingEvent = async (client: BotClient, member: GuildMember | PartialGui
         .replaceAll('${servername}', member.guild.name)
         .replaceAll(
           '${memberCount}',
-          member.guild.memberCount.toString().replaceAll('${줄바꿈}', '\n')
-        )
-    )
-  return await WelcomeChannel.send({ embeds: [embed] })
-}
+          member.guild.memberCount.toString().replaceAll('${줄바꿈}', '\n'),
+        ),
+    );
+  return await WelcomeChannel.send({ embeds: [embed] });
+};
 
 const LoggerEvent = async (client: BotClient, member: GuildMember | PartialGuildMember) => {
   const LoggerSettingDB = await LoggerSetting.findOne({
@@ -53,7 +53,7 @@ const LoggerEvent = async (client: BotClient, member: GuildMember | PartialGuild
     .setTitle('멤버 퇴장')
     .setAuthor({
       name: member.user.username,
-      iconURL: member.user.displayAvatarURL()
+      iconURL: member.user.displayAvatarURL(),
     })
     .addFields({
       name: '유저',

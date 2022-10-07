@@ -1,7 +1,7 @@
-import { BaseCommand } from '../../structures/Command'
-import Embed from '../../utils/Embed'
-import { playerStats } from '../../utils/pubg'
-import { SlashCommandBuilder } from '@discordjs/builders'
+import { BaseCommand } from '../../structures/Command';
+import Embed from '../../utils/Embed';
+import { playerStats } from '../../utils/pubg';
+import { SlashCommandBuilder } from '@discordjs/builders';
 
 export default new BaseCommand(
   {
@@ -13,8 +13,8 @@ export default new BaseCommand(
     let embed = new Embed(client, 'error')
       .setTitle(client.i18n.t('main.title.error'))
       .setDescription(client.i18n.t('main.description.slashcommand'))
-      .setColor('#2f3136')
-    return message.reply({ embeds: [embed] })
+      .setColor('#2f3136');
+    return message.reply({ embeds: [embed] });
   },
   {
     // @ts-ignore
@@ -22,10 +22,7 @@ export default new BaseCommand(
       .setName('배그전적')
       .setDescription('유저의 배틀그라운드 전적을 확인합니다')
       .addStringOption((user) =>
-        user
-          .setName('user')
-          .setDescription('배틀그라운드 닉네임을 적어주세요')
-          .setRequired(true)
+        user.setName('user').setDescription('배틀그라운드 닉네임을 적어주세요').setRequired(true),
       )
       .addStringOption((mode) =>
         mode
@@ -36,18 +33,18 @@ export default new BaseCommand(
             { name: '3인칭', value: 'tpp' },
             { name: '1인칭', value: 'fpp' },
             { name: '3인칭 (경쟁)', value: 'tpprank' },
-            { name: '1인칭 (경쟁)', value: 'fpprank' }
-          )
+            { name: '1인칭 (경쟁)', value: 'fpprank' },
+          ),
       ),
     options: {
       name: '배그전적',
       isSlash: true,
     },
     async execute(client, interaction) {
-      await interaction.deferReply({ ephemeral: true })
-      let nickname = interaction.options.getString('user', true)
-      let mode = interaction.options.getString('mode', true)
-      return await playerStats(nickname, mode, interaction)
-    }
-  }
-)
+      await interaction.deferReply({ ephemeral: true });
+      let nickname = interaction.options.getString('user', true);
+      let mode = interaction.options.getString('mode', true);
+      return await playerStats(nickname, mode, interaction);
+    },
+  },
+);

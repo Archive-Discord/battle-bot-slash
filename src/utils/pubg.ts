@@ -4,19 +4,14 @@ import {
   ButtonBuilder,
   EmbedBuilder,
   ButtonStyle,
-  ComponentType
-} from 'discord.js'
-import {
-  Client as PUBGClient,
-  GameModeStatGamemode,
-  Season,
-  Shard
-} from 'archive-pubg-ts'
-import config from '../../config'
-import { RankedGameModeStats, GameModeStat, PubgDB } from '../../typings'
-import PubgStats from '../schemas/PubgStatsSchema'
-import { Day } from './DateFormatting'
-import Embed from './Embed'
+  ComponentType,
+} from 'discord.js';
+import { Client as PUBGClient, GameModeStatGamemode, Season, Shard } from 'archive-pubg-ts';
+import config from '../../config';
+import { RankedGameModeStats, GameModeStat, PubgDB } from '../../typings';
+import PubgStats from '../schemas/PubgStatsSchema';
+import { Day } from './DateFormatting';
+import Embed from './Embed';
 
 export const playerStats = async (
   nickname: string,
@@ -32,23 +27,20 @@ export const playerStats = async (
         .setLabel('스팀')
         .setCustomId('pubg.steam')
         .setStyle(ButtonStyle.Secondary),
-      new ButtonBuilder()
-        .setLabel('카카오')
-        .setCustomId('pubg.kakao')
-        .setStyle(2) // extend ButtonStyle.Secondary
-    ]
+      new ButtonBuilder().setLabel('카카오').setCustomId('pubg.kakao').setStyle(2), // extend ButtonStyle.Secondary
+    ];
     embedError.setDescription(
       '처음으로 전적을 검색하는 닉네임 같아요! \n 서버를 선택해 주세요! 다음부터는 선택 없이 검색이 가능해요!',
     );
     embedError.setColor('#2f3136');
     await interaction.editReply({
       embeds: [embedError],
-      components: [new ActionRowBuilder<ButtonBuilder>().addComponents(buttons)]
-    })
+      components: [new ActionRowBuilder<ButtonBuilder>().addComponents(buttons)],
+    });
     const collector = interaction.channel?.createMessageComponentCollector({
       componentType: ComponentType.Button,
-      time: 30 * 1000
-    })
+      time: 30 * 1000,
+    });
     // @ts-ignore
     collector?.on('collect', async (collector_interaction) => {
       if (collector_interaction.customId === 'pubg.kakao') {
@@ -332,15 +324,13 @@ const rankStatEmbed = (
   mode: string,
   last_update: Date,
 ) => {
-  const embed = new EmbedBuilder()
+  const embed = new EmbedBuilder();
   if (!stats) {
-    embed.setDescription(
-      `\`${nickname}\`님의 ${mode} 스쿼드 전적을 찾을 수 없습니다`
-    )
+    embed.setDescription(`\`${nickname}\`님의 ${mode} 스쿼드 전적을 찾을 수 없습니다`);
     embed.setColor('#ED4245').setFooter({
-      text: `마지막 업데이트: ${Day(last_update).fromNow(false)}`
-    })
-    return embed
+      text: `마지막 업데이트: ${Day(last_update).fromNow(false)}`,
+    });
+    return embed;
   }
   embed
     .setColor('#2f3136')
@@ -349,80 +339,76 @@ const rankStatEmbed = (
       stats.currentTier ? `${stats.currentTier.tier} ${stats.currentTier.subTier}` : '언랭크',
     )
     .setThumbnail(
-      `https://dak.gg/pubg/images/tiers/s7/rankicon_${stats.currentTier.tier.toLowerCase() + stats.currentTier.subTier
+      `https://dak.gg/pubg/images/tiers/s7/rankicon_${
+        stats.currentTier.tier.toLowerCase() + stats.currentTier.subTier
       }.png`,
     )
     .addFields({ name: 'KDA', value: stats.kda.toFixed(2), inline: true })
     .addFields({
       name: '승률',
       value: (stats.winRatio * 100).toFixed(1) + '%',
-      inline: true
+      inline: true,
     })
     .addFields({
       name: 'TOP 10',
       value: (stats.top10Ratio * 100).toFixed(1) + '%',
-      inline: true
+      inline: true,
     })
     .addFields({
       name: '평균 딜량',
       value: (stats.damageDealt / stats.roundsPlayed).toFixed(0),
-      inline: true
+      inline: true,
     })
     .addFields({
       name: '게임 수',
       value: stats.roundsPlayed.toString(),
-      inline: true
+      inline: true,
     })
     .addFields({
       name: '평균 등수',
       value: stats.avgRank.toFixed(1) + '등',
-      inline: true
+      inline: true,
     })
-    .setFooter({ text: `마지막 업데이트: ${Day(last_update).fromNow(false)}` })
-  return embed
-}
+    .setFooter({ text: `마지막 업데이트: ${Day(last_update).fromNow(false)}` });
+  return embed;
+};
 
-const statEmbed = (
-  stats: GameModeStat,
-  nickname: string,
-  mode: string,
-  last_update: Date
-) => {
-  const winGamePercent = (stats.wins / stats.roundsPlayed) * 100
-  const top10GamePercent = (stats.top10s / stats.roundsPlayed) * 100
+const statEmbed = (stats: GameModeStat, nickname: string, mode: string, last_update: Date) => {
+  const winGamePercent = (stats.wins / stats.roundsPlayed) * 100;
+  const top10GamePercent = (stats.top10s / stats.roundsPlayed) * 100;
   const embed = new EmbedBuilder()
     .setColor('#2f3136')
     .setAuthor({ name: `${nickname}님의 ${mode} 전적` })
     .addFields({
       name: 'KDA',
       value: ((stats.kills + stats.assists) / stats.losses).toFixed(2),
-      inline: true
+      inline: true,
     })
     .addFields({
       name: '승률',
       value: winGamePercent.toFixed(1) + '%',
-      inline: true
+      inline: true,
     })
     .addFields({
       name: 'TOP 10',
       value: top10GamePercent.toFixed(1) + '%',
-      inline: true
+      inline: true,
     })
     .addFields({
       name: '평균 딜량',
       value: (stats.damageDealt / stats.roundsPlayed).toFixed(0),
-      inline: true
+      inline: true,
     })
     .addFields({
       name: '게임 수',
       value: stats.roundsPlayed.toString(),
-      inline: true
+      inline: true,
     })
     .addFields({
       name: '최다 킬',
       value: stats.roundMostKills + '킬',
-      inline: true
+      inline: true,
     })
-    .setFooter({ text: `마지막 업데이트: ${Day(last_update).fromNow(false)}` })
-  return embed
-}
+    .setFooter({ text: `마지막 업데이트: ${Day(last_update).fromNow(false)}` });
+  return embed;
+};

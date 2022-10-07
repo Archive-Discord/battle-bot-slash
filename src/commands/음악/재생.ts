@@ -22,7 +22,7 @@ export default new BaseCommand(
         option
           .setName('query')
           .setDescription('재생할 노래 재목 또는 링크를 적어주세요')
-          .setRequired(true)
+          .setRequired(true),
       ),
     async execute(client, interaction) {
       await interaction.deferReply();

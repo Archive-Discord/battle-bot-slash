@@ -1,24 +1,24 @@
-import { ButtonInteraction } from '../../structures/Command'
-import Embed from '../../utils/Embed'
-import config from '../../../config'
-import UserDB from '../../schemas/userSchema'
-import axios, { AxiosError } from 'axios'
-import { YoutubeChannels } from '../../../typings'
-import { ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js'
+import { ButtonInteraction } from '../../structures/Command';
+import Embed from '../../utils/Embed';
+import config from '../../../config';
+import UserDB from '../../schemas/userSchema';
+import axios, { AxiosError } from 'axios';
+import { YoutubeChannels } from '../../../typings';
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js';
 
 export default new ButtonInteraction(
   {
     name: 'youtube.check',
   },
   async (client, interaction) => {
-    await interaction.deferReply({ ephemeral: true })
-    if (!interaction.channel) return
-    const lodingEmbed = new Embed(client, 'info').setColor('#2f3136')
-    const errorEmbed = new Embed(client, 'error').setColor('#2f3136')
-    const successEmbed = new Embed(client, 'success').setColor('#2f3136')
-    lodingEmbed.setDescription('**유튜브에서 정보를 찾아보는 중이에요!**')
-    await interaction.editReply({ embeds: [lodingEmbed] })
-    const userdb = await UserDB.findOne({ id: interaction.user.id })
+    await interaction.deferReply({ ephemeral: true });
+    if (!interaction.channel) return;
+    const lodingEmbed = new Embed(client, 'info').setColor('#2f3136');
+    const errorEmbed = new Embed(client, 'error').setColor('#2f3136');
+    const successEmbed = new Embed(client, 'success').setColor('#2f3136');
+    lodingEmbed.setDescription('**유튜브에서 정보를 찾아보는 중이에요!**');
+    await interaction.editReply({ embeds: [lodingEmbed] });
+    const userdb = await UserDB.findOne({ id: interaction.user.id });
     if (!userdb || !userdb.google_accessToken) {
       errorEmbed.setDescription(
         `**[여기](${config.web?.baseurl}/api/auth/google)에서 로그인후 다시 진행해주세요!**`,
@@ -41,15 +41,12 @@ export default new ButtonInteraction(
             const button1 = new ButtonBuilder()
               .setCustomId('youtube.subscription')
               .setLabel('네')
-              .setStyle(ButtonStyle.Primary)
+              .setStyle(ButtonStyle.Primary);
             const button2 = new ButtonBuilder()
               .setCustomId('youtube.nosubscription')
               .setLabel('아니요')
-              .setStyle(ButtonStyle.Danger)
-            const row = new ActionRowBuilder<ButtonBuilder>().addComponents([
-              button1,
-              button2
-            ])
+              .setStyle(ButtonStyle.Danger);
+            const row = new ActionRowBuilder<ButtonBuilder>().addComponents([button1, button2]);
             errorEmbed.setDescription(
               `**구독이 되어있지 않은 거 같아요!** \n 직접 구독해 드릴까요?`,
             );

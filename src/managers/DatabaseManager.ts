@@ -22,11 +22,8 @@ export default class DatabaseManager extends BaseManager {
   async load(schemaPath = path.join(__dirname, '../schemas')) {
     switch (this.type) {
       case 'mongodb': {
-        this.logger.info('Using MongoDB...')
-        mongoose.connect(
-          this.client.config.database.url,
-          this.client.config.database.options
-        )
+        this.logger.info('Using MongoDB...');
+        mongoose.connect(this.client.config.database.url, this.client.config.database.options);
 
         this.client.db = mongoose.connection;
 
@@ -48,7 +45,7 @@ export default class DatabaseManager extends BaseManager {
   }
 
   private loadSchemas(schemaPath: string) {
-    this.logger.info('Loading schemas...')
+    this.logger.info('Loading schemas...');
 
     const schemaFolder = fs.readdirSync(schemaPath);
 
@@ -70,14 +67,10 @@ export default class DatabaseManager extends BaseManager {
         } catch (error: any) {
           this.logger.error(`Error loading schema ${schemaFile}.\n` + error.stack);
         } finally {
-          this.logger.debug(
-            `Loaded schemas. count: ${this.client.schemas.size}`
-          )
+          this.logger.debug(`Loaded schemas. count: ${this.client.schemas.size}`);
         }
-      })
-      this.logger.info(
-        `Succesfully loaded schemas. count: ${this.client.schemas.size}`
-      )
+      });
+      this.logger.info(`Succesfully loaded schemas. count: ${this.client.schemas.size}`);
     } catch (error: any) {
       this.logger.error('Error fetching folder list.\n' + error.stack);
     }

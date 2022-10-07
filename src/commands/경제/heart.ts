@@ -1,11 +1,11 @@
-import { BaseCommand } from '../../structures/Command'
-import Embed from '../../utils/Embed'
-import Discord, { ButtonBuilder, ButtonStyle } from 'discord.js'
-import Schema from '../../schemas/Money'
-import axios from 'axios'
-import config from '../../../config'
-import DateFormatting from '../../utils/DateFormatting'
-import HeartSchema from '../../schemas/HeartCheck'
+import { BaseCommand } from '../../structures/Command';
+import Embed from '../../utils/Embed';
+import Discord, { ButtonBuilder, ButtonStyle } from 'discord.js';
+import Schema from '../../schemas/Money';
+import axios from 'axios';
+import config from '../../../config';
+import DateFormatting from '../../utils/DateFormatting';
+import HeartSchema from '../../schemas/HeartCheck';
 
 export default new BaseCommand(
   {
@@ -17,16 +17,16 @@ export default new BaseCommand(
     let embed = new Embed(client, 'warn')
       .setTitle(client.i18n.t('commands.heart.title.heart'))
       .setDescription(client.i18n.t('commands.heart.description.platform'))
-      .setColor('#2f3136')
-    const money = await Schema.findOne({ userid: message.author.id })
+      .setColor('#2f3136');
+    const money = await Schema.findOne({ userid: message.author.id });
     if (!money) {
-      embed.setTitle(client.i18n.t('main.title.error'))
+      embed.setTitle(client.i18n.t('main.title.error'));
       embed.setDescription(
         client.i18n.t('commands.heart.description.account', {
-          author: message.author
-        })
-      )
-      return message.reply({ embeds: [embed] })
+          author: message.author,
+        }),
+      );
+      return message.reply({ embeds: [embed] });
     }
     let m = await message.reply({
       embeds: [embed],
@@ -36,17 +36,17 @@ export default new BaseCommand(
             new Discord.ButtonBuilder()
               .setLabel(client.i18n.t('commands.heart.button.kbl'))
               .setStyle(ButtonStyle.Primary)
-              .setCustomId('heart.koreanlist')
+              .setCustomId('heart.koreanlist'),
           )
           .addComponents(
             new Discord.ButtonBuilder()
               .setLabel(client.i18n.t('commands.heart.button.archive'))
               .setStyle(ButtonStyle.Primary)
-              .setCustomId('heart.archive')
-          )
-      ]
-    })
-    const collector = m.createMessageComponentCollector({ time: 10000 })
+              .setCustomId('heart.archive'),
+          ),
+      ],
+    });
+    const collector = m.createMessageComponentCollector({ time: 10000 });
     collector.on('collect', async (i) => {
       if (i.user.id != message.author.id) return;
       if (i.customId == 'heart.koreanlist') {
@@ -66,16 +66,13 @@ export default new BaseCommand(
                 .setTitle(client.i18n.t('commands.heart.title.kbl'))
                 .setDescription(client.i18n.t('commands.heart.description.kbl'))
                 .setTimestamp()
-                .setColor('#2f3136')
-              let link =
-                new Discord.ActionRowBuilder<ButtonBuilder>().addComponents(
-                  new Discord.ButtonBuilder()
-                    .setURL(
-                      `https://koreanbots.dev/bots/${client.user?.id}/vote`
-                    )
-                    .setLabel(client.i18n.t('main.button.heart'))
-                    .setStyle(ButtonStyle.Link)
-                )
+                .setColor('#2f3136');
+              let link = new Discord.ActionRowBuilder<ButtonBuilder>().addComponents(
+                new Discord.ButtonBuilder()
+                  .setURL(`https://koreanbots.dev/bots/${client.user?.id}/vote`)
+                  .setLabel(client.i18n.t('main.button.heart'))
+                  .setStyle(ButtonStyle.Link),
+              );
               i.reply({
                 embeds: [embed],
                 components: [link],
@@ -96,11 +93,11 @@ export default new BaseCommand(
                   .setTitle(client.i18n.t('commands.heart.title.success'))
                   .setDescription(
                     client.i18n.t('commands.heart.description.successkbl', {
-                      username: message.author.username
-                    })
+                      username: message.author.username,
+                    }),
                   )
                   .setTimestamp()
-                  .setColor('#2f3136')
+                  .setColor('#2f3136');
                 i.reply({
                   embeds: [embed],
                 });
@@ -109,10 +106,8 @@ export default new BaseCommand(
                 embed = new Embed(client, 'success')
                   .setTitle(client.i18n.t('commands.heart.title.fail'))
                   .setDescription(
-                    `${DateFormatting._format(
-                      res.data.data.lastVote + 12 * 60 * 60 * 1000,
-                      'R'
-                    )}` + client.i18n.t('commands.heart.description.later')
+                    `${DateFormatting._format(res.data.data.lastVote + 12 * 60 * 60 * 1000, 'R')}` +
+                      client.i18n.t('commands.heart.description.later'),
                   )
                   .setTimestamp()
                   .setColor('#2f3136');
@@ -128,8 +123,8 @@ export default new BaseCommand(
               .setTitle(client.i18n.t('main.title.error'))
               .setDescription(
                 client.i18n.t('commands.heart.description.error', {
-                  mesg: e.message
-                })
+                  mesg: e.message,
+                }),
               )
               .setFooter({ text: `${message.author.tag}` })
               .setTimestamp()
@@ -151,18 +146,15 @@ export default new BaseCommand(
             if (!res.data.data.like) {
               embed = new Embed(client, 'warn')
                 .setTitle(client.i18n.t('commands.heart.title.archive'))
-                .setDescription(
-                  client.i18n.t('commands.heart.description.archive')
-                )
+                .setDescription(client.i18n.t('commands.heart.description.archive'))
                 .setTimestamp()
-                .setColor('#2f3136')
-              let link =
-                new Discord.ActionRowBuilder<ButtonBuilder>().addComponents(
-                  new Discord.ButtonBuilder()
-                    .setURL(`https://archiver.me/bots/${client.user?.id}/like`)
-                    .setLabel(client.i18n.t('main.button.heart'))
-                    .setStyle(ButtonStyle.Link)
-                )
+                .setColor('#2f3136');
+              let link = new Discord.ActionRowBuilder<ButtonBuilder>().addComponents(
+                new Discord.ButtonBuilder()
+                  .setURL(`https://archiver.me/bots/${client.user?.id}/like`)
+                  .setLabel(client.i18n.t('main.button.heart'))
+                  .setStyle(ButtonStyle.Link),
+              );
               i.reply({
                 embeds: [embed],
                 components: [link],
@@ -183,8 +175,8 @@ export default new BaseCommand(
                   .setTitle(client.i18n.t('commands.heart.title.success'))
                   .setDescription(
                     client.i18n.t('commands.heart.description.successac', {
-                      username: message.author.username
-                    })
+                      username: message.author.username,
+                    }),
                   )
                   .setTimestamp()
                   .setColor('#2f3136');
@@ -199,9 +191,9 @@ export default new BaseCommand(
                     client.i18n.t('commands.heart.description.later', {
                       dataformat: DateFormatting._format(
                         res.data.data.lastVote + 12 * 60 * 60 * 1000,
-                        'R'
-                      )
-                    })
+                        'R',
+                      ),
+                    }),
                   )
                   .setTimestamp()
                   .setColor('#2f3136');
@@ -217,8 +209,8 @@ export default new BaseCommand(
               .setTitle(client.i18n.t('main.title.error'))
               .setDescription(
                 client.i18n.t('commands.heart.description.error', {
-                  mesg: e.message
-                })
+                  mesg: e.message,
+                }),
               )
               .setFooter({ text: `${message.author.tag}` })
               .setTimestamp()

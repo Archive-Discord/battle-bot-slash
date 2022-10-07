@@ -1,18 +1,18 @@
 {
   "main": {
-    "title":{
-      "error":"❌ 에러 발생",
+    "title": {
+      "error": "❌ 에러 발생",
       "loading": "생각하는 중..."
     },
-    "description":{
+    "description": {
       "slashcommand": "해당 명령어는 슬래쉬 커맨드 ( / )로만 사용이 가능합니다.",
       "onlyserver": "이 명령어는 서버에서만 사용 가능합니다"
     },
-    "button":{
-      "heart":"하트 누르기"
+    "button": {
+      "heart": "하트 누르기"
     },
-    "hello":{
-      "world":"안녕하세요."
+    "hello": {
+      "world": "안녕하세요."
     }
   },
   "commands": {
@@ -29,7 +29,7 @@
     },
     "game": {
       "title": "🎮 게임",
-      "description":{
+      "description": {
         "server": "이 명령어는 서버에서만 사용이 가능합니다.",
         "member": "서버에서 유저를 찾지 못했습니다.",
         "voice": "먼저 음성채널에 입장해주세요.",
@@ -39,9 +39,9 @@
         "success": "성공적으로 게임코드가 생성되었었습니다.\n**초대코드가 활성화 되지 않을 경우 링크를 눌러주세요.**"
       }
     },
-    "youtube":{
-      "title":"🎮 유튜브",
-      "description":{
+    "youtube": {
+      "title": "🎮 유튜브",
+      "description": {
         "server": "이 명령어는 서버에서만 사용이 가능합니다.",
         "member": "서버에서 유저를 찾지 못했습니다.",
         "voice": "먼저 음성채널에 입장해주세요.",
@@ -50,18 +50,18 @@
         "success": "성공적으로 유튜브 같이보기가 생성되었었습니다.\n**초대코드가 활성화 되지 않을 경우 링크를 눌러주세요.**"
       }
     },
-    "gamble":{
+    "gamble": {
       "title": {
         "success": "⭕ 도박 성공",
         "fail": "❌ 도박 실패"
       },
-      "description":{
+      "description": {
         "success": "도박에 성공하셨습니다. + **{{money}}원**",
         "fail": "도박에 실패하셨습니다. - **{{money}}원**",
         "account": "계좌가 생성되어있지 않습니다. !돈받기 입력 부탁드립니다.",
         "scanmoney": "도박하실 돈의 양이 입력되지 않았습니다.",
         "int": "금액은 자연수만 입력해주세요.",
-        "toolow" : "1000원 이상부터 도박이 가능합니다.",
+        "toolow": "1000원 이상부터 도박이 가능합니다.",
         "toomany": "보유하신 돈보다 배팅하신 돈의 금액이 많습니다. 금액 확인 부탁드립니다."
       },
       "fields": {
@@ -69,30 +69,30 @@
         "value": "**{{fmoney}}원**"
       }
     },
-    "giveMoney":{
-      "title":{
-        "welcome":"환영합니다!",
-        "success":"⭕ 입금 완료",
-        "fail":"❌ 입금 실패"
+    "giveMoney": {
+      "title": {
+        "welcome": "환영합니다!",
+        "success": "⭕ 입금 완료",
+        "fail": "❌ 입금 실패"
       },
-      "description":{
-        "first":"처음이시군요! 50000원을 입금해드리겠습니다!",
-        "already":"오늘은 이미 10000원을 받으셨습니다."
+      "description": {
+        "first": "처음이시군요! 50000원을 입금해드리겠습니다!",
+        "already": "오늘은 이미 10000원을 받으셨습니다."
       },
-      "fields":{
+      "fields": {
         "name": "돈이 입금되었습니다!",
-        "value" : "잔액 :  {{money}}원"
+        "value": "잔액 :  {{money}}원"
       }
     },
-    "heart":{
-      "title":{
+    "heart": {
+      "title": {
         "success": "⭕ 하트 인증 성공",
         "fail": "❌ 하트 인증 실패",
         "kbl": "한국 디스코드 리스트 봇 하트인증",
         "archive": "아카이브 봇 하트인증",
         "heart": "하트인증"
       },
-      "description":{
+      "description": {
         "account": "{{author}}님의 정보가 확인되지 않습니다.\n먼저 상대에게 `!돈받기`를 입력하라고 알려주세요.",
         "platform": "하트인증 진행할 플랫폼을 선택해주세요!",
         "kbl": "한국 디스코드 리스트에 있는 배틀이 봇의 하트가 아직 눌려있지 않습니다.",
@@ -102,168 +102,168 @@
         "later": "{{dataformat}}뒤에 다시 인증해주세요!",
         "error": "하트 인증중 오류가 발생했어요! {{mesg}}"
       },
-      "button":{
+      "button": {
         "kbl": "한디리 인증",
         "archive": "아카이브 인증"
       }
     },
-    "leaderboard":{
-      "title":{
+    "leaderboard": {
+      "title": {
         "rank": "돈 순위표",
         "srank": "서버 돈 순위표"
       },
-      "fields":{
+      "fields": {
         "name": "{{num}}. {{username}}",
         "value": "{{money}}원",
         "nameserver": "{{num}}. {{username}}"
       }
     },
-    "sendMoney":{
-      "title":{
-        "success":"⭕ 송금 완료"
+    "sendMoney": {
+      "title": {
+        "success": "⭕ 송금 완료"
       },
-      "description":{
-        "select":"송금할 대상이 지정되지 않았습니다.",
-        "account":"{{author}}님의 정보가 확인되지 않습니다.\n먼저 `!돈받기`를 입력해 정보를 알려주세요!",
-        "account2":"계좌가 생성되지 않으셨습니다. \n계좌가 있으신 유저에게만 송금이 가능합니다.",
-        "useage":"사용법 : !송금 @멘션 (금액)",
-        "int":"금액은 자연수만 입력해주세요.",
-        "toolow":"1000원 이상부터 송금이 가능합니다.",
-        "toomany":"보내실려는 금액이 보유하신 금액보다 큽니다.",
-        "self":"돈을 본인에게 보내실 수 없습니다."
+      "description": {
+        "select": "송금할 대상이 지정되지 않았습니다.",
+        "account": "{{author}}님의 정보가 확인되지 않습니다.\n먼저 `!돈받기`를 입력해 정보를 알려주세요!",
+        "account2": "계좌가 생성되지 않으셨습니다. \n계좌가 있으신 유저에게만 송금이 가능합니다.",
+        "useage": "사용법 : !송금 @멘션 (금액)",
+        "int": "금액은 자연수만 입력해주세요.",
+        "toolow": "1000원 이상부터 송금이 가능합니다.",
+        "toomany": "보내실려는 금액이 보유하신 금액보다 큽니다.",
+        "self": "돈을 본인에게 보내실 수 없습니다."
       },
-      "fields":{
-        "sender":"송금인 잔액",
-        "won":"{{m}}원",
-        "receiver":"받는사람 잔액",
-        "won2":"{{m}}원"
+      "fields": {
+        "sender": "송금인 잔액",
+        "won": "{{m}}원",
+        "receiver": "받는사람 잔액",
+        "won2": "{{m}}원"
       }
     },
-    "wallet":{
-      "title":{
-        "have":"{{tag}}님의 잔액"
+    "wallet": {
+      "title": {
+        "have": "{{tag}}님의 잔액"
       },
-      "description":{
-        "account":"<@{{author}}>님의 정보가 기록되어있지 않습니다. 계좌가 있으신 유저에게만 송금이 가능합니다.",
+      "description": {
+        "account": "<@{{author}}>님의 정보가 기록되어있지 않습니다. 계좌가 있으신 유저에게만 송금이 가능합니다.",
         "have": "유저님의 잔액은 아래와 같습니다."
       },
-      "fields":{
-        "name":"잔액 :",
+      "fields": {
+        "name": "잔액 :",
         "value": "{{m}}원"
       }
     },
-    "stock":{
-      "title":{
-        "search":"{{keyword}} 검색 결과",
-        "ahave":"{{author}}님의 보유중인 주식",
-        "stockhelp":"주식 도움말",
+    "stock": {
+      "title": {
+        "search": "{{keyword}} 검색 결과",
+        "ahave": "{{author}}님의 보유중인 주식",
+        "stockhelp": "주식 도움말",
         "success": "⭕ 매수 성공",
         "cancel": "❌ 매수 취소",
         "success2": "⭕ 매도 성공",
         "cancel2": "❌ 매도 취소"
       },
-      "description":{
-        "notfound":"검색 결과가 없습니다.",
-        "bint":"매수하실 주식의 수량을 숫자만 입력해주세요.",
-        "bupto1":"매수하실 주식의 수량은 1이상의 숫자만 입력해주세요.",
-        "notfound2":"`{{keyword}}` 검색 결과가 없습니다.",
-        "accountnf":"등록되어 있지 않은 유저인 거 같습니다. 먼저 `{{prefix}}돈받기` 명령어로 등록을 해주세요.",
-        "lack":"`{{howlack}}`원이 부족합니다.\n잔액은 `{{howhave}}`원입니다.",
-        "bsuccess":"`{{item}}` `{{quantity}}`주를 매수했습니다.",
-        "bcancel":"매수를 취소하였습니다.",
-        "sint":"매도하실 주식의 수량을 숫자만 입력해주세요.",
-        "supto1":"매도하실 주식의 수량을 1이상의 숫자만 입력해주세요.",
-        "dhave":"`{{item}}`을(를) 보유하고 있지 않습니다.",
-        "dhave2":"`{{item}}`주식을 `{{quantity}}`주만큼 보유하고 있지 않습니다. 현재 보유량: `{{nowhave}}`주",
-        "sell":"`{{item}}` `{{quantity}}`주(`{{rnow}}원`)을 매도하시겠습니까?",
-        "ssuccess":"`{{item}}` `{{quantity}}`주를 매도했습니다.",
-        "scancel":"매도를 취소하였습니다.",
-        "dhave3":"보유중인 주식이없습니다. 먼저 `{{prefix}}주식` 명령어로 주식 명령어를 확인해주세요.",
-        "help":"아래에 있는 명령어로 주식을 사용하실 수 있습니다."
+      "description": {
+        "notfound": "검색 결과가 없습니다.",
+        "bint": "매수하실 주식의 수량을 숫자만 입력해주세요.",
+        "bupto1": "매수하실 주식의 수량은 1이상의 숫자만 입력해주세요.",
+        "notfound2": "`{{keyword}}` 검색 결과가 없습니다.",
+        "accountnf": "등록되어 있지 않은 유저인 거 같습니다. 먼저 `{{prefix}}돈받기` 명령어로 등록을 해주세요.",
+        "lack": "`{{howlack}}`원이 부족합니다.\n잔액은 `{{howhave}}`원입니다.",
+        "bsuccess": "`{{item}}` `{{quantity}}`주를 매수했습니다.",
+        "bcancel": "매수를 취소하였습니다.",
+        "sint": "매도하실 주식의 수량을 숫자만 입력해주세요.",
+        "supto1": "매도하실 주식의 수량을 1이상의 숫자만 입력해주세요.",
+        "dhave": "`{{item}}`을(를) 보유하고 있지 않습니다.",
+        "dhave2": "`{{item}}`주식을 `{{quantity}}`주만큼 보유하고 있지 않습니다. 현재 보유량: `{{nowhave}}`주",
+        "sell": "`{{item}}` `{{quantity}}`주(`{{rnow}}원`)을 매도하시겠습니까?",
+        "ssuccess": "`{{item}}` `{{quantity}}`주를 매도했습니다.",
+        "scancel": "매도를 취소하였습니다.",
+        "dhave3": "보유중인 주식이없습니다. 먼저 `{{prefix}}주식` 명령어로 주식 명령어를 확인해주세요.",
+        "help": "아래에 있는 명령어로 주식을 사용하실 수 있습니다."
       },
-      "fields":{
-        "nowprice":"현재가",
-        "nowpricev":"{{now}}원",
-        "dtd":"전일대비",
-        "dtdv":"{{diff}}원 ({{check}} {{rate}}%)",
-        "trade":"거래량",
-        "tradev":"{{quant}}주",
-        "highp":"고가",
-        "highpv":"{{high}}원",
-        "lowp":"저가",
-        "lowpv":"{{low}}원",
-        "tamount":"거래대금",
-        "tamountv":"{{amount}}백만원",
-        "tamount2":"거래금액",
-        "tamount2v":"{{total}}원",
-        "fee":"수수료",
-        "feev":"{{fee}}원 (2%)",
-        "sum":"총계",
-        "sumv":"{{total}}원",
-        "balance":"거래후 잔액",
-        "balancev":"{{minus}}원",
-        "helplist":"`{{prefix}}주식 목록 (주식명)`",
-        "helplistv":"> 검색한 주식들의 목록을 확인합니다",
-        "helpsearch":"`{{prefix}}주식 검색 (주식명)`",
-        "helpsearchv":"> 검색한 주식의 상세 정보를 확인합니다.",
-        "helpbuy":"`{{prefix}}주식 매수 (개수) (주식명)`",
-        "helpbuyv":"> 입력한 주식을 개수만큼 매수합니다.",
-        "helpsell":"`{{prefix}}주식 매도 (개수) (주식명)`",
-        "helpsellv":"> 입력한 주식을 개수만큼 매도합니다.",
-        "helphave":"`{{prefix}}주식 보유`",
-        "helphavev":"> 보유중인 주식을 확인합니다."
+      "fields": {
+        "nowprice": "현재가",
+        "nowpricev": "{{now}}원",
+        "dtd": "전일대비",
+        "dtdv": "{{diff}}원 ({{check}} {{rate}}%)",
+        "trade": "거래량",
+        "tradev": "{{quant}}주",
+        "highp": "고가",
+        "highpv": "{{high}}원",
+        "lowp": "저가",
+        "lowpv": "{{low}}원",
+        "tamount": "거래대금",
+        "tamountv": "{{amount}}백만원",
+        "tamount2": "거래금액",
+        "tamount2v": "{{total}}원",
+        "fee": "수수료",
+        "feev": "{{fee}}원 (2%)",
+        "sum": "총계",
+        "sumv": "{{total}}원",
+        "balance": "거래후 잔액",
+        "balancev": "{{minus}}원",
+        "helplist": "`{{prefix}}주식 목록 (주식명)`",
+        "helplistv": "> 검색한 주식들의 목록을 확인합니다",
+        "helpsearch": "`{{prefix}}주식 검색 (주식명)`",
+        "helpsearchv": "> 검색한 주식의 상세 정보를 확인합니다.",
+        "helpbuy": "`{{prefix}}주식 매수 (개수) (주식명)`",
+        "helpbuyv": "> 입력한 주식을 개수만큼 매수합니다.",
+        "helpsell": "`{{prefix}}주식 매도 (개수) (주식명)`",
+        "helpsellv": "> 입력한 주식을 개수만큼 매도합니다.",
+        "helphave": "`{{prefix}}주식 보유`",
+        "helphavev": "> 보유중인 주식을 확인합니다."
       },
-      "button":{
-        "accept":"확인",
-        "cancel":"아니요"
+      "button": {
+        "accept": "확인",
+        "cancel": "아니요"
       },
-      "message":{
-        "message":"- {{i}}. {{name}} {{quantity}}주 {{sum}}원 (실시간 정보 확인불가)",
+      "message": {
+        "message": "- {{i}}. {{name}} {{quantity}}주 {{sum}}원 (실시간 정보 확인불가)",
         "message2": "{{first}} {{i}}. {{name}} {{quantity}}주 [ {{second}} {{sum}}원 ]"
       }
     },
-    "Warning":{
-      "title":{
-        "warn":"경고"
+    "Warning": {
+      "title": {
+        "warn": "경고"
       },
-      "description":{
-        "deleted":"아래와 같이 경고가 삭감되었습니다.",
-        "warn":"{{username}}}님의 {{length}}개의 경고 중 5개의 경고 기록입니다."
+      "description": {
+        "deleted": "아래와 같이 경고가 삭감되었습니다.",
+        "warn": "{{username}}}님의 {{length}}개의 경고 중 5개의 경고 기록입니다."
       },
-      "fields":{
-        "user":"유저",
-        "userv":"<@{{id}}> (`{{id}}`)",
-        "id":"경고 ID",
-        "reasonv":"사유 : {{reason}}"
+      "fields": {
+        "user": "유저",
+        "userv": "<@{{id}}> (`{{id}}`)",
+        "id": "경고 ID",
+        "reasonv": "사유 : {{reason}}"
       },
-      "message":{
+      "message": {
         "permission": "해당 명령어를 사용할 권한이 없습니다.",
-        "notfound":"찾을 수 없는 경고 아이디 입니다.",
-        "no":"해당 유저의 경고 기록이 없습니다."
+        "notfound": "찾을 수 없는 경고 아이디 입니다.",
+        "no": "해당 유저의 경고 기록이 없습니다."
       },
-      "footer":"페이지 - {{warn}}/{{warn2}}"
+      "footer": "페이지 - {{warn}}/{{warn2}}"
     },
-    "level":{
-      "title":{
-        "levelinfo":"{{username}}님의 레벨 정보"
+    "level": {
+      "title": {
+        "levelinfo": "{{username}}님의 레벨 정보"
       },
-      "description":{
-        "nextlevel":"현재 `LV.{{level}}`입니다. 다음 레벨까지 `{{nxp)}}XP / {{fxp}}XP` 남았습니다.",
-        "new":"현재 `LV.0`입니다. 다음 레벨까지 `0XP / 15XP` 남았습니다.",
-        "noaccept":"해당 서버는 레벨 기능이 활성화되지 않은 서버입니다."
+      "description": {
+        "nextlevel": "현재 `LV.{{level}}`입니다. 다음 레벨까지 `{{nxp)}}XP / {{fxp}}XP` 남았습니다.",
+        "new": "현재 `LV.0`입니다. 다음 레벨까지 `0XP / 15XP` 남았습니다.",
+        "noaccept": "해당 서버는 레벨 기능이 활성화되지 않은 서버입니다."
       }
     },
-    "profile":{
-      "title":{
-        "userinfo":"{{username}}님의 정보"
+    "profile": {
+      "title": {
+        "userinfo": "{{username}}님의 정보"
       },
-      "description":{
+      "description": {
         "notfound": "찾을 수 없는 유저입니다"
       },
-      "fields":{
-        "user":"유저",
+      "fields": {
+        "user": "유저",
         "id": "아이디",
-        "status":"상태",
+        "status": "상태",
         "statusv1": "없음",
         "statusv2": "오프라인",
         "serverjoin": "서버 가입일",
@@ -272,48 +272,48 @@
         "webjoinv": "미가입"
       }
     },
-    "lol":{
-      "matchinfo":{
-        "win":"+ 승리",
+    "lol": {
+      "matchinfo": {
+        "win": "+ 승리",
         "lose": "- 패배"
       },
-      "title":{
-        "arg":"`{{args}}`의 프로필"
+      "title": {
+        "arg": "`{{args}}`의 프로필"
       },
-      "description":{
-        "info":"{{first}} - {{second}} {{third}} ({{fourth}}LP) \n {{wins}}승 / {{loses}}패 / {{fifth}}%",
+      "description": {
+        "info": "{{first}} - {{second}} {{third}} ({{fourth}}LP) \n {{wins}}승 / {{loses}}패 / {{fifth}}%",
         "unrank": "**언랭크**"
       },
-      "fields":{
-        "lately":"최근 10판 전적"
+      "fields": {
+        "lately": "최근 10판 전적"
       }
     },
-    "help":{
-      "title":{
-        "help":"{{username}} 도움말"
+    "help": {
+      "title": {
+        "help": "{{username}} 도움말"
       },
-      "description":{
-        "helpdes":"아래에 있는 명령어들을 이용해 도움말을 보실 수 있습니다.",
-        "notfound":"존재하지 않는 카테고리입니다.",
-        "args":"{{arg}} 관련 도움말 입니다!",
-        "notfound2":"{{category}} 카테고리에는 사용 가능한 (/) 명령어가 없어요"
+      "description": {
+        "helpdes": "아래에 있는 명령어들을 이용해 도움말을 보실 수 있습니다.",
+        "notfound": "존재하지 않는 카테고리입니다.",
+        "args": "{{arg}} 관련 도움말 입니다!",
+        "notfound2": "{{category}} 카테고리에는 사용 가능한 (/) 명령어가 없어요"
       },
-      "fields":{
-        "help":"`{{prefix}}도움말 {{command}}`",
-        "helpv":"> {{command}}관련 명령어들을 보내드려요!"
+      "fields": {
+        "help": "`{{prefix}}도움말 {{command}}`",
+        "helpv": "> {{command}}관련 명령어들을 보내드려요!"
       }
     },
-    "info":{
-      "title":{
-        "info":"{{username}} 정보"
+    "info": {
+      "title": {
+        "info": "{{username}} 정보"
       },
-      "description":{
-        "shardEmbed":"**서버의 Shard ID#{{id}} {{ping}}ms**\n"
+      "description": {
+        "shardEmbed": "**서버의 Shard ID#{{id}} {{ping}}ms**\n"
       },
-      "fields":{
-        "server":"서버 수",
-        "serverv":"{{size}}서버",
-        "user":"유저 수",
+      "fields": {
+        "server": "서버 수",
+        "serverv": "{{size}}서버",
+        "user": "유저 수",
         "userv": "{{usercount}}명",
         "uptime": "업타임",
         "systeminfo": "시스템정보",
@@ -321,12 +321,12 @@
         "usefullinkv": "[서포트 서버](https://discord.gg/WtGq7D7BZm) | [웹 대시보드](https://battlebot.kr) | [깃허브](https://github.com/Archive-Discord/battle-bot-slash) | [개인정보처리방침](https://battlebot.kr/help/privacy) | [상태](https://battlebot.kr/status)"
       }
     },
-    "premium":{
-      "title":{
-        "premium":"{{username}} 프리미엄"
+    "premium": {
+      "title": {
+        "premium": "{{username}} 프리미엄"
       },
-      "description":{
-        "premium":"이 서버는 프리미엄을 사용한 기록이 없습니다. [여기](https://battlebot.kr/premium) 에서 프리미엄을 구매해주세요.",
+      "description": {
+        "premium": "이 서버는 프리미엄을 사용한 기록이 없습니다. [여기](https://battlebot.kr/premium) 에서 프리미엄을 구매해주세요.",
         "premiumdate": "이 서버는 프리미엄이 {{year}}년 {{month}}월 {{date}}일에 만료 되었습니다 [여기](https://battlebot.kr/premium) 에서 프리미엄을 구매해주세요.",
         "premiumdate2": "이 서버의 프리미엄 만료일은 {{year}}년 {{month}}월 {{date}}일 입니다."
       }

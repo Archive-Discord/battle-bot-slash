@@ -1,14 +1,9 @@
-import Ticket from '../../schemas/ticketSchema'
-import TicketSetting from '../../schemas/ticketSettingSchema'
-import { ButtonInteraction } from '../../structures/Command'
-import randomstring from 'randomstring'
-import Embed from '../../utils/Embed'
-import {
-  ActionRowBuilder,
-  ButtonBuilder,
-  ButtonStyle,
-  ChannelType
-} from 'discord.js'
+import Ticket from '../../schemas/ticketSchema';
+import TicketSetting from '../../schemas/ticketSettingSchema';
+import { ButtonInteraction } from '../../structures/Command';
+import randomstring from 'randomstring';
+import Embed from '../../utils/Embed';
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle, ChannelType } from 'discord.js';
 export default new ButtonInteraction(
   {
     name: 'create',

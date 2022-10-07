@@ -1,18 +1,18 @@
 {
   "main": {
-    "title":{
-      "error":"❌ Error Occurred",
+    "title": {
+      "error": "❌ Error Occurred",
       "loading": "Thinking..."
     },
-    "description":{
+    "description": {
       "slashcommand": "This command is only available with the slash command( / ).",
       "onlyserver": "This command is only available on the server."
     },
-    "button":{
-      "heart":"Pressing hearts"
+    "button": {
+      "heart": "Pressing hearts"
     },
-    "hello":{
-      "world":"Hello World."
+    "hello": {
+      "world": "Hello World."
     }
   },
   "commands": {
@@ -29,7 +29,7 @@
     },
     "game": {
       "title": "🎮 Game",
-      "description":{
+      "description": {
         "member": "User not found on server.",
         "voice": "Please enter the voice channel first.",
         "stage": "This command is not available on stage channels.",
@@ -38,9 +38,9 @@
         "success": "The game code was successfully generated.\n**If the invitation code is not active, press the link.**"
       }
     },
-    "youtube":{
-      "title":"🎮 Youtube",
-      "description":{
+    "youtube": {
+      "title": "🎮 Youtube",
+      "description": {
         "member": "User not found on server.",
         "voice": "Please enter the voice channel first.",
         "stage": "This command is not available on stage channels.",
@@ -48,18 +48,18 @@
         "success": "The Youtube Together code was successfully generated.\n**If the invitation code is not active, press the link.**"
       }
     },
-    "gamble":{
+    "gamble": {
       "title": {
         "success": "⭕ Gambling Success",
         "fail": "❌ Gambling Failure"
       },
-      "description":{
+      "description": {
         "success": "You have succeeded in gambling. + **{{money}}₩**",
         "fail": "You failed to gamble. - **{{money}}₩**",
         "account": "Your account has not been created! Please enter `!getmoney`",
         "scanmoney": "The amount of money you want to gamble on has not been entered.",
         "int": "Please enter only natural numbers for the amount.",
-        "toolow" : "You can gamble for more than 1,000₩",
+        "toolow": "You can gamble for more than 1,000₩",
         "toomany": "The amount of money you bet on is more than the amount you have. Please check the amount."
       },
       "fields": {
@@ -67,30 +67,30 @@
         "value": "**{{fmoney}}₩**"
       }
     },
-    "giveMoney":{
-      "title":{
-        "welcome":"Welcome!",
-        "success":"⭕ Deposit completed",
-        "fail":"❌ Deposit failed"
+    "giveMoney": {
+      "title": {
+        "welcome": "Welcome!",
+        "success": "⭕ Deposit completed",
+        "fail": "❌ Deposit failed"
       },
-      "description":{
-        "first":"It's your first time! I'll deposit 50,000₩!",
-        "already":"You already received 10,000₩ today."
+      "description": {
+        "first": "It's your first time! I'll deposit 50,000₩!",
+        "already": "You already received 10,000₩ today."
       },
-      "fields":{
+      "fields": {
         "name": "The money has been deposited!",
-        "value" : "Balance: {{money}}₩"
+        "value": "Balance: {{money}}₩"
       }
     },
-    "heart":{
-      "title":{
+    "heart": {
+      "title": {
         "success": "⭕ Successful heart verification",
         "fail": "❌ Heart authentication failed",
         "kbl": "Korean Discord List Bot Heart Certification",
         "archive": "Archive bot heart authentication",
         "heart": "Hearts Certification"
       },
-      "description":{
+      "description": {
         "account": "<@{{author}}>'s information is not recorded.\nFirst, Please tell him/her to enter `!getmoney`.",
         "platform": "Please select a platform for heart certification.",
         "kbl": "The hearts of Battle Bot on the Korean discord list are not pressed yet.",
@@ -100,168 +100,168 @@
         "later": "Please prove it again in {{dataformat}}.",
         "error": "An error occurred while authenticating the heart. {{mesg}}"
       },
-      "button":{
+      "button": {
         "kbl": "Korean Discord Bot List Certification",
         "archive": "Archive Authentication"
       }
     },
-    "leaderboard":{
-      "title":{
+    "leaderboard": {
+      "title": {
         "rank": "Money Ranking",
         "srank": "Server Money Ranking"
       },
-      "fields":{
+      "fields": {
         "name": "{{num}}. {{username}}",
         "value": "{{money}}₩",
         "nameserver": "{{num}}. {{username}}"
       }
     },
-    "sendMoney":{
-      "title":{
-        "success":"⭕ Remittance completed"
+    "sendMoney": {
+      "title": {
+        "success": "⭕ Remittance completed"
       },
-      "description":{
-        "select":"No transfer destination specified.",
-        "account":"<@{{author}}>'s information is not recorded.\nFirst, Please tell him/her to enter `!getmoney`.",
-        "account2":"Account has not been created. \nOnly users with an account can transfer money.",
-        "useage":"Instruction : !moneysend @mention (amount)",
-        "int":"Please enter only natural numbers for the amount.",
-        "toolow":"You can transfer money from 1,000₩ or more.",
-        "toomany":"The amount you want to send is larger than the amount you have.",
-        "self":"You can't send money to yourself."
+      "description": {
+        "select": "No transfer destination specified.",
+        "account": "<@{{author}}>'s information is not recorded.\nFirst, Please tell him/her to enter `!getmoney`.",
+        "account2": "Account has not been created. \nOnly users with an account can transfer money.",
+        "useage": "Instruction : !moneysend @mention (amount)",
+        "int": "Please enter only natural numbers for the amount.",
+        "toolow": "You can transfer money from 1,000₩ or more.",
+        "toomany": "The amount you want to send is larger than the amount you have.",
+        "self": "You can't send money to yourself."
       },
-      "fields":{
-        "sender":"Remittor's balance",
-        "won":"{{m}}₩",
-        "receiver":"Recipient balance",
-        "won2":"{{m}}₩"
+      "fields": {
+        "sender": "Remittor's balance",
+        "won": "{{m}}₩",
+        "receiver": "Recipient balance",
+        "won2": "{{m}}₩"
       }
     },
-    "wallet":{
-      "title":{
-        "have":"{{tag}}'s balance"
+    "wallet": {
+      "title": {
+        "have": "{{tag}}'s balance"
       },
-      "description":{
-        "account":"<@{{author}}>'s information is not recorded.\nFirst, Please tell him/her to enter `!getmoney`.",
+      "description": {
+        "account": "<@{{author}}>'s information is not recorded.\nFirst, Please tell him/her to enter `!getmoney`.",
         "have": "Your balance is as follows."
       },
-      "fields":{
-        "name":"Balance : ",
+      "fields": {
+        "name": "Balance : ",
         "value": "{{m}}₩"
       }
     },
-    "stock":{
-      "title":{
-        "search":"{{keyword}} Search Results",
-        "ahave":"The stock {{author}} have",
-        "stockhelp":"Stock Help",
+    "stock": {
+      "title": {
+        "search": "{{keyword}} Search Results",
+        "ahave": "The stock {{author}} have",
+        "stockhelp": "Stock Help",
         "success": "⭕ Purchase success",
         "cancel": "❌ Cancel the purchase",
         "success2": "⭕ Sell success",
         "cancel2": "❌ cancel the sell"
       },
-      "description":{
-        "notfound":"No search results found.",
-        "bint":"Please enter the number of stocks you want to buy.",
-        "bupto1":"Please enter a number of 1 or more for the number of shares you want to buy.",
-        "notfound2":"Search result `{{keyword}}}` does not exist.",
-        "accountnf":"I don't think it's a registered user. First, Please register with the `{{prefix}}getmoney` command.",
-        "lack":"`{{howlack}}₩`Insufficient.\nYour balance is `{{howhave}}₩`.",
-        "bsuccess":"{{item}}` `{{quantity}}` successfully bought the stock.",
-        "bcancel":"The purchase has been canceled.",
-        "sint":"Please enter the number of stocks you want to sell.",
-        "supto1":"Please enter a number of 1 or more for the stock you want to sell.",
-        "dhave":"You do not have `{{item}}`.",
-        "dhave2":"`{{item}}`a stock of `{{quantity}}`you don't have as much as the state. Current holdings: `{{nowhave}}`stock",
-        "sell":"Would you like to sell `{{item}}` as much as `{{quantity}}`stock(`{{rnow}}₩`)",
-        "ssuccess":"`{{item}}` as much as `{{quantity}}`stock successfully selled",
-        "scancel":"The sell has been canceled.",
-        "dhave3":"You don't have any stocks in stock. First, Enter `{{prefix}}stock` and check other commands with the stock command.",
-        "help":"You can use the stock with the command below."
+      "description": {
+        "notfound": "No search results found.",
+        "bint": "Please enter the number of stocks you want to buy.",
+        "bupto1": "Please enter a number of 1 or more for the number of shares you want to buy.",
+        "notfound2": "Search result `{{keyword}}}` does not exist.",
+        "accountnf": "I don't think it's a registered user. First, Please register with the `{{prefix}}getmoney` command.",
+        "lack": "`{{howlack}}₩`Insufficient.\nYour balance is `{{howhave}}₩`.",
+        "bsuccess": "{{item}}` `{{quantity}}` successfully bought the stock.",
+        "bcancel": "The purchase has been canceled.",
+        "sint": "Please enter the number of stocks you want to sell.",
+        "supto1": "Please enter a number of 1 or more for the stock you want to sell.",
+        "dhave": "You do not have `{{item}}`.",
+        "dhave2": "`{{item}}`a stock of `{{quantity}}`you don't have as much as the state. Current holdings: `{{nowhave}}`stock",
+        "sell": "Would you like to sell `{{item}}` as much as `{{quantity}}`stock(`{{rnow}}₩`)",
+        "ssuccess": "`{{item}}` as much as `{{quantity}}`stock successfully selled",
+        "scancel": "The sell has been canceled.",
+        "dhave3": "You don't have any stocks in stock. First, Enter `{{prefix}}stock` and check other commands with the stock command.",
+        "help": "You can use the stock with the command below."
       },
-      "fields":{
-        "nowprice":"Current price",
-        "nowpricev":"{{now}}₩",
-        "dtd":"Compared to the previous day",
-        "dtdv":"{{diff}}₩ ({{check}} {{rate}}%)",
-        "trade":"Volume",
-        "tradev":"{{quant}}stock",
-        "highp":"High price",
-        "highpv":"{{high}}₩",
-        "lowp":"Low price",
-        "lowpv":"{{low}}₩",
-        "tamount":"Market capitalization",
-        "tamountv":"{{amount}}million ₩",
-        "tamount2":"Transaction amount",
-        "tamount2v":"{{total}}₩",
-        "fee":"Fee",
-        "feev":"{{fee}}₩ (2%)",
-        "sum":"Sum total",
-        "sumv":"{{total}}₩",
-        "balance":"Balance after transaction",
-        "balancev":"{{minus}}₩",
-        "helplist":"`{{prefix}}stock list (Stock name)`",
-        "helplistv":"> Check the list of stocks you searched for",
-        "helpsearch":"`{{prefix}}stock search (Stock name)`",
-        "helpsearchv":"> View the details of the stock you searched for.",
-        "helpbuy":"`{{prefix}}stock buy (amount) (Stock name)`",
-        "helpbuyv":"> Buy stocks as you enter.",
-        "helpsell":"`{{prefix}}stock sell (amount) (Stock name)`",
-        "helpsellv":"> Sell stocks as you enter.",
-        "helphave":"`{{prefix}}stock have`",
-        "helphavev":"> Check the stock you hold."
+      "fields": {
+        "nowprice": "Current price",
+        "nowpricev": "{{now}}₩",
+        "dtd": "Compared to the previous day",
+        "dtdv": "{{diff}}₩ ({{check}} {{rate}}%)",
+        "trade": "Volume",
+        "tradev": "{{quant}}stock",
+        "highp": "High price",
+        "highpv": "{{high}}₩",
+        "lowp": "Low price",
+        "lowpv": "{{low}}₩",
+        "tamount": "Market capitalization",
+        "tamountv": "{{amount}}million ₩",
+        "tamount2": "Transaction amount",
+        "tamount2v": "{{total}}₩",
+        "fee": "Fee",
+        "feev": "{{fee}}₩ (2%)",
+        "sum": "Sum total",
+        "sumv": "{{total}}₩",
+        "balance": "Balance after transaction",
+        "balancev": "{{minus}}₩",
+        "helplist": "`{{prefix}}stock list (Stock name)`",
+        "helplistv": "> Check the list of stocks you searched for",
+        "helpsearch": "`{{prefix}}stock search (Stock name)`",
+        "helpsearchv": "> View the details of the stock you searched for.",
+        "helpbuy": "`{{prefix}}stock buy (amount) (Stock name)`",
+        "helpbuyv": "> Buy stocks as you enter.",
+        "helpsell": "`{{prefix}}stock sell (amount) (Stock name)`",
+        "helpsellv": "> Sell stocks as you enter.",
+        "helphave": "`{{prefix}}stock have`",
+        "helphavev": "> Check the stock you hold."
       },
-      "button":{
-        "accept":"Accept",
-        "cancel":"Cancel"
+      "button": {
+        "accept": "Accept",
+        "cancel": "Cancel"
       },
-      "message":{
-        "message":"- {{i}}. {{name}} {{quantity}}stock {{sum}}₩ (Unable to check real-time information)",
+      "message": {
+        "message": "- {{i}}. {{name}} {{quantity}}stock {{sum}}₩ (Unable to check real-time information)",
         "message2": "{{first}} {{i}}. {{name}} {{quantity}}stock [ {{second}} {{sum}}₩ ]"
       }
     },
-    "Warning":{
-      "title":{
-        "warn":"Warning"
+    "Warning": {
+      "title": {
+        "warn": "Warning"
       },
-      "description":{
-        "deleted":"Warnings have been reduced as shown below.",
-        "warn":"{{username}}'s {{length}} alert history of five of the alerts."
+      "description": {
+        "deleted": "Warnings have been reduced as shown below.",
+        "warn": "{{username}}'s {{length}} alert history of five of the alerts."
       },
-      "fields":{
-        "user":"User",
-        "userv":"<@{{id}}> (`{{id}}`)",
-        "id":"Warning ID",
-        "reasonv":"Reason : {{reason}}"
+      "fields": {
+        "user": "User",
+        "userv": "<@{{id}}> (`{{id}}`)",
+        "id": "Warning ID",
+        "reasonv": "Reason : {{reason}}"
       },
-      "message":{
+      "message": {
         "permission": "You do not have permission to use this command.",
-        "notfound":"Warning ID not found.",
-        "no":"There is no warning history for this user."
+        "notfound": "Warning ID not found.",
+        "no": "There is no warning history for this user."
       },
-      "footer":"Page - {{warn}}/{{warn2}}"
+      "footer": "Page - {{warn}}/{{warn2}}"
     },
-    "level":{
-      "title":{
-        "levelinfo":"{{username}}'s level information"
+    "level": {
+      "title": {
+        "levelinfo": "{{username}}'s level information"
       },
-      "description":{
-        "nextlevel":"Current `LV.{{level}}`. `{{nxp}} XP / {{fxp}}XP` left until next level.",
-        "new":"Current `LV.0`. `0XP / 15XP` left until next level.",
-        "noaccept":"This server is a server with no level functionality enabled."
+      "description": {
+        "nextlevel": "Current `LV.{{level}}`. `{{nxp}} XP / {{fxp}}XP` left until next level.",
+        "new": "Current `LV.0`. `0XP / 15XP` left until next level.",
+        "noaccept": "This server is a server with no level functionality enabled."
       }
     },
-    "profile":{
-      "title":{
-        "userinfo":"{{username}}'s information"
+    "profile": {
+      "title": {
+        "userinfo": "{{username}}'s information"
       },
-      "description":{
+      "description": {
         "notfound": "User not found."
       },
-      "fields":{
-        "user":"User",
+      "fields": {
+        "user": "User",
         "id": "ID",
-        "status":"Status",
+        "status": "Status",
         "statusv1": "None",
         "statusv2": "Offline",
         "serverjoin": "Server Join Date",
@@ -270,48 +270,48 @@
         "webjoinv": "Not registered"
       }
     },
-    "lol":{
-      "matchinfo":{
-        "win":"+ Victory",
+    "lol": {
+      "matchinfo": {
+        "win": "+ Victory",
         "lose": "- Defeat"
       },
-      "title":{
-        "arg":"`{{args}}`'s profile'"
+      "title": {
+        "arg": "`{{args}}`'s profile'"
       },
-      "description":{
-        "info":"{{first}} - {{second}} {{third}} ({{fourth}}LP) \n {{wins}}wins / {{loses}}losss / {{fifth}}%",
+      "description": {
+        "info": "{{first}} - {{second}} {{third}} ({{fourth}}LP) \n {{wins}}wins / {{loses}}losss / {{fifth}}%",
         "unrank": "**Unrank**"
       },
-      "fields":{
-        "lately":"Recent 20 Game Stats"
+      "fields": {
+        "lately": "Recent 20 Game Stats"
       }
     },
-    "help":{
-      "title":{
-        "help":"{{username}} Help"
+    "help": {
+      "title": {
+        "help": "{{username}} Help"
       },
-      "description":{
-        "helpdes":"You can use the commands below for help.",
-        "notfound":"This category does not exist.",
-        "args":"Help about {{arg}}.",
-        "notfound2":"Help about {{arg}}.{{category}} There are no (/) commands available in the category."
+      "description": {
+        "helpdes": "You can use the commands below for help.",
+        "notfound": "This category does not exist.",
+        "args": "Help about {{arg}}.",
+        "notfound2": "Help about {{arg}}.{{category}} There are no (/) commands available in the category."
       },
-      "fields":{
-        "help":"`{{prefix}}help {{command}}`",
-        "helpv":"> {{command}}} related commands are sent!"
+      "fields": {
+        "help": "`{{prefix}}help {{command}}`",
+        "helpv": "> {{command}}} related commands are sent!"
       }
     },
-    "info":{
-      "title":{
-        "info":"{{username}} info"
+    "info": {
+      "title": {
+        "info": "{{username}} info"
       },
-      "description":{
-        "shardEmbed":"**Server's Shard ID#{{id}} {{ping}}ms**\n"
+      "description": {
+        "shardEmbed": "**Server's Shard ID#{{id}} {{ping}}ms**\n"
       },
-      "fields":{
-        "server":"Number of Servers",
-        "serverv":"`{{size}}`Servers",
-        "user":"Number of Users",
+      "fields": {
+        "server": "Number of Servers",
+        "serverv": "`{{size}}`Servers",
+        "user": "Number of Users",
         "userv": "`{{usercount}}`Users",
         "uptime": "Uptime",
         "systeminfo": "System Info",
@@ -319,12 +319,12 @@
         "usefullinkv": "[Support Server](https://discord.gg/WtGq7D7BZm) | [Web Dashboard](https://battlebot.kr) | [Github](https://github.com/Archive-Discord/battle-bot-slash) | [Privacy](https://battlebot.kr/help/privacy) | [Status](https://battlebot.kr/status)"
       }
     },
-    "premium":{
-      "title":{
-        "premium":"{{username}} Premium"
+    "premium": {
+      "title": {
+        "premium": "{{username}} Premium"
       },
-      "description":{
-        "premium":"This server has no history of using premium. Please purchase a premium at [Here](https://battlebot.kr/premium).",
+      "description": {
+        "premium": "This server has no history of using premium. Please purchase a premium at [Here](https://battlebot.kr/premium).",
         "premiumdate": "This server's premium expired on {{month}}(Month) {{date}}, {{year}}. Please purchase a premium at [Here](https://battlebot.kr/premium).",
         "premiumdate2": "The premium expiration date for this server is {{month}}(Month) {{date}}, {{year}}."
       }

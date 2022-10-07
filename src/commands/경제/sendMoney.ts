@@ -9,12 +9,10 @@ export default new BaseCommand(
   {
     name: 'sendMoney',
     description: '자신의 돈을 확인합니다.',
-    aliases: ['송금', 'moneysend', 'thdrma']
+    aliases: ['송금', 'moneysend', 'thdrma'],
   },
   async (client, message, args) => {
-    let embed = new Embed(client, 'warn').setTitle(
-      client.i18n.t('main.title.loading')
-    )
+    let embed = new Embed(client, 'warn').setTitle(client.i18n.t('main.title.loading'));
     let m = await message.reply({
       embeds: [embed],
     });
@@ -22,7 +20,7 @@ export default new BaseCommand(
     embed = new Embed(client, 'error')
       .setTitle(client.i18n.t('main.title.error'))
       .setDescription(client.i18n.t('commands.sendMoney.description.select'))
-      .setColor('#2f3136')
+      .setColor('#2f3136');
     if (!user)
       return m.edit({
         embeds: [embed],
@@ -32,8 +30,8 @@ export default new BaseCommand(
     embed = new Embed(client, 'error')
       .setDescription(
         client.i18n.t('commands.sendMoney.description.account', {
-          author: message.author
-        })
+          author: message.author,
+        }),
       )
       .setTimestamp()
       .setColor('#2f3136');
@@ -120,17 +118,17 @@ export default new BaseCommand(
         {
           name: client.i18n.t('commands.sendMoney.fields.sender'),
           value: client.i18n.t('commands.sendMoney.fields.won', {
-            m: comma(money - betting)
+            m: comma(money - betting),
           }),
-          inline: true
+          inline: true,
         },
         {
           name: client.i18n.t('commands.sendMoney.fields.receiver'),
           value: client.i18n.t('commands.sendMoney.fields.won2', {
-            m: money2 + betting
+            m: money2 + betting,
           }),
-          inline: true
-        }
+          inline: true,
+        },
       )
       .setTimestamp()
       .setColor('#2f3136');
@@ -144,32 +142,27 @@ export default new BaseCommand(
       .setName('송금')
       .setDescription('자신의 돈을 다른사람에게 송금합니다.')
       .addUserOption((options) =>
-        options
-          .setName('유저')
-          .setDescription('송금하실 유저를 선택해주세요.')
-          .setRequired(true)
+        options.setName('유저').setDescription('송금하실 유저를 선택해주세요.').setRequired(true),
       )
       .addIntegerOption((options) =>
         options
           .setName('송금액')
-          .setDescription(
-            '지정한 대상에게 송금하실 포인트를 작성해주세요. ( 최소 1000 포인트 )'
-          )
-          .setRequired(true)
+          .setDescription('지정한 대상에게 송금하실 포인트를 작성해주세요. ( 최소 1000 포인트 )')
+          .setRequired(true),
       ),
     options: {
       name: '돈',
       isSlash: true,
     },
     async execute(client, interaction) {
-      await interaction.deferReply({ ephemeral: true })
-      let user = interaction.options.getMember('유저') || interaction.member
-      let user2 = interaction.options.getUser('유저') || interaction.user
-      let betting = interaction.options.getInteger('송금액') || 0
+      await interaction.deferReply({ ephemeral: true });
+      let user = interaction.options.getMember('유저') || interaction.member;
+      let user2 = interaction.options.getUser('유저') || interaction.user;
+      let betting = interaction.options.getInteger('송금액') || 0;
       let embed = new Embed(client, 'error')
         .setTitle(client.i18n.t('main.title.error'))
         .setDescription(client.i18n.t('commands.sendMoney.description.select'))
-        .setColor('#2f3136')
+        .setColor('#2f3136');
       if (!user)
         return interaction.editReply({
           embeds: [embed],
@@ -179,8 +172,8 @@ export default new BaseCommand(
       embed = new Embed(client, 'error')
         .setDescription(
           client.i18n.t('commands.sendMoney.description.account', {
-            author: interaction.user
-          })
+            author: interaction.user,
+          }),
         )
         .setTimestamp()
         .setColor('#2f3136');
@@ -189,9 +182,7 @@ export default new BaseCommand(
           embeds: [embed],
         });
       embed = new Embed(client, 'error')
-        .setDescription(
-          client.i18n.t('commands.sendMoney.description.account2')
-        )
+        .setDescription(client.i18n.t('commands.sendMoney.description.account2'))
         .setTimestamp()
         .setColor('#2f3136');
       if (!tkdeoqkd)
@@ -249,23 +240,23 @@ export default new BaseCommand(
           {
             name: client.i18n.t('commands.sendMoney.fields.sender'),
             value: client.i18n.t('commands.sendMoney.fields.won', {
-              m: comma(money - betting)
+              m: comma(money - betting),
             }),
-            inline: true
+            inline: true,
           },
           {
             name: client.i18n.t('commands.sendMoney.fields.receiver'),
             value: client.i18n.t('commands.sendMoney.fields.won2', {
-              m: money2 + betting
+              m: money2 + betting,
             }),
-            inline: true
-          }
+            inline: true,
+          },
         )
         .setTimestamp()
-        .setColor('#2f3136')
+        .setColor('#2f3136');
       interaction.editReply({
-        embeds: [embed]
-      })
-    }
-  }
-)
+        embeds: [embed],
+      });
+    },
+  },
+);

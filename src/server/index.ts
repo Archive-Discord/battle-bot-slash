@@ -4,8 +4,8 @@ import Logger from '../utils/Logger';
 import BotClient from '../structures/BotClient';
 import cookieParser from 'cookie-parser';
 
-const logger = new Logger('web')
-const app = express()
+const logger = new Logger('web');
+const app = express();
 app.listen(3001, () => {
   logger.log('web started');
 });
@@ -19,8 +19,8 @@ const web = (client: BotClient) => {
     }),
   );
   app.use((req: any, res, next) => {
-    req.client = client
-    next()
-  })
-}
-export default web
+    req.client = client;
+    next();
+  });
+};
+export default web;

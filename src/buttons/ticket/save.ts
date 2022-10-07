@@ -12,26 +12,25 @@ export default new ButtonInteraction(
     await interaction.deferReply({ ephemeral: true });
     const ticket = await Ticket.findOne({
       guildId: interaction.guild?.id,
-      channelId: interaction.channel?.id
-    })
+      channelId: interaction.channel?.id,
+    });
     const ErrorEmbed = new Embed(client, 'error')
       .setTitle('찾을 수 없는 티켓 정보입니다')
-      .setColor('#2f3136')
-    if (!ticket) return await interaction.editReply({ embeds: [ErrorEmbed] })
-    let messages = new Collection() as any
+      .setColor('#2f3136');
+    if (!ticket) return await interaction.editReply({ embeds: [ErrorEmbed] });
+    let messages = new Collection() as any;
     let channelMessages = await interaction.channel?.messages.fetch({
-      limit: 100
-    })
+      limit: 100,
+    });
     const LoadingEmbed = new Embed(client, 'info')
       .setTitle('채팅 기록을 불러오는 중입니다')
-      .setColor('#2f3136')
+      .setColor('#2f3136');
     const NoMessageEmbed = new Embed(client, 'error')
       .setTitle('채팅 기록을 불러오지 못했습니다')
-      .setColor('#2f3136')
-    if (!channelMessages)
-      return interaction.editReply({ embeds: [NoMessageEmbed] })
-    messages = messages.concat(channelMessages)
-    await interaction.editReply({ embeds: [LoadingEmbed] })
+      .setColor('#2f3136');
+    if (!channelMessages) return interaction.editReply({ embeds: [NoMessageEmbed] });
+    messages = messages.concat(channelMessages);
+    await interaction.editReply({ embeds: [LoadingEmbed] });
     while (channelMessages?.size === 100) {
       channelMessages = await interaction.channel?.messages.fetch({
         limit: 100,
@@ -44,14 +43,14 @@ export default new ButtonInteraction(
         author: msg.author,
         created: msg.createdAt,
         messages: msg.content,
-        embed: msg.embeds[0]
-      })
-    })
-    MessageDB = MessageDB.reverse()
+        embed: msg.embeds[0],
+      });
+    });
+    MessageDB = MessageDB.reverse();
     const SaveingEmbed = new Embed(client, 'info')
       .setTitle('채팅 기록을 저장하는 중입니다')
-      .setColor('#2f3136')
-    await interaction.editReply({ embeds: [SaveingEmbed] })
+      .setColor('#2f3136');
+    await interaction.editReply({ embeds: [SaveingEmbed] });
     await Ticket.updateOne(
       { guildId: interaction.guild?.id, channelId: interaction.channel?.id },
       { $set: { messages: MessageDB } },

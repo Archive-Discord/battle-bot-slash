@@ -1,7 +1,7 @@
-import ko from './src/locales/ko.json'
-import en from './src/locales/en.json'
-import { IConfig } from './typings'
-import fs from 'fs'
+import ko from './src/locales/ko.json';
+import en from './src/locales/en.json';
+import { IConfig } from './typings';
+import fs from 'fs';
 
 let BUILD_NUMBER: string | null = fs.readFileSync('.git/HEAD').toString().trim();
 
@@ -44,7 +44,7 @@ const config: IConfig = {
     sharding: false,
     options: {
       intents: [130815],
-      allowedMentions: { parse: ['users', 'roles'], repliedUser: false }
+      allowedMentions: { parse: ['users', 'roles'], repliedUser: false },
     },
     token: '',
     owners: [],
@@ -70,7 +70,7 @@ const config: IConfig = {
   },
   devGuild: {
     guildID: '',
-    channelID: ''
+    channelID: '',
   },
   database: {
     /**
@@ -92,7 +92,7 @@ const config: IConfig = {
     Google_Client_Id: '',
     Google_Client_Secret: '',
     Google_Redirect_Url: '',
-    Google_Refresh_Token: ''
+    Google_Refresh_Token: '',
   },
   i18n: {
     options: {
@@ -100,15 +100,15 @@ const config: IConfig = {
       lng: 'ko',
       resources: {
         ko: {
-          translation: ko
+          translation: ko,
         },
         en: {
-          translation: en
-        }
+          translation: en,
+        },
       },
-      fallbackLng: ['ko', 'en']
-    }
-  }
-}
+      fallbackLng: ['ko', 'en'],
+    },
+  },
+};
 
 export default config;

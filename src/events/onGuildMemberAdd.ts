@@ -29,13 +29,13 @@ const WelecomEvent = async (client: BotClient, member: GuildMember) => {
   if (!WelcomeSettingDB) return;
   if (!WelcomeSettingDB.welcome_message || WelcomeSettingDB.welcome_message == '') return;
   const WelcomeChannel = member.guild.channels.cache.get(
-    WelcomeSettingDB.channel_id!
-  ) as TextChannel
-  if (!WelcomeChannel) return
+    WelcomeSettingDB.channel_id!,
+  ) as TextChannel;
+  if (!WelcomeChannel) return;
   const embed = new Embed(client, 'success')
     .setAuthor({
       name: member.user.username,
-      iconURL: member.user.displayAvatarURL()
+      iconURL: member.user.displayAvatarURL(),
     })
     .setDescription(
       new String(WelcomeSettingDB.welcome_message)
@@ -43,10 +43,10 @@ const WelecomEvent = async (client: BotClient, member: GuildMember) => {
         .replaceAll('${discriminator}', member.user.discriminator)
         .replaceAll('${servername}', member.guild.name)
         .replaceAll('${memberCount}', member.guild.memberCount.toString())
-        .replaceAll('${줄바꿈}', '\n')
-    )
-  return await WelcomeChannel.send({ embeds: [embed] })
-}
+        .replaceAll('${줄바꿈}', '\n'),
+    );
+  return await WelcomeChannel.send({ embeds: [embed] });
+};
 
 const WelecomLogEvent = async (client: BotClient, member: GuildMember) => {
   const LoggerSettingDB = await LoggerSetting.findOne({
@@ -62,7 +62,7 @@ const WelecomLogEvent = async (client: BotClient, member: GuildMember) => {
     .setTitle('멤버 추가')
     .setAuthor({
       name: member.user.username,
-      iconURL: member.user.displayAvatarURL()
+      iconURL: member.user.displayAvatarURL(),
     })
     .addFields({
       name: '유저',
@@ -78,8 +78,8 @@ const AutoModEvent = async (client: BotClient, member: GuildMember) => {
     const banlist = await Blacklist.find({ status: 'blocked' });
     const isUser = banlist.some((user) => user.user_id === member.id);
     if (isUser) {
-      const user = await Blacklist.findOne({ user_id: member.id })
-      return await member.ban({ reason: `[배틀이 자동차단] ${user?.reason}` })
+      const user = await Blacklist.findOne({ user_id: member.id });
+      return await member.ban({ reason: `[배틀이 자동차단] ${user?.reason}` });
     } else {
       return;
     }

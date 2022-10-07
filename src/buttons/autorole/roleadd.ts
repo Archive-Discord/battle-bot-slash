@@ -1,7 +1,7 @@
-import { DiscordAPIError, Role } from 'discord.js'
-import AutoRole from '../../schemas/AutoRoleSchema'
-import { ButtonInteraction } from '../../structures/Command'
-import Embed from '../../utils/Embed'
+import { DiscordAPIError, Role } from 'discord.js';
+import AutoRole from '../../schemas/AutoRoleSchema';
+import { ButtonInteraction } from '../../structures/Command';
+import Embed from '../../utils/Embed';
 
 export default new ButtonInteraction(
   {

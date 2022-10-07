@@ -1,26 +1,26 @@
-import { Event } from '../structures/Event'
-import CommandManager from '../managers/CommandManager'
-import ErrorManager from '../managers/ErrorManager'
-import { MessageCommand } from '../structures/Command'
-import BotClient from '../structures/BotClient'
-import { ChannelType, Message, RESTJSONErrorCodes } from 'discord.js'
-import Automod from '../schemas/autoModSchema'
-import Level from '../schemas/levelSchema'
-import LevelSetting from '../schemas/levelSettingSchema'
-import { check } from 'korcen'
-import { checkUserPremium } from '../utils/checkPremium'
-import { userWarnAdd } from '../utils/WarnHandler'
-const LevelCooldown = new Map()
+import { Event } from '../structures/Event';
+import CommandManager from '../managers/CommandManager';
+import ErrorManager from '../managers/ErrorManager';
+import { MessageCommand } from '../structures/Command';
+import BotClient from '../structures/BotClient';
+import { ChannelType, Message, RESTJSONErrorCodes } from 'discord.js';
+import Automod from '../schemas/autoModSchema';
+import Level from '../schemas/levelSchema';
+import LevelSetting from '../schemas/levelSettingSchema';
+import { check } from 'korcen';
+import { checkUserPremium } from '../utils/checkPremium';
+import { userWarnAdd } from '../utils/WarnHandler';
+const LevelCooldown = new Map();
 
 export default new Event('messageCreate', async (client, message) => {
   const commandManager = new CommandManager(client);
   const errorManager = new ErrorManager(client);
 
-  if (message.author.bot) return
-  if (message.channel.type === ChannelType.DM) return
-  profanityFilter(client, message)
-  LevelSystem(client, message)
-  if (!message.content.startsWith(client.config.bot.prefix)) return
+  if (message.author.bot) return;
+  if (message.channel.type === ChannelType.DM) return;
+  profanityFilter(client, message);
+  LevelSystem(client, message);
+  if (!message.content.startsWith(client.config.bot.prefix)) return;
 
   const args = message.content.slice(client.config.bot.prefix.length).trim().split(/ +/g);
   const commandName = args.shift()?.toLowerCase();
@@ -31,7 +31,7 @@ export default new Event('messageCreate', async (client, message) => {
     await command?.execute(client, message, args);
   } catch (error: any) {
     if (error?.code === RESTJSONErrorCodes.MissingPermissions) {
-      return
+      return;
     }
     errorManager.report(error, { executer: message, isSend: true });
   }
@@ -51,68 +51,62 @@ const profanityFilter = async (client: BotClient, message: Message) => {
   }
 };
 
-const findCurse = async (
-  automodDB: any,
-  message: Message,
-  client: BotClient
-) => {
+const findCurse = async (automodDB: any, message: Message, client: BotClient) => {
   if (automodDB.useing.useCurseType === 'delete') {
     await message.reply('욕설 사용으로 자동 삭제됩니다').then((m) => {
       setTimeout(() => {
-        m.delete()
-      }, 5000)
-    })
+        m.delete();
+      }, 5000);
+    });
     try {
-      message.delete()
+      message.delete();
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   } else if (automodDB.useing.useCurseType === 'delete_kick') {
     await message.reply('욕설 사용으로 자동 삭제 후 추방됩니다').then((m) => {
       setTimeout(() => {
-        m.delete()
-      }, 5000)
-    })
+        m.delete();
+      }, 5000);
+    });
     try {
-      message.delete()
-      return message.member?.kick()
+      message.delete();
+      return message.member?.kick();
     } catch (e) {
-      return
+      return;
     }
   } else if (automodDB.useing.useCurseType === 'delete_ban') {
     await message.reply('욕설 사용으로 자동 삭제 후 차단됩니다').then((m) => {
       setTimeout(() => {
-        m.delete()
-      }, 5000)
-    })
+        m.delete();
+      }, 5000);
+    });
     try {
-      message.delete()
-      return message.member?.ban({ reason: '[배틀이] 욕설 사용 자동차단' })
+      message.delete();
+      return message.member?.ban({ reason: '[배틀이] 욕설 사용 자동차단' });
     } catch (e) {
-      return
+      return;
     }
   } else if (automodDB.useing.useCurseType === 'delete_warn') {
-    await message
-      .reply('욕설 사용으로 자동 삭제 후 경고가 지급됩니다')
-      .then((m) => {
-        setTimeout(() => {
-          m.delete()
-        }, 5000)
-      })
+    await message.reply('욕설 사용으로 자동 삭제 후 경고가 지급됩니다').then((m) => {
+      setTimeout(() => {
+        m.delete();
+      }, 5000);
+    });
     try {
-      message.delete()
+      message.delete();
       return userWarnAdd(
         client,
         message.author.id,
         message.guild?.id as string,
         '[배틀이] 욕설 사용 자동경고',
-        client.user?.id as string
-      )
+        client.user?.id as string,
+      );
     } catch (e) {
-      return
+      return;
     }
   }
-}
+};
 
 const LevelSystem = async (client: BotClient, message: Message) => {
   if (!message.guild) return;

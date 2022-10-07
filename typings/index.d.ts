@@ -3,9 +3,9 @@ import {
   CommandInteraction,
   Message,
   Role,
-  ShardingManagerOptions
-} from 'discord.js'
-import { InitOptions } from 'i18next'
+  ShardingManagerOptions,
+} from 'discord.js';
+import { InitOptions } from 'i18next';
 
 export type LevelType = 'fatal' | 'error' | 'warn' | 'info' | 'verbose' | 'debug' | 'chat';
 
@@ -69,15 +69,15 @@ export interface IConfig {
     dev: boolean;
   };
   email: {
-    Google_Email: string
-    Google_Client_Id: string
-    Google_Client_Secret: string
-    Google_Redirect_Url: string
-    Google_Refresh_Token: string
-  }
+    Google_Email: string;
+    Google_Client_Id: string;
+    Google_Client_Secret: string;
+    Google_Redirect_Url: string;
+    Google_Refresh_Token: string;
+  };
   i18n: {
-    options: InitOptions
-  }
+    options: InitOptions;
+  };
 }
 
 export interface logger {

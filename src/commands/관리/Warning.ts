@@ -1,11 +1,11 @@
-import { SlashCommandBuilder } from '@discordjs/builders'
-import { GuildMember, EmbedBuilder } from 'discord.js'
-import { BaseCommand } from '../../structures/Command'
-import Embed from '../../utils/Embed'
-import mongoose from 'mongoose'
-import Warning from '../../schemas/Warning'
-import { userWarnAdd } from '../../utils/WarnHandler'
-let ObjectId = mongoose.Types.ObjectId
+import { SlashCommandBuilder } from '@discordjs/builders';
+import { GuildMember, EmbedBuilder } from 'discord.js';
+import { BaseCommand } from '../../structures/Command';
+import Embed from '../../utils/Embed';
+import mongoose from 'mongoose';
+import Warning from '../../schemas/Warning';
+import { userWarnAdd } from '../../utils/WarnHandler';
+let ObjectId = mongoose.Types.ObjectId;
 // @ts-ignore
 String.prototype.toObjectId = function () {
   // @ts-ignore
@@ -21,8 +21,8 @@ export default new BaseCommand(
   async (client, message, args) => {
     let embed = new Embed(client, 'error')
       .setTitle(client.i18n.t('main.title.error'))
-      .setDescription(client.i18n.t('main.description.slashcommand'))
-    return message.reply({ embeds: [embed] })
+      .setDescription(client.i18n.t('main.description.slashcommand'));
+    return message.reply({ embeds: [embed] });
   },
   {
     // @ts-ignore
@@ -67,16 +67,14 @@ export default new BaseCommand(
       isSlash: true,
     },
     async execute(client, interaction) {
-      await interaction.deferReply({ ephemeral: true })
-      let member = interaction.member as GuildMember
-      member = interaction.guild?.members.cache.get(member.id) as GuildMember
+      await interaction.deferReply({ ephemeral: true });
+      let member = interaction.member as GuildMember;
+      member = interaction.guild?.members.cache.get(member.id) as GuildMember;
       if (!member.permissions.has('ManageChannels'))
-        return interaction.editReply(
-          client.i18n.t('commands.Warning.message.permission')
-        )
-      let reason = interaction.options.getString('사유')
-      let user = interaction.options.getUser('user')
-      if (!reason) reason = 'None'
+        return interaction.editReply(client.i18n.t('commands.Warning.message.permission'));
+      let reason = interaction.options.getString('사유');
+      let user = interaction.options.getUser('user');
+      if (!reason) reason = 'None';
 
       let subcommand = interaction.options.getSubcommand();
       if (subcommand === '지급') {
@@ -92,9 +90,7 @@ export default new BaseCommand(
         let warningID = interaction.options.getString('id');
         // @ts-ignore
         if (!ObjectId.isValid(warningID as string))
-          return interaction.editReply(
-            client.i18n.t('commands.Warning.message.notfound')
-          )
+          return interaction.editReply(client.i18n.t('commands.Warning.message.notfound'));
         // @ts-ignore
         let warningIDtoObject = warningID.toObjectId();
         let findWarnDB = await Warning.findOne({
@@ -104,9 +100,7 @@ export default new BaseCommand(
         });
 
         if (!findWarnDB)
-          return interaction.editReply(
-            client.i18n.t('commands.Warning.message.notfound')
-          )
+          return interaction.editReply(client.i18n.t('commands.Warning.message.notfound'));
 
         await Warning.deleteOne({
           userId: user?.id,
@@ -121,16 +115,16 @@ export default new BaseCommand(
           .addFields({
             name: client.i18n.t('commands.Warning.fields.user'),
             value: client.i18n.t('commands.Warning.fields.userv', {
-              id: user?.id
+              id: user?.id,
             }),
-            inline: true
+            inline: true,
           })
           .addFields({
             name: client.i18n.t('commands.Warning.fields.id'),
             value: warningID as string,
-            inline: true
-          })
-        return interaction.editReply({ embeds: [embedRemove] })
+            inline: true,
+          });
+        return interaction.editReply({ embeds: [embedRemove] });
       } else if (subcommand === '조회') {
         let warningID = interaction.options.getNumber('페이지');
         let insertRes = await Warning.find({
@@ -147,18 +141,16 @@ export default new BaseCommand(
         let warns = new Array();
 
         if (insertRes.length == 0)
-          return interaction.editReply(
-            client.i18n.t('commands.Warning.message.no')
-          )
+          return interaction.editReply(client.i18n.t('commands.Warning.message.no'));
 
         insertRes.forEach((reasons) =>
           warns.push({
             name: 'ID: ' + reasons._id.toString(),
             value: client.i18n.t('commands.Warning.fields.reasonv', {
-              reason: reasons.reason
-            })
-          })
-        )
+              reason: reasons.reason,
+            }),
+          }),
+        );
 
         const embedList = new EmbedBuilder()
           .setColor('#2f3136')
@@ -166,16 +158,16 @@ export default new BaseCommand(
           .setDescription(
             client.i18n.t('commands.Warning.description.warn', {
               username: user?.username,
-              length: insertResLength.length
-            })
+              length: insertResLength.length,
+            }),
           )
           .setFooter({
             text: client.i18n.t('commands.Warning.footer', {
               warn: warningID ? warningID : 1,
-              warn2: Math.ceil(insertResLength.length / 5)
-            })
+              warn2: Math.ceil(insertResLength.length / 5),
+            }),
           })
-          .addFields(warns)
+          .addFields(warns);
 
         return interaction.editReply({ embeds: [embedList] });
       }

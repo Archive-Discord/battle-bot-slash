@@ -12,7 +12,7 @@ export default new BaseCommand(
   async (client, message, args) => {
     let embed = new Embed(client, 'warn')
       .setTitle(client.i18n.t('commands.ping.loading.title'))
-      .setColor('#2f3136')
+      .setColor('#2f3136');
 
     let m = await message.reply({
       embeds: [embed],
@@ -23,18 +23,18 @@ export default new BaseCommand(
       .addFields({
         name: client.i18n.t('commands.ping.fields.message'),
         value: `${Number(m.createdAt) - Number(message.createdAt)}ms`,
-        inline: true
+        inline: true,
       })
       .addFields({
         name: client.i18n.t('commands.ping.fields.api'),
         value: `${client.ws.ping}ms`,
-        inline: true
+        inline: true,
       })
       .addFields({
         name: client.i18n.t('commands.ping.fields.uptime'),
         value: `<t:${(Number(client.readyAt) / 1000) | 0}:R>`,
-        inline: true
-      })
+        inline: true,
+      });
 
     m.edit({
       embeds: [embed],
@@ -52,18 +52,18 @@ export default new BaseCommand(
         .setTitle(client.i18n.t('commands.ping.title'))
         .addFields({
           name: client.i18n.t('commands.ping.fields.api'),
-          value: `${client.ws.ping}ms`
+          value: `${client.ws.ping}ms`,
         })
         .addFields({
           name: client.i18n.t('commands.ping.fields.message'),
           value: `${(Date.now() - interaction.createdTimestamp) | 0}ms`,
-          inline: true
+          inline: true,
         })
         .addFields({
           name: client.i18n.t('commands.ping.fields.uptime'),
-          value: `<t:${(Number(client.readyAt) / 1000) | 0}:R>`
-        })
-      interaction.reply({ embeds: [PingEmbed], ephemeral: true })
-    }
-  }
-)
+          value: `<t:${(Number(client.readyAt) / 1000) | 0}:R>`,
+        });
+      interaction.reply({ embeds: [PingEmbed], ephemeral: true });
+    },
+  },
+);

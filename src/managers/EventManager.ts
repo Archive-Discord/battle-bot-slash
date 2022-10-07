@@ -22,7 +22,7 @@ export default class EventManager extends BaseManager {
   }
 
   public async load(eventPath = join(__dirname, '../events')) {
-    this.logger.info('Loading events...')
+    this.logger.info('Loading events...');
 
     const eventFiles = readdirSync(eventPath);
 
@@ -43,14 +43,14 @@ export default class EventManager extends BaseManager {
       } catch (error: any) {
         this.logger.error(`Error loading events '${eventFile}'.\n` + error.stack);
       }
-    })
-    this.logger.info(`Succesfully loaded events. count: ${this.events.size}`)
+    });
+    this.logger.info(`Succesfully loaded events. count: ${this.events.size}`);
 
     this.start();
   }
 
   private async start() {
-    this.logger.info('Starting event files...')
+    this.logger.info('Starting event files...');
 
     this.events.forEach((event, eventName) => {
       if (!Event.isEvent(event)) return;
