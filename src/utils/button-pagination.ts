@@ -2,9 +2,7 @@ import {
   ButtonBuilder,
   EmbedBuilder,
   ActionRowBuilder,
-  ButtonInteraction,
   ButtonStyle,
-  ButtonComponent,
   ChatInputCommandInteraction
 } from 'discord.js'
 

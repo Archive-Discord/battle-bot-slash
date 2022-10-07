@@ -1,13 +1,8 @@
 import {
-  DiscordAPIError,
-  MessageButton,
-  Role,
   MessageEmbed,
   TextChannel
 } from 'discord.js'
 import { VoteItem } from '../../../typings'
-import AutoRole from '../../schemas/AutoRoleSchema'
-import Blacklist from '../../schemas/blacklistSchemas'
 import Votes from '../../schemas/VoteSchema'
 import { ButtonInteraction } from '../../structures/Command'
 import Embed from '../../utils/Embed'

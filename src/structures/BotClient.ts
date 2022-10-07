@@ -1,4 +1,4 @@
-import { Client, ClientOptions, Collection, Message } from 'discord.js'
+import { Client, ClientOptions, Collection } from 'discord.js'
 import Dokdo from 'dokdo'
 import Logger from '../utils/Logger'
 import {
@@ -16,7 +16,6 @@ import DatabaseManager from '../managers/DatabaseManager'
 import { Model } from 'mongoose'
 import { config as dotenvConfig } from 'dotenv'
 import ButtonManager from '../managers/ButtonManager'
-import web from '../server'
 import i18nManager from '../managers/i18nManager'
 import { i18n } from 'i18next'
 

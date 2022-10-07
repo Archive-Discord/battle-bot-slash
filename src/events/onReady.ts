@@ -14,7 +14,6 @@ import NFTGuildVerify from '../schemas/NFTGuildVerifySchema'
 import axios from 'axios'
 import config from '../../config'
 import CommandManager from '../managers/CommandManager'
-import web from '../server/index'
 import PremiumUser from '../schemas/premiumUserSchemas'
 
 const logger = new Logger('bot');
