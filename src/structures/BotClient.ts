@@ -62,9 +62,9 @@ export default class BotClient extends Client {
 
   public async start(token: string = config.bot.token): Promise<void> {
     logger.info('Logging in bot...');
-    await this.login(token)
+    await this.login(token);
 
-    this.music.init(this.application?.id)
+    this.music.init(this.application?.id);
   }
 
   public async setStatus(status: 'dev' | 'online' = 'online', name = '점검중...') {

@@ -1,4 +1,10 @@
-import { ActionRowBuilder, ButtonBuilder, ButtonStyle, ChannelType, TextBasedChannel } from 'discord.js';
+import {
+  ActionRowBuilder,
+  ButtonBuilder,
+  ButtonStyle,
+  ChannelType,
+  TextBasedChannel,
+} from 'discord.js';
 import Status from '../schemas/statusSchema';
 import BotClient from '../structures/BotClient';
 import { Event } from '../structures/Event';
@@ -62,8 +68,9 @@ export default new Event(
           .setFields(
             {
               name: `길이`,
-              value: `\`${format(track.duration).split(' | ')[0]}\` | \`${format(track.duration).split(' | ')[1]
-                }\``,
+              value: `\`${format(track.duration).split(' | ')[0]}\` | \`${
+                format(track.duration).split(' | ')[1]
+              }\``,
               inline: true,
             },
             { name: `게시자`, value: `${track.author}`, inline: true },
@@ -73,9 +80,9 @@ export default new Event(
           if (!message) return;
           setTimeout(async () => {
             try {
-              await message.delete()
+              await message.delete();
             } catch (e) {
-              console.log(e)
+              console.log(e);
             }
           }, 5000);
         });
@@ -104,7 +111,7 @@ export default new Event(
 
           const msg_list = await channel.messages.fetch(msgid_list);
           const msg_banner = await channel.messages.fetch(msgid_banner);
-          if (!msg_list || !msg_banner) return
+          if (!msg_list || !msg_banner) return;
           const tracks = player.queue;
           const maxTracks = 10; //tracks / Queue Page
           const songs = tracks.slice(0, maxTracks);
@@ -113,13 +120,15 @@ export default new Event(
               songs
                 .map(
                   (track, index) =>
-                    `**\` ${++index}. \` ${track.uri
-                      ? `[${track.title
-                        .substring(0, 60)
-                        .replace(/\[/giu, '\\[')
-                        .replace(/\]/giu, '\\]')}](${track.uri})`
-                      : track.title
-                    }** - \`${track.isStream ? `LIVE STREAM` : format(track.duration).split(` | `)[0]
+                    `**\` ${++index}. \` ${
+                      track.uri
+                        ? `[${track.title
+                            .substring(0, 60)
+                            .replace(/\[/giu, '\\[')
+                            .replace(/\]/giu, '\\]')}](${track.uri})`
+                        : track.title
+                    }** - \`${
+                      track.isStream ? `LIVE STREAM` : format(track.duration).split(` | `)[0]
                     }\`\n> 신청자: __${(track.requester as any).tag}__`,
                 )
                 .join(`\n`)
@@ -136,24 +145,27 @@ export default new Event(
               .setColor('#2f3136')
               .addFields(
                 {
-                  name: `**\` N. \` *${player.queue.length > maxTracks
-                    ? player.queue.length - maxTracks
-                    : player.queue.length
-                    } 개의 노래가 대기중 ...***`,
+                  name: `**\` N. \` *${
+                    player.queue.length > maxTracks
+                      ? player.queue.length - maxTracks
+                      : player.queue.length
+                  } 개의 노래가 대기중 ...***`,
                   value: `\u200b`,
                 },
                 {
                   name: `**\` 0. \` __재생중인 노래__**`,
-                  value: `**${player.queue.current?.uri
-                    ? `[${player.queue.current.title
-                      .substring(0, 60)
-                      .replace(/\[/giu, '\\[')
-                      .replace(/\]/giu, '\\]')}](${player.queue.current.uri})`
-                    : player.queue.current?.title
-                    }** - \`${player.queue.current?.isStream
+                  value: `**${
+                    player.queue.current?.uri
+                      ? `[${player.queue.current.title
+                          .substring(0, 60)
+                          .replace(/\[/giu, '\\[')
+                          .replace(/\]/giu, '\\]')}](${player.queue.current.uri})`
+                      : player.queue.current?.title
+                  }** - \`${
+                    player.queue.current?.isStream
                       ? `LIVE STREAM`
                       : format(player.queue.current?.duration!).split(` | `)[0]
-                    }\`\n> 신청자: __${(player.queue.current?.requester as any).tag}__`,
+                  }\`\n> 신청자: __${(player.queue.current?.requester as any).tag}__`,
                 },
               )
               .setDescription(
@@ -161,34 +173,38 @@ export default new Event(
                   songs
                     .map(
                       (track, index) =>
-                        `**\` ${++index}. \` ${track.uri
-                          ? `[${track.title
-                            .substring(0, 60)
-                            .replace(/\[/giu, '\\[')
-                            .replace(/\]/giu, '\\]')}](${track.uri})`
-                          : track.title
-                        }** - \`${track.isStream ? `LIVE STREAM` : format(track.duration).split(` | `)[0]
+                        `**\` ${++index}. \` ${
+                          track.uri
+                            ? `[${track.title
+                                .substring(0, 60)
+                                .replace(/\[/giu, '\\[')
+                                .replace(/\]/giu, '\\]')}](${track.uri})`
+                            : track.title
+                        }** - \`${
+                          track.isStream ? `LIVE STREAM` : format(track.duration).split(` | `)[0]
                         }\`\n> 신청자: __${(track.requester as any).tag}__`,
                     )
                     .join(`\n`),
                 ).substring(0, 2000).length
                   ? String(
-                    songs
-                      .map(
-                        (track, index) =>
-                          `**\` ${++index}. \` ${track.uri
-                            ? `[${track.title
-                              .substring(0, 60)
-                              .replace(/\[/giu, '\\[')
-                              .replace(/\]/giu, '\\]')}](${track.uri})`
-                            : track.title
-                          }** - \`${track.isStream
-                            ? `LIVE STREAM`
-                            : format(track.duration).split(` | `)[0]
-                          }\`\n> 신청자: __${(track.requester as any).tag}__`,
-                      )
-                      .join(`\n`),
-                  ).substring(0, 2000)
+                      songs
+                        .map(
+                          (track, index) =>
+                            `**\` ${++index}. \` ${
+                              track.uri
+                                ? `[${track.title
+                                    .substring(0, 60)
+                                    .replace(/\[/giu, '\\[')
+                                    .replace(/\]/giu, '\\]')}](${track.uri})`
+                                : track.title
+                            }** - \`${
+                              track.isStream
+                                ? `LIVE STREAM`
+                                : format(track.duration).split(` | `)[0]
+                            }\`\n> 신청자: __${(track.requester as any).tag}__`,
+                        )
+                        .join(`\n`),
+                    ).substring(0, 2000)
                   : '** **',
               );
             msg_list.edit({ embeds: [ss] });
@@ -204,24 +220,27 @@ export default new Event(
               .setColor('#2f3136')
               .addFields(
                 {
-                  name: `**\` N. \` *${player.queue.length > maxTracks
-                    ? player.queue.length - maxTracks
-                    : player.queue.length
-                    } 개의 노래가 대기중 ...***`,
+                  name: `**\` N. \` *${
+                    player.queue.length > maxTracks
+                      ? player.queue.length - maxTracks
+                      : player.queue.length
+                  } 개의 노래가 대기중 ...***`,
                   value: `\u200b`,
                 },
                 {
                   name: `**\` 0. \` __재생중인 노래__**`,
-                  value: `**${player.queue.current?.uri
-                    ? `[${player.queue.current.title
-                      .substring(0, 60)
-                      .replace(/\[/giu, '\\[')
-                      .replace(/\]/giu, '\\]')}](${player.queue.current.uri})`
-                    : player.queue.current?.title
-                    }** - \`${player.queue.current?.isStream
+                  value: `**${
+                    player.queue.current?.uri
+                      ? `[${player.queue.current.title
+                          .substring(0, 60)
+                          .replace(/\[/giu, '\\[')
+                          .replace(/\]/giu, '\\]')}](${player.queue.current.uri})`
+                      : player.queue.current?.title
+                  }** - \`${
+                    player.queue.current?.isStream
                       ? `LIVE STREAM`
                       : format(player.queue.current?.duration!).split(` | `)[0]
-                    }\`\n> 신청자: __${(player.queue.current?.requester as any).tag}__`,
+                  }\`\n> 신청자: __${(player.queue.current?.requester as any).tag}__`,
                 },
               )
               .setDescription(
@@ -229,13 +248,15 @@ export default new Event(
                   songs
                     .map(
                       (track, index) =>
-                        `**\` ${++index}. \` ${track.uri
-                          ? `[${track.title
-                            .substring(0, 60)
-                            .replace(/\[/giu, '\\[')
-                            .replace(/\]/giu, '\\]')}](${track.uri})`
-                          : track.title
-                        }** - \`${track.isStream ? `LIVE STREAM` : format(track.duration).split(` | `)[0]
+                        `**\` ${++index}. \` ${
+                          track.uri
+                            ? `[${track.title
+                                .substring(0, 60)
+                                .replace(/\[/giu, '\\[')
+                                .replace(/\]/giu, '\\]')}](${track.uri})`
+                            : track.title
+                        }** - \`${
+                          track.isStream ? `LIVE STREAM` : format(track.duration).split(` | `)[0]
                         }\`\n> 신청자: __${(track.requester as any).tag}__`,
                     )
                     .join(`\n`),
@@ -294,12 +315,12 @@ export default new Event(
           if (!message) return;
           setTimeout(async () => {
             try {
-              await message.delete()
+              await message.delete();
             } catch (e) {
-              console.log(e)
+              console.log(e);
             }
           }, 5000);
-        });;
+        });
         const guild = await client.guilds.fetch(player.guild);
         const find = await MusicSetting.findOne({ guildid: guild.id });
         if (find) {
@@ -309,7 +330,7 @@ export default new Event(
           const channel = client.channels.cache.get(chid) as TextBasedChannel;
           const msg_list = await channel.messages.fetch(msgid_list);
           const msg_banner = await channel.messages.fetch(msgid_banner);
-          if (!msg_list || !msg_banner) return
+          if (!msg_list || !msg_banner) return;
           if (guild.iconURL()) {
             const ss = new Embed(client, 'info')
               .setAuthor({

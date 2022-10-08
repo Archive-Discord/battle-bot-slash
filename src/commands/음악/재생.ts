@@ -25,7 +25,7 @@ export default new BaseCommand(
           .setRequired(true),
       ),
     async execute(client, interaction) {
-      if (!interaction.inCachedGuild()) return
+      if (!interaction.inCachedGuild()) return;
       await interaction.deferReply();
       const search = interaction.options.getString('query');
 

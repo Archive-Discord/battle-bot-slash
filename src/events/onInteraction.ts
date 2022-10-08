@@ -49,7 +49,7 @@ export default new Event('interactionCreate', async (client, interaction) => {
 
   if (interaction.isChatInputCommand()) {
     if (interaction.user.bot) return;
-    if (!interaction.inCachedGuild()) return
+    if (!interaction.inCachedGuild()) return;
     const command = commandManager.get(interaction.commandName);
     try {
       if (commandManager.isSlash(command)) {
