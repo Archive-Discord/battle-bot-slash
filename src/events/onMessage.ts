@@ -10,6 +10,9 @@ import LevelSetting from '../schemas/levelSettingSchema';
 import { check } from 'korcen';
 import { checkUserPremium } from '../utils/checkPremium';
 import { userWarnAdd } from '../utils/WarnHandler';
+import { Player } from 'erela.js';
+import MusicSetting from '../schemas/musicSchema';
+import Embed from '../utils/Embed';
 const LevelCooldown = new Map();
 
 export default new Event('messageCreate', async (client, message) => {
@@ -20,6 +23,7 @@ export default new Event('messageCreate', async (client, message) => {
   if (message.channel.type === ChannelType.DM) return;
   profanityFilter(client, message);
   LevelSystem(client, message);
+  musicPlayer(client, message)
   if (!message.content.startsWith(client.config.bot.prefix)) return;
 
   const args = message.content.slice(client.config.bot.prefix.length).trim().split(/ +/g);
@@ -50,6 +54,109 @@ const profanityFilter = async (client: BotClient, message: Message) => {
     return;
   }
 };
+
+const musicPlayer = async (client: BotClient, message: Message) => {
+  if (!message.guild) return
+  if (!message.content) return
+  const musicDB = await MusicSetting.findOne({
+    channel_id: message.channel.id,
+    guild_id: message.guild.id
+  })
+  if (!musicDB) return
+  const prefix = [client.config.bot.prefix, '!', '.', '$', '%', '&', '=']
+  for (const i in prefix) {
+    if (message.content.startsWith(prefix[i])) return message.delete()
+  }
+  await message.delete()
+  const errembed = new Embed(client, 'error')
+  const sucessembed = new Embed(client, 'success').setColor('#2f3136')
+  const user = message.guild?.members.cache.get(message.author.id)
+  const channel = user?.voice.channel
+  if (!channel) {
+    errembed.setTitle('❌ 음성 채널에 먼저 입장해주세요!')
+    return message.channel.send({ embeds: [errembed] }).then((m) => {
+      setTimeout(() => {
+        m.delete()
+      }, 15000)
+    })
+  }
+  const guildQueue = client.music.players.get(message.guild.id)
+  if (guildQueue) {
+    if (channel.id !== message.guild.members.me?.voice.channelId) {
+      errembed.setTitle('❌ 이미 다른 음성 채널에서 재생 중입니다!')
+      return message.channel.send({ embeds: [errembed] }).then((m) => {
+        setTimeout(() => {
+          m.delete()
+        }, 15000)
+      })
+    }
+  }
+  const song = await client.music.search(message.content, {
+    requestedBy: message.author
+  })
+  if (!song || !song.tracks.length) {
+    errembed.setTitle(`❌ ${message.content}를 찾지 못했어요!`)
+    return message.channel.send({ embeds: [errembed] }).then((m) => {
+      setTimeout(() => {
+        m.delete()
+      }, 15000)
+    })
+  }
+  let player: Player
+  if (guildQueue) {
+    player = guildQueue
+  } else {
+    player = await client.music.create({
+      guild: message.guildId!,
+      voiceChannel: message.member?.voice.channelId!,
+      textChannel: message.channel.id
+    })
+  }
+  try {
+    if (!player.playing && !player.paused) player.connect()
+  } catch (e) {
+    client.music.players.get(message.guild.id)?.destroy()
+    errembed.setTitle(`❌ 음성 채널에 입장할 수 없어요 ${e}`)
+    return message.channel.send({ embeds: [errembed] }).then((m) => {
+      setTimeout(() => {
+        m.delete()
+      }, 15000)
+    })
+  }
+  if (song.playlist) {
+    const songs: string[] = []
+    song.tracks.forEach((music) => {
+      songs.push(music.title)
+    })
+    sucessembed.setAuthor({
+      name: '재생목록에 아래 노래들을 추가했어요!'
+    })
+    sucessembed.setDescription(songs.join(', '))
+
+    player.queue.add(song.tracks)
+    if (!player.playing) await player.play()
+    return message.channel.send({ embeds: [sucessembed] }).then((m) => {
+      setTimeout(() => {
+        m.delete()
+      }, 15000)
+    })
+  } else {
+    player.queue.add(song.tracks[0])
+    sucessembed.setAuthor({
+      name: `재생목록에 노래를 추가했어요!`,
+    })
+    sucessembed.setDescription(
+      `[${song.tracks[0].title}](${song.tracks[0].uri}) ${song.tracks[0].duration} - ${song.tracks[0].requester}`
+    )
+    sucessembed.setThumbnail(song.tracks[0].thumbnail)
+    if (!player.playing) await player.play()
+    return message.channel.send({ embeds: [sucessembed] }).then((m) => {
+      setTimeout(() => {
+        m.delete()
+      }, 15000)
+    })
+  }
+}
 
 const findCurse = async (automodDB: any, message: Message, client: BotClient) => {
   if (automodDB.useing.useCurseType === 'delete') {

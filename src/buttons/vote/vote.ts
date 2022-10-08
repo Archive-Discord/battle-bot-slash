@@ -1,4 +1,4 @@
-import { MessageEmbed, TextChannel } from 'discord.js';
+import { EmbedBuilder, TextChannel } from 'discord.js';
 import { VoteItem } from '../../../typings';
 import Votes from '../../schemas/VoteSchema';
 import { ButtonInteraction } from '../../structures/Command';
@@ -103,11 +103,11 @@ export default new ButtonInteraction(
 );
 
 const VoteEmbed = (items: VoteItem[], title: string) => {
-  const embed = new MessageEmbed().setColor('#2f3136');
+  const embed = new EmbedBuilder().setColor('#2f3136');
   embed.setTitle('🗳 투표');
   embed.setDescription(title);
   items.forEach((item, index) => {
-    embed.addField(`${item.item_name}`, `\`${item.vote}\`표`, true);
+    embed.addFields({ name: `${item.item_name}`, value: `\`${item.vote}\`표`, inline: true });
   });
   return embed;
 };

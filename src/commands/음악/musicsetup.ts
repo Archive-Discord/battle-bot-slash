@@ -18,6 +18,7 @@ export default new BaseCommand(
       .setName('뮤직')
       .setDescription('설치형 뮤직 시스템을 설정합니다.'),
     async execute(client, interaction) {
+      // @ts-ignore
       if (!interaction.member?.permissions.has([PermissionsBitField.Flags.Administrator]))
         return interaction.reply({
           embeds: [

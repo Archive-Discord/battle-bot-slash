@@ -1,4 +1,4 @@
-import { ChannelType } from 'discord.js';
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle, ChannelType, TextBasedChannel } from 'discord.js';
 import Status from '../schemas/statusSchema';
 import BotClient from '../structures/BotClient';
 import { Event } from '../structures/Event';
@@ -15,6 +15,8 @@ import axios from 'axios';
 import config from '../../config';
 import CommandManager from '../managers/CommandManager';
 import PremiumUser from '../schemas/premiumUserSchemas';
+import MusicSetting from '../schemas/musicSchema';
+import { format } from '../utils/Utils';
 
 const logger = new Logger('bot');
 
@@ -37,323 +39,321 @@ export default new Event(
     const commandManager = new CommandManager(client);
     await commandManager.slashGlobalCommandSetup();
 
-    // client.music.init(client.user?.id);
+    client.on('raw', (d) => client.music.updateVoiceState(d));
+    client.music
+      .on('nodeConnect', async (node) => {
+        logger.scope = 'MusicManager';
+        logger.info(`Music client ${node.options.identifier} connected!`);
+      })
+      .on('nodeError', async (_, e) => logger.error(e.message))
+      .on('trackStart', async (player, track) => {
+        if (!player.guild) return;
+        const guild = await client.guilds.fetch(player.guild);
+        const find = await MusicSetting.findOne({ guild_id: guild.id });
+        const gdid = guild.id;
+        const gdname = guild.name;
+        const gdicon = guild.iconURL();
+        const channel = client.channels.cache.get(player.textChannel!) as TextBasedChannel;
+        const playl = new Embed(client, 'default')
+          .setTitle('🎶 노래를 재생합니다! 🎶')
+          .setURL(`${track.uri}`)
+          .setColor('#2f3136')
+          .setDescription(`\`${track.title}\`` + `(이)가 지금 재생되고 있습니다!`)
+          .setFields(
+            {
+              name: `길이`,
+              value: `\`${format(track.duration).split(' | ')[0]}\` | \`${format(track.duration).split(' | ')[1]
+                }\``,
+              inline: true,
+            },
+            { name: `게시자`, value: `${track.author}`, inline: true },
+          )
+          .setThumbnail(`${track.thumbnail}`);
+        channel.send({ embeds: [playl] }).then((message) => {
+          if (!message) return;
+          setTimeout(async () => {
+            try {
+              await message.delete()
+            } catch (e) {
+              console.log(e)
+            }
+          }, 5000);
+        });
+        // const voic = guild.member.voice.channel.id
+        // const textc = guild.channel.id
+        if (find) {
+          const player = client.music.players.get(guild.id);
+          if (!player) return;
+          const vaset = new ActionRowBuilder<ButtonBuilder>().addComponents(
+            new ButtonBuilder()
+              .setCustomId('m_volume_up')
+              .setLabel('⬆볼륨UP')
+              .setStyle(ButtonStyle.Secondary),
+            new ButtonBuilder()
+              .setCustomId('m_volume_down')
+              .setLabel('⬇볼륨DOWN')
+              .setStyle(ButtonStyle.Secondary),
+          );
 
-    // client.on('raw', (d) => client.music.updateVoiceState(d));
-    // client.music
-    //   .on('nodeConnect', async (node) => {
-    //     logger.scope = 'MusicManager';
-    //     logger.info(`Music client ${node.options.identifier} connected!`);
-    //   })
-    //   .on('nodeError', async (_, e) => logger.error(e.message))
-    //   .on('trackStart', async (player, track) => {
-    //     if (!player.guild) return;
-    //     const guild = await client.guilds.fetch(player.guild);
-    //     const find = await MusicSetting.findOne({ guild_id: guild.id });
-    //     const gdid = guild.id;
-    //     const gdname = guild.name;
-    //     const gdicon = guild.iconURL();
-    //     const channel = client.channels.cache.get(player.textChannel!) as TextBasedChannel;
-    //     const playl = new Embed(client, 'default')
-    //       .setTitle('🎶 노래를 재생합니다! 🎶')
-    //       .setURL(`${track.uri}`)
-    //       .setColor('#2f3136')
-    //       .setDescription(`\`${track.title}\`` + `(이)가 지금 재생되고 있습니다!`)
-    //       .setFields(
-    //         {
-    //           name: `길이`,
-    //           value: `\`${format(track.duration).split(' | ')[0]}\` | \`${format(track.duration).split(' | ')[1]
-    //             }\``,
-    //           inline: true,
-    //         },
-    //         { name: `게시자`, value: `${track.author}`, inline: true },
-    //       )
-    //       .setThumbnail(`${track.thumbnail}`);
-    //     channel.send({ embeds: [playl] }).then((message) => {
-    //       if (!message) return;
-    //       setTimeout(async () => {
-    //         try {
-    //           await message.delete()
-    //         } catch (e) {
-    //           console.log(e)
-    //         }
-    //       }, 5000);
-    //     });
-    //     // const voic = guild.member.voice.channel.id
-    //     // const textc = guild.channel.id
-    //     if (find) {
-    //       const player = client.music.players.get(guild.id);
-    //       if (!player) return;
-    //       const vaset = new ActionRowBuilder<ButtonBuilder>().addComponents(
-    //         new ButtonBuilder()
-    //           .setCustomId('m_volume_up')
-    //           .setLabel('⬆볼륨UP')
-    //           .setStyle(ButtonStyle.Secondary),
-    //         new ButtonBuilder()
-    //           .setCustomId('m_volume_down')
-    //           .setLabel('⬇볼륨DOWN')
-    //           .setStyle(ButtonStyle.Secondary),
-    //       );
+          const chid = find.channel_id;
+          const msgid_list = find.messageid_list;
+          const msgid_banner = find.messageid_banner;
+          const channel = client.channels.cache.get(chid);
 
-    //       const chid = find.channel_id;
-    //       const msgid_list = find.messageid_list;
-    //       const msgid_banner = find.messageid_banner;
-    //       const channel = client.channels.cache.get(chid);
+          if (!channel?.isTextBased()) return;
 
-    //       if (!channel?.isTextBased()) return;
+          const msg_list = await channel.messages.fetch(msgid_list);
+          const msg_banner = await channel.messages.fetch(msgid_banner);
+          if (!msg_list || !msg_banner) return
+          const tracks = player.queue;
+          const maxTracks = 10; //tracks / Queue Page
+          const songs = tracks.slice(0, maxTracks);
+          if (guild.iconURL()) {
+            console.log(
+              songs
+                .map(
+                  (track, index) =>
+                    `**\` ${++index}. \` ${track.uri
+                      ? `[${track.title
+                        .substring(0, 60)
+                        .replace(/\[/giu, '\\[')
+                        .replace(/\]/giu, '\\]')}](${track.uri})`
+                      : track.title
+                    }** - \`${track.isStream ? `LIVE STREAM` : format(track.duration).split(` | `)[0]
+                    }\`\n> 신청자: __${(track.requester as any).tag}__`,
+                )
+                .join(`\n`)
+                .substring(0, 2000),
+            );
+            const ss = new Embed(client, 'info')
+              .setAuthor({
+                name: '재생 중인 노래',
+                iconURL:
+                  'https://images-ext-1.discordapp.net/external/n83quR20ZzWm4y8bO4lnFUWouP0c4rtao8TbXckuvTc/%3Fv%3D1/https/cdn.discordapp.com/emojis/667750713698549781.gif',
+              })
+              .setTitle(`📃 재생목록 __**${guild.name}**__`)
+              .setThumbnail(guild.iconURL())
+              .setColor('#2f3136')
+              .addFields(
+                {
+                  name: `**\` N. \` *${player.queue.length > maxTracks
+                    ? player.queue.length - maxTracks
+                    : player.queue.length
+                    } 개의 노래가 대기중 ...***`,
+                  value: `\u200b`,
+                },
+                {
+                  name: `**\` 0. \` __재생중인 노래__**`,
+                  value: `**${player.queue.current?.uri
+                    ? `[${player.queue.current.title
+                      .substring(0, 60)
+                      .replace(/\[/giu, '\\[')
+                      .replace(/\]/giu, '\\]')}](${player.queue.current.uri})`
+                    : player.queue.current?.title
+                    }** - \`${player.queue.current?.isStream
+                      ? `LIVE STREAM`
+                      : format(player.queue.current?.duration!).split(` | `)[0]
+                    }\`\n> 신청자: __${(player.queue.current?.requester as any).tag}__`,
+                },
+              )
+              .setDescription(
+                String(
+                  songs
+                    .map(
+                      (track, index) =>
+                        `**\` ${++index}. \` ${track.uri
+                          ? `[${track.title
+                            .substring(0, 60)
+                            .replace(/\[/giu, '\\[')
+                            .replace(/\]/giu, '\\]')}](${track.uri})`
+                          : track.title
+                        }** - \`${track.isStream ? `LIVE STREAM` : format(track.duration).split(` | `)[0]
+                        }\`\n> 신청자: __${(track.requester as any).tag}__`,
+                    )
+                    .join(`\n`),
+                ).substring(0, 2000).length
+                  ? String(
+                    songs
+                      .map(
+                        (track, index) =>
+                          `**\` ${++index}. \` ${track.uri
+                            ? `[${track.title
+                              .substring(0, 60)
+                              .replace(/\[/giu, '\\[')
+                              .replace(/\]/giu, '\\]')}](${track.uri})`
+                            : track.title
+                          }** - \`${track.isStream
+                            ? `LIVE STREAM`
+                            : format(track.duration).split(` | `)[0]
+                          }\`\n> 신청자: __${(track.requester as any).tag}__`,
+                      )
+                      .join(`\n`),
+                  ).substring(0, 2000)
+                  : '** **',
+              );
+            msg_list.edit({ embeds: [ss] });
+          }
+          if (!guild.iconURL()) {
+            const ss = new Embed(client, 'info')
+              .setAuthor({
+                name: '재생 중인 노래',
+                iconURL:
+                  'https://images-ext-1.discordapp.net/external/n83quR20ZzWm4y8bO4lnFUWouP0c4rtao8TbXckuvTc/%3Fv%3D1/https/cdn.discordapp.com/emojis/667750713698549781.gif',
+              })
+              .setTitle(`📃 재생목록 __**${guild.name}**__`)
+              .setColor('#2f3136')
+              .addFields(
+                {
+                  name: `**\` N. \` *${player.queue.length > maxTracks
+                    ? player.queue.length - maxTracks
+                    : player.queue.length
+                    } 개의 노래가 대기중 ...***`,
+                  value: `\u200b`,
+                },
+                {
+                  name: `**\` 0. \` __재생중인 노래__**`,
+                  value: `**${player.queue.current?.uri
+                    ? `[${player.queue.current.title
+                      .substring(0, 60)
+                      .replace(/\[/giu, '\\[')
+                      .replace(/\]/giu, '\\]')}](${player.queue.current.uri})`
+                    : player.queue.current?.title
+                    }** - \`${player.queue.current?.isStream
+                      ? `LIVE STREAM`
+                      : format(player.queue.current?.duration!).split(` | `)[0]
+                    }\`\n> 신청자: __${(player.queue.current?.requester as any).tag}__`,
+                },
+              )
+              .setDescription(
+                String(
+                  songs
+                    .map(
+                      (track, index) =>
+                        `**\` ${++index}. \` ${track.uri
+                          ? `[${track.title
+                            .substring(0, 60)
+                            .replace(/\[/giu, '\\[')
+                            .replace(/\]/giu, '\\]')}](${track.uri})`
+                          : track.title
+                        }** - \`${track.isStream ? `LIVE STREAM` : format(track.duration).split(` | `)[0]
+                        }\`\n> 신청자: __${(track.requester as any).tag}__`,
+                    )
+                    .join(`\n`),
+                ).substring(0, 2000),
+              );
+            msg_list.edit({ embeds: [ss] });
+          }
 
-    //       const msg_list = await channel.messages.fetch(msgid_list);
-    //       const msg_banner = await channel.messages.fetch(msgid_banner);
-    //       if (!msg_list || !msg_banner) return
-    //       const tracks = player.queue;
-    //       const maxTracks = 10; //tracks / Queue Page
-    //       const songs = tracks.slice(0, maxTracks);
-    //       if (guild.iconURL()) {
-    //         console.log(
-    //           songs
-    //             .map(
-    //               (track, index) =>
-    //                 `**\` ${++index}. \` ${track.uri
-    //                   ? `[${track.title
-    //                     .substring(0, 60)
-    //                     .replace(/\[/giu, '\\[')
-    //                     .replace(/\]/giu, '\\]')}](${track.uri})`
-    //                   : track.title
-    //                 }** - \`${track.isStream ? `LIVE STREAM` : format(track.duration).split(` | `)[0]
-    //                 }\`\n> 신청자: __${(track.requester as any).tag}__`,
-    //             )
-    //             .join(`\n`)
-    //             .substring(0, 2000),
-    //         );
-    //         const ss = new Embed(client, 'info')
-    //           .setAuthor({
-    //             name: '재생 중인 노래',
-    //             iconURL:
-    //               'https://images-ext-1.discordapp.net/external/n83quR20ZzWm4y8bO4lnFUWouP0c4rtao8TbXckuvTc/%3Fv%3D1/https/cdn.discordapp.com/emojis/667750713698549781.gif',
-    //           })
-    //           .setTitle(`📃 재생목록 __**${guild.name}**__`)
-    //           .setThumbnail(guild.iconURL())
-    //           .setColor('#2f3136')
-    //           .addFields(
-    //             {
-    //               name: `**\` N. \` *${player.queue.length > maxTracks
-    //                 ? player.queue.length - maxTracks
-    //                 : player.queue.length
-    //                 } 개의 노래가 대기중 ...***`,
-    //               value: `\u200b`,
-    //             },
-    //             {
-    //               name: `**\` 0. \` __재생중인 노래__**`,
-    //               value: `**${player.queue.current?.uri
-    //                 ? `[${player.queue.current.title
-    //                   .substring(0, 60)
-    //                   .replace(/\[/giu, '\\[')
-    //                   .replace(/\]/giu, '\\]')}](${player.queue.current.uri})`
-    //                 : player.queue.current?.title
-    //                 }** - \`${player.queue.current?.isStream
-    //                   ? `LIVE STREAM`
-    //                   : format(player.queue.current?.duration!).split(` | `)[0]
-    //                 }\`\n> 신청자: __${(player.queue.current?.requester as any).tag}__`,
-    //             },
-    //           )
-    //           .setDescription(
-    //             String(
-    //               songs
-    //                 .map(
-    //                   (track, index) =>
-    //                     `**\` ${++index}. \` ${track.uri
-    //                       ? `[${track.title
-    //                         .substring(0, 60)
-    //                         .replace(/\[/giu, '\\[')
-    //                         .replace(/\]/giu, '\\]')}](${track.uri})`
-    //                       : track.title
-    //                     }** - \`${track.isStream ? `LIVE STREAM` : format(track.duration).split(` | `)[0]
-    //                     }\`\n> 신청자: __${(track.requester as any).tag}__`,
-    //                 )
-    //                 .join(`\n`),
-    //             ).substring(0, 2000).length
-    //               ? String(
-    //                 songs
-    //                   .map(
-    //                     (track, index) =>
-    //                       `**\` ${++index}. \` ${track.uri
-    //                         ? `[${track.title
-    //                           .substring(0, 60)
-    //                           .replace(/\[/giu, '\\[')
-    //                           .replace(/\]/giu, '\\]')}](${track.uri})`
-    //                         : track.title
-    //                       }** - \`${track.isStream
-    //                         ? `LIVE STREAM`
-    //                         : format(track.duration).split(` | `)[0]
-    //                       }\`\n> 신청자: __${(track.requester as any).tag}__`,
-    //                   )
-    //                   .join(`\n`),
-    //               ).substring(0, 2000)
-    //               : '** **',
-    //           );
-    //         msg_list.edit({ embeds: [ss] });
-    //       }
-    //       if (!guild.iconURL()) {
-    //         const ss = new Embed(client, 'info')
-    //           .setAuthor({
-    //             name: '재생 중인 노래',
-    //             iconURL:
-    //               'https://images-ext-1.discordapp.net/external/n83quR20ZzWm4y8bO4lnFUWouP0c4rtao8TbXckuvTc/%3Fv%3D1/https/cdn.discordapp.com/emojis/667750713698549781.gif',
-    //           })
-    //           .setTitle(`📃 재생목록 __**${guild.name}**__`)
-    //           .setColor('#2f3136')
-    //           .addFields(
-    //             {
-    //               name: `**\` N. \` *${player.queue.length > maxTracks
-    //                 ? player.queue.length - maxTracks
-    //                 : player.queue.length
-    //                 } 개의 노래가 대기중 ...***`,
-    //               value: `\u200b`,
-    //             },
-    //             {
-    //               name: `**\` 0. \` __재생중인 노래__**`,
-    //               value: `**${player.queue.current?.uri
-    //                 ? `[${player.queue.current.title
-    //                   .substring(0, 60)
-    //                   .replace(/\[/giu, '\\[')
-    //                   .replace(/\]/giu, '\\]')}](${player.queue.current.uri})`
-    //                 : player.queue.current?.title
-    //                 }** - \`${player.queue.current?.isStream
-    //                   ? `LIVE STREAM`
-    //                   : format(player.queue.current?.duration!).split(` | `)[0]
-    //                 }\`\n> 신청자: __${(player.queue.current?.requester as any).tag}__`,
-    //             },
-    //           )
-    //           .setDescription(
-    //             String(
-    //               songs
-    //                 .map(
-    //                   (track, index) =>
-    //                     `**\` ${++index}. \` ${track.uri
-    //                       ? `[${track.title
-    //                         .substring(0, 60)
-    //                         .replace(/\[/giu, '\\[')
-    //                         .replace(/\]/giu, '\\]')}](${track.uri})`
-    //                       : track.title
-    //                     }** - \`${track.isStream ? `LIVE STREAM` : format(track.duration).split(` | `)[0]
-    //                     }\`\n> 신청자: __${(track.requester as any).tag}__`,
-    //                 )
-    //                 .join(`\n`),
-    //             ).substring(0, 2000),
-    //           );
-    //         msg_list.edit({ embeds: [ss] });
-    //       }
-
-    //       const embed = new Embed(client, 'info');
-    //       if (guild.iconURL()) {
-    //         embed
-    //           .setColor('#2f3136')
-    //           .setTitle('지금 재생중인 노래')
-    //           .addFields(
-    //             {
-    //               name: `재생시간`,
-    //               value: `\`${format(player.queue.current?.duration!).split(' | ')[0]}\``,
-    //               inline: true,
-    //             },
-    //             { name: `제작자`, value: `\`${player.queue.current?.author}\``, inline: true },
-    //             { name: `남은곡`, value: `\`${player.queue.length} 개\``, inline: true },
-    //           )
-    //           .setFooter({ text: gdname, iconURL: gdicon! })
-    //           .setImage(
-    //             `https://img.youtube.com/vi/${player.queue.current?.identifier}/mqdefault.jpg`,
-    //           );
-    //       }
-    //       if (!guild.iconURL()) {
-    //         embed
-    //           .setColor('#2f3136')
-    //           .setTitle('지금 재생중인 노래')
-    //           .addFields(
-    //             {
-    //               name: `재생시간`,
-    //               value: `\`${format(player.queue.current?.duration!).split(' | ')[0]}\``,
-    //               inline: true,
-    //             },
-    //             { name: `제작자`, value: `\`${player.queue.current?.author}\``, inline: true },
-    //             { name: `남은곡`, value: `\`${player.queue.length} 개\``, inline: true },
-    //           )
-    //           .setFooter({ text: gdname })
-    //           .setImage(
-    //             `https://img.youtube.com/vi/${player.queue.current?.identifier}/mqdefault.jpg`,
-    //           );
-    //       }
-    //       return void (await msg_banner.edit({
-    //         embeds: [embed],
-    //         components: [vaset],
-    //       }));
-    //     }
-    //   })
-    //   .on('queueEnd', async (player, track) => {
-    //     const channel = client.channels.cache.get(player.textChannel!) as TextBasedChannel;
-    //     const playl = new Embed(client, 'info').setTitle('끝!').setDescription(`노래가 끝났어요!`);
-    //     channel.send({ embeds: [playl] }).then((message) => {
-    //       if (!message) return;
-    //       setTimeout(async () => {
-    //         try {
-    //           await message.delete()
-    //         } catch (e) {
-    //           console.log(e)
-    //         }
-    //       }, 5000);
-    //     });;
-    //     const guild = await client.guilds.fetch(player.guild);
-    //     const find = await MusicSetting.findOne({ guildid: guild.id });
-    //     if (find) {
-    //       const chid = find.channel_id;
-    //       const msgid_list = find.messageid_list;
-    //       const msgid_banner = find.messageid_banner;
-    //       const channel = client.channels.cache.get(chid) as TextBasedChannel;
-    //       const msg_list = await channel.messages.fetch(msgid_list);
-    //       const msg_banner = await channel.messages.fetch(msgid_banner);
-    //       if (!msg_list || !msg_banner) return
-    //       if (guild.iconURL()) {
-    //         const ss = new Embed(client, 'info')
-    //           .setAuthor({
-    //             name: `**재생 중인 노래**`,
-    //             iconURL: `https://images-ext-1.discordapp.net/external/n83quR20ZzWm4y8bO4lnFUWouP0c4rtao8TbXckuvTc/%3Fv%3D1/https/cdn.discordapp.com/emojis/667750713698549781.gif`,
-    //           })
-    //           .setTitle(`📃 재생목록 __**${guild.name}**__`)
-    //           .setThumbnail(guild.iconURL())
-    //           .setColor('#2f3136')
-    //           .setDescription(`대기중인 노래가 없습니다.`);
-    //         const gg = new Embed(client, 'default')
-    //           .setTitle('재생중인 노래가 없어요')
-    //           .setColor('#2f3136')
-    //           .setDescription(
-    //             `❌ **노래가 재생 중이지 않아요!\n해당 채널에 노래 제목을 입력해주세요!**\n[대시보드](https://battlebot.kr/) | [서포트 서버](https://discord.gg/WtGq7D7BZm) | [상태](https://battlebot.kr/status)`,
-    //           )
-    //           .setImage(
-    //             'https://media.discordapp.net/attachments/901745892418256910/941301364095586354/46144c4d9e1cf2e6.png?width=1155&height=657',
-    //           );
-    //         msg_list.edit({ embeds: [ss] });
-    //         msg_banner.edit({ embeds: [gg], components: [] });
-    //       }
-    //       if (!guild.iconURL()) {
-    //         const ss = new Embed(client, 'info')
-    //           .setAuthor({
-    //             name: `**재생 중인 노래**`,
-    //             iconURL: `https://images-ext-1.discordapp.net/external/n83quR20ZzWm4y8bO4lnFUWouP0c4rtao8TbXckuvTc/%3Fv%3D1/https/cdn.discordapp.com/emojis/667750713698549781.gif`,
-    //           })
-    //           .setTitle(`📃 재생목록 __**${guild.name}**__`)
-    //           .setColor('#2f3136')
-    //           .setDescription(`대기중인 노래가 없습니다.`);
-    //         const gg = new Embed(client, 'default')
-    //           .setTitle('재생중인 노래가 없어요')
-    //           .setDescription(
-    //             `❌ **노래가 재생 중이지 않아요!\n해당 채널에 노래 제목을 입력해주세요!**\n[대시보드](https://battlebot.kr/) | [서포트 서버](https://discord.gg/WtGq7D7BZm) | [상태](https://battlebot.kr/status)`,
-    //           )
-    //           .setImage(
-    //             'https://media.discordapp.net/attachments/901745892418256910/941301364095586354/46144c4d9e1cf2e6.png?width=1155&height=657',
-    //           );
-    //         msg_list.edit({ embeds: [ss] });
-    //         msg_banner.edit({ embeds: [gg], components: [] });
-    //       }
-    //     }
-    //   });
+          const embed = new Embed(client, 'info');
+          if (guild.iconURL()) {
+            embed
+              .setColor('#2f3136')
+              .setTitle('지금 재생중인 노래')
+              .addFields(
+                {
+                  name: `재생시간`,
+                  value: `\`${format(player.queue.current?.duration!).split(' | ')[0]}\``,
+                  inline: true,
+                },
+                { name: `제작자`, value: `\`${player.queue.current?.author}\``, inline: true },
+                { name: `남은곡`, value: `\`${player.queue.length} 개\``, inline: true },
+              )
+              .setFooter({ text: gdname, iconURL: gdicon! })
+              .setImage(
+                `https://img.youtube.com/vi/${player.queue.current?.identifier}/mqdefault.jpg`,
+              );
+          }
+          if (!guild.iconURL()) {
+            embed
+              .setColor('#2f3136')
+              .setTitle('지금 재생중인 노래')
+              .addFields(
+                {
+                  name: `재생시간`,
+                  value: `\`${format(player.queue.current?.duration!).split(' | ')[0]}\``,
+                  inline: true,
+                },
+                { name: `제작자`, value: `\`${player.queue.current?.author}\``, inline: true },
+                { name: `남은곡`, value: `\`${player.queue.length} 개\``, inline: true },
+              )
+              .setFooter({ text: gdname })
+              .setImage(
+                `https://img.youtube.com/vi/${player.queue.current?.identifier}/mqdefault.jpg`,
+              );
+          }
+          return void (await msg_banner.edit({
+            embeds: [embed],
+            components: [vaset],
+          }));
+        }
+      })
+      .on('queueEnd', async (player, track) => {
+        const channel = client.channels.cache.get(player.textChannel!) as TextBasedChannel;
+        const playl = new Embed(client, 'info').setTitle('끝!').setDescription(`노래가 끝났어요!`);
+        channel.send({ embeds: [playl] }).then((message) => {
+          if (!message) return;
+          setTimeout(async () => {
+            try {
+              await message.delete()
+            } catch (e) {
+              console.log(e)
+            }
+          }, 5000);
+        });;
+        const guild = await client.guilds.fetch(player.guild);
+        const find = await MusicSetting.findOne({ guildid: guild.id });
+        if (find) {
+          const chid = find.channel_id;
+          const msgid_list = find.messageid_list;
+          const msgid_banner = find.messageid_banner;
+          const channel = client.channels.cache.get(chid) as TextBasedChannel;
+          const msg_list = await channel.messages.fetch(msgid_list);
+          const msg_banner = await channel.messages.fetch(msgid_banner);
+          if (!msg_list || !msg_banner) return
+          if (guild.iconURL()) {
+            const ss = new Embed(client, 'info')
+              .setAuthor({
+                name: `**재생 중인 노래**`,
+                iconURL: `https://images-ext-1.discordapp.net/external/n83quR20ZzWm4y8bO4lnFUWouP0c4rtao8TbXckuvTc/%3Fv%3D1/https/cdn.discordapp.com/emojis/667750713698549781.gif`,
+              })
+              .setTitle(`📃 재생목록 __**${guild.name}**__`)
+              .setThumbnail(guild.iconURL())
+              .setColor('#2f3136')
+              .setDescription(`대기중인 노래가 없습니다.`);
+            const gg = new Embed(client, 'default')
+              .setTitle('재생중인 노래가 없어요')
+              .setColor('#2f3136')
+              .setDescription(
+                `❌ **노래가 재생 중이지 않아요!\n해당 채널에 노래 제목을 입력해주세요!**\n[대시보드](https://battlebot.kr/) | [서포트 서버](https://discord.gg/WtGq7D7BZm) | [상태](https://battlebot.kr/status)`,
+              )
+              .setImage(
+                'https://media.discordapp.net/attachments/901745892418256910/941301364095586354/46144c4d9e1cf2e6.png?width=1155&height=657',
+              );
+            msg_list.edit({ embeds: [ss] });
+            msg_banner.edit({ embeds: [gg], components: [] });
+          }
+          if (!guild.iconURL()) {
+            const ss = new Embed(client, 'info')
+              .setAuthor({
+                name: `**재생 중인 노래**`,
+                iconURL: `https://images-ext-1.discordapp.net/external/n83quR20ZzWm4y8bO4lnFUWouP0c4rtao8TbXckuvTc/%3Fv%3D1/https/cdn.discordapp.com/emojis/667750713698549781.gif`,
+              })
+              .setTitle(`📃 재생목록 __**${guild.name}**__`)
+              .setColor('#2f3136')
+              .setDescription(`대기중인 노래가 없습니다.`);
+            const gg = new Embed(client, 'default')
+              .setTitle('재생중인 노래가 없어요')
+              .setDescription(
+                `❌ **노래가 재생 중이지 않아요!\n해당 채널에 노래 제목을 입력해주세요!**\n[대시보드](https://battlebot.kr/) | [서포트 서버](https://discord.gg/WtGq7D7BZm) | [상태](https://battlebot.kr/status)`,
+              )
+              .setImage(
+                'https://media.discordapp.net/attachments/901745892418256910/941301364095586354/46144c4d9e1cf2e6.png?width=1155&height=657',
+              );
+            msg_list.edit({ embeds: [ss] });
+            msg_banner.edit({ embeds: [gg], components: [] });
+          }
+        }
+      });
 
     logger.info(`Logged ${client.user?.username}`);
   },

@@ -12,6 +12,8 @@ import { config as dotenvConfig } from 'dotenv';
 import ButtonManager from '../managers/ButtonManager';
 import i18nManager from '../managers/i18nManager';
 import { i18n } from 'i18next';
+import { Manager } from 'erela.js';
+import { client } from '../bot';
 
 const logger = new Logger('bot');
 
@@ -30,6 +32,14 @@ export default class BotClient extends Client {
     prefix: this.config.bot.prefix,
     owners: config.bot.owners,
     noPerm: (message) => message.reply('당신은 Dokdo 를 이용할수 없습니다.'),
+  });
+
+  public music = new Manager({
+    nodes: config.music,
+    send(id, payload) {
+      const guild = client.guilds.cache.get(id);
+      if (guild) guild.shard.send(payload);
+    },
   });
   public db: any;
   public schemas: Collection<string, Model<any>> = new Collection();
@@ -52,7 +62,9 @@ export default class BotClient extends Client {
 
   public async start(token: string = config.bot.token): Promise<void> {
     logger.info('Logging in bot...');
-    await this.login(token);
+    await this.login(token)
+
+    this.music.init(this.application?.id)
   }
 
   public async setStatus(status: 'dev' | 'online' = 'online', name = '점검중...') {

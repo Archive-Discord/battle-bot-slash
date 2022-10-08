@@ -25,14 +25,16 @@ export default new BaseCommand(
           .setRequired(true),
       ),
     async execute(client, interaction) {
+      if (!interaction.inCachedGuild()) return
       await interaction.deferReply();
       const search = interaction.options.getString('query');
+
       if (!interaction.member || !interaction.member.voice.channel)
         return interaction.followUp({
           embeds: [new Embed(client, 'default').setDescription(`음성채널에 먼저 참여해주세요!`)],
         });
       const queue = client.music.create({
-        guild: interaction.guild.id,
+        guild: interaction.guild?.id!,
         voiceChannel: interaction.member.voice.channel.id,
         textChannel: interaction.channel?.id!,
       });
