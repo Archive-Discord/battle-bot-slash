@@ -58,7 +58,6 @@ export default new Event(
         if (!player.guild) return;
         const guild = await client.guilds.fetch(player.guild);
         const find = await MusicSetting.findOne({ guild_id: guild.id });
-        const gdid = guild.id;
         const gdname = guild.name;
         const gdicon = guild.iconURL();
         const channel = client.channels.cache.get(player.textChannel!) as TextBasedChannel;
@@ -295,8 +294,9 @@ export default new Event(
           }));
         }
       })
-      .on('queueEnd', async (player, track) => {
+      .on('queueEnd', async (player, _track) => {
         const channel = client.channels.cache.get(player.textChannel!) as TextBasedChannel;
+        if (!channel) return
         const playl = new Embed(client, 'info').setTitle('끝!').setDescription(`노래가 끝났어요!`);
         channel.send({ embeds: [playl] }).then((message) => {
           if (!message) return;
@@ -318,48 +318,26 @@ export default new Event(
           const msg_list = await channel.messages.fetch(msgid_list);
           const msg_banner = await channel.messages.fetch(msgid_banner);
           if (!msg_list || !msg_banner) return
-          if (guild.iconURL()) {
-            const ss = new Embed(client, 'info')
-              .setAuthor({
-                name: `**재생 중인 노래**`,
-                iconURL: `https://images-ext-1.discordapp.net/external/n83quR20ZzWm4y8bO4lnFUWouP0c4rtao8TbXckuvTc/%3Fv%3D1/https/cdn.discordapp.com/emojis/667750713698549781.gif`,
-              })
-              .setTitle(`📃 재생목록 __**${guild.name}**__`)
-              .setThumbnail(guild.iconURL())
-              .setColor('#2f3136')
-              .setDescription(`대기중인 노래가 없습니다.`);
-            const gg = new Embed(client, 'default')
-              .setTitle('재생중인 노래가 없어요')
-              .setColor('#2f3136')
-              .setDescription(
-                `❌ **노래가 재생 중이지 않아요!\n해당 채널에 노래 제목을 입력해주세요!**\n[대시보드](https://battlebot.kr/) | [서포트 서버](https://discord.gg/WtGq7D7BZm) | [상태](https://battlebot.kr/status)`,
-              )
-              .setImage(
-                'https://media.discordapp.net/attachments/901745892418256910/941301364095586354/46144c4d9e1cf2e6.png?width=1155&height=657',
-              );
-            msg_list.edit({ embeds: [ss] });
-            msg_banner.edit({ embeds: [gg], components: [] });
-          }
-          if (!guild.iconURL()) {
-            const ss = new Embed(client, 'info')
-              .setAuthor({
-                name: `**재생 중인 노래**`,
-                iconURL: `https://images-ext-1.discordapp.net/external/n83quR20ZzWm4y8bO4lnFUWouP0c4rtao8TbXckuvTc/%3Fv%3D1/https/cdn.discordapp.com/emojis/667750713698549781.gif`,
-              })
-              .setTitle(`📃 재생목록 __**${guild.name}**__`)
-              .setColor('#2f3136')
-              .setDescription(`대기중인 노래가 없습니다.`);
-            const gg = new Embed(client, 'default')
-              .setTitle('재생중인 노래가 없어요')
-              .setDescription(
-                `❌ **노래가 재생 중이지 않아요!\n해당 채널에 노래 제목을 입력해주세요!**\n[대시보드](https://battlebot.kr/) | [서포트 서버](https://discord.gg/WtGq7D7BZm) | [상태](https://battlebot.kr/status)`,
-              )
-              .setImage(
-                'https://media.discordapp.net/attachments/901745892418256910/941301364095586354/46144c4d9e1cf2e6.png?width=1155&height=657',
-              );
-            msg_list.edit({ embeds: [ss] });
-            msg_banner.edit({ embeds: [gg], components: [] });
-          }
+          const ss = new Embed(client, 'info')
+            .setAuthor({
+              name: `**재생 중인 노래**`,
+              iconURL: `https://images-ext-1.discordapp.net/external/n83quR20ZzWm4y8bO4lnFUWouP0c4rtao8TbXckuvTc/%3Fv%3D1/https/cdn.discordapp.com/emojis/667750713698549781.gif`,
+            })
+            .setTitle(`📃 재생목록 __**${guild.name}**__`)
+            .setThumbnail(guild.iconURL() ? guild.iconURL() : null)
+            .setColor('#2f3136')
+            .setDescription(`대기중인 노래가 없습니다.`);
+          const gg = new Embed(client, 'default')
+            .setTitle('재생중인 노래가 없어요')
+            .setColor('#2f3136')
+            .setDescription(
+              `❌ **노래가 재생 중이지 않아요!\n해당 채널에 노래 제목을 입력해주세요!**\n[대시보드](https://battlebot.kr/) | [서포트 서버](https://discord.gg/WtGq7D7BZm) | [상태](https://battlebot.kr/status)`,
+            )
+            .setImage(
+              'https://media.discordapp.net/attachments/901745892418256910/941301364095586354/46144c4d9e1cf2e6.png?width=1155&height=657',
+            );
+          msg_list.edit({ embeds: [ss] });
+          msg_banner.edit({ embeds: [gg], components: [] });
         }
       });
 
@@ -540,7 +518,7 @@ async function nftChecker(client: BotClient) {
           }
         });
       })
-      .catch((e) => {
+      .catch(() => {
         return;
       });
   });
@@ -558,7 +536,7 @@ async function ServerCountUpdate(client: BotClient) {
         headers: { Authorization: 'Bearer ' + config.updateServer.archive },
       },
     )
-    .then((data) => {
+    .then(() => {
       logger.info('아카이브: 서버 수 업데이트 완료');
     })
     .catch((e: any) => {
@@ -576,7 +554,7 @@ async function ServerCountUpdate(client: BotClient) {
         headers: { Authorization: config.updateServer.koreanbots },
       },
     )
-    .then((data) => {
+    .then(() => {
       logger.info('한디리: 서버 수 업데이트 완료');
     })
     .catch((e: any) => {
