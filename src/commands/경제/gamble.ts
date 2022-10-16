@@ -154,7 +154,7 @@ export default new BaseCommand(
           embeds: [embed],
         });
       const random = Math.floor(Math.random() * 101);
-      if (random < 50) {
+      if (random < 56) {
         embed = new Embed(client, 'success')
           .setTitle(`❌ 도박 실패`)
           .setDescription(
