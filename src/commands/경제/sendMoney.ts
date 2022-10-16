@@ -30,7 +30,7 @@ export default new BaseCommand(
     embed = new Embed(client, 'error')
       .setDescription(
         message.author +
-          '님의 계좌가 생성되지 않으셨습니다. \n계좌가 있으신 유저에게만 송금이 가능합니다.',
+        '님의 계좌가 생성되지 않으셨습니다. \n계좌가 있으신 유저에게만 송금이 가능합니다.',
       )
       .setTimestamp()
       .setColor('#2f3136');
@@ -163,7 +163,7 @@ export default new BaseCommand(
       embed = new Embed(client, 'error')
         .setDescription(
           interaction.user +
-            '님의 계좌가 생성되지 않으셨습니다.\n계좌가 있으신 유저에게만 송금이 가능합니다.',
+          '님의 계좌가 생성되지 않으셨습니다.\n계좌가 있으신 유저에게만 송금이 가능합니다.',
         )
         .setTimestamp()
         .setColor('#2f3136');

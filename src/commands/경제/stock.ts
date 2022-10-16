@@ -36,9 +36,8 @@ export default new BaseCommand(
         { name: '현재가', value: `${comma(result.now)}원`, inline: true },
         {
           name: '전일대비',
-          value: `${comma(result.diff)}원 (${
-            result.risefall == 1 || result.risefall == 2 ? '▴' : result.risefall == 3 ? '-' : '▾'
-          } ${comma(result.rate)}%)`,
+          value: `${comma(result.diff)}원 (${result.risefall == 1 || result.risefall == 2 ? '▴' : result.risefall == 3 ? '-' : '▾'
+            } ${comma(result.rate)}%)`,
           inline: true,
         },
       );
@@ -73,11 +72,9 @@ export default new BaseCommand(
       const result = await searchStocks(keyword);
       embed.setTitle(`${keyword} 검색 결과`);
       const results = result?.result.d.map((stock, index) => {
-        return `${stock.rf == '1' || stock.rf == '2' ? '+' : stock.rf == '3' ? ' ' : '-'} ${
-          index + 1
-        }. ${stock.nm} (${stock.cd}) [ ${comma(stock.nv)}원 (${
-          stock.rf == '1' || stock.rf == '2' ? '▴' : stock.rf == '3' ? '-' : '▾'
-        } ${stock.cr}%) ]`;
+        return `${stock.rf == '1' || stock.rf == '2' ? '+' : stock.rf == '3' ? ' ' : '-'} ${index + 1
+          }. ${stock.nm} (${stock.cd}) [ ${comma(stock.nv)}원 (${stock.rf == '1' || stock.rf == '2' ? '▴' : stock.rf == '3' ? '-' : '▾'
+          } ${stock.cr}%) ]`;
       });
       embed.setDescription('```diff\n' + results?.join('\n') + '```');
       return message.reply({
@@ -197,8 +194,8 @@ export default new BaseCommand(
           );
           const nowStock = await StockSchema.findOne({
             userid: message.author.id,
-            'stocks.code': results.items[0].code,
-          });
+            "stocks.code": results.items[0].code
+          }, { "stocks.$": 1, userid: 1, _id: 1 })
           if (!nowStock) {
             await StockSchema.updateOne(
               { userid: message.author.id },
@@ -313,8 +310,8 @@ export default new BaseCommand(
       }
       const stock = await StockSchema.findOne({
         userid: message.author.id,
-        'stocks.code': results.items[0].code,
-      });
+        "stocks.code": results.items[0].code
+      }, { "stocks.$": 1, userid: 1, _id: 1 })
       if (!stock || stock.stocks.length === 0) {
         embed.setTitle(`❌ 에러 발생`);
         embed.setDescription(`${results.items[0].name}을 보유하고 있지 않습니다.`);
@@ -413,19 +410,21 @@ export default new BaseCommand(
             { userid: message.author.id },
             { $pull: { stocks: { code: stock.stocks[0].code } } },
           );
-          await StockSchema.updateOne(
-            { userid: message.author.id },
-            {
-              $push: {
-                stocks: {
-                  code: results.items[0].code,
-                  quantity: stock.stocks[0].quantity - quantity,
-                  name: results.items[0].name,
-                  price: stock.stocks[0].price,
+          if (stock.stocks[0].quantity - quantity !== 0) {
+            await StockSchema.updateOne(
+              { userid: message.author.id },
+              {
+                $push: {
+                  stocks: {
+                    code: results.items[0].code,
+                    quantity: stock.stocks[0].quantity - quantity,
+                    name: results.items[0].name,
+                    price: stock.stocks[0].price,
+                  },
                 },
               },
-            },
-          );
+            );
+          }
           const successEmbed = new Embed(client, 'success')
             .setTitle(`⭕ 매도 성공`)
             .setDescription(`${results.items[0].name} ${quantity}주를 매도했습니다.`)
@@ -495,21 +494,19 @@ export default new BaseCommand(
               return `- ${index + 1}. ${stock.name} ${stock.quantity}주 ${comma(
                 Math.round(stock.price * stock.quantity),
               )}원 (실시간 정보 확인불가)`;
-            return `${
-              Math.round(stockSearch.now) > Math.round(stock.price)
-                ? '-'
-                : Math.round(stockSearch.now) < Math.round(stock.price)
+            return `${Math.round(stockSearch.now) > Math.round(stock.price)
+              ? '-'
+              : Math.round(stockSearch.now) < Math.round(stock.price)
                 ? '+'
                 : ' '
-            } ${index + 1}. ${stock.name} ${stock.quantity}주 [ ${
-              Math.round(stockSearch.now * stock.quantity) >
-              Math.round(stock.price * stock.quantity)
+              } ${index + 1}. ${stock.name} ${stock.quantity}주 [ ${Math.round(stockSearch.now * stock.quantity) >
+                Math.round(stock.price * stock.quantity)
                 ? '▾'
                 : Math.round(stockSearch.now * stock.quantity) <
                   Math.round(stock.price * stock.quantity)
-                ? '▴'
-                : '-'
-            } ${comma(Math.round(stock.price * stock.quantity))}원 ]`;
+                  ? '▴'
+                  : '-'
+              } ${comma(Math.round(stock.price * stock.quantity))}원 ]`;
           }),
         );
         embed.setDescription('```diff\n' + results.join('\n') + '```');
@@ -649,9 +646,8 @@ export default new BaseCommand(
         });
         embed.addFields({
           name: '전일대비',
-          value: `${comma(result.diff)}원 (${
-            result.risefall == 1 || result.risefall == 2 ? '▴' : result.risefall == 3 ? '-' : '▾'
-          } ${comma(result.rate)}%)`,
+          value: `${comma(result.diff)}원 (${result.risefall == 1 || result.risefall == 2 ? '▴' : result.risefall == 3 ? '-' : '▾'
+            } ${comma(result.rate)}%)`,
           inline: true,
         });
         embed.addFields({
@@ -686,11 +682,9 @@ export default new BaseCommand(
         const result = await searchStocks(keyword);
         embed.setTitle(`${keyword} 검색 결과`);
         const results = result?.result.d.map((stock, index) => {
-          return `${stock.rf == '1' || stock.rf == '2' ? '+' : stock.rf == '3' ? ' ' : '-'} ${
-            index + 1
-          }. ${stock.nm} (${stock.cd}) [ ${comma(stock.nv)}원 (${
-            stock.rf == '1' || stock.rf == '2' ? '▴' : stock.rf == '3' ? '-' : '▾'
-          } ${stock.cr}%) ]`;
+          return `${stock.rf == '1' || stock.rf == '2' ? '+' : stock.rf == '3' ? ' ' : '-'} ${index + 1
+            }. ${stock.nm} (${stock.cd}) [ ${comma(stock.nv)}원 (${stock.rf == '1' || stock.rf == '2' ? '▴' : stock.rf == '3' ? '-' : '▾'
+            } ${stock.cr}%) ]`;
         });
         embed.setDescription('```diff\n' + results?.join('\n') + '```');
         return interaction.editReply({
@@ -819,8 +813,8 @@ export default new BaseCommand(
             );
             const nowStock = await StockSchema.findOne({
               userid: interaction.user.id,
-              'stocks.code': results.items[0].code,
-            });
+              "stocks.code": results.items[0].code
+            }, { "stocks.$": 1, userid: 1, _id: 1 })
             if (!nowStock) {
               await StockSchema.updateOne(
                 { userid: interaction.user.id },
@@ -936,8 +930,8 @@ export default new BaseCommand(
         }
         const stock = await StockSchema.findOne({
           userid: interaction.user.id,
-          'stocks.code': results.items[0].code,
-        });
+          "stocks.code": results.items[0].code
+        }, { "stocks.$": 1, userid: 1, _id: 1 })
         if (!stock || stock.stocks.length === 0) {
           embed.setTitle(`❌ 에러 발생`);
           embed.setDescription(`${results.items[0].name}을 보유하고 있지 않습니다.`);
@@ -1038,23 +1032,26 @@ export default new BaseCommand(
                 $inc: { money: +total },
               },
             );
+
             await StockSchema.findOneAndUpdate(
               { userid: interaction.user.id },
               { $pull: { stocks: { code: stock.stocks[0].code } } },
             );
-            await StockSchema.updateOne(
-              { userid: interaction.user.id },
-              {
-                $push: {
-                  stocks: {
-                    code: results.items[0].code,
-                    quantity: stock.stocks[0].quantity - quantity,
-                    name: results.items[0].name,
-                    price: stock.stocks[0].price,
+            if (stock.stocks[0].quantity - quantity !== 0) {
+              await StockSchema.updateOne(
+                { userid: interaction.user.id },
+                {
+                  $push: {
+                    stocks: {
+                      code: results.items[0].code,
+                      quantity: stock.stocks[0].quantity - quantity,
+                      name: results.items[0].name,
+                      price: stock.stocks[0].price,
+                    },
                   },
                 },
-              },
-            );
+              );
+            }
             const successEmbed = new Embed(client, 'success')
               .setTitle(`⭕ 매도 성공`)
               .setDescription(`${results.items[0].name} ${quantity}주를 매도했습니다.`)
@@ -1127,21 +1124,19 @@ export default new BaseCommand(
                 return `- ${index + 1}. ${stock.name} ${stock.quantity}주 ${comma(
                   Math.round(stock.price * stock.quantity),
                 )}원 (실시간 정보 확인불가)`;
-              return `${
-                Math.round(stockSearch.now) > Math.round(stock.price)
-                  ? '-'
-                  : Math.round(stockSearch.now) < Math.round(stock.price)
+              return `${Math.round(stockSearch.now) > Math.round(stock.price)
+                ? '-'
+                : Math.round(stockSearch.now) < Math.round(stock.price)
                   ? '+'
                   : ' '
-              } ${index + 1}. ${stock.name} ${stock.quantity}주 [ ${
-                Math.round(stockSearch.now * stock.quantity) >
-                Math.round(stock.price * stock.quantity)
+                } ${index + 1}. ${stock.name} ${stock.quantity}주 [ ${Math.round(stockSearch.now * stock.quantity) >
+                  Math.round(stock.price * stock.quantity)
                   ? '▾'
                   : Math.round(stockSearch.now * stock.quantity) <
                     Math.round(stock.price * stock.quantity)
-                  ? '▴'
-                  : '-'
-              } ${comma(Math.round(stock.price * stock.quantity))}원 ]`;
+                    ? '▴'
+                    : '-'
+                } ${comma(Math.round(stock.price * stock.quantity))}원 ]`;
             }),
           );
           embed.setDescription('```diff\n' + results.join('\n') + '```');
