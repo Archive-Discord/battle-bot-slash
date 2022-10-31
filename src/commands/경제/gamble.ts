@@ -67,7 +67,7 @@ export default new BaseCommand(
         embeds: [embed],
       });
     const random = Math.floor(Math.random() * 101);
-    if (random < 56) {
+    if (random > 50) {
       embed = new Embed(client, 'success')
         .setTitle(`❌ 도박 실패`)
         .setDescription(`도박에 실패하셨습니다. 돈은 제가 가져가겠습니다. - **${comma(money)}원**`)
@@ -154,7 +154,7 @@ export default new BaseCommand(
           embeds: [embed],
         });
       const random = Math.floor(Math.random() * 101);
-      if (random < 56) {
+      if (random > 50) {
         embed = new Embed(client, 'success')
           .setTitle(`❌ 도박 실패`)
           .setDescription(
