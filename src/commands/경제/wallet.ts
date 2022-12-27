@@ -22,17 +22,13 @@ export default new BaseCommand(
     embed = new Embed(client, 'success')
       .setTitle(`정보 오류`)
       .setDescription(
-        `${message.author}님의 정보가 기록되어있지 않습니다. 계좌가 있으신 유저에게만 송금이 가능합니다.`,
+        `${message.author}님의 정보가 기록되어있지 않습니다. 계좌가 있으신 유저만 확인이 가능합니다.`,
       );
     if (!wjdqh)
       return m.edit({
         embeds: [embed],
       });
-    const t = new Date();
-    const date = '' + t.getFullYear() + t.getMonth() + t.getDate();
-    let i;
-    if (wjdqh.date == date) i = '돈을 받음';
-    else i = '돈을 받지않음';
+    await wjdqh.updateOne({ $set: { lastGuild: message.guild ? message.guild.id : wjdqh.lastGuild } })
     embed = new Embed(client, 'success')
       .setTitle(`${user.tag}님의 잔액`)
       .setDescription(`유저님의 잔액은 아래와 같습니다.`)
@@ -65,18 +61,13 @@ export default new BaseCommand(
       embed = new Embed(client, 'success')
         .setTitle(`정보 오류`)
         .setDescription(
-          `${interaction.user}님의 정보가 기록되어있지 않습니다. 계좌가 있으신 유저에게만 송금이 가능합니다.`,
+          `${interaction.user}님의 정보가 기록되어있지 않습니다. 계좌가 있으신 유저만 확인이 가능합니다.`,
         );
-
       if (!wjdqh)
         return interaction.editReply({
           embeds: [embed],
         });
-      const t = new Date();
-      const date = '' + t.getFullYear() + t.getMonth() + t.getDate();
-      let i;
-      if (wjdqh.date == date) i = '돈을 받음';
-      else i = '돈을 받지않음';
+      await wjdqh.updateOne({ $set: { lastGuild: interaction.guild ? interaction.guild.id : wjdqh.lastGuild } })
       embed = new Embed(client, 'success')
         .setTitle(`${user.tag}님의 잔액`)
         .setDescription(`유저님의 잔액은 아래와 같습니다.`)

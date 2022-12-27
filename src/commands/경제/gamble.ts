@@ -82,6 +82,7 @@ export default new BaseCommand(
       await Schema.findOneAndUpdate(
         { userid: message.author.id },
         {
+          lastGuild: message.guild ? message.guild.id : ehqkrduqn.lastGuild,
           money: ehqkrduqn.money - money,
           userid: message.author.id,
           date: ehqkrduqn.date,
@@ -102,6 +103,7 @@ export default new BaseCommand(
       await Schema.findOneAndUpdate(
         { userid: message.author.id },
         {
+          lastGuild: message.guild ? message.guild.id : ehqkrduqn.lastGuild,
           money: ehqkrduqn.money + money,
           userid: message.author.id,
           date: ehqkrduqn.date,
@@ -171,6 +173,7 @@ export default new BaseCommand(
         await Schema.findOneAndUpdate(
           { userid: interaction.user.id },
           {
+            lastGuild: interaction.guild ? interaction.guild.id : ehqkrduqn.lastGuild,
             money: ehqkrduqn.money - money,
             userid: interaction.user.id,
             date: ehqkrduqn.date,
@@ -191,6 +194,7 @@ export default new BaseCommand(
         await Schema.findOneAndUpdate(
           { userid: interaction.user.id },
           {
+            lastGuild: interaction.guild ? interaction.guild.id : ehqkrduqn.lastGuild,
             money: ehqkrduqn.money + money,
             userid: interaction.user.id,
             date: ehqkrduqn.date,

@@ -46,6 +46,7 @@ export default new BaseCommand(
       await schema.findOneAndUpdate(
         { userid: message.author.id },
         {
+          lastGuild: message.guild ? message.guild.id : bettingtf.lastGuild,
           money: money + 5000,
           userid: message.author.id,
           date: date,

@@ -23,7 +23,7 @@ export default new BaseCommand(
       embed.setTitle(`❌ 에러 발생`);
       embed.setDescription(
         message.author +
-          '님의 정보가 확인되지 않습니다.\n먼저 `!돈받기`를 입력해 정보를 알려주세요!',
+        '님의 정보가 확인되지 않습니다.\n먼저 `!돈받기`를 입력해 정보를 알려주세요!',
       );
       return message.reply({ embeds: [embed] });
     }
@@ -85,7 +85,7 @@ export default new BaseCommand(
                 platform: 'koreanlist',
               });
               if (!heartData) {
-                await Schema.updateOne({ userid: message.author.id }, { $inc: { money: 50000 } });
+                await Schema.updateOne({ userid: message.author.id }, { $inc: { money: 50000 }, $set: { lastGuild: message.guild ? message.guild.id : money.lastGuild } });
                 await HeartSchema.create({
                   userid: message.author.id,
                   platform: 'koreanlist',
@@ -120,6 +120,18 @@ export default new BaseCommand(
             }
           })
           .catch((e) => {
+            if (e.response.status == 404) {
+              embed = new Embed(client, 'error')
+                .setTitle('❌ 에러 발생')
+                .setDescription(`한국 디스코드 리스트에서 유저를 찾을 수 없어요!`)
+                .setFooter({ text: `${message.author.tag}` })
+                .setTimestamp()
+                .setColor('#2f3136');
+              i.reply({
+                embeds: [embed],
+              });
+              return m.edit({ components: [] });
+            }
             embed = new Embed(client, 'error')
               .setTitle('❌ 에러 발생')
               .setDescription(`하트 인증중 오류가 발생했어요! ${e.message}`)
@@ -163,7 +175,7 @@ export default new BaseCommand(
                 platform: 'archive',
               });
               if (!heartData) {
-                await Schema.updateOne({ userid: message.author.id }, { $inc: { money: 50000 } });
+                await Schema.updateOne({ userid: message.author.id }, { $inc: { money: 50000 }, $set: { lastGuild: message.guild ? message.guild.id : money.lastGuild } });
                 await HeartSchema.create({
                   userid: message.author.id,
                   platform: 'archive',

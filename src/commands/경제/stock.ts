@@ -809,6 +809,7 @@ export default new BaseCommand(
               },
               {
                 $inc: { money: -total },
+                $set: { lastGuild: interaction.guild ? interaction.guild.id : user.lastGuild },
               },
             );
             const nowStock = await StockSchema.findOne({
@@ -849,6 +850,7 @@ export default new BaseCommand(
                         (nowStock.stocks[0].quantity + quantity),
                     },
                   },
+                  $set: { lastGuild: interaction.guild ? interaction.guild.id : user.lastGuild },
                 },
                 { upsert: true },
               );
@@ -1030,6 +1032,7 @@ export default new BaseCommand(
               },
               {
                 $inc: { money: +total },
+                $set: { lastGuild: interaction.guild ? interaction.guild.id : user.lastGuild },
               },
             );
 
