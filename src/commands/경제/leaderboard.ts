@@ -36,7 +36,6 @@ export default new BaseCommand(
         embed.setTitle('돈 순위표');
         let i = 0;
         moneyLeaderboard.forEach((moneyLeader) => {
-          console.log(moneyLeader);
           let searchuser = client.users.cache.get(moneyLeader.userid);
           if (!searchuser) return;
           i = i + 1;
@@ -50,7 +49,6 @@ export default new BaseCommand(
         embed.setTitle('서버 돈 순위표');
         const moneyLeaderboard = await Schema.find({ lastGuild: interaction.guild.id }).sort({ money: -1, date: -1 }).limit(10);
         moneyLeaderboard.forEach((moneyLeader) => {
-          console.log(moneyLeader);
           let searchuser = client.users.cache.get(moneyLeader.userid);
           if (!searchuser) return;
           i = i + 1;
