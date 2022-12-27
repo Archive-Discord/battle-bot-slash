@@ -88,7 +88,7 @@ export default new BaseCommand(
           if (command === 'dev') return;
           embed.setDescription(`아래에 있는 명령어들을 이용해 도움말을 보세요!`);
           embed.addFields({
-            name: `\`${config.bot.prefix}도움말 ${command}\``,
+            name: `\`/도움말 ${command}\``,
             value: `> ${command}관련 명령어들을 보내드려요!`,
             inline: true,
           });
