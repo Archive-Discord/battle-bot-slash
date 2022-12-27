@@ -7,7 +7,7 @@ import Embed from '../../utils/Embed';
 export default new BaseCommand(
   {
     name: '뮤직',
-    description: '',
+    description: '설치형 뮤직 시스템을 설정합니다.',
     aliases: ['뮤직', 'music'],
   },
   async (client, message, args) => {
@@ -32,7 +32,7 @@ export default new BaseCommand(
         const embed1 = new Embed(client, 'error')
           .setTitle('❌ 에러 발생')
           .setDescription(
-            `이미 <#${find.channel_id}>로 음악기능이 설정되어있는거 같습니다.\n채널을 삭제하셨거나 다시 설정을 원하시면 \`!뮤직설정헤제\` 입력 후 다시 시도해주세요.`,
+            `이미 <#${find.channel_id}>로 음악기능이 설정되어있는거 같습니다.\n채널을 삭제하셨거나 다시 설정을 원하시면 \`/뮤직설정해제\` 입력 후 다시 시도해주세요.`,
           )
           .setColor('#2f3136');
         return interaction.reply({ embeds: [embed1] });

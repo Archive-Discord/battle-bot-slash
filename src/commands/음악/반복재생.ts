@@ -6,7 +6,7 @@ import Embed from '../../utils/Embed';
 export default new BaseCommand(
   {
     name: '반복재생',
-    description: '',
+    description: '음악을 반복하여 재생합니다.',
     aliases: ['반복재생', 'repeat'],
   },
   async (client, message, args) => {

@@ -6,8 +6,8 @@ import Embed from '../../utils/Embed';
 export default new BaseCommand(
   {
     name: '재개',
-    description: '',
-    aliases: ['resume', '재개', 'woro'],
+    description: '재생 중인 노래를 노래를 재개해요.',
+    aliases: ['재개', 'resume', 'woro'],
   },
   async (client, message, args) => {
     message.reply('빗금으로 이전되었습니다.');

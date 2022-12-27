@@ -6,8 +6,8 @@ import Embed from '../../utils/Embed';
 export default new BaseCommand(
   {
     name: '일시정지',
-    description: '',
-    aliases: ['pause', '일시정지', 'dlftlwjdwl'],
+    description: '재생 중인 노래를 일시정지합니다',
+    aliases: ['일시정지', 'pause', 'dlftlwjdwl'],
   },
   async (client, message, args) => {
     message.reply('빗금으로 이전되었습니다.');

@@ -6,8 +6,8 @@ import Embed from '../../utils/Embed';
 export default new BaseCommand(
   {
     name: '정지',
-    description: '',
-    aliases: ['stop', '정지', 's', 'wjdwl'],
+    description: '재생 중인 노래를 정지해요.',
+    aliases: ['정지', 'stop', 's', 'wjdwl'],
   },
   async (client, message, args) => {
     message.reply('빗금으로 이전되었습니다.');

@@ -7,8 +7,8 @@ import { format } from '../../utils/Utils';
 export default new BaseCommand(
   {
     name: '재생',
-    description: '',
-    aliases: ['play', 'p', '재생', 'wotod'],
+    description: '듣고 싶은 노래를 재생해요.',
+    aliases: ['재생', 'p', 'play', 'wotod'],
   },
   async (client, message, args) => {
     message.reply('빗금으로 이전되었습니다.');

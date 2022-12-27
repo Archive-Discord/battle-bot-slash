@@ -7,8 +7,8 @@ import { format } from '../../utils/Utils';
 export default new BaseCommand(
   {
     name: '재생목록',
-    description: '',
-    aliases: ['playlist', '재생목록', 'wotodahrfhr'],
+    description: '현재 등록된 노래 목록을 보여줘요',
+    aliases: ['재생목록', 'playlist', 'wotodahrfhr'],
   },
   async (client, message, args) => {
     message.reply('빗금으로 이전되었습니다.');
@@ -54,11 +54,11 @@ export default new BaseCommand(
           {
             name: `**\` 0. \` __재생중인 노래__**`,
             value: `**${queue.queue.current?.uri
-                ? `[${queue.queue.current.title
-                  .substring(0, 60)
-                  .replace(/\[/giu, '\\[')
-                  .replace(/\]/giu, '\\]')}](${queue.queue.current.uri})`
-                : queue.queue.current?.title
+              ? `[${queue.queue.current.title
+                .substring(0, 60)
+                .replace(/\[/giu, '\\[')
+                .replace(/\]/giu, '\\]')}](${queue.queue.current.uri})`
+              : queue.queue.current?.title
               }** - \`${queue.queue.current?.isStream
                 ? `LIVE STREAM`
                 : format(queue.queue.current?.duration).split(` | `)[0]

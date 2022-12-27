@@ -6,8 +6,8 @@ import Embed from '../../utils/Embed';
 export default new BaseCommand(
   {
     name: '볼륨',
-    description: '',
-    aliases: ['volume', '볼륨', 'qhffba'],
+    description: '노래의 볼륨을 조정합니다',
+    aliases: ['볼륨', 'volume', 'qhffba'],
   },
   async (client, message, args) => {
     message.reply('빗금으로 이전되었습니다.');

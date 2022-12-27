@@ -6,8 +6,8 @@ import Embed from '../../utils/Embed';
 export default new BaseCommand(
   {
     name: '스킵',
-    description: '',
-    aliases: ['skip', '스킵', 'tmzlq'],
+    description: '재생 중인 노래를 스킵 합니다',
+    aliases: ['스킵', 'skip', 'tmzlq'],
   },
   async (client, message, args) => {
     message.reply('빗금으로 이전되었습니다.');

@@ -7,8 +7,8 @@ import { createBar, format } from '../../utils/Utils';
 export default new BaseCommand(
   {
     name: '현재재생',
-    description: '',
-    aliases: ['nowplaying', '현재재생', 'guswowotod'],
+    description: '현재 재생중인 곡을 표시해요.',
+    aliases: ['현재재생', 'nowplaying', 'guswowotod'],
   },
   async (client, message, args) => {
     message.reply('빗금으로 이전되었습니다.');
