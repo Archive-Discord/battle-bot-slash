@@ -10,22 +10,21 @@ export default new BaseCommand(
     aliases: ['정지', 'stop', 's', 'wjdwl'],
   },
   async (client, message, args) => {
-    message.reply('빗금으로 이전되었습니다.');
+    return message.reply('빗금으로 이전되었습니다.');
   },
   {
     data: new SlashCommandBuilder().setName('정지').setDescription('노래를 정지해요.'),
     async execute(client, interaction) {
-      if (!interaction.member || !interaction.member.voice.channel)
-        return interaction.reply({
-          embeds: [new Embed(client, 'default').setDescription(`음성채널에 먼저 참여해주세요!`).setColor('#2f3136')],
-        });
-      const queue = client.music.create({
-        guild: interaction.guild.id,
-        voiceChannel: interaction.member.voice.channel.id,
-        textChannel: interaction.channel?.id!,
-      });
+      if (!interaction.memberPermissions.has('ManageGuild')) {
+        if (!interaction.member || !interaction.member.voice.channel) {
+          return interaction.reply({
+            embeds: [new Embed(client, 'default').setDescription(`음성채널에 먼저 참여해주세요!`).setColor('#2f3136')],
+          });
+        }
+      }
+      const queue = client.music.get(interaction.guildId);
 
-      if (!queue || !queue.playing)
+      if (!queue)
         return interaction.reply({
           embeds: [
             new Embed(client, 'default').setDescription(`현재 재생되고 있는 음악이 없습니다.`).setColor('#2f3136'),
