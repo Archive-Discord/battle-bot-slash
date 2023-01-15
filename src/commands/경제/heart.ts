@@ -210,6 +210,25 @@ export default new BaseCommand(
             }
           })
           .catch((e) => {
+            if (e.response.status == 404) {
+              embed = new Embed(client, 'error')
+                .setTitle('❌ 에러 발생')
+                .setDescription(`아카이브에 있는 배틀이 봇의 하트가 아직 눌려있지 않습니다.`)
+                .setFooter({ text: `${message.author.tag}` })
+                .setTimestamp()
+                .setColor('#2f3136');
+              let link = new Discord.ActionRowBuilder<ButtonBuilder>().addComponents(
+                new Discord.ButtonBuilder()
+                  .setURL(`https://archiver.me/bots/${client.user?.id}/like`)
+                  .setLabel(`하트 누르기`)
+                  .setStyle(ButtonStyle.Link),
+              );
+              i.reply({
+                embeds: [embed],
+                components: [link],
+              });
+              return m.edit({ components: [] });
+            }
             embed = new Embed(client, 'error')
               .setTitle('❌ 에러 발생')
               .setDescription(`하트 인증중 오류가 발생했어요! ${e.message}`)
