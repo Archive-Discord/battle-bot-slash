@@ -67,10 +67,10 @@ export default new BaseCommand(
         embeds: [embed],
       });
     const random = Math.floor(Math.random() * 101);
-    if (random < 56) {
+    if (random < 60) {
       embed = new Embed(client, 'success')
         .setTitle(`❌ 도박 실패`)
-        .setDescription(`도박에 실패하셨습니다. 돈은 제가 가져가겠습니다. - **${comma(money)}원**`)
+        .setDescription(`[ **${random}%** ] 확률로 도박에 실패하셨습니다. 돈은 제가 가져가겠습니다. - **${comma(money)}원**`)
         .addFields({
           name: '잔액 :',
           value: `**${comma(ehqkrduqn.money - money)}원**`,
@@ -91,24 +91,123 @@ export default new BaseCommand(
     } else {
       embed = new Embed(client, 'success')
         .setTitle(`⭕ 도박 성공`)
-        .setDescription(`도박에 성공하셨습니다. + **${comma(money)}원**`)
-        .addFields({
-          name: '잔액 :',
-          value: `**${comma(ehqkrduqn.money + money)}원**`,
-        })
-        .setColor('#2f3136');
+      const randomGive = Math.floor(Math.random() * 101);
+      if (randomGive <= 50) {
+        embed.setDescription(`도박에 성공하여 [ **${100 - randomGive}%** ] 확률로 배팅금의 0.5배가 지급되었습니다  + **${comma(money * 0.5)}원**`)
+          .addFields({
+            name: '잔액 :',
+            value: `**${comma(ehqkrduqn.money + (money * 0.5))}원**`,
+          })
+          .setColor('#2f3136');
+        await Schema.findOneAndUpdate(
+          { userid: message.author.id },
+          {
+            lastGuild: message.guild ? message.guild.id : ehqkrduqn.lastGuild,
+            money: ehqkrduqn.money + (money * 0.5),
+            userid: message.author.id,
+            date: ehqkrduqn.date,
+          },
+        );
+      } else if (randomGive > 50 && randomGive <= 70) {
+        embed.setDescription(`도박에 성공하여 [ **${100 - randomGive}%** ] 확률로 배팅금의 0.8배가 지급되었습니다  + **${comma(money * 0.8)}원**`)
+          .addFields({
+            name: '잔액 :',
+            value: `**${comma(ehqkrduqn.money + (money * 0.8))}원**`,
+          })
+          .setColor('#2f3136');
+        await Schema.findOneAndUpdate(
+          { userid: message.author.id },
+          {
+            lastGuild: message.guild ? message.guild.id : ehqkrduqn.lastGuild,
+            money: ehqkrduqn.money + (money * 0.8),
+            userid: message.author.id,
+            date: ehqkrduqn.date,
+          },
+        );
+      } else if (randomGive > 70 && randomGive <= 90) {
+        embed.setDescription(`도박에 성공하여 [ **${100 - randomGive}%** ] 확률로 배팅금의 1배가 지급되었습니다  + **${comma(money)}원**`)
+          .addFields({
+            name: '잔액 :',
+            value: `**${comma(ehqkrduqn.money + money)}원**`,
+          })
+          .setColor('#2f3136');
+        await Schema.findOneAndUpdate(
+          { userid: message.author.id },
+          {
+            lastGuild: message.guild ? message.guild.id : ehqkrduqn.lastGuild,
+            money: ehqkrduqn.money + money,
+            userid: message.author.id,
+            date: ehqkrduqn.date,
+          },
+        );
+      } else if (randomGive > 90 && randomGive <= 95) {
+        embed.setDescription(`도박에 성공하여 [ **${100 - randomGive}%** ] 확률로 배팅금의 1.2배가 지급되었습니다  + **${comma(money * 1.2)}원**`)
+          .addFields({
+            name: '잔액 :',
+            value: `**${comma(ehqkrduqn.money + (money * 1.2))}원**`,
+          })
+          .setColor('#2f3136');
+        await Schema.findOneAndUpdate(
+          { userid: message.author.id },
+          {
+            lastGuild: message.guild ? message.guild.id : ehqkrduqn.lastGuild,
+            money: ehqkrduqn.money + (money * 1.2),
+            userid: message.author.id,
+            date: ehqkrduqn.date,
+          },
+        );
+      } else if (randomGive > 95 && randomGive <= 97) {
+        embed.setDescription(`도박에 성공하여 [ **${100 - randomGive}%** ] 확률로 배팅금의 1.5배가 지급되었습니다  + **${comma(money * 1.5)}원**`)
+          .addFields({
+            name: '잔액 :',
+            value: `**${comma(ehqkrduqn.money + (money * 1.5))}원**`,
+          })
+          .setColor('#2f3136');
+        await Schema.findOneAndUpdate(
+          { userid: message.author.id },
+          {
+            lastGuild: message.guild ? message.guild.id : ehqkrduqn.lastGuild,
+            money: ehqkrduqn.money + (money * 1.5),
+            userid: message.author.id,
+            date: ehqkrduqn.date,
+          },
+        );
+      } else if (randomGive > 97 && randomGive <= 98) {
+        embed.setDescription(`도박에 성공하여 [ **${100 - randomGive}%** ] 확률로 배팅금의 1.7배가 지급되었습니다  + **${comma(money * 1.7)}원**`)
+          .addFields({
+            name: '잔액 :',
+            value: `**${comma(ehqkrduqn.money + (money * 1.7))}원**`,
+          })
+          .setColor('#2f3136');
+        await Schema.findOneAndUpdate(
+          { userid: message.author.id },
+          {
+            lastGuild: message.guild ? message.guild.id : ehqkrduqn.lastGuild,
+            money: ehqkrduqn.money + (money * 1.7),
+            userid: message.author.id,
+            date: ehqkrduqn.date,
+          },
+        );
+      } else {
+        embed.setDescription(`도박에 성공하여 [ **${101 - randomGive}%** ] 확률로 배팅금의 2배가 지급되었습니다  + **${comma(money * 2)}원**`)
+          .addFields({
+            name: '잔액 :',
+            value: `**${comma(ehqkrduqn.money + (money * 2))}원**`,
+          })
+          .setColor('#2f3136');
+        await Schema.findOneAndUpdate(
+          { userid: message.author.id },
+          {
+            lastGuild: message.guild ? message.guild.id : ehqkrduqn.lastGuild,
+            money: ehqkrduqn.money + (money * 2),
+            userid: message.author.id,
+            date: ehqkrduqn.date,
+          },
+        );
+      }
       m.edit({
         embeds: [embed],
       });
-      await Schema.findOneAndUpdate(
-        { userid: message.author.id },
-        {
-          lastGuild: message.guild ? message.guild.id : ehqkrduqn.lastGuild,
-          money: ehqkrduqn.money + money,
-          userid: message.author.id,
-          date: ehqkrduqn.date,
-        },
-      );
     }
   },
   {
@@ -156,11 +255,11 @@ export default new BaseCommand(
           embeds: [embed],
         });
       const random = Math.floor(Math.random() * 101);
-      if (random < 56) {
+      if (random < 60) {
         embed = new Embed(client, 'success')
           .setTitle(`❌ 도박 실패`)
           .setDescription(
-            `도박에 실패하셨습니다. 돈은 제가 가져가겠습니다. - **${comma(money)}원**`,
+            `[ **${random}%** ] 확률로 도박에 실패하셨습니다. 돈은 제가 가져가겠습니다. - **${comma(money)}원**`,
           )
           .addFields({
             name: '잔액 :',
@@ -182,24 +281,121 @@ export default new BaseCommand(
       } else {
         embed = new Embed(client, 'success')
           .setTitle(`⭕ 도박 성공`)
-          .setDescription(`도박에 성공하셨습니다. + **${comma(money)}원**`)
-          .addFields({
-            name: '잔액 :',
-            value: `**${comma(ehqkrduqn.money + money)}원**`,
-          })
-          .setColor('#2f3136');
-        interaction.editReply({
-          embeds: [embed],
-        });
-        await Schema.findOneAndUpdate(
-          { userid: interaction.user.id },
-          {
-            lastGuild: interaction.guild ? interaction.guild.id : ehqkrduqn.lastGuild,
-            money: ehqkrduqn.money + money,
-            userid: interaction.user.id,
-            date: ehqkrduqn.date,
-          },
-        );
+        const randomGive = Math.floor(Math.random() * 101);
+        if (randomGive <= 50) {
+          embed.setDescription(`도박에 성공하여 [ **${100 - randomGive}%** ] 확률로 배팅금의 0.5배가 지급되었습니다  + **${comma(money * 0.5)}원**`)
+            .addFields({
+              name: '잔액 :',
+              value: `**${comma(ehqkrduqn.money + (money * 0.5))}원**`,
+            })
+            .setColor('#2f3136');
+          await Schema.findOneAndUpdate(
+            { userid: interaction.user.id },
+            {
+              lastGuild: interaction.guild ? interaction.guild.id : ehqkrduqn.lastGuild,
+              money: ehqkrduqn.money + (money * 0.5),
+              userid: interaction.user.id,
+              date: ehqkrduqn.date,
+            },
+          );
+        } else if (randomGive > 50 && randomGive <= 70) {
+          embed.setDescription(`도박에 성공하여 [ **${100 - randomGive}%** ] 확률로 배팅금의 0.8배가 지급되었습니다  + **${comma(money * 0.8)}원**`)
+            .addFields({
+              name: '잔액 :',
+              value: `**${comma(ehqkrduqn.money + (money * 0.8))}원**`,
+            })
+            .setColor('#2f3136');
+          await Schema.findOneAndUpdate(
+            { userid: interaction.user.id },
+            {
+              lastGuild: interaction.guild ? interaction.guild.id : ehqkrduqn.lastGuild,
+              money: ehqkrduqn.money + (money * 0.8),
+              userid: interaction.user.id,
+              date: ehqkrduqn.date,
+            },
+          );
+        } else if (randomGive > 70 && randomGive <= 90) {
+          embed.setDescription(`도박에 성공하여 [ **${100 - randomGive}%** ] 확률로 배팅금의 1배가 지급되었습니다  + **${comma(money)}원**`)
+            .addFields({
+              name: '잔액 :',
+              value: `**${comma(ehqkrduqn.money + money)}원**`,
+            })
+            .setColor('#2f3136');
+          await Schema.findOneAndUpdate(
+            { userid: interaction.user.id },
+            {
+              lastGuild: interaction.guild ? interaction.guild.id : ehqkrduqn.lastGuild,
+              money: ehqkrduqn.money + money,
+              userid: interaction.user.id,
+              date: ehqkrduqn.date,
+            },
+          );
+        } else if (randomGive > 90 && randomGive <= 95) {
+          embed.setDescription(`도박에 성공하여 [ **${100 - randomGive}%** ] 확률로 배팅금의 1.2배가 지급되었습니다  + **${comma(money * 1.2)}원**`)
+            .addFields({
+              name: '잔액 :',
+              value: `**${comma(ehqkrduqn.money + (money * 1.2))}원**`,
+            })
+            .setColor('#2f3136');
+          await Schema.findOneAndUpdate(
+            { userid: interaction.user.id },
+            {
+              lastGuild: interaction.guild ? interaction.guild.id : ehqkrduqn.lastGuild,
+              money: ehqkrduqn.money + (money * 1.2),
+              userid: interaction.user.id,
+              date: ehqkrduqn.date,
+            },
+          );
+        } else if (randomGive > 95 && randomGive <= 97) {
+          embed.setDescription(`도박에 성공하여 [ **${100 - randomGive}%** ] 확률로 배팅금의 1.5배가 지급되었습니다  + **${comma(money * 1.5)}원**`)
+            .addFields({
+              name: '잔액 :',
+              value: `**${comma(ehqkrduqn.money + (money * 1.5))}원**`,
+            })
+            .setColor('#2f3136');
+          await Schema.findOneAndUpdate(
+            { userid: interaction.user.id },
+            {
+              lastGuild: interaction.guild ? interaction.guild.id : ehqkrduqn.lastGuild,
+              money: ehqkrduqn.money + (money * 1.5),
+              userid: interaction.user.id,
+              date: ehqkrduqn.date,
+            },
+          );
+        } else if (randomGive > 97 && randomGive <= 98) {
+          embed.setDescription(`도박에 성공하여 [ **${100 - randomGive}%** ] 확률로 배팅금의 1.7배가 지급되었습니다  + **${comma(money * 1.7)}원**`)
+            .addFields({
+              name: '잔액 :',
+              value: `**${comma(ehqkrduqn.money + (money * 1.7))}원**`,
+            })
+            .setColor('#2f3136');
+          await Schema.findOneAndUpdate(
+            { userid: interaction.user.id },
+            {
+              lastGuild: interaction.guild ? interaction.guild.id : ehqkrduqn.lastGuild,
+              money: ehqkrduqn.money + (money * 1.7),
+              userid: interaction.user.id,
+              date: ehqkrduqn.date,
+            },
+          );
+        } else {
+          embed.setDescription(`도박에 성공하여 [ **${101 - randomGive}%** ] 확률로 배팅금의 2배가 지급되었습니다  + **${comma(money * 2)}원**`)
+            .addFields({
+              name: '잔액 :',
+              value: `**${comma(ehqkrduqn.money + (money * 2))}원**`,
+            })
+            .setColor('#2f3136');
+          await Schema.findOneAndUpdate(
+            { userid: interaction.user.id },
+            {
+              lastGuild: interaction.guild ? interaction.guild.id : ehqkrduqn.lastGuild,
+              money: ehqkrduqn.money + (money * 2),
+              userid: interaction.user.id,
+              date: ehqkrduqn.date,
+            },
+          );
+        }
+        interaction.editReply({ embeds: [embed] })
       }
     },
   },
