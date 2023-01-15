@@ -4,6 +4,7 @@ import Embed from '../../utils/Embed';
 import comma from 'comma-number';
 import Schema from '../../schemas/Money';
 import { SlashCommandBuilder, userMention } from '@discordjs/builders';
+import config from '../../../config';
 
 export default new BaseCommand(
   {
@@ -22,7 +23,7 @@ export default new BaseCommand(
     embed = new Embed(client, 'success')
       .setTitle(`정보 오류`)
       .setDescription(
-        `${message.author}님의 정보가 기록되어있지 않습니다. 계좌가 있으신 유저만 확인이 가능합니다.`,
+        `${message.author}님의 정보가 기록되어있지 않습니다. \`${config.bot.prefix}돈받기\`명령어를 이용하여 계좌를 생성해주세요.`,
       );
     if (!wjdqh)
       return m.edit({
@@ -61,7 +62,7 @@ export default new BaseCommand(
       embed = new Embed(client, 'success')
         .setTitle(`정보 오류`)
         .setDescription(
-          `${interaction.user}님의 정보가 기록되어있지 않습니다. 계좌가 있으신 유저만 확인이 가능합니다.`,
+          `${interaction.user}님의 정보가 기록되어있지 않습니다. \`/돈받기\`명령어를 이용하여 계좌를 생성해주세요.`,
         );
       if (!wjdqh)
         return interaction.editReply({

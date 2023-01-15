@@ -1,13 +1,17 @@
 import { BaseCommand } from '../../structures/Command';
-import Discord from 'discord.js';
+import Discord, { SlashCommandBuilder } from 'discord.js';
 import Embed from '../../utils/Embed';
 import comma from 'comma-number';
 import schema from '../../schemas/Money';
+import Attendance from '../../schemas/attendanceSchema';
+import DateFormatting from '../../utils/DateFormatting';
+import dayjs from 'dayjs';
+import config from '../../../config';
 
 export default new BaseCommand(
   {
     name: 'givemoney',
-    description: '자신의 돈을 확인합니다.',
+    description: '출석체크를 합니다.',
     aliases: ['돈받기', 'moneyget', 'ehswnj', '돈줘'],
   },
   async (client, message, args) => {
@@ -15,55 +19,54 @@ export default new BaseCommand(
     let m = await message.reply({
       embeds: [embed],
     });
-    const t = new Date();
-    const date = '' + t.getFullYear() + t.getMonth() + t.getDate();
-    const bettingtf = await schema.findOne({
-      userid: message.author.id,
-    });
-    if (!bettingtf) {
-      let newData = new schema({
-        money: parseInt('5000'),
-        userid: message.author.id,
-        date: date,
-      });
-      newData.save();
-      embed = new Embed(client, 'success')
-        .setTitle('환영합니다!')
-        .setDescription(`처음이시군요! 5000원을 입금해드리겠습니다!`)
+    const attendances = await Attendance.findOne({ user_id: message.author.id, date: { $gte: new Date(new Date().setHours(0, 0, 0, 0)) } });
+    if (!attendances) {
+      embed = new Embed(client, 'info')
+        .setDescription(`아직 오늘 출석하지 않았네요! [여기](${config.web.baseurl}/calendar)를 들어가서 출석을 해주세요!`)
         .setColor('#2f3136');
-      m.edit({
+      return m.edit({
         embeds: [embed],
       });
     } else {
       embed = new Embed(client, 'info')
-        .setDescription(`이미 오늘 돈을 받으셨어요 ㅠㅠ\n다음에 다시 와주세요!`)
+        .setDescription(`이미 오늘은 출석을 하셨어요 ${DateFormatting._format(dayjs(dayjs().add(1, "day").toDate()).set('hour', 0).set('minute', 0).toDate(), 'R')}에 다시 와주세요!`)
         .setColor('#2f3136');
-      if (bettingtf.date == date)
-        return m.edit({
-          embeds: [embed],
-        });
-      const money = parseInt(String(bettingtf.money));
-      await schema.findOneAndUpdate(
-        { userid: message.author.id },
-        {
-          lastGuild: message.guild ? message.guild.id : bettingtf.lastGuild,
-          money: money + 5000,
-          userid: message.author.id,
-          date: date,
-        },
-      );
-      const f = money + 5000;
-      embed = new Embed(client, 'success')
-        .setTitle('입금이 완료되었습니다!')
-        .setDescription(`처음이시군요! 5000원을 입금해드리겠습니다!`)
-        .addFields({
-          name: `돈이 입금되었습니다!`,
-          value: `현재 잔액 : ${comma(f)}`,
-        })
-        .setColor('#2f3136');
-      m.edit({
+      return m.edit({
         embeds: [embed],
       });
     }
   },
+  {
+    // @ts-ignore
+    data: new SlashCommandBuilder()
+      .setName('돈받기')
+      .setDescription('출석체크를 합니다.'),
+    options: {
+      name: '돈받기',
+      isSlash: true,
+    },
+    async execute(client, interaction) {
+      let embed = new Embed(client, 'warn').setTitle('처리중..').setColor('#2f3136');
+      await interaction.reply({
+        embeds: [embed],
+        ephemeral: true,
+      });
+      const attendances = await Attendance.findOne({ user_id: interaction.user.id, date: { $gte: new Date(new Date().setHours(0, 0, 0, 0)) } });
+      if (!attendances) {
+        embed = new Embed(client, 'info')
+          .setDescription(`아직 오늘 출석하지 않았네요! [여기](${config.web.baseurl}/calendar)를 들어가서 출석을 해주세요!`)
+          .setColor('#2f3136');
+        return interaction.editReply({
+          embeds: [embed],
+        });
+      } else {
+        embed = new Embed(client, 'info')
+          .setDescription(`이미 오늘은 출석을 하셨어요 ${DateFormatting._format(dayjs(dayjs().add(1, "day").toDate()).set('hour', 0).set('minute', 0).toDate(), 'R')}에 다시 와주세요!`)
+          .setColor('#2f3136');
+        return interaction.editReply({
+          embeds: [embed],
+        });
+      }
+    },
+  }
 );
