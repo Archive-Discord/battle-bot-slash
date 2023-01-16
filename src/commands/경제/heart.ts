@@ -85,7 +85,7 @@ export default new BaseCommand(
                 platform: 'koreanlist',
               });
               if (!heartData) {
-                await Schema.updateOne({ userid: message.author.id }, { $inc: { money: 50000 }, $set: { lastGuild: message.guild ? message.guild.id : money.lastGuild } });
+                await Schema.updateOne({ userid: message.author.id }, { $inc: { money: 20000 }, $set: { lastGuild: message.guild ? message.guild.id : money.lastGuild } });
                 await HeartSchema.create({
                   userid: message.author.id,
                   platform: 'koreanlist',
@@ -175,7 +175,7 @@ export default new BaseCommand(
                 platform: 'archive',
               });
               if (!heartData) {
-                await Schema.updateOne({ userid: message.author.id }, { $inc: { money: 50000 }, $set: { lastGuild: message.guild ? message.guild.id : money.lastGuild } });
+                await Schema.updateOne({ userid: message.author.id }, { $inc: { money: 20000 }, $set: { lastGuild: message.guild ? message.guild.id : money.lastGuild } });
                 await HeartSchema.create({
                   userid: message.author.id,
                   platform: 'archive',
