@@ -40,7 +40,7 @@ export default new ButtonInteraction(
     let MessageDB = [] as any[];
     messages.forEach(async (msg: Message) => {
       MessageDB.push({
-        author: msg.author.toJSON(),
+        author: msg.author,
         created: msg.createdAt,
         messages: msg.content,
         embed: msg.embeds[0],
