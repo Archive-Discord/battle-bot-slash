@@ -28,7 +28,7 @@ export default new BaseCommand(
     },
     async execute(client, interaction) {
       const embed = new Embed(client, 'error').setTitle(`❌ 에러 발생`);
-      const embedSuccess = new Embed(client, 'success').setTitle(`유튜브`).setColor('#2f3136');
+      const embedSuccess = new Embed(client, 'default').setTitle(`유튜브`);
       const guild = interaction.guild;
       if (!guild) {
         embed.setDescription('이 명령어는 서버에서만 사용이 가능합니다.');

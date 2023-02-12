@@ -16,7 +16,7 @@ export default new BaseCommand(
   },
   async (client, message, args) => {
     const type = args[0];
-    const embed = new Embed(client, 'info').setColor('#2f3136');
+    const embed = new Embed(client, 'info');
     if (type === '검색') {
       const keyword = args.slice(1).join(' ');
       const results = await searchStockList(keyword);
@@ -252,7 +252,6 @@ export default new BaseCommand(
               value: `${comma(user.money - total)}원`,
               inline: true,
             })
-            .setColor('#2f3136');
           return i.update({ embeds: [successEmbed], components: [] });
         } else if (i.customId == 'stock.deny') {
           embed.setTitle(`❌ 매수 취소`);
@@ -443,7 +442,6 @@ export default new BaseCommand(
               value: `${comma(user.money + total)}원`,
               inline: true,
             })
-            .setColor('#2f3136');
           return i.update({ embeds: [successEmbed], components: [] });
         } else if (i.customId == 'stocksell.deny') {
           embed.setTitle(`❌ 매도 취소`);
@@ -617,12 +615,12 @@ export default new BaseCommand(
     async execute(client, interaction) {
       if (!interaction.inCachedGuild()) return;
       await interaction.deferReply({ ephemeral: true });
-      let embeds = new Embed(client, 'warn').setTitle('처리중..').setColor('#2f3136');
+      let embeds = new Embed(client, 'info').setTitle('처리중..')
       let m = await interaction.editReply({
         embeds: [embeds],
       });
       const type = interaction.options.getSubcommand();
-      const embed = new Embed(client, 'info').setColor('#2f3136');
+      const embed = new Embed(client, 'warn')
 
       if (type === '검색') {
         const keyword = interaction.options.getString('주식') || '';
@@ -873,7 +871,6 @@ export default new BaseCommand(
                 value: `${comma(user.money - total)}원`,
                 inline: true,
               })
-              .setColor('#2f3136');
             return i.update({ embeds: [successEmbed], components: [] });
           } else if (i.customId == 'stock.deny') {
             embed.setTitle(`❌ 매수 취소`);
@@ -1073,7 +1070,6 @@ export default new BaseCommand(
                 value: `${comma(user.money + total)}원`,
                 inline: true,
               })
-              .setColor('#2f3136');
             return i.update({ embeds: [successEmbed], components: [] });
           } else if (i.customId == 'stocksell.deny') {
             embed.setTitle(`❌ 매도 취소`);

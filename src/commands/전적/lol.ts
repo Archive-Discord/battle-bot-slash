@@ -28,11 +28,6 @@ export default new BaseCommand(
     },
     async execute(client, interaction) {
       await interaction.deferReply({ ephemeral: true });
-      await interaction.editReply({
-        embeds: [
-          new Embed(client, 'info').setDescription('전적을 불러오는 중..').setColor('#2f3136'),
-        ],
-      });
       let nickname = interaction.options.getString('user', true);
       let stats = await getStat(nickname);
       if (typeof stats === 'string') {
@@ -73,28 +68,23 @@ async function getStat(args: string) {
     let championRes: any = champions[match.myData.champion_id];
     if (match.myData.stats.result === 'LOSE') {
       matchinfo.push(
-        `- 패배 / ${match.queue_info.queue_translate} / <KDA ${match.myData.stats.kill}/${
-          match.myData.stats.death
-        }/${match.myData.stats.assist}> ${
-          match.myData.position ? '/ ' + match.myData.position : ''
+        `- 패배 / ${match.queue_info.queue_translate} / <KDA ${match.myData.stats.kill}/${match.myData.stats.death
+        }/${match.myData.stats.assist}> ${match.myData.position ? '/ ' + match.myData.position : ''
         }`,
       );
     } else {
       matchinfo.push(
-        `+ 승리 / ${match.queue_info.queue_translate} / ${championRes.name} / <KDA ${
-          match.myData.stats.kill
-        }/${match.myData.stats.death}/${match.myData.stats.assist}> ${
-          match.myData.position ? '/ ' + match.myData.position : ''
+        `+ 승리 / ${match.queue_info.queue_translate} / ${championRes.name} / <KDA ${match.myData.stats.kill
+        }/${match.myData.stats.death}/${match.myData.stats.assist}> ${match.myData.position ? '/ ' + match.myData.position : ''
         }`,
       );
     }
   });
-  let embed = new EmbedBuilder().setTitle(`\`${args}\`의 프로필`).setColor('#2f3136');
+  let embed = new EmbedBuilder().setTitle(`\`${args}\`의 프로필`);
   let leagueStatus = data.league_stats[0];
   if (leagueStatus.tier_info.tier)
     embed.setDescription(
-      `${leagueStatus.queue_info.queue_translate} - ${leagueStatus.tier_info.tier} ${
-        leagueStatus.tier_info.division
+      `${leagueStatus.queue_info.queue_translate} - ${leagueStatus.tier_info.tier} ${leagueStatus.tier_info.division
       } (${leagueStatus.tier_info.lp}LP) \n ${leagueStatus.win}승 / ${leagueStatus.lose}패 / ${(
         (leagueStatus.win / (leagueStatus.win + leagueStatus.lose)) *
         100

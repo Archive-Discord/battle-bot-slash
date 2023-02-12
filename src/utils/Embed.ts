@@ -25,9 +25,9 @@ export default class Embed extends EmbedBuilder {
 
 export function typeToColor(type: EmbedType) {
   if (type === 'success') return '#57F287';
-  else if (type === 'error') return '#ED4245';
+  else if (type === 'error') return '#F12101';
   else if (type === 'warn') return '#FEE75C';
   else if (type === 'info') return '#5865F2';
-  else if (type === 'default') return '#5865F2';
-  else return '#5865F2';
+  else if (type === 'default') return '#2f3136';
+  else return '#2f3136';
 }

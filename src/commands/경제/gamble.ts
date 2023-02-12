@@ -12,73 +12,55 @@ export default new BaseCommand(
     aliases: ['도박', 'ehqkr'],
   },
   async (client, message, args) => {
-    let embed = new Embed(client, 'warn').setTitle('생각하는 중...');
-
-    let m = await message.reply({
-      embeds: [embed],
-    });
     const ehqkrduqn = await Schema.findOne({
       userid: message.author.id,
     });
-    embed = new Embed(client, 'error')
-      .setTitle(`❌ 에러 발생`)
-      .setDescription('계좌가 생성되어있지 않습니다. !돈받기 입력 부탁드립니다.')
-      .setTimestamp()
-      .setColor('#2f3136');
-    if (!ehqkrduqn)
-      return m.edit({
-        embeds: [embed],
-      });
-    embed = new Embed(client, 'error')
-      .setTitle(`❌ 에러 발생`)
-      .setDescription('도박하실 돈의 양이 입력되지 않았습니다.')
-      .setTimestamp()
-      .setColor('#2f3136');
-    if (isNaN(parseInt(args[0])) ?? !args[0])
-      return m.edit({
-        embeds: [embed],
-      });
-    embed = new Embed(client, 'error')
-      .setTitle(`❌ 에러 발생`)
-      .setDescription('금액은 자연수만 입력해주세요.')
-      .setTimestamp()
-      .setColor('#2f3136');
-    if (args.join(' ').includes('-'))
-      return m.edit({
-        embeds: [embed],
-      });
     const money = parseInt(args[0]);
-    embed = new Embed(client, 'error')
-      .setTitle(`❌ 에러 발생`)
-      .setDescription('1000원 이상부터 도박이 가능합니다.')
-      .setTimestamp()
-      .setColor('#2f3136');
-    if (money < 1000)
-      return m.edit({
-        embeds: [embed],
-      });
-    embed = new Embed(client, 'error')
-      .setTitle(`❌ 에러 발생`)
-      .setDescription('보유하신 돈보다 배팅하신 돈의 금액이 많습니다. 금액 확인 부탁드립니다.')
-      .setTimestamp()
-      .setColor('#2f3136');
-    if (money > ehqkrduqn.money)
-      return m.edit({
-        embeds: [embed],
-      });
+    if (!ehqkrduqn) {
+      let embed = new Embed(client, 'error')
+        .setTitle(`❌ 에러 발생`)
+        .setDescription('계좌가 생성되어있지 않습니다. !돈받기 입력 부탁드립니다.')
+        .setTimestamp()
+      return message.reply({ embeds: [embed] });
+    }
+    else if (isNaN(parseInt(args[0])) ?? !args[0]) {
+      let embed = new Embed(client, 'error')
+        .setTitle(`❌ 에러 발생`)
+        .setDescription('도박하실 돈의 양이 입력되지 않았습니다.')
+        .setTimestamp()
+      return message.reply({ embeds: [embed] });
+    }
+    else if (args.join(' ').includes('-')) {
+      let embed = new Embed(client, 'error')
+        .setTitle(`❌ 에러 발생`)
+        .setDescription('금액은 자연수만 입력해주세요.')
+        .setTimestamp()
+      return message.reply({ embeds: [embed] });
+    }
+    else if (money < 1000) {
+      let embed = new Embed(client, 'error')
+        .setTitle(`❌ 에러 발생`)
+        .setDescription('1000원 이상부터 도박이 가능합니다.')
+        .setTimestamp()
+      return message.reply({ embeds: [embed] });
+    }
+    else if (money > ehqkrduqn.money) {
+      let embed = new Embed(client, 'error')
+        .setTitle(`❌ 에러 발생`)
+        .setDescription('보유하신 돈보다 배팅하신 돈의 금액이 많습니다. 금액 확인 부탁드립니다.')
+        .setTimestamp()
+      return message.reply({ embeds: [embed], });
+    }
     const random = Math.floor(Math.random() * 101);
     if (random < 60) {
-      embed = new Embed(client, 'success')
+      let embed = new Embed(client, 'default')
         .setTitle(`❌ 도박 실패`)
         .setDescription(`[ **${random}%** ] 확률로 도박에 실패하셨습니다. 돈은 제가 가져가겠습니다. - **${comma(money)}원**`)
         .addFields({
           name: '잔액 :',
           value: `**${comma(ehqkrduqn.money - money)}원**`,
         })
-        .setColor('#2f3136');
-      m.edit({
-        embeds: [embed],
-      });
+      message.reply({ embeds: [embed] });
       await Schema.findOneAndUpdate(
         { userid: message.author.id },
         {
@@ -89,7 +71,7 @@ export default new BaseCommand(
         },
       );
     } else {
-      embed = new Embed(client, 'success')
+      let embed = new Embed(client, 'default')
         .setTitle(`⭕ 도박 성공`)
       const randomGive = Math.floor(Math.random() * 101);
       if (randomGive <= 50) {
@@ -98,7 +80,6 @@ export default new BaseCommand(
             name: '잔액 :',
             value: `**${comma(ehqkrduqn.money + (money * 0.5))}원**`,
           })
-          .setColor('#2f3136');
         await Schema.findOneAndUpdate(
           { userid: message.author.id },
           {
@@ -114,7 +95,6 @@ export default new BaseCommand(
             name: '잔액 :',
             value: `**${comma(ehqkrduqn.money + (money * 0.8))}원**`,
           })
-          .setColor('#2f3136');
         await Schema.findOneAndUpdate(
           { userid: message.author.id },
           {
@@ -130,7 +110,6 @@ export default new BaseCommand(
             name: '잔액 :',
             value: `**${comma(ehqkrduqn.money + money)}원**`,
           })
-          .setColor('#2f3136');
         await Schema.findOneAndUpdate(
           { userid: message.author.id },
           {
@@ -146,7 +125,6 @@ export default new BaseCommand(
             name: '잔액 :',
             value: `**${comma(ehqkrduqn.money + (money * 1.2))}원**`,
           })
-          .setColor('#2f3136');
         await Schema.findOneAndUpdate(
           { userid: message.author.id },
           {
@@ -162,7 +140,6 @@ export default new BaseCommand(
             name: '잔액 :',
             value: `**${comma(ehqkrduqn.money + (money * 1.5))}원**`,
           })
-          .setColor('#2f3136');
         await Schema.findOneAndUpdate(
           { userid: message.author.id },
           {
@@ -178,7 +155,6 @@ export default new BaseCommand(
             name: '잔액 :',
             value: `**${comma(ehqkrduqn.money + (money * 1.7))}원**`,
           })
-          .setColor('#2f3136');
         await Schema.findOneAndUpdate(
           { userid: message.author.id },
           {
@@ -194,7 +170,6 @@ export default new BaseCommand(
             name: '잔액 :',
             value: `**${comma(ehqkrduqn.money + (money * 2))}원**`,
           })
-          .setColor('#2f3136');
         await Schema.findOneAndUpdate(
           { userid: message.author.id },
           {
@@ -205,9 +180,7 @@ export default new BaseCommand(
           },
         );
       }
-      m.edit({
-        embeds: [embed],
-      });
+      message.reply({ embeds: [embed] });
     }
   },
   {
@@ -226,37 +199,31 @@ export default new BaseCommand(
       const ehqkrduqn = await Schema.findOne({
         userid: interaction.user.id,
       });
-      let embed = new Embed(client, 'error')
-        .setTitle(`❌ 에러 발생`)
-        .setDescription('계좌가 생성되어있지 않습니다. !돈받기 입력 부탁드립니다.')
-        .setTimestamp()
-        .setColor('#2f3136');
-      if (!ehqkrduqn)
-        return interaction.editReply({
-          embeds: [embed],
-        });
       let money = interaction.options.getInteger('베팅금') || 0; //parseInt();
-      embed = new Embed(client, 'error')
-        .setTitle(`❌ 에러 발생`)
-        .setDescription('1000원 이상부터 도박이 가능합니다.')
-        .setTimestamp()
-        .setColor('#2f3136');
-      if (money < 1000)
-        return interaction.editReply({
-          embeds: [embed],
-        });
-      embed = new Embed(client, 'error')
-        .setTitle(`❌ 에러 발생`)
-        .setDescription('배팅하신 금액이 보유하신 금액보다 큽니다.')
-        .setTimestamp()
-        .setColor('#2f3136');
-      if (money > ehqkrduqn.money)
-        return interaction.editReply({
-          embeds: [embed],
-        });
+      if (!ehqkrduqn) {
+        let embed = new Embed(client, 'error')
+          .setTitle(`❌ 에러 발생`)
+          .setDescription('계좌가 생성되어있지 않습니다. !돈받기 입력 부탁드립니다.')
+          .setTimestamp()
+        return interaction.editReply({ embeds: [embed], });
+      }
+      else if (money < 1000) {
+        let embed = new Embed(client, 'error')
+          .setTitle(`❌ 에러 발생`)
+          .setDescription('1000원 이상부터 도박이 가능합니다.')
+          .setTimestamp()
+        return interaction.editReply({ embeds: [embed] });
+      }
+      else if (money > ehqkrduqn.money) {
+        let embed = new Embed(client, 'error')
+          .setTitle(`❌ 에러 발생`)
+          .setDescription('배팅하신 금액이 보유하신 금액보다 큽니다.')
+          .setTimestamp()
+        return interaction.editReply({ embeds: [embed] });
+      }
       const random = Math.floor(Math.random() * 101);
       if (random < 60) {
-        embed = new Embed(client, 'success')
+        let embed = new Embed(client, 'success')
           .setTitle(`❌ 도박 실패`)
           .setDescription(
             `[ **${random}%** ] 확률로 도박에 실패하셨습니다. 돈은 제가 가져가겠습니다. - **${comma(money)}원**`,
@@ -265,7 +232,6 @@ export default new BaseCommand(
             name: '잔액 :',
             value: `**${comma(ehqkrduqn.money - money)}원**`,
           })
-          .setColor('#2f3136');
         interaction.editReply({
           embeds: [embed],
         });
@@ -279,7 +245,7 @@ export default new BaseCommand(
           },
         );
       } else {
-        embed = new Embed(client, 'success')
+        let embed = new Embed(client, 'default')
           .setTitle(`⭕ 도박 성공`)
         const randomGive = Math.floor(Math.random() * 101);
         if (randomGive <= 50) {
@@ -288,7 +254,6 @@ export default new BaseCommand(
               name: '잔액 :',
               value: `**${comma(ehqkrduqn.money + (money * 0.5))}원**`,
             })
-            .setColor('#2f3136');
           await Schema.findOneAndUpdate(
             { userid: interaction.user.id },
             {
@@ -304,7 +269,6 @@ export default new BaseCommand(
               name: '잔액 :',
               value: `**${comma(ehqkrduqn.money + (money * 0.8))}원**`,
             })
-            .setColor('#2f3136');
           await Schema.findOneAndUpdate(
             { userid: interaction.user.id },
             {
@@ -320,7 +284,6 @@ export default new BaseCommand(
               name: '잔액 :',
               value: `**${comma(ehqkrduqn.money + money)}원**`,
             })
-            .setColor('#2f3136');
           await Schema.findOneAndUpdate(
             { userid: interaction.user.id },
             {
@@ -336,7 +299,6 @@ export default new BaseCommand(
               name: '잔액 :',
               value: `**${comma(ehqkrduqn.money + (money * 1.2))}원**`,
             })
-            .setColor('#2f3136');
           await Schema.findOneAndUpdate(
             { userid: interaction.user.id },
             {
@@ -352,7 +314,6 @@ export default new BaseCommand(
               name: '잔액 :',
               value: `**${comma(ehqkrduqn.money + (money * 1.5))}원**`,
             })
-            .setColor('#2f3136');
           await Schema.findOneAndUpdate(
             { userid: interaction.user.id },
             {
@@ -368,7 +329,6 @@ export default new BaseCommand(
               name: '잔액 :',
               value: `**${comma(ehqkrduqn.money + (money * 1.7))}원**`,
             })
-            .setColor('#2f3136');
           await Schema.findOneAndUpdate(
             { userid: interaction.user.id },
             {
@@ -384,7 +344,6 @@ export default new BaseCommand(
               name: '잔액 :',
               value: `**${comma(ehqkrduqn.money + (money * 2))}원**`,
             })
-            .setColor('#2f3136');
           await Schema.findOneAndUpdate(
             { userid: interaction.user.id },
             {

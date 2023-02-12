@@ -13,31 +13,20 @@ export default new BaseCommand(
     aliases: ['잔액', 'money', 'ehs', 'wlrkq', '지갑', '돈'],
   },
   async (client, message, args) => {
-    let embed = new Embed(client, 'warn').setTitle('처리중..').setColor('#2f3136');
-    let m = await message.reply({
-      embeds: [embed],
-    });
-    const user =
-      message.mentions.users.first() || client.users.cache.get(args[0]) || message.author;
+    const user = message.mentions.users.first() || client.users.cache.get(args[0]) || message.author;
     const wjdqh = await Schema.findOne({ userid: user.id });
-    embed = new Embed(client, 'success')
-      .setTitle(`정보 오류`)
-      .setDescription(
-        `${message.author}님의 정보가 기록되어있지 않습니다. \`${config.bot.prefix}돈받기\`명령어를 이용하여 계좌를 생성해주세요.`,
-      );
-    if (!wjdqh)
-      return m.edit({
-        embeds: [embed],
-      });
+    if (!wjdqh) {
+      let embed = new Embed(client, 'error')
+        .setTitle(`❌ 에러 발생`)
+        .setDescription(`${message.author}님의 정보가 기록되어있지 않습니다. \`${config.bot.prefix}돈받기\`명령어를 이용하여 계좌를 생성해주세요.`);
+      return message.reply({ embeds: [embed] });
+    }
     await wjdqh.updateOne({ $set: { lastGuild: message.guild ? message.guild.id : wjdqh.lastGuild } })
-    embed = new Embed(client, 'success')
+    let embed = new Embed(client, 'default')
       .setTitle(`${user.tag}님의 잔액`)
       .setDescription(`유저님의 잔액은 아래와 같습니다.`)
       .addFields({ name: '잔액 :', value: `**${comma(wjdqh.money)}원**` })
-      .setColor('#2f3136');
-    m.edit({
-      embeds: [embed],
-    });
+    message.reply({ embeds: [embed] });
   },
   {
     // @ts-ignore
@@ -53,30 +42,20 @@ export default new BaseCommand(
     },
     async execute(client, interaction) {
       await interaction.deferReply({ ephemeral: true });
-      let embed = new Embed(client, 'warn').setTitle('처리중..').setColor('#2f3136');
-      let m = await interaction.editReply({
-        embeds: [embed],
-      });
       let user = interaction.options.getUser('유저') || interaction.user;
       const wjdqh = await Schema.findOne({ userid: user.id });
-      embed = new Embed(client, 'success')
-        .setTitle(`정보 오류`)
-        .setDescription(
-          `${interaction.user}님의 정보가 기록되어있지 않습니다. \`/돈받기\`명령어를 이용하여 계좌를 생성해주세요.`,
-        );
-      if (!wjdqh)
-        return interaction.editReply({
-          embeds: [embed],
-        });
+      if (!wjdqh) {
+        let embed = new Embed(client, 'error')
+          .setTitle(`❌ 에러 발생`)
+          .setDescription(`${interaction.user}님의 정보가 기록되어있지 않습니다. \`/돈받기\`명령어를 이용하여 계좌를 생성해주세요.`);
+        return interaction.editReply({ embeds: [embed] });
+      }
       await wjdqh.updateOne({ $set: { lastGuild: interaction.guild ? interaction.guild.id : wjdqh.lastGuild } })
-      embed = new Embed(client, 'success')
+      let embed = new Embed(client, 'default')
         .setTitle(`${user.tag}님의 잔액`)
         .setDescription(`유저님의 잔액은 아래와 같습니다.`)
         .addFields({ name: '잔액 :', value: `**${comma(wjdqh.money)}원**` })
-        .setColor('#2f3136');
-      interaction.editReply({
-        embeds: [embed],
-      });
+      interaction.editReply({ embeds: [embed] });
     },
   },
 );

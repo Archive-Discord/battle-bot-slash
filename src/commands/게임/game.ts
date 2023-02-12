@@ -42,22 +42,22 @@ export default new BaseCommand(
     },
     async execute(client, interaction) {
       const embed = new Embed(client, 'error').setTitle(`❌ 에러 발생`);
-      const embedSuccess = new Embed(client, 'success').setTitle(`🎮 게임`).setColor('#2f3136');
+      const embedSuccess = new Embed(client, 'default').setTitle(`🎮 게임`);
       const guild = interaction.guild;
+      const member = guild.members.cache.get(interaction.user.id);
       if (!guild) {
         embed.setDescription('이 명령어는 서버에서만 사용이 가능합니다.');
         return interaction.reply({ embeds: [embed], ephemeral: true });
       }
-      const member = guild.members.cache.get(interaction.user.id);
-      if (!member) {
+      else if (!member) {
         embed.setDescription('서버에서 유저를 찾지 못했습니다.');
         return interaction.reply({ embeds: [embed], ephemeral: true });
       }
-      if (!member.voice || !member.voice.channel) {
+      else if (!member.voice || !member.voice.channel) {
         embed.setDescription(`먼저 음성채널에 입장해주세요.`);
         return interaction.reply({ embeds: [embed], ephemeral: true });
       }
-      if (member.voice.channel.type === ChannelType.GuildStageVoice) {
+      else if (member.voice.channel.type === ChannelType.GuildStageVoice) {
         embed.setDescription(`스테이지 채널에서는 이 명령어를 사용할 수 없습니다.`);
         return interaction.reply({ embeds: [embed], ephemeral: true });
       }

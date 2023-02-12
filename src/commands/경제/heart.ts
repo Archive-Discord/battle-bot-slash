@@ -11,22 +11,19 @@ export default new BaseCommand(
   {
     name: '하트인증',
     description: '한디리, 아카이브 하트를 인증합니다',
-    aliases: ['하트인증', 'ㅎㅌㅇㅈ', 'heart'],
+    aliases: ['하트인증', 'ㅎㅌㅇㅈ', 'heart', 'gkxmdlswmd', 'cncjs'],
   },
   async (client, message, args) => {
-    let embed = new Embed(client, 'warn')
-      .setTitle('하트인증')
-      .setDescription('하트인증 진행할 플랫폼을 선택해주세요!')
-      .setColor('#2f3136');
     const money = await Schema.findOne({ userid: message.author.id });
     if (!money) {
-      embed.setTitle(`❌ 에러 발생`);
-      embed.setDescription(
-        message.author +
-        '님의 정보가 확인되지 않습니다.\n먼저 `!돈받기`를 입력해 정보를 알려주세요!',
-      );
+      let embed = new Embed(client, 'default')
+        .setTitle(`❌ 에러 발생`)
+        .setDescription(message.author.toString() + '님의 정보가 확인되지 않습니다.\n먼저 `!돈받기`를 입력해 정보를 알려주세요!');
       return message.reply({ embeds: [embed] });
     }
+    let embed = new Embed(client, 'default')
+      .setTitle('하트인증')
+      .setDescription('하트인증 진행할 플랫폼을 선택해주세요!');
     let m = await message.reply({
       embeds: [embed],
       components: [
@@ -61,13 +58,12 @@ export default new BaseCommand(
           )
           .then(async (res) => {
             if (!res.data.data.voted) {
-              embed = new Embed(client, 'warn')
+              embed = new Embed(client, 'info')
                 .setTitle('한국 디스코드 리스트 봇 하트인증')
                 .setDescription(
                   `한국 디스코드 리스트에 있는 배틀이 봇의 하트가 아직 눌려있지 않습니다.`,
                 )
                 .setTimestamp()
-                .setColor('#2f3136');
               let link = new Discord.ActionRowBuilder<ButtonBuilder>().addComponents(
                 new Discord.ButtonBuilder()
                   .setURL(`https://koreanbots.dev/bots/${client.user?.id}/vote`)
@@ -90,19 +86,18 @@ export default new BaseCommand(
                   userid: message.author.id,
                   platform: 'koreanlist',
                 });
-                embed = new Embed(client, 'success')
+                embed = new Embed(client, 'default')
                   .setTitle('⭕ 하트 인증 성공')
                   .setDescription(
                     `${message.author.username}님의 한국 디스코드 리스트에 있는 배틀이 봇의 하트인증이 완료되었습니다.`,
                   )
                   .setTimestamp()
-                  .setColor('#2f3136');
                 i.reply({
                   embeds: [embed],
                 });
                 return m.edit({ components: [] });
               } else {
-                embed = new Embed(client, 'success')
+                embed = new Embed(client, 'warn')
                   .setTitle('❌ 하트 인증 실패')
                   .setDescription(
                     `${DateFormatting._format(
@@ -111,7 +106,6 @@ export default new BaseCommand(
                     )} 뒤에 다시 인증해주세요!`,
                   )
                   .setTimestamp()
-                  .setColor('#2f3136');
                 i.reply({
                   embeds: [embed],
                 });
@@ -126,7 +120,6 @@ export default new BaseCommand(
                 .setDescription(`한국 디스코드 리스트에서 유저를 찾을 수 없어요!`)
                 .setFooter({ text: `${message.author.tag}` })
                 .setTimestamp()
-                .setColor('#2f3136');
               i.reply({
                 embeds: [embed],
               });
@@ -137,7 +130,6 @@ export default new BaseCommand(
               .setDescription(`하트 인증중 오류가 발생했어요! ${e.message}`)
               .setFooter({ text: `${message.author.tag}` })
               .setTimestamp()
-              .setColor('#2f3136');
             i.reply({
               embeds: [embed],
             });
@@ -153,21 +145,17 @@ export default new BaseCommand(
           })
           .then(async (res) => {
             if (!res.data.data.like) {
-              embed = new Embed(client, 'warn')
+              embed = new Embed(client, 'info')
                 .setTitle('아카이브 봇 하트인증')
                 .setDescription(`아카이브에 있는 배틀이 봇의 하트가 아직 눌려있지 않습니다.`)
                 .setTimestamp()
-                .setColor('#2f3136');
               let link = new Discord.ActionRowBuilder<ButtonBuilder>().addComponents(
                 new Discord.ButtonBuilder()
                   .setURL(`https://archiver.me/bots/${client.user?.id}/like`)
                   .setLabel(`하트 누르기`)
                   .setStyle(ButtonStyle.Link),
               );
-              i.reply({
-                embeds: [embed],
-                components: [link],
-              });
+              i.reply({ embeds: [embed], components: [link] });
               return m.edit({ components: [] });
             } else {
               const heartData = await HeartSchema.findOne({
@@ -180,31 +168,19 @@ export default new BaseCommand(
                   userid: message.author.id,
                   platform: 'archive',
                 });
-                embed = new Embed(client, 'success')
+                let embed = new Embed(client, 'default')
                   .setTitle('⭕ 하트 인증 성공')
-                  .setDescription(
-                    `${message.author.username}님의 아카이브에 있는 배틀이 봇의 하트인증이 완료되었습니다.`,
-                  )
+                  .setDescription(`${message.author.username}님의 아카이브에 있는 배틀이 봇의 하트인증이 완료되었습니다.`)
                   .setTimestamp()
-                  .setColor('#2f3136');
-                i.reply({
-                  embeds: [embed],
-                });
+                i.reply({ embeds: [embed] });
                 return m.edit({ components: [] });
-              } else {
-                embed = new Embed(client, 'success')
+              }
+              else {
+                embed = new Embed(client, 'error')
                   .setTitle('❌ 하트 인증 실패')
-                  .setDescription(
-                    `${DateFormatting._format(
-                      res.data.data.lastLike + 24 * 60 * 60 * 1000,
-                      'R',
-                    )} 뒤에 다시 인증해주세요!`,
-                  )
+                  .setDescription(`${DateFormatting._format(res.data.data.lastLike + 24 * 60 * 60 * 1000, 'R')} 뒤에 다시 인증해주세요!`)
                   .setTimestamp()
-                  .setColor('#2f3136');
-                i.reply({
-                  embeds: [embed],
-                });
+                i.reply({ embeds: [embed] });
                 return m.edit({ components: [] });
               }
             }
@@ -216,17 +192,13 @@ export default new BaseCommand(
                 .setDescription(`아카이브에 있는 배틀이 봇의 하트가 아직 눌려있지 않습니다.`)
                 .setFooter({ text: `${message.author.tag}` })
                 .setTimestamp()
-                .setColor('#2f3136');
               let link = new Discord.ActionRowBuilder<ButtonBuilder>().addComponents(
                 new Discord.ButtonBuilder()
                   .setURL(`https://archiver.me/bots/${client.user?.id}/like`)
                   .setLabel(`하트 누르기`)
                   .setStyle(ButtonStyle.Link),
               );
-              i.reply({
-                embeds: [embed],
-                components: [link],
-              });
+              i.reply({ embeds: [embed], components: [link] });
               return m.edit({ components: [] });
             }
             embed = new Embed(client, 'error')
@@ -234,10 +206,7 @@ export default new BaseCommand(
               .setDescription(`하트 인증중 오류가 발생했어요! ${e.message}`)
               .setFooter({ text: `${message.author.tag}` })
               .setTimestamp()
-              .setColor('#2f3136');
-            i.reply({
-              embeds: [embed],
-            });
+            i.reply({ embeds: [embed] });
             return m.edit({ components: [] });
           });
       }

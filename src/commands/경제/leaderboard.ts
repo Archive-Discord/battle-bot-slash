@@ -30,11 +30,11 @@ export default new BaseCommand(
       await interaction.deferReply({ ephemeral: true });
       if (!interaction.guild) return interaction.editReply({ content: '서버에서만 사용할 수 있습니다.' });
       const type = interaction.options.getString('옵션') || '전체';
-      const embed = new Embed(client, 'info').setColor('#2f3136');
+      const embed = new Embed(client, 'default')
+        .setTitle('돈 순위표')
       if (type === '전체') {
-        const moneyLeaderboard = await Schema.find({}).sort({ money: -1, date: -1 }).limit(10);
-        embed.setTitle('돈 순위표');
         let i = 0;
+        const moneyLeaderboard = await Schema.find({}).sort({ money: -1, date: -1 }).limit(10);
         moneyLeaderboard.forEach((moneyLeader) => {
           let searchuser = client.users.cache.get(moneyLeader.userid);
           if (!searchuser) return;
@@ -46,7 +46,6 @@ export default new BaseCommand(
         })
       } else if (type === '서버') {
         let i = 0;
-        embed.setTitle('서버 돈 순위표');
         const moneyLeaderboard = await Schema.find({ lastGuild: interaction.guild.id }).sort({ money: -1, date: -1 }).limit(10);
         moneyLeaderboard.forEach((moneyLeader) => {
           let searchuser = client.users.cache.get(moneyLeader.userid);
@@ -58,9 +57,7 @@ export default new BaseCommand(
           });
         })
       }
-      interaction.editReply({
-        embeds: [embed],
-      });
+      interaction.editReply({ embeds: [embed] });
     },
   },
 );
