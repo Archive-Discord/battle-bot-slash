@@ -5,6 +5,7 @@ import { TextChannel } from 'discord.js';
 
 export default new Event('messageUpdate', async (client, oldMessage, newMessage) => {
   if (!newMessage.guild) return;
+  if (!oldMessage.author) return;
   if (oldMessage.partial) oldMessage = await oldMessage.fetch();
   if (newMessage.partial) newMessage = await newMessage.fetch();
   if (!oldMessage.content) return;

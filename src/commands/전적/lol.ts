@@ -30,12 +30,8 @@ export default new BaseCommand(
       await interaction.deferReply({ ephemeral: true });
       let nickname = interaction.options.getString('user', true);
       let stats = await getStat(nickname);
-      if (typeof stats === 'string') {
-        return interaction.editReply({ embeds: [], content: stats });
-      }
-      return interaction.editReply({
-        embeds: [stats],
-      });
+      if (typeof stats === 'string') return interaction.editReply({ embeds: [], content: stats });
+      return interaction.editReply({ embeds: [stats] });
     },
   },
 );
@@ -80,24 +76,17 @@ async function getStat(args: string) {
       );
     }
   });
-  let embed = new EmbedBuilder().setTitle(`\`${args}\`의 프로필`);
+  let embed = new EmbedBuilder().setTitle(`\`${args}\`의 프로필`).setColor('#2f3136');
   let leagueStatus = data.league_stats[0];
   if (leagueStatus.tier_info.tier)
-    embed.setDescription(
-      `${leagueStatus.queue_info.queue_translate} - ${leagueStatus.tier_info.tier} ${leagueStatus.tier_info.division
-      } (${leagueStatus.tier_info.lp}LP) \n ${leagueStatus.win}승 / ${leagueStatus.lose}패 / ${(
-        (leagueStatus.win / (leagueStatus.win + leagueStatus.lose)) *
-        100
-      ).toFixed(2)}%`,
-    );
+    embed.setDescription(`${leagueStatus.queue_info.queue_translate} - ${leagueStatus.tier_info.tier} ${leagueStatus.tier_info.division} 
+    (${leagueStatus.tier_info.lp}LP) \n ${leagueStatus.win}승 / ${leagueStatus.lose}패 / 
+    ${((leagueStatus.win / (leagueStatus.win + leagueStatus.lose)) * 100).toFixed(2)}%`,);
   else embed.setDescription(`**언랭크**`);
   return embed
     .addFields({
       name: '최근 10판 전적',
-      value: `
-    \`\`\`diff
-${matchinfo.slice(undefined, 10).join('\n')} 
-\`\`\``,
+      value: `\`\`\`diff${matchinfo.slice(undefined, 10).join('\n')} \`\`\``,
     })
     .setThumbnail(leagueStatus.tier_info.tier_image_url);
 }

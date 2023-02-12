@@ -12,26 +12,22 @@ export default new BaseCommand(
   },
   async (client, message, args) => {
     if (!message.guild) {
-      let embed = new Embed(client, 'error');
-      embed.setTitle(`❌ 에러 발생`);
-      embed.setDescription('이 명령어는 서버에서만 사용 가능합니다');
-      embed.setColor('#2f3136');
+      let embed = new Embed(client, 'error')
+        .setTitle(`❌ 에러 발생`)
+        .setDescription('이 명령어는 서버에서만 사용 가능합니다')
       return message.reply({ embeds: [embed] });
     }
     if (!args[0]) args[0] = message.author.id;
     let user = message.guild.members.cache.get(args[0]);
-    if (message.mentions.users.first())
-      user = message.guild.members.cache.get(message.mentions.users.first()?.id as string);
+    if (message.mentions.users.first()) user = message.guild.members.cache.get(message.mentions.users.first()?.id as string);
     if (!user) {
-      let embed = new Embed(client, 'error');
-      embed.setTitle(`❌ 에러 발생`);
-      embed.setDescription('찾을 수 없는 유저입니다');
-      embed.setColor('#2f3136');
+      let embed = new Embed(client, 'error')
+        .setTitle(`❌ 에러 발생`)
+        .setDescription('찾을 수 없는 유저입니다')
       return message.reply({ embeds: [embed] });
     }
     let userdb = await UserDB.findOne({ id: user.id });
-
-    let embed = new Embed(client, 'success')
+    let embed = new Embed(client, 'default')
       .setTitle(`${user.user.username}님의 정보`)
       .setThumbnail(user.displayAvatarURL())
       .addFields({ name: `유저`, value: userMention(user.id), inline: true })
@@ -59,7 +55,6 @@ export default new BaseCommand(
         name: `${client.user?.username} 웹 가입일`,
         value: userdb ? DateFormatting._format(userdb.published_date, '') : '미가입',
       })
-      .setColor('#2f3136');
     return message.reply({ embeds: [embed] });
   },
   {
@@ -81,7 +76,6 @@ export default new BaseCommand(
         let embed = new Embed(client, 'error');
         embed.setTitle('❌ 에러 발생');
         embed.setDescription('이 명령어는 서버에서만 사용 가능합니다');
-        embed.setColor('#2f3136');
         return interaction.reply({ embeds: [embed], ephemeral: true });
       }
       let seluser = interaction.options.getUser('user');
@@ -90,12 +84,11 @@ export default new BaseCommand(
         let embed = new Embed(client, 'error');
         embed.setTitle('❌ 에러 발생');
         embed.setDescription('찾을 수 없는 유저입니다');
-        embed.setColor('#2f3136');
         return interaction.reply({ embeds: [embed] });
       }
       let userdb = await UserDB.findOne({ id: user.id });
 
-      let embed = new Embed(client, 'success')
+      let embed = new Embed(client, 'default')
         .setTitle(`${user.user.username}님의 정보`)
         .setThumbnail(user.displayAvatarURL())
         .addFields({ name: `유저`, value: userMention(user.id), inline: true })
@@ -123,7 +116,6 @@ export default new BaseCommand(
           name: `${client.user?.username} 웹 가입일`,
           value: userdb ? DateFormatting._format(userdb.published_date, '') : '미가입',
         })
-        .setColor('#2f3136');
       return interaction.reply({ embeds: [embed] });
     },
   },
