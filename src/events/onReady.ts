@@ -332,6 +332,9 @@ export default new Event(
           msg_list.edit({ embeds: [ss] });
           msg_banner.edit({ embeds: [gg], components: [] });
         }
+      })
+      .on('queueEnd', async (player, _track) => {
+        await client.music.players.delete(player?.guild);
       });
 
     logger.info(`Logged ${client.user?.username}`);

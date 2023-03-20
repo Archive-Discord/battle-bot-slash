@@ -41,6 +41,8 @@ export default class BotClient extends Client {
   public database: DatabaseManager = new DatabaseManager(this);
   public music = new Manager({
     nodes: config.music,
+    autoPlay: true,
+    clientName: `Battle Bot`,
     send(id, payload) {
       const guild = client.guilds.cache.get(id);
       if (guild) guild.shard.send(payload);
