@@ -38,6 +38,7 @@ export default new BaseCommand(
       //   ]
       // })
       if (queue) queue.destroy();
+      await client.music.players.delete(interaction?.guild?.id)
 
       interaction.reply({
         embeds: [

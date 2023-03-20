@@ -334,9 +334,7 @@ export default new Event(
         }
       })
       .on('queueEnd', async (player, _track) => {
-        try {
-          await client.music.players.delete(player.guild);
-        } catch (err) { }
+        await client.music.players.delete(player?.guild);
       });
 
     logger.info(`Logged ${client.user?.username}`);
