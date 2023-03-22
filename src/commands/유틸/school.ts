@@ -20,7 +20,7 @@ export default new BaseCommand(
         .setDescription(`학교 이름을 적어주세요 \n\n \`${config.bot.prefix}급식 <학교명>\``);
       return message.reply({ embeds: [embed] });
     } else {
-      let embed = new Embed(client, 'info')
+      let embed = new Embed(client, 'default')
         .setTitle(`급식`)
         .setDescription(`잠시만 기다려주세요. 학교를 찾는중이에요...`)
       let msg = await message.reply({ embeds: [embed] });
@@ -116,7 +116,7 @@ export default new BaseCommand(
           .setDescription(`학교 이름을 적어주세요 \n\n \`${config.bot.prefix}급식 <학교명>\``)
         return interaction.reply({ embeds: [embed], ephemeral: true });
       } else {
-        let embed = new Embed(client, 'info')
+        let embed = new Embed(client, 'default')
           .setTitle(`급식`)
           .setDescription(`잠시만 기다려주세요. 학교를 찾는중이에요...`)
         let msg = await interaction.reply({ embeds: [embed], ephemeral: true });
@@ -163,7 +163,7 @@ export default new BaseCommand(
                     )
                     .then(async (data) => {
                       let meal: SchoolMealResponse = data.data;
-                      let mealembed = new Embed(client, 'error')
+                      let mealembed = new Embed(client, 'default')
                         .setTitle(`${value[2]} 급식`)
                         .setDescription(
                           `${meal.meals[0].meal.join('\n')} \n\n ${meal.meals[0].calories}`,
