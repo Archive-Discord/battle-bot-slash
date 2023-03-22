@@ -164,7 +164,7 @@ export default new BaseCommand(
                     .then(async (data) => {
                       let meal: SchoolMealResponse = data.data;
                       let mealembed = new Embed(client, 'error')
-                        .setTitle(`❌ 에러 발생`)
+                        .setTitle(`${value[2]} 급식`)
                         .setDescription(
                           `${meal.meals[0].meal.join('\n')} \n\n ${meal.meals[0].calories}`,
                         )
