@@ -168,14 +168,14 @@ export default new BaseCommand(
                         .setDescription(
                           `${meal.meals[0].meal.join('\n')} \n\n ${meal.meals[0].calories}`,
                         )
-                      await i.reply({ embeds: [mealembed] });
+                      await i.reply({ embeds: [mealembed], ephemeral: true });
                     })
                     .catch(async (e: AxiosError) => {
                       if (e.response?.status === 404) {
                         let mealembed = new Embed(client, 'error')
                           .setTitle(`❌ 에러 발생`)
                           .setDescription(`어라... ${value[2]}의 급식을 찾을 수 없어요...`)
-                        await i.reply({ embeds: [mealembed], components: [] });
+                        await i.reply({ embeds: [mealembed], components: [], ephemeral: true });
                       }
                     });
                 }

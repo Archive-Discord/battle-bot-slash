@@ -11,7 +11,10 @@ export default new BaseCommand(
     aliases: ['재생', 'p', 'play', 'wotod'],
   },
   async (client, message, args) => {
-    message.reply('빗금으로 이전되었습니다.');
+    let embed = new Embed(client, 'error')
+      .setTitle(`❌ 에러 발생`)
+      .setDescription('해당 명령어는 슬래쉬 커맨드 ( / )로만 사용이 가능합니다.');
+    return message.reply({ embeds: [embed] });
   },
   {
     // @ts-ignore

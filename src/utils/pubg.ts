@@ -65,9 +65,7 @@ export const playerStats = async (
         });
         interaction.editReply({ components: [] });
         collector?.stop();
-        return collector_interaction.reply(
-          `\`${nickname}\`유저가 \`카카오\` 서버로 설정이 완료되었습니다`,
-        );
+        return collector_interaction.reply(`\`${nickname}\`유저가 \`카카오\` 서버로 설정이 완료되었습니다`);
       } else if (collector_interaction.customId === 'pubg.steam') {
         const pubg = new PUBGClient({
           apiKey: config.pubgapikey,
@@ -339,8 +337,7 @@ const rankStatEmbed = (
       stats.currentTier ? `${stats.currentTier.tier} ${stats.currentTier.subTier}` : '언랭크',
     )
     .setThumbnail(
-      `https://dak.gg/pubg/images/tiers/s7/rankicon_${
-        stats.currentTier.tier.toLowerCase() + stats.currentTier.subTier
+      `https://dak.gg/pubg/images/tiers/s7/rankicon_${stats.currentTier.tier.toLowerCase() + stats.currentTier.subTier
       }.png`,
     )
     .addFields({ name: 'KDA', value: stats.kda.toFixed(2), inline: true })
