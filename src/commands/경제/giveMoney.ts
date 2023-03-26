@@ -29,7 +29,7 @@ export default new BaseCommand(
         .addFields([
           {
             name: `하트인증`,
-            value: `돈을 더 얻고 싶으시다면 '/하트인증'으로 돈을 더 얻으실 수 있습니다!`,
+            value: `돈을 더 얻고 싶으시다면 '!하트인증'으로 돈을 더 얻으실 수 있습니다!`,
             inline: true
           }
         ]);
@@ -61,7 +61,7 @@ export default new BaseCommand(
           .addFields([
             {
               name: `하트인증`,
-              value: `돈을 더 얻고 싶으시다면 '/하트인증'으로 돈을 더 얻으실 수 있습니다!`,
+              value: `돈을 더 얻고 싶으시다면 '!하트인증'으로 돈을 더 얻으실 수 있습니다!`,
               inline: true
             }
           ]);
