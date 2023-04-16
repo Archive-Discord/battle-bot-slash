@@ -10,7 +10,10 @@ export default new BaseCommand(
     aliases: ['일시정지', 'pause', 'dlftlwjdwl'],
   },
   async (client, message, args) => {
-    message.reply('빗금으로 이전되었습니다.');
+    let embed = new Embed(client, 'error')
+      .setTitle(`❌ 에러 발생`)
+      .setDescription('해당 명령어는 슬래쉬 커맨드 ( / )로만 사용이 가능합니다.');
+    return message.reply({ embeds: [embed] });
   },
   {
     data: new SlashCommandBuilder().setName('일시정지').setDescription('노래를 일시정지해요.'),

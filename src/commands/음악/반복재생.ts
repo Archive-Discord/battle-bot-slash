@@ -10,7 +10,10 @@ export default new BaseCommand(
     aliases: ['반복재생', 'repeat'],
   },
   async (client, message, args) => {
-    message.reply('빗금으로 이전되었습니다.');
+    let embed = new Embed(client, 'error')
+      .setTitle(`❌ 에러 발생`)
+      .setDescription('해당 명령어는 슬래쉬 커맨드 ( / )로만 사용이 가능합니다.');
+    return message.reply({ embeds: [embed] });
   },
   {
     data: new SlashCommandBuilder()
@@ -19,7 +22,7 @@ export default new BaseCommand(
     async execute(client, interaction) {
       if (!interaction.member || !interaction.member.voice.channel)
         return interaction.reply({
-          embeds: [new Embed(client, 'error').setDescription(`음성채널에 먼저 참여해주세요!`).setColor('#2f3136')],
+          embeds: [new Embed(client, 'error').setTitle('❌ 에러 발생').setDescription(`음성채널에 먼저 참여해주세요!`)],
         });
       const queue = client.music.create({
         guild: interaction.guild.id,
@@ -30,7 +33,7 @@ export default new BaseCommand(
       if (!queue || !queue.playing)
         return interaction.reply({
           embeds: [
-            new Embed(client, 'error').setDescription(`현재 재생되고 있는 음악이 없습니다.`).setColor('#2f3136'),
+            new Embed(client, 'error').setTitle('❌ 에러 발생').setDescription(`현재 재생되고 있는 음악이 없습니다.`),
           ],
         });
 
@@ -50,8 +53,7 @@ export default new BaseCommand(
             name: `요청자`,
             value: `${interaction.member.user}`,
             inline: true,
-          })
-          .setColor('#2f3136');
+          });
 
         interaction.reply({ embeds: [embed] });
       } else if (queue.queueRepeat === true) {
@@ -64,13 +66,12 @@ export default new BaseCommand(
             name: `요청자`,
             value: `${interaction.member.user}`,
             inline: true,
-          })
-          .setColor('#2f3136');
+          });
 
         interaction.reply({ embeds: [embed] });
       } else {
         return interaction.reply({
-          embeds: [new Embed(client, 'default').setDescription(`잘못된 경로로 접근하셨습니다`).setColor('#2f3136')],
+          embeds: [new Embed(client, 'error').setTitle('❌ 에러 발생').setDescription(`잘못된 경로로 접근하셨습니다`)],
         });
       }
     },

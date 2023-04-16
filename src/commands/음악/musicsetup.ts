@@ -3,6 +3,7 @@ import { PermissionsBitField, ChannelType } from 'discord.js';
 import { BaseCommand } from '../../structures/Command';
 import Schema from '../../schemas/musicSchema';
 import Embed from '../../utils/Embed';
+import e from 'express';
 
 export default new BaseCommand(
   {
@@ -11,7 +12,10 @@ export default new BaseCommand(
     aliases: ['뮤직', 'music'],
   },
   async (client, message, args) => {
-    message.reply('빗금으로 이전되었습니다.');
+    let embed = new Embed(client, 'error')
+      .setTitle(`❌ 에러 발생`)
+      .setDescription('해당 명령어는 슬래쉬 커맨드 ( / )로만 사용이 가능합니다.');
+    return message.reply({ embeds: [embed] });
   },
   {
     data: new SlashCommandBuilder()
@@ -29,13 +33,19 @@ export default new BaseCommand(
         });
       const find = await Schema.findOne({ guild_id: interaction.guild.id });
       if (find) {
-        const embed1 = new Embed(client, 'error')
-          .setTitle('❌ 에러 발생')
-          .setDescription(
-            `이미 <#${find.channel_id}>로 음악기능이 설정되어있는거 같습니다.\n채널을 삭제하셨거나 다시 설정을 원하시면 \`/뮤직설정해제\` 입력 후 다시 시도해주세요.`,
-          )
-          .setColor('#2f3136');
-        return interaction.reply({ embeds: [embed1] });
+        const musicchannel = client.channels.cache.get(find.channel_id)
+        if (musicchannel != undefined || musicchannel != null) {
+          const embed1 = new Embed(client, 'error')
+            .setTitle('❌ 에러 발생')
+            .setDescription(
+              `이미 <#${find.channel_id}>로 음악기능이 설정되어있는거 같습니다.\n채널을 삭제하셨거나 다시 설정을 원하시면 \`/뮤직설정해제\` 입력 후 다시 시도해주세요.`,
+            )
+            .setColor('#2f3136');
+          return interaction.reply({ embeds: [embed1] });
+        }
+        else {
+          await Schema.deleteOne({ guild_id: interaction.guild.id });
+        }
       }
       const set = await interaction.guild.channels
         .create({ name: 'battle-bot-music', type: ChannelType.GuildText })
@@ -70,7 +80,7 @@ export default new BaseCommand(
                 iconURL: client.user?.displayAvatarURL()!,
               })
               .setDescription(
-                '❌ **노래가 재생 중이지 않아요!\n해당 채널에 노래 제목을 입력해주세요!**\n[대시보드](https://battlebot.kr/)|[서포트 서버](https://discord.gg/WtGq7D7BZm)|[상태](https://battlebot.kr/status)',
+                '❌ **노래가 재생 중이지 않아요!\n해당 채널에 노래 제목을 입력해주세요!**\n[[대시보드]](https://battlebot.kr/)|[서포트 서버](https://discord.gg/WtGq7D7BZm)|[상태](https://battlebot.kr/status)',
               )
               .setColor('#2f3136')
               .setImage(
