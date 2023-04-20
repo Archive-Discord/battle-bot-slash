@@ -1,9 +1,9 @@
 import {
-  ChannelType,
   ButtonStyle,
   ActionRowBuilder,
   ButtonBuilder,
   TextBasedChannel,
+  GuildTextBasedChannel,
 } from 'discord.js';
 import Status from '../schemas/statusSchema';
 import BotClient from '../structures/BotClient';
@@ -442,15 +442,9 @@ async function automodResetChannel(client: BotClient) {
     for await (const resetchannel of useing.useResetChannels) {
       const channel = guild?.channels.cache.get(resetchannel) as GuildChannel;
       if (!channel) return;
-      const newchannel = await guild?.channels.create({
-        name: channel.name,
-        type: ChannelType.GuildText,
-        parent: channel.parent ? channel.parent.id : undefined,
-        permissionOverwrites: channel.permissionOverwrites.cache,
-        position: channel.position,
-      });
+      const newchannel = await channel?.clone() as GuildTextBasedChannel;
       if (!newchannel) return;
-      await newchannel.send({
+      await newchannel?.send({
         embeds: [
           new Embed(client, 'info')
             .setTitle('채널 초기화')
