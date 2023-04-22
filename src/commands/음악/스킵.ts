@@ -22,11 +22,7 @@ export default new BaseCommand(
         return interaction.reply({
           embeds: [new Embed(client, 'default').setDescription(`음성채널에 먼저 참여해주세요!`).setColor('#2f3136')],
         });
-      const queue = client.music.create({
-        guild: interaction.guild.id,
-        voiceChannel: interaction.member.voice.channel.id,
-        textChannel: interaction.channel?.id!,
-      });
+      const queue = client.music.get(interaction.guild.id);
 
       if (!queue || !queue.playing)
         return interaction.reply({
@@ -35,12 +31,12 @@ export default new BaseCommand(
           ],
         });
 
-      // if (interaction.member.voice.channel.id !== interaction.guild.me.voice.channel.id) return interaction.reply({
-      //   embeds: [
-      //     new Embed(client, 'default')
-      //       .setDescription(`명령어를 사용하시려면 ${client.user} 봇이랑 같은 음성채널에 참여해야됩니다!`)
-      //   ]
-      // })
+      if (interaction.member.voice.channel.id !== interaction.guild.members.me?.voice.channel?.id) return interaction.reply({
+        embeds: [
+          new Embed(client, 'default')
+            .setDescription(`명령어를 사용하시려면 ${client.user} 봇이랑 같은 음성채널에 참여해야됩니다!`)
+        ]
+      })
 
       const currentTrack = queue.queue.current?.title;
       const success = queue.stop();
