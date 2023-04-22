@@ -28,21 +28,17 @@ export default new BaseCommand(
             new Embed(client, 'default').setDescription(`음... 재생중인 노래가 없어보이네요`).setColor('#2f3136'),
           ],
         });
-      const queue = client.music.create({
-        guild: interaction.guild.id,
-        voiceChannel: interaction.member.voice.channel.id,
-        textChannel: interaction.channel?.id!,
-      });
-      // if (interaction.member.voice.channel.id !== interaction.guild.me.voice.channel.id) return interaction.reply({
-      //   embeds: [
-      //     new Embed(client, 'default')
-      //       .setDescription(`명령어를 사용하시려면 ${client.user} 봇이랑 같은 음성채널에 참여해야됩니다!`)
-      //   ]
-      // })
-      queue.pause(false);
+      const queue = client.music.get(interaction.guild.id);
+      if (interaction.member.voice.channel.id !== interaction.guild.members.me.voice.channel.id) return interaction.reply({
+        embeds: [
+          new Embed(client, 'default')
+            .setDescription(`명령어를 사용하시려면 ${client.user} 봇이랑 같은 음성채널에 참여해야됩니다!`)
+        ]
+      })
+      queue?.pause(false);
       let pausedembed = new Embed(client, 'success')
         .setTitle('⏯️ 재개 ⏯️')
-        .setDescription(`\`${queue.queue.current?.title}\`(이)가 재개 되고 있습니다`)
+        .setDescription(`\`${queue?.queue.current?.title}\`(이)가 재개 되고 있습니다`)
         .addFields({
           name: `요청자`,
           value: `${interaction.member.user}`,
