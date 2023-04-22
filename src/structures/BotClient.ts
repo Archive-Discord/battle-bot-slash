@@ -44,6 +44,7 @@ export default class BotClient extends Client {
     autoPlay: true,
     clientName: `Battle Bot`,
     clientId: this.user?.id,
+    position_update_interval: 100,
     send(id, payload) {
       const guild = client.guilds.cache.get(id);
       if (guild) guild.shard.send(payload);

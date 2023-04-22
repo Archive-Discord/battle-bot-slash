@@ -108,6 +108,7 @@ const musicPlayer = async (client: BotClient, message: Message) => {
       guild: message.guildId!,
       voiceChannel: message.member?.voice.channelId!,
       textChannel: message.channel?.id!,
+      region: message?.member?.voice.channel?.rtcRegion || undefined,
       instaUpdateFiltersFix: true,
     })
   }
