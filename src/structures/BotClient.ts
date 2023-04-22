@@ -43,6 +43,8 @@ export default class BotClient extends Client {
     nodes: config.music,
     autoPlay: true,
     clientName: `Battle Bot`,
+    clientId: this.user?.id,
+    position_update_interval: 100, // player 새로고침
     send(id, payload) {
       const guild = client.guilds.cache.get(id);
       if (guild) guild.shard.send(payload);

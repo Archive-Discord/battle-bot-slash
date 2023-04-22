@@ -1,5 +1,5 @@
 import { SlashCommandBuilder } from '@discordjs/builders';
-import { CommandInteraction, Message, EmbedBuilder } from 'discord.js';
+import { CommandInteraction, Message, EmbedBuilder, GuildChannel } from 'discord.js';
 import { BaseCommand } from '../../structures/Command';
 import Embed from '../../utils/Embed';
 import { format } from '../../utils/Utils';
@@ -38,6 +38,8 @@ export default new BaseCommand(
         guild: interaction.guild.id,
         voiceChannel: interaction.member.voice.channel.id,
         textChannel: interaction.channel?.id!,
+        region: interaction.member.voice.channel?.rtcRegion || undefined,
+        instaUpdateFiltersFix: true,
       });
       if (!search)
         return interaction.followUp({
@@ -57,7 +59,10 @@ export default new BaseCommand(
       } catch (err: any) {
         return interaction.followUp(`검색중 오류가 발생했습니다.: ${err.message}`);
       }
-      queue.connect();
+      if (!queue.connected) {
+        await queue.connect();
+        await queue.stop();
+      }
       queue.queue.add(res.tracks[0]);
 
       if (!queue.playing && !queue.paused && !queue.queue.size) queue.play();

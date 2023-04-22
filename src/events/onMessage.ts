@@ -107,7 +107,9 @@ const musicPlayer = async (client: BotClient, message: Message) => {
     player = await client.music.create({
       guild: message.guildId!,
       voiceChannel: message.member?.voice.channelId!,
-      textChannel: message.channel.id
+      textChannel: message.channel?.id!,
+      region: message?.member?.voice.channel?.rtcRegion || undefined,
+      instaUpdateFiltersFix: true,
     })
   }
   try {
