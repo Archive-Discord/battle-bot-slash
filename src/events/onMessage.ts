@@ -31,6 +31,14 @@ export default new Event('messageCreate', async (client, message) => {
   const command = commandManager.get(commandName as string) as MessageCommand;
 
   await client.dokdo.run(message);
+  const find = await MusicSetting.findOne({ guildid: message.guild?.id, channel_id: message.channel?.id });
+  if (find) {
+    try {
+      await message.delete()
+    } catch (err) {
+      console.log(err)
+    }
+  }
   try {
     await command?.execute(client, message, args);
   } catch (error: any) {
