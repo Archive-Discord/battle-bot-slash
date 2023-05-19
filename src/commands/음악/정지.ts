@@ -2,6 +2,7 @@ import { SlashCommandBuilder } from '@discordjs/builders';
 import { CommandInteraction, Message, EmbedBuilder } from 'discord.js';
 import { BaseCommand } from '../../structures/Command';
 import Embed from '../../utils/Embed';
+import { stop } from '../../utils/Utils';
 
 export default new BaseCommand(
   {
@@ -42,6 +43,7 @@ export default new BaseCommand(
       })
       if (queue) queue.destroy();
       await client.music.players.delete(interaction?.guild?.id)
+      stop(interaction.guild.id, client)
 
       interaction.reply({
         embeds: [

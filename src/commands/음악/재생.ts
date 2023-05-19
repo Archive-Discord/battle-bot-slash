@@ -2,7 +2,7 @@ import { SlashCommandBuilder } from '@discordjs/builders';
 import { CommandInteraction, Message, EmbedBuilder, GuildChannel } from 'discord.js';
 import { BaseCommand } from '../../structures/Command';
 import Embed from '../../utils/Embed';
-import { format } from '../../utils/Utils';
+import { format, status } from '../../utils/Utils';
 
 export default new BaseCommand(
   {
@@ -82,6 +82,7 @@ export default new BaseCommand(
         .setThumbnail(`${res.tracks[0].thumbnail}`)
         .setColor('#2f3136');
       interaction.followUp({ embeds: [embed] });
+      status(interaction.guild.id, client)
     },
   },
 );
