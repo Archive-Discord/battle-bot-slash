@@ -43,7 +43,7 @@ export default new Event(
 
     client.music.init(client.user?.id, {
       shards: client.ws.shards.size,
-      clientName: client.user?.username,
+      clientName: `battlebot`,
       clientId: client.user?.id,
     })
     client.on("raw", (data) => {
