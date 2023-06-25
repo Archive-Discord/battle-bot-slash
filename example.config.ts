@@ -30,7 +30,6 @@ const config: IConfig = {
       password: 'youshallnotpass', // Optional if Lavalink is set to default
     },
   ],
-  klaytnapikey: '',
   updateServer: {
     koreanbots: '', // https://koreanbots.dev
     archive: '', // https://archiver.me
