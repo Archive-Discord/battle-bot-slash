@@ -2,8 +2,8 @@ import { Guild, TextChannel, User } from 'discord.js';
 import LoggerSetting from '../schemas/LogSettingSchema';
 import Embed from '../utils/Embed';
 import { Event } from '../structures/Event';
-import { LogFlags } from '../../typings';
-import { checkLogFlag } from '../utils/Utils';
+import { checkLogFlag, LogFlags } from '../utils/Utils';
+
 export default new Event('inviteCreate', async (client, invite) => {
   const guild = invite.guild as Guild;
   const inviter = invite.inviter as User;

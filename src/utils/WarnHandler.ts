@@ -3,8 +3,7 @@ import LoggerSetting from '../schemas/LogSettingSchema';
 import Warning from '../schemas/Warning';
 import BotClient from '../structures/BotClient';
 import Embed from './Embed';
-import { LogFlags } from '../../typings';
-import { checkLogFlag } from './Utils';
+import { checkLogFlag, LogFlags } from './Utils';
 
 export const userWarnAdd = async (
   client: BotClient,

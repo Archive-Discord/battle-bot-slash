@@ -8,8 +8,7 @@ import Embed from '../utils/Embed';
 import { Event } from '../structures/Event';
 import Logger from '../utils/Logger';
 import checkPremium from '../utils/checkPremium';
-import { checkLogFlag } from '../utils/Utils';
-import { LogFlags } from '../../typings';
+import { checkLogFlag, LogFlags } from '../utils/Utils';
 
 const guildLastJoin = new Map<string, Date>();
 const guildLastJoinUser = new Map<string, string>();

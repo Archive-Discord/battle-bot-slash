@@ -2,8 +2,7 @@ import { AuditLogEvent, TextChannel, User } from 'discord.js';
 import LoggerSetting from '../schemas/LogSettingSchema';
 import Embed from '../utils/Embed';
 import { Event } from '../structures/Event';
-import { checkLogFlag } from '../utils/Utils';
-import { LogFlags } from '../../typings';
+import { checkLogFlag, LogFlags } from '../utils/Utils';
 
 export default new Event('guildBanAdd', async (client, ban) => {
   const LoggerSettingDB = await LoggerSetting.findOne({

@@ -3,8 +3,7 @@ import config from '../../config';
 import LoggerSetting from '../schemas/LogSettingSchema';
 import Embed from '../utils/Embed';
 import { AuditLogEvent, TextChannel, User } from 'discord.js';
-import { LogFlags } from '../../typings';
-import { checkLogFlag } from '../utils/Utils';
+import { checkLogFlag, LogFlags } from '../utils/Utils';
 
 export default new Event('messageDelete', async (client, message) => {
   if (!message) return;

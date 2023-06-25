@@ -3,8 +3,7 @@ import dateFormat from '../utils/DateFormatting';
 import LoggerSetting from '../schemas/LogSettingSchema';
 import Embed from '../utils/Embed';
 import { AttachmentBuilder, TextChannel } from 'discord.js';
-import { LogFlags } from '../../typings';
-import { checkLogFlag } from '../utils/Utils';
+import { checkLogFlag, LogFlags } from '../utils/Utils';
 
 export default new Event('messageDeleteBulk', async (client, messages) => {
   messages.first()?.guild?.id;

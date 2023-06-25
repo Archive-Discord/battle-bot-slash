@@ -3,7 +3,33 @@ import BotClient from '../structures/BotClient';
 import MusicSetting from '../schemas/musicSchema';
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle, Guild, Message, TextBasedChannel } from 'discord.js';
 import Embed from './Embed';
-import { LogFlags } from '../../typings';
+
+export enum LogFlags {
+  SERVER_SETTINGS = 2 << 0,
+  SERVER_INVITE = 2 << 1,
+  USER_JOIN = 2 << 2,
+  USER_LEAVE = 2 << 3,
+  USER_BAN = 2 << 4,
+  USER_KICK = 2 << 5,
+  USER_UPDATE = 2 << 6,
+  MESSAGE_DELETE = 2 << 7,
+  MESSAGE_UPDATE = 2 << 8,
+  MESSAGE_REACTION_ADD = 2 << 9,
+  CHANNEL_CREATE = 2 << 10,
+  CHANNEL_DELETE = 2 << 11,
+  CHANNEL_UPDATE = 2 << 12,
+  VOICE_CHANNEL_JOIN = 2 << 13,
+  VOICE_CHANNEL_LEAVE = 2 << 14,
+  EVENT_CREATE = 2 << 15,
+  EVENT_UPDATE = 2 << 16,
+  EVENT_DELETE = 2 << 17,
+  WARNING_CREATE = 2 << 18,
+  WARNING_DELETE = 2 << 19,
+  VERIFY_SUCCESS = 2 << 20,
+  TICKET_CREATE = 2 << 21,
+  TICKET_DELETE = 2 << 22,
+  TICKET_SAVE = 2 << 23,
+}
 
 export function format(millis?: number) {
   if (!millis) return 'Error!';

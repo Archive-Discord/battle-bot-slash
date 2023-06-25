@@ -2,8 +2,7 @@ import { Guild, TextChannel } from 'discord.js';
 import LoggerSetting from '../schemas/LogSettingSchema';
 import Embed from '../utils/Embed';
 import { Event } from '../structures/Event';
-import { LogFlags } from '../../typings';
-import { checkLogFlag } from '../utils/Utils';
+import { checkLogFlag, LogFlags } from '../utils/Utils';
 
 export default new Event('inviteDelete', async (client, invite) => {
   const guild = invite.guild as Guild;

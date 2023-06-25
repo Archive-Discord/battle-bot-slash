@@ -9,8 +9,7 @@ import {
 import LoggerSetting from '../schemas/LogSettingSchema';
 import Embed from '../utils/Embed';
 import { Event } from '../structures/Event';
-import { checkLogFlag } from '../utils/Utils';
-import { LogFlags } from '../../typings';
+import { checkLogFlag, LogFlags } from '../utils/Utils';
 
 export default new Event('channelUpdate', async (client, newChannel, oldChannel) => {
   if (oldChannel.type === ChannelType.DM) return;
