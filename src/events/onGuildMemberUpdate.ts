@@ -2,12 +2,14 @@ import { AuditLogEvent, TextChannel, User } from 'discord.js';
 import LoggerSetting from '../schemas/LogSettingSchema';
 import Embed from '../utils/Embed';
 import { Event } from '../structures/Event';
+import { LogFlags } from '../../typings';
+import { checkLogFlag } from '../utils/Utils';
 export default new Event('guildMemberUpdate', async (client, oldMember, newMember) => {
   const LoggerSettingDB = await LoggerSetting.findOne({
     guild_id: newMember.guild.id,
   });
   if (!LoggerSettingDB) return;
-  if (!LoggerSettingDB.useing.memberUpdate) return;
+  if (!checkLogFlag(LoggerSettingDB.loggerFlags, LogFlags.USER_UPDATE)) return;
   const logChannel = newMember.guild.channels.cache.get(
     LoggerSettingDB.guild_channel_id,
   ) as TextChannel;

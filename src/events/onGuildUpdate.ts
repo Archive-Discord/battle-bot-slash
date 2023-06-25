@@ -2,11 +2,13 @@ import { TextChannel } from 'discord.js';
 import LoggerSetting from '../schemas/LogSettingSchema';
 import Embed from '../utils/Embed';
 import { Event } from '../structures/Event';
+import { LogFlags } from '../../typings';
+import { checkLogFlag } from '../utils/Utils';
 
 export default new Event('guildUpdate', async (client, oldGuild, newGuild) => {
   const LoggerSettingDB = await LoggerSetting.findOne({ guild_id: newGuild.id });
   if (!LoggerSettingDB) return;
-  if (!LoggerSettingDB.useing.serverSetting) return;
+  if (!checkLogFlag(LoggerSettingDB.loggerFlags, LogFlags.SERVER_SETTINGS)) return;
   const logChannel = newGuild.channels.cache.get(LoggerSettingDB.guild_channel_id) as TextChannel;
   if (!logChannel) return;
   let update = false;

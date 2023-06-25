@@ -4,6 +4,8 @@ import WelcomeSetting from '../schemas/WelcomeSettingSchema';
 import BotClient from '../structures/BotClient';
 import Embed from '../utils/Embed';
 import { Event } from '../structures/Event';
+import { LogFlags } from '../../typings';
+import { checkLogFlag } from '../utils/Utils';
 
 export default new Event('guildMemberRemove', async (client, member) => {
   GreetingEvent(client, member);
@@ -44,7 +46,7 @@ const LoggerEvent = async (client: BotClient, member: GuildMember | PartialGuild
     guild_id: member.guild.id,
   });
   if (!LoggerSettingDB) return;
-  if (!LoggerSettingDB.useing.memberLeft) return;
+  if (!checkLogFlag(LoggerSettingDB.loggerFlags, LogFlags.USER_LEAVE)) return;
   const logChannel = member.guild.channels.cache.get(
     LoggerSettingDB.guild_channel_id,
   ) as TextChannel;

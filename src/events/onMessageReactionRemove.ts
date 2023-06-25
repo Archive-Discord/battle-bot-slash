@@ -2,6 +2,8 @@ import { Event } from '../structures/Event';
 import LoggerSetting from '../schemas/LogSettingSchema';
 import Embed from '../utils/Embed';
 import { TextChannel } from 'discord.js';
+import { LogFlags } from '../../typings';
+import { checkLogFlag } from '../utils/Utils';
 
 export default new Event('messageReactionRemove', async (client, messageReaction, user) => {
   const { guild } = messageReaction.message;
@@ -14,7 +16,7 @@ export default new Event('messageReactionRemove', async (client, messageReaction
     guild_id: messageReaction.message.guild?.id,
   });
   if (!LoggerSettingDB) return;
-  if (!LoggerSettingDB.useing.reactMessage) return;
+  if (!checkLogFlag(LoggerSettingDB.loggerFlags, LogFlags.MESSAGE_REACTION_ADD)) return;
   const logChannel = messageReaction.message.guild?.channels.cache.get(
     LoggerSettingDB.guild_channel_id,
   ) as TextChannel;

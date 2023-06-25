@@ -3,6 +3,8 @@ import config from '../../config';
 import LoggerSetting from '../schemas/LogSettingSchema';
 import Embed from '../utils/Embed';
 import { AuditLogEvent, TextChannel, User } from 'discord.js';
+import { LogFlags } from '../../typings';
+import { checkLogFlag } from '../utils/Utils';
 
 export default new Event('messageDelete', async (client, message) => {
   if (!message) return;
@@ -15,7 +17,7 @@ export default new Event('messageDelete', async (client, message) => {
     guild_id: message.guild.id,
   });
   if (!LoggerSettingDB) return;
-  if (!LoggerSettingDB.useing.deleteMessage) return;
+  if (!checkLogFlag(LoggerSettingDB.loggerFlags, LogFlags.MESSAGE_DELETE)) return;
   const logChannel = message.guild.channels.cache.get(
     LoggerSettingDB.guild_channel_id,
   ) as TextChannel;

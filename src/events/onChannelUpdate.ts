@@ -9,6 +9,8 @@ import {
 import LoggerSetting from '../schemas/LogSettingSchema';
 import Embed from '../utils/Embed';
 import { Event } from '../structures/Event';
+import { checkLogFlag } from '../utils/Utils';
+import { LogFlags } from '../../typings';
 
 export default new Event('channelUpdate', async (client, newChannel, oldChannel) => {
   if (oldChannel.type === ChannelType.DM) return;
@@ -18,7 +20,7 @@ export default new Event('channelUpdate', async (client, newChannel, oldChannel)
     guild_id: newChannel.guild.id,
   });
   if (!LoggerSettingDB) return;
-  if (!LoggerSettingDB.useing.editChannel) return;
+  if (!checkLogFlag(LoggerSettingDB.loggerFlags, LogFlags.CHANNEL_UPDATE)) return;
   const logChannel = newChannel.guild.channels.cache.get(
     LoggerSettingDB.guild_channel_id,
   ) as TextChannel;

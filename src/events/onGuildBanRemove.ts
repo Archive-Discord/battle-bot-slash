@@ -2,13 +2,15 @@ import { AuditLogEvent, TextChannel, User } from 'discord.js';
 import LoggerSetting from '../schemas/LogSettingSchema';
 import Embed from '../utils/Embed';
 import { Event } from '../structures/Event';
+import { LogFlags } from '../../typings';
+import { checkLogFlag } from '../utils/Utils';
 
 export default new Event('guildBanRemove', async (client, ban) => {
   const LoggerSettingDB = await LoggerSetting.findOne({
     guild_id: ban.guild.id,
   });
   if (!LoggerSettingDB) return;
-  if (!LoggerSettingDB.useing.memberBan) return;
+  if (!checkLogFlag(LoggerSettingDB.loggerFlags, LogFlags.USER_BAN)) return;
   const logChannel = ban.guild.channels.cache.get(LoggerSettingDB.guild_channel_id) as TextChannel;
   if (!logChannel) return;
   const fetchedLogs = await ban.guild.fetchAuditLogs({

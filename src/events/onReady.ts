@@ -12,8 +12,6 @@ import schedule from 'node-schedule';
 import DateFormatting from '../utils/DateFormatting';
 import Automod from '../schemas/autoModSchema';
 import { GuildChannel } from 'discord.js';
-import NFTUserWallet from '../schemas/NFTUserWalletSchema';
-import NFTGuildVerify from '../schemas/NFTGuildVerifySchema';
 import axios from 'axios';
 import config from '../../config';
 import CommandManager from '../managers/CommandManager';
@@ -34,7 +32,6 @@ export default new Event(
     schedule.scheduleJob('0 0 0 * * *', () => {
       PremiumAlert(client);
       automodResetChannel(client);
-      nftChecker(client);
       PremiumPersonAlert(client);
     });
 
@@ -210,43 +207,6 @@ async function automodResetChannel(client: BotClient) {
       { guild_id: guild_id },
       { $set: { 'useing.useResetChannels': newChannels } },
     );
-  });
-}
-
-async function nftChecker(client: BotClient) {
-  const wallet_list = await NFTUserWallet.find();
-  const guild_list = await NFTGuildVerify.find();
-  wallet_list.forEach(async (user_wallet) => {
-    await axios
-      .get(`https://th-api.klaytnapi.com/v2/account/${user_wallet.wallet_address}/token?kind=nft`, {
-        headers: {
-          Authorization: 'Basic ' + config.klaytnapikey,
-          'X-Chain-ID': '8217',
-        },
-      })
-      .then((data) => {
-        guild_list.forEach(async (guild_data) => {
-          const result = data.data.items.filter(
-            (x: any) => x.contractAddress === guild_data.wallet,
-          );
-          if (result.length === 0) {
-            const guild = client.guilds.cache.get(guild_data.guild_id);
-            if (!guild) return;
-            const member = guild.members.cache.get(user_wallet.user_id);
-            if (!member) return;
-            try {
-              await member.roles.remove(guild_data.role_id);
-            } catch (e) {
-              return;
-            }
-          } else {
-            return;
-          }
-        });
-      })
-      .catch(() => {
-        return;
-      });
   });
 }
 

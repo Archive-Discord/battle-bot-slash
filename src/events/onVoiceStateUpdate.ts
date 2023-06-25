@@ -2,6 +2,8 @@ import { Event } from '../structures/Event';
 import LoggerSetting from '../schemas/LogSettingSchema';
 import Embed from '../utils/Embed';
 import { TextChannel } from 'discord.js';
+import { LogFlags } from '../../typings';
+import { checkLogFlag } from '../utils/Utils';
 
 export default new Event('voiceStateUpdate', async (client, oldState, newState) => {
   if (!newState.guild) return;
@@ -20,8 +22,7 @@ export default new Event('voiceStateUpdate', async (client, oldState, newState) 
   });
   let updated = false;
   if (!newState.channel) {
-    if (!LoggerSettingDB.useing.leaveVoiceChannel) return;
-    embed
+    if (!checkLogFlag(LoggerSettingDB.loggerFlags, LogFlags.VOICE_CHANNEL_LEAVE)) return; embed
       .setTitle('음성채널 퇴장')
       .addFields({
         name: '채널',
@@ -34,7 +35,7 @@ export default new Event('voiceStateUpdate', async (client, oldState, newState) 
     updated = true;
   }
   if (!oldState.channel) {
-    if (!LoggerSettingDB.useing.joinVoiceChannel) return;
+    if (!checkLogFlag(LoggerSettingDB.loggerFlags, LogFlags.VOICE_CHANNEL_JOIN)) return;
     embed
       .setTitle('음성채널 입장')
       .addFields({

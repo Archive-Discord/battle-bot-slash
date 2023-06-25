@@ -8,6 +8,8 @@ import Embed from '../utils/Embed';
 import { Event } from '../structures/Event';
 import Logger from '../utils/Logger';
 import checkPremium from '../utils/checkPremium';
+import { checkLogFlag } from '../utils/Utils';
+import { LogFlags } from '../../typings';
 
 const guildLastJoin = new Map<string, Date>();
 const guildLastJoinUser = new Map<string, string>();
@@ -53,7 +55,7 @@ const WelecomLogEvent = async (client: BotClient, member: GuildMember) => {
     guild_id: member.guild.id,
   });
   if (!LoggerSettingDB) return;
-  if (!LoggerSettingDB.useing.memberJoin) return;
+  if (!checkLogFlag(LoggerSettingDB.loggerFlags, LogFlags.USER_JOIN)) return;
   const logChannel = member.guild.channels.cache.get(
     LoggerSettingDB.guild_channel_id,
   ) as TextChannel;

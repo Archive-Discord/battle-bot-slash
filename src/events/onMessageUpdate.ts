@@ -2,6 +2,8 @@ import { Event } from '../structures/Event';
 import LoggerSetting from '../schemas/LogSettingSchema';
 import Embed from '../utils/Embed';
 import { TextChannel } from 'discord.js';
+import { LogFlags } from '../../typings';
+import { checkLogFlag } from '../utils/Utils';
 
 export default new Event('messageUpdate', async (client, oldMessage, newMessage) => {
   if (!newMessage.guild) return;
@@ -14,7 +16,7 @@ export default new Event('messageUpdate', async (client, oldMessage, newMessage)
     guild_id: newMessage.guild?.id,
   });
   if (!LoggerSettingDB) return;
-  if (!LoggerSettingDB.useing.editMessage) return;
+  if (!checkLogFlag(LoggerSettingDB.loggerFlags, LogFlags.MESSAGE_UPDATE)) return;
   const logChannel = newMessage.guild?.channels.cache.get(
     LoggerSettingDB.guild_channel_id,
   ) as TextChannel;

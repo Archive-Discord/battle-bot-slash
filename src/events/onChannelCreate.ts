@@ -2,13 +2,15 @@ import { AuditLogEvent, GuildAuditLogsEntry, GuildChannel, TextChannel, User } f
 import LoggerSetting from '../schemas/LogSettingSchema';
 import Embed from '../utils/Embed';
 import { Event } from '../structures/Event';
+import { LogFlags } from '../../typings';
+import { checkLogFlag } from '../utils/Utils';
 
 export default new Event('channelCreate', async (client, channel) => {
   const LoggerSettingDB = await LoggerSetting.findOne({
     guild_id: channel.guild.id,
   });
   if (!LoggerSettingDB) return;
-  if (!LoggerSettingDB.useing.createChannel) return;
+  if (!checkLogFlag(LoggerSettingDB.loggerFlags, LogFlags.CHANNEL_CREATE)) return;
   const logChannel = channel.guild.channels.cache.get(
     LoggerSettingDB.guild_channel_id,
   ) as TextChannel;

@@ -3,6 +3,7 @@ import BotClient from '../structures/BotClient';
 import MusicSetting from '../schemas/musicSchema';
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle, Guild, Message, TextBasedChannel } from 'discord.js';
 import Embed from './Embed';
+import { LogFlags } from '../../typings';
 
 export function format(millis?: number) {
   if (!millis) return 'Error!';
@@ -196,4 +197,12 @@ export async function stop(guild_Id: string, client: BotClient) {
     if (msg_list) await msg_list.edit({ embeds: [ss] });
     if (msg_banner) await msg_banner.edit({ embeds: [gg], components: [] });
   }
+}
+
+export function checkLogFlag(base: number, required: number | keyof typeof LogFlags): boolean {
+  return checkFlag(base, typeof required === 'number' ? required : LogFlags[required])
+}
+
+function checkFlag(base: number, required: number) {
+  return (base & required) === required
 }
