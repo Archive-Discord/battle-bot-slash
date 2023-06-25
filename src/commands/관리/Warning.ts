@@ -4,7 +4,7 @@ import { BaseCommand } from '../../structures/Command';
 import Embed from '../../utils/Embed';
 import mongoose from 'mongoose';
 import Warning from '../../schemas/Warning';
-import { userWarnAdd } from '../../utils/WarnHandler';
+import { userWarnAdd, userWarnRemove } from '../../utils/WarnHandler';
 let ObjectId = mongoose.Types.ObjectId;
 // @ts-ignore
 String.prototype.toObjectId = function () {
@@ -87,41 +87,17 @@ export default new BaseCommand(
           interaction,
         );
       } else if (subcommand === '차감') {
-        let warningID = interaction.options.getString('id');
-        // @ts-ignore
-        if (!ObjectId.isValid(warningID as string))
+        const warningID = interaction.options.getString('id');
+        if (!ObjectId.isValid(warningID as string) || !warningID)
           return interaction.editReply('찾을 수 없는 경고 아이디 입니다.');
-        // @ts-ignore
-        let warningIDtoObject = warningID.toObjectId();
-        let findWarnDB = await Warning.findOne({
-          userId: user?.id,
-          guildId: interaction.guild?.id,
-          _id: warningIDtoObject,
-        });
+        let warningIDtoObject = new ObjectId(warningID);
 
-        if (!findWarnDB) return interaction.editReply('찾을 수 없는 경고 아이디 입니다.');
-
-        await Warning.deleteOne({
-          userId: user?.id,
-          guildId: interaction.guild?.id,
-          _id: warningIDtoObject,
-        });
-
-        const embedRemove = new EmbedBuilder()
-          .setColor('#2f3136')
-          .setTitle('경고')
-          .setDescription('아래와 같이 경고가 삭감되었습니다.')
-          .addFields({
-            name: '유저',
-            value: `<@${user?.id}>` + '(' + '`' + user?.id + '`' + ')',
-            inline: true,
-          })
-          .addFields({
-            name: '경고 ID',
-            value: warningID as string,
-            inline: true,
-          });
-        return interaction.editReply({ embeds: [embedRemove] });
+        return userWarnRemove(
+          client,
+          warningIDtoObject as unknown as string,
+          interaction.guild?.id as string,
+          interaction,
+        );
       } else if (subcommand === '조회') {
         let warningID = interaction.options.getNumber('페이지');
         let insertRes = await Warning.find({
