@@ -40,7 +40,7 @@ export default new ButtonInteraction(
         .then((channel) => {
           const ticket = new Ticket();
           ticket.status = 'open';
-          ticket.guildId = interaction.guild?.id;
+          ticket.guildId = interaction.guild?.id as string;
           ticket.userId = interaction.user.id;
           ticket.ticketId = ticketId;
           ticket.channelId = channel.id;
