@@ -1,6 +1,17 @@
 import { Schema, model } from 'mongoose';
 
-const ticketSchema = new Schema(
+export interface Ticket {
+  channelId: string;
+  guildId: string;
+  status: string;
+  ticketId: string;
+  userId: string;
+  messages: string[];
+  messagesHTML: string;
+  published_date: Date;
+}
+
+const ticketSchema = new Schema<Ticket>(
   {
     status: String,
     guildId: String,
@@ -8,6 +19,7 @@ const ticketSchema = new Schema(
     userId: String,
     ticketId: String,
     messages: Array,
+    messagesHTML: String,
     published_date: { type: Date, default: Date.now },
   },
   { collection: 'ticket' },

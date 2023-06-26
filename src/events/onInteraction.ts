@@ -34,6 +34,10 @@ export default new Event('interactionCreate', async (client, interaction) => {
     if (interaction.customId.startsWith('vote_')) {
       button = buttonManager.get('vote.select');
     }
+    if (interaction.customId.startsWith('ticket:')) {
+      const type: "close" | "create" | "delete" | "vote" = interaction.customId.split(':')[1] as any;
+      button = buttonManager.get(`ticket.${type}`);
+    }
     if (!button) return;
     try {
       await button?.execute(client, interaction);
