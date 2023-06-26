@@ -1,5 +1,4 @@
 import config from '../../../config';
-import { Collection, Message } from 'discord.js';
 import Ticket from '../../schemas/ticketSchema';
 import { ButtonInteraction } from '../../structures/Command';
 import Embed from '../../utils/Embed';
