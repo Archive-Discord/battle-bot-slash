@@ -3,6 +3,7 @@ import Ticket from '../../schemas/ticketSchema';
 import { ButtonInteraction } from '../../structures/Command';
 import Embed from '../../utils/Embed';
 import discordTranscripts, { ExportReturnType } from 'discord-html-transcripts';
+import { LogFlags, sendLoggers } from '../../utils/Utils';
 
 export default new ButtonInteraction(
   {
@@ -43,6 +44,21 @@ export default new ButtonInteraction(
         `[여기](${config.web?.baseurl}/dashboard/${interaction.guild?.id}/ticket/${ticket.ticketId})에서 확인할 수 있습니다`,
       )
       .setColor('#2f3136');
+
+    sendLoggers(client, interaction.guild!,
+      new Embed(client, "success")
+        .setTitle('티켓 저장')
+        .setAuthor({
+          name: interaction.user.username,
+          iconURL: interaction.user.displayAvatarURL(),
+        }).addFields({
+          name: '유저',
+          value: `<@${interaction.user.id}>` + '(`' + interaction.user.id + '`)',
+        }).addFields({
+          name: '티켓',
+          value: `[저장된 티켓 확인](${config.web?.baseurl}/dashboard/${interaction.guild?.id}/ticket/${ticket.ticketId})`,
+        }),
+      LogFlags.TICKET_SAVE);
 
     await interaction.editReply({ embeds: [successembed] });
   },

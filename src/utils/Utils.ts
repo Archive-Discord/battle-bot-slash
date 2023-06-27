@@ -1,8 +1,10 @@
 import { Player } from 'erela.js';
 import BotClient from '../structures/BotClient';
 import MusicSetting from '../schemas/musicSchema';
-import { ActionRowBuilder, ButtonBuilder, ButtonStyle, Guild, Message, TextBasedChannel } from 'discord.js';
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle, Guild, GuildChannel, GuildTextBasedChannel, Message, TextBasedChannel } from 'discord.js';
 import Embed from './Embed';
+import Logger from './Logger';
+import LoggerSetting from '../schemas/LogSettingSchema';
 
 export enum LogFlags {
   SERVER_SETTINGS = 2 << 0,
@@ -222,6 +224,26 @@ export async function stop(guild_Id: string, client: BotClient) {
       );
     if (msg_list) await msg_list.edit({ embeds: [ss] });
     if (msg_banner) await msg_banner.edit({ embeds: [gg], components: [] });
+  }
+}
+
+export const sendLoggers = async (client: BotClient, guild: Guild, embed: Embed, logType: number | keyof typeof LogFlags) => {
+  const logging = new Logger('Logger')
+  try {
+    const logger = await LoggerSetting.findOne({
+      guild_id: guild.id,
+    });
+    if (!logger) return;
+    if (!checkLogFlag(logger.loggerFlags, logType)) return;
+
+    const logChannel = guild.channels.cache.get(
+      logger.guild_channel_id,
+    ) as GuildTextBasedChannel;
+    if (!logChannel) return;
+
+    await logChannel.send({ embeds: [embed] });
+  } catch (e) {
+    logging.error(e as any)
   }
 }
 

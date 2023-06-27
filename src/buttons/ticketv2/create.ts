@@ -4,6 +4,7 @@ import { ButtonInteraction } from '../../structures/Command';
 import randomstring from 'randomstring';
 import Embed from '../../utils/Embed';
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle, ChannelType } from 'discord.js';
+import { LogFlags, sendLoggers } from '../../utils/Utils';
 export default new ButtonInteraction(
   {
     name: 'ticket.create',
@@ -78,6 +79,18 @@ export default new ButtonInteraction(
             components: [componets],
           });
           interaction.editReply(`티켓이 생성되었습니다 <#${channel.id}>`);
+
+          sendLoggers(client, interaction.guild!,
+            new Embed(client, "success")
+              .setTitle('티켓 생성')
+              .setAuthor({
+                name: interaction.user.username,
+                iconURL: interaction.user.displayAvatarURL(),
+              }).addFields({
+                name: '유저',
+                value: `<@${interaction.user.id}>` + '(`' + interaction.user.id + '`)',
+              }),
+            LogFlags.TICKET_CREATE);
         });
     }
   },

@@ -8,6 +8,7 @@ import {
   ButtonStyle,
   GuildMember,
 } from 'discord.js';
+import { LogFlags, sendLoggers } from '../../utils/Utils';
 export default new ButtonInteraction(
   {
     name: 'ticket.close',
@@ -70,6 +71,20 @@ export default new ButtonInteraction(
         embeds: [replyCloseTicket],
         components: [componets],
       });
+
+      const targetUser = interaction.guild?.members.cache.get(ticketDB.userId!) as GuildMember;
+      sendLoggers(client, interaction.guild!,
+        new Embed(client, "error")
+          .setTitle('티켓 종료')
+          .setAuthor({
+            name: targetUser.user.username,
+            iconURL: targetUser.user.displayAvatarURL(),
+          }).addFields({
+            name: '유저',
+            value: `<@${targetUser.user.id}>` + '(`' + targetUser.user.id + '`)',
+          }),
+        LogFlags.TICKET_DELETE);
+
       return interaction.editReply({
         embeds: [replyCloseTicket],
         components: [componets],
