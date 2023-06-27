@@ -84,12 +84,7 @@ const config: IConfig = {
   logger: {
     level: 'chat',
     dev: false,
-  },
-  email: {
-    DaumMailID: '',
-    DaumMailPassword: '',
-    DaumMailEmail: '',
-  },
+  }
 };
 
 export default config;

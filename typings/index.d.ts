@@ -68,11 +68,6 @@ export interface IConfig {
     level: LevelType;
     dev: boolean;
   };
-  email: {
-    DaumMailID: string;
-    DaumMailPassword: string;
-    DaumMailEmail: string;
-  };
 }
 
 export interface logger {
