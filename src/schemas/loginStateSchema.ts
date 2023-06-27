@@ -1,5 +1,5 @@
 import { Schema, model, Model } from 'mongoose';
-import { LoginState, VerifyDB } from '../../typings';
+import { LoginState } from '../../typings';
 
 const loginStateSchema: Schema<LoginState> = new Schema(
   {

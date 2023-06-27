@@ -1,7 +1,7 @@
 import { Player } from 'erela.js';
 import BotClient from '../structures/BotClient';
 import MusicSetting from '../schemas/musicSchema';
-import { ActionRowBuilder, ButtonBuilder, ButtonStyle, Guild, GuildChannel, GuildTextBasedChannel, Message, TextBasedChannel } from 'discord.js';
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle, Guild, GuildTextBasedChannel, Message, TextBasedChannel } from 'discord.js';
 import Embed from './Embed';
 import Logger from './Logger';
 import LoggerSetting from '../schemas/LogSettingSchema';
