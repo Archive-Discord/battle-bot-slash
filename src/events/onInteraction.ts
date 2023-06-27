@@ -38,6 +38,9 @@ export default new Event('interactionCreate', async (client, interaction) => {
       const type: "close" | "create" | "delete" | "vote" = interaction.customId.split(':')[1] as any;
       button = buttonManager.get(`ticket.${type}`);
     }
+    if (interaction.customId.startsWith('verify:')) {
+      button = buttonManager.get(`verifyv2`);
+    }
     if (!button) return;
     try {
       await button?.execute(client, interaction);

@@ -36,6 +36,7 @@ const config: IConfig = {
   },
   web: {
     baseurl: '',
+    baseapi: '',
   },
   bot: {
     sharding: false,

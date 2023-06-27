@@ -23,6 +23,7 @@ export interface IConfig {
   pubgapikey: string;
   web: {
     baseurl: string;
+    baseapi: string;
   };
   updateServer: {
     koreanbots: string;
@@ -104,6 +105,7 @@ export interface loggerDB {
 }
 
 export interface VerifySettingDB {
+  guildId: string;
   guild_id: string;
   role_id: string;
   del_role_id: string;
@@ -116,6 +118,16 @@ export interface VerifyDB {
   user_id: string;
   token: string;
   status: verifyStatusType;
+  type: verifyType;
+  role: string;
+  deleteRole: string;
+  expires_in: Date;
+  published_date: Date;
+}
+
+export interface LoginState {
+  state: string;
+  redirect_uri: string;
   published_date: Date;
 }
 
@@ -152,6 +164,7 @@ export interface DataBaseUser {
   _id: string;
   id: string;
   email: string;
+  phone?: string;
   accessToken: string;
   refreshToken: string;
   kakao_accessToken?: string;
@@ -375,7 +388,7 @@ export interface LevelGuildDB {
   published_date: Date;
 }
 
-export type verifyType = 'email' | 'captcha' | 'kakao' | 'default';
+export type verifyType = "phone" | "email" | "kakao" | "default"
 export type verifyStatusType = 'success' | 'pending';
 export type useCurseType = 'delete' | 'delete_kick' | 'delete_ban';
 export type pubgPlatformeType = 'steam' | 'kakao';

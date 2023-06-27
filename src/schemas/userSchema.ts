@@ -6,6 +6,7 @@ const UserSchema: Schema<DataBaseUser> = new Schema(
     _id: String,
     id: String,
     email: String,
+    phone: String,
     token: String,
     kakao_accessToken: String,
     kakao_refreshToken: String,
