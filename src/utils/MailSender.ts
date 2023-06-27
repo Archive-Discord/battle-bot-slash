@@ -1,6 +1,5 @@
 import nodemailer from 'nodemailer';
 import config from '../../config';
-import { google } from 'googleapis';
 import Logger from './Logger';
 const logger = new Logger('mailEvent');
 
