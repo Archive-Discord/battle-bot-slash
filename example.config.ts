@@ -85,11 +85,9 @@ const config: IConfig = {
     dev: false,
   },
   email: {
-    Google_Email: '',
-    Google_Client_Id: '',
-    Google_Client_Secret: '',
-    Google_Redirect_Url: '',
-    Google_Refresh_Token: '',
+    DaumMailID: '',
+    DaumMailPassword: '',
+    DaumMailEmail: '',
   },
 };
 

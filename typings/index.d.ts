@@ -68,11 +68,9 @@ export interface IConfig {
     dev: boolean;
   };
   email: {
-    Google_Email: string;
-    Google_Client_Id: string;
-    Google_Client_Secret: string;
-    Google_Redirect_Url: string;
-    Google_Refresh_Token: string;
+    DaumMailID: string;
+    DaumMailPassword: string;
+    DaumMailEmail: string;
   };
 }
 

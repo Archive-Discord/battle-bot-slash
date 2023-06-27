@@ -10,34 +10,24 @@ interface param {
   code: string;
 }
 
-const oAuth2Client = new google.auth.OAuth2(
-  config.email.Google_Client_Id,
-  config.email.Google_Client_Secret,
-  config.email.Google_Redirect_Url,
-);
-oAuth2Client.setCredentials({
-  refresh_token: config.email.Google_Refresh_Token,
-});
-
 const mailSender = {
   // 메일발송 함수
   sendGmail: async function (param: param) {
     try {
-      const access_token = await oAuth2Client.getAccessToken();
       const transporter = nodemailer.createTransport({
-        service: 'gmail',
+        service: "daum",
+        host: "smtp.daum.net",
+        port: 465,
+        secure: true,
         auth: {
-          type: 'oauth2',
-          user: config.email.Google_Email,
-          clientId: config.email.Google_Client_Id,
-          clientSecret: config.email.Google_Client_Secret,
-          refreshToken: config.email.Google_Refresh_Token,
-          accessToken: access_token as string,
+          user: config.email.DaumMailID,
+          pass: config.email.DaumMailPassword,
         },
       });
+
       // 메일 옵션
       const mailOptions = {
-        from: `"배틀이 인증" <${config.email.Google_Email}>`,
+        from: `"배틀이 인증" <${config.email.DaumMailEmail}>`,
         to: param.email, // 수신할 이메일
         subject: `[배틀이] ${param.serverName} 서버 에서 인증을 요청합니다`, // 메일 제목
         html: `<!DOCTYPE html>
