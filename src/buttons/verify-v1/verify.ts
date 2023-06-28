@@ -1,7 +1,6 @@
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle, /* Guild, GuildMember, Message */ } from 'discord.js';
 import VerifySetting from '../../schemas/verifySetting';
 import { ButtonInteraction } from '../../structures/Command';
-import Embed from '../../utils/Embed';
 import config from '../../../config';
 // import { anyid } from 'anyid';
 // import Verify from '../../schemas/verifySchema';
