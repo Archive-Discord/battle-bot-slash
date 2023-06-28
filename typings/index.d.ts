@@ -129,6 +129,9 @@ export interface LoginState {
 export interface AutoModDB {
   guild_id: string;
   useing: AutoModList;
+  guildId: string;
+  event: automodEvents;
+  start: string;
   published_date: Date;
 }
 
@@ -388,3 +391,10 @@ export type verifyStatusType = 'success' | 'pending';
 export type useCurseType = 'delete' | 'delete_kick' | 'delete_ban';
 export type pubgPlatformeType = 'steam' | 'kakao';
 export type voteStatus = 'open' | 'close';
+export type automodEvents =
+  | "resetchannel"
+  | "blacklist_ban"
+  | "usercreateat"
+  | "usecurse"
+  | "uselink"
+  | "autorole";

@@ -4,6 +4,11 @@ import { ButtonInteraction } from '../../structures/Command';
 import randomstring from 'randomstring';
 import Embed from '../../utils/Embed';
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle, ChannelType } from 'discord.js';
+import config from '../../../config';
+
+/**
+ * @desceiption 배틀이 V1 - 티켓 7월 30일까지만 지원
+  */
 export default new ButtonInteraction(
   {
     name: 'create',
@@ -13,6 +18,13 @@ export default new ButtonInteraction(
     const ticketSetting = await TicketSetting.findOne({
       guildId: interaction.guild?.id,
     });
+
+    interaction.message.edit({
+      embeds: interaction.message.embeds,
+      components: interaction.message.components,
+      content: `배틀이 대시보드 업데이트로 현제 설정하신 티켓는 7월 30일까지만 지원됩니다. 7월 30일까지 새로운 대시보드를 접속하여 다시 설정해 주시기 바랍니다.\n새로운 대시보드 - ${config.web.baseurl}/dashboard/${interaction.guild?.id}`,
+    })
+
     const guildtickets = await Ticket.find({ guildId: interaction.guild?.id });
     if (!ticketSetting) {
       return interaction.editReply('이 서버는 티켓 생성 기능을 사용 중이지 않습니다');

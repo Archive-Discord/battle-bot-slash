@@ -4,6 +4,10 @@ import Ticket from '../../schemas/ticketSchema';
 import { ButtonInteraction } from '../../structures/Command';
 import Embed from '../../utils/Embed';
 
+
+/**
+ * @desceiption 배틀이 V1 - 티켓 7월 30일까지만 지원
+  */
 export default new ButtonInteraction(
   {
     name: 'save',
@@ -61,6 +65,6 @@ export default new ButtonInteraction(
         `[여기](${config.web?.baseurl}/guilds/${interaction.guild?.id}/ticket/${ticket.ticketId})에서 확인할 수 있습니다`,
       )
       .setColor('#2f3136');
-    await interaction.editReply({ embeds: [successembed] });
+    await interaction.editReply({ embeds: [successembed], content: `배틀이 대시보드 업데이트로 현제 설정하신 티켓는 7월 30일까지만 지원됩니다. 7월 30일까지 새로운 대시보드를 접속하여 다시 설정해 주시기 바랍니다.\n새로운 대시보드 - ${config.web.baseurl}/dashboard/${interaction.guild?.id}` });
   },
 );

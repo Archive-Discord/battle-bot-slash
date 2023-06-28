@@ -8,6 +8,10 @@ import {
   ButtonStyle,
   GuildMember,
 } from 'discord.js';
+
+/**
+ * @desceiption 배틀이 V1 - 티켓 7월 30일까지만 지원
+  */
 export default new ButtonInteraction(
   {
     name: 'close',

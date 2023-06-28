@@ -3,7 +3,13 @@ import { AutoModDB } from '../../typings';
 
 const automodSchema: Schema<AutoModDB> = new Schema(
   {
+    /**
+     * @deprecated use guildId
+     */
     guild_id: String,
+    /**
+     * @deprecated use event
+     */
     useing: {
       useUrl: { type: Boolean, default: false },
       useCurse: { type: Boolean, default: false },
@@ -16,6 +22,9 @@ const automodSchema: Schema<AutoModDB> = new Schema(
       useResetChannel: { type: Boolean, default: false },
       useResetChannels: { type: Array, default: [] },
     },
+    guildId: String,
+    event: String,
+    start: String,
     published_date: { type: Date, default: Date.now },
   },
   { collection: 'automod' },

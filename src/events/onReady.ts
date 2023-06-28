@@ -181,33 +181,75 @@ async function ShardInfo(client: BotClient) {
 }
 
 async function automodResetChannel(client: BotClient) {
-  const automod = await Automod.find();
-  automod.forEach(async ({ useing, guild_id }) => {
-    if (!useing.useResetChannel) return;
-    if (!useing.useResetChannels || useing.useResetChannels.length === 0) return;
-    const guild = client.guilds.cache.get(guild_id);
-    if (!guild) return;
-    const newChannels: string[] = [];
-    for await (const resetchannel of useing.useResetChannels) {
-      const channel = guild?.channels.cache.get(resetchannel) as GuildChannel;
-      if (!channel) return;
+  // 배틀이 V1 - 채널 초기화 7월 30일까지만 지원
+  try {
+    const automod = await Automod.find();
+    automod.forEach(async ({ useing, guild_id }) => {
+      if (!useing.useResetChannel) return;
+      if (!useing.useResetChannels || useing.useResetChannels.length === 0) return;
+      const guild = client.guilds.cache.get(guild_id);
+      if (!guild) return;
+      const newChannels: string[] = [];
+      for await (const resetchannel of useing.useResetChannels) {
+        const channel = guild?.channels.cache.get(resetchannel) as GuildChannel;
+        if (!channel) return;
+        const newchannel = await channel?.clone() as GuildTextBasedChannel;
+        if (!newchannel) return;
+        await newchannel?.send({
+          content: `배틀이 대시보드 업데이트로 현제 설정하신 채널의 초기화는 7월 30일까지만 지원됩니다. 7월 30일까지 새로운 대시보드를 접속하여 다시 설정해 주시기 바랍니다.\n새로운 대시보드 - ${config.web.baseurl}/dashboard/${guild.id}`,
+          embeds: [
+            new Embed(client, 'info')
+              .setTitle('채널 초기화')
+              .setDescription(`채널 초기화가 완료되었습니다.`),
+          ],
+        });
+        await channel.delete();
+        newChannels.push(newchannel.id);
+      }
+      return await Automod.updateOne(
+        { guild_id: guild_id },
+        { $set: { 'useing.useResetChannels': newChannels } },
+      );
+    });
+
+    logger.info('배틀이 V1 - 채널 초기화 완료');
+  } catch (e) {
+    logger.error(e as unknown as string);
+  }
+
+  try {
+    const automodListv2 = await Automod.find({ event: "resetchannel" })
+    for await (const automod of automodListv2) {
+      const guild = client.guilds.cache.get(automod.guildId);
+      if (!guild) continue;
+      const channel = guild?.channels.cache.get(automod.start) as GuildChannel;
+      if (!channel) continue;
       const newchannel = await channel?.clone() as GuildTextBasedChannel;
-      if (!newchannel) return;
-      await newchannel?.send({
-        embeds: [
-          new Embed(client, 'info')
-            .setTitle('채널 초기화')
-            .setDescription('채널 초기화가 완료되었습니다.'),
-        ],
-      });
-      await channel.delete();
-      newChannels.push(newchannel.id);
+      if (!newchannel) continue;
+
+      try {
+        await newchannel?.send({
+          embeds: [
+            new Embed(client, 'info')
+              .setTitle('채널 초기화')
+              .setDescription('채널 초기화가 완료되었습니다.'),
+          ],
+        });
+        await channel.delete();
+
+        await Automod.updateOne({ _id: automod._id }, {
+          $set: {
+            start: newchannel.id
+          }
+        })
+      } catch (e) {
+        logger.error(e as unknown as string);
+      }
     }
-    return await Automod.updateOne(
-      { guild_id: guild_id },
-      { $set: { 'useing.useResetChannels': newChannels } },
-    );
-  });
+    logger.info('배틀이 V2 - 채널 초기화 완료');
+  } catch (e) {
+    logger.error(e as unknown as string);
+  }
 }
 
 async function ServerCountUpdate(client: BotClient) {
