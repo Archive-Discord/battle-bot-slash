@@ -32,7 +32,7 @@ export default new ButtonInteraction(
 
     const row = new ActionRowBuilder<ButtonBuilder>().addComponents(verifyButton);
 
-    return await interaction.message.edit({ embeds: interaction.message.embeds, components: [row], content: `배틀이 대시보드 업데이트로 현제 설정하신 인증은 7월 30일까지만 지원됩니다. 7월 30일까지 새로운 대시보드를 접속하여 다시 설정해 주시기 바랍니다.\n새로운 대시보드 - ${config.web.baseurl}/dashboard/${interaction.guild?.id}` });
+    return await interaction.message.edit({ embeds: interaction.message.embeds, components: [row], content: `\`\`\`배틀이 대시보드 업데이트로 현제 설정하신 기능은 7월 30일까지만 지원됩니다.\n7월 30일까지 새로운 대시보드를 접속하여 다시 설정해 주시기 바랍니다.\`\`\`\`새로운 대시보드\` - ${config.web.baseurl}/dashboard/${interaction.guild?.id}`, });
 
     // if (!VerifySettingDB) return interaction.editReply('찾을 수 없는 서버 정보입니다');
     // if (VerifySettingDB.type === 'default' || VerifySettingDB.type === 'captcha' as any) {

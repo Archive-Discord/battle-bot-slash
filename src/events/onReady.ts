@@ -196,7 +196,7 @@ async function automodResetChannel(client: BotClient) {
         const newchannel = await channel?.clone() as GuildTextBasedChannel;
         if (!newchannel) return;
         await newchannel?.send({
-          content: `배틀이 대시보드 업데이트로 현제 설정하신 채널의 초기화는 7월 30일까지만 지원됩니다. 7월 30일까지 새로운 대시보드를 접속하여 다시 설정해 주시기 바랍니다.\n새로운 대시보드 - ${config.web.baseurl}/dashboard/${guild.id}`,
+          content: `\`\`\`배틀이 대시보드 업데이트로 현제 설정하신 기능은 7월 30일까지만 지원됩니다.\n7월 30일까지 새로운 대시보드를 접속하여 다시 설정해 주시기 바랍니다.\`\`\`\`새로운 대시보드\` - ${config.web.baseurl}/dashboard/${guild_id}`,
           embeds: [
             new Embed(client, 'info')
               .setTitle('채널 초기화')
