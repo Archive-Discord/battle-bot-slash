@@ -8,13 +8,10 @@ import {
   ButtonStyle,
   GuildMember,
 } from 'discord.js';
-
-/**
- * @desceiption 배틀이 V1 - 티켓 7월 30일까지만 지원
-  */
+import { LogFlags, sendLoggers } from '../../utils/Utils';
 export default new ButtonInteraction(
   {
-    name: 'close',
+    name: 'ticket.close',
   },
   async (client, interaction) => {
     if (!interaction.inCachedGuild()) return;
@@ -66,6 +63,7 @@ export default new ButtonInteraction(
         interaction.guild.members.cache.get(ticketDB.userId!) as GuildMember,
         {
           SendMessages: false,
+          ViewChannel: false,
         },
       );
       channel.setName(`closed-ticket-${ticketDB.ticketId?.slice(0, 5)}`);
@@ -73,6 +71,20 @@ export default new ButtonInteraction(
         embeds: [replyCloseTicket],
         components: [componets],
       });
+
+      const targetUser = interaction.guild?.members.cache.get(ticketDB.userId!) as GuildMember;
+      sendLoggers(client, interaction.guild!,
+        new Embed(client, "error")
+          .setTitle('티켓 종료')
+          .setAuthor({
+            name: targetUser.user.username,
+            iconURL: targetUser.user.displayAvatarURL(),
+          }).addFields({
+            name: '유저',
+            value: `<@${targetUser.user.id}>` + '(`' + targetUser.user.id + '`)',
+          }),
+        LogFlags.TICKET_DELETE);
+
       return interaction.editReply({
         embeds: [replyCloseTicket],
         components: [componets],

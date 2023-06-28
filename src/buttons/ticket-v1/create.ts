@@ -4,16 +4,27 @@ import { ButtonInteraction } from '../../structures/Command';
 import randomstring from 'randomstring';
 import Embed from '../../utils/Embed';
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle, ChannelType } from 'discord.js';
-import { LogFlags, sendLoggers } from '../../utils/Utils';
+import config from '../../../config';
+
+/**
+ * @desceiption 배틀이 V1 - 티켓 7월 30일까지만 지원
+  */
 export default new ButtonInteraction(
   {
-    name: 'ticket.create',
+    name: 'create',
   },
   async (client, interaction) => {
     await interaction.deferReply({ ephemeral: true });
     const ticketSetting = await TicketSetting.findOne({
       guildId: interaction.guild?.id,
     });
+
+    interaction.message.edit({
+      embeds: interaction.message.embeds,
+      components: interaction.message.components,
+      content: `배틀이 대시보드 업데이트로 현제 설정하신 티켓는 7월 30일까지만 지원됩니다. 7월 30일까지 새로운 대시보드를 접속하여 다시 설정해 주시기 바랍니다.\n새로운 대시보드 - ${config.web.baseurl}/dashboard/${interaction.guild?.id}`,
+    })
+
     const guildtickets = await Ticket.find({ guildId: interaction.guild?.id });
     if (!ticketSetting) {
       return interaction.editReply('이 서버는 티켓 생성 기능을 사용 중이지 않습니다');
@@ -58,17 +69,17 @@ export default new ButtonInteraction(
             .setLabel('저장')
             .setStyle(ButtonStyle.Success)
             .setEmoji('💾')
-            .setCustomId('ticket:save');
+            .setCustomId('save');
           const buttonDelete = new ButtonBuilder()
             .setLabel('삭제')
             .setStyle(ButtonStyle.Danger)
             .setEmoji('❌')
-            .setCustomId('ticket:delete');
+            .setCustomId('delete');
           const buttonClose = new ButtonBuilder()
             .setLabel('닫기')
             .setStyle(ButtonStyle.Primary)
             .setEmoji('🔒')
-            .setCustomId('ticket:close');
+            .setCustomId('close');
           const componets = new ActionRowBuilder<ButtonBuilder>()
             .addComponents(buttonSave)
             .addComponents(buttonClose)
@@ -79,18 +90,6 @@ export default new ButtonInteraction(
             components: [componets],
           });
           interaction.editReply(`티켓이 생성되었습니다 <#${channel.id}>`);
-
-          sendLoggers(client, interaction.guild!,
-            new Embed(client, "success")
-              .setTitle('티켓 생성')
-              .setAuthor({
-                name: interaction.user.username,
-                iconURL: interaction.user.displayAvatarURL(),
-              }).addFields({
-                name: '유저',
-                value: `<@${interaction.user.id}>` + '(`' + interaction.user.id + '`)',
-              }),
-            LogFlags.TICKET_CREATE);
         });
     }
   },

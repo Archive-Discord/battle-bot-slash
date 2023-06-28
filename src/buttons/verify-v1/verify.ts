@@ -12,6 +12,9 @@ import config from '../../../config';
 // import User from '../../schemas/userSchema';
 // import { verify as v2Verify } from '../verify/verify';
 
+/**
+ * @desceiption 배틀이 V1 - 인증 7월 30일까지만 지원
+*/
 export default new ButtonInteraction(
   {
     name: 'verify',
@@ -22,31 +25,15 @@ export default new ButtonInteraction(
       guild_id: interaction.guild?.id,
     });
 
-    const captchaGuildEmbed = new Embed(client, 'info')
-      .setTitle('인증')
-      .setDescription(
-        `인증을 진행하시려면 아래 버튼을 눌러주세요`,
-      )
-      .setFooter({
-        iconURL: client.user?.displayAvatarURL(),
-        text: '인증기능이 업데이트 되었어요. 대시보드에서 새로운 인증기능을 사용해보세요!'
-      })
-
     const verifyButton = new ButtonBuilder()
       .setStyle(ButtonStyle.Primary)
       .setLabel('인증하기')
       .setEmoji('✅')
       .setCustomId(`verify:default:${VerifySettingDB?.role_id}:${VerifySettingDB?.del_role_id}`)
-    const editButton = new ButtonBuilder()
-      .setStyle(ButtonStyle.Link)
-      .setLabel('인증정보 수정')
-      .setEmoji('🔧')
-      .setURL(`${config.web?.baseurl}/dashboard/${interaction.guild?.id}/verify`)
 
+    const row = new ActionRowBuilder<ButtonBuilder>().addComponents(verifyButton);
 
-    const row = new ActionRowBuilder<ButtonBuilder>().addComponents([verifyButton, editButton]);
-
-    return await interaction.message.edit({ embeds: [captchaGuildEmbed], components: [row] });
+    return await interaction.message.edit({ embeds: interaction.message.embeds, components: [row], content: `배틀이 대시보드 업데이트로 현제 설정하신 인증은 7월 30일까지만 지원됩니다. 7월 30일까지 새로운 대시보드를 접속하여 다시 설정해 주시기 바랍니다.\n새로운 대시보드 - ${config.web.baseurl}/dashboard/${interaction.guild?.id}` });
 
     // if (!VerifySettingDB) return interaction.editReply('찾을 수 없는 서버 정보입니다');
     // if (VerifySettingDB.type === 'default' || VerifySettingDB.type === 'captcha' as any) {
