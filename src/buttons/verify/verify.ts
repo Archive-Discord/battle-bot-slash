@@ -41,14 +41,14 @@ export const verify = async (client: BotClient, interaction: ButtonInteractionTy
     .setThumbnail(guildProfileLink(interaction.guild as Guild))
     .setTitle(`${interaction.guild?.name} 서버 인증`)
     .setDescription(
-      `${interaction.guild?.name}서버의 인증을 진행하시려면 아래 버튼을 눌러주세요`
+      `${interaction.guild?.name}서버의 인증을 진행하시려면 아래 버튼을 눌러주세요\n\n디스코드가 멈출경우 [여기](${config.web.baseurl}/verify?token=${url.token})를 눌러 진행해주세요`
     )
-    .setURL(url);
+    .setURL(`https://discord.com/channels/${interaction.guild?.id}/${interaction.channel?.id}`);
 
   const verifyButton = new ButtonBuilder()
     .setStyle(ButtonStyle.Link)
     .setLabel('인증하기')
-    .setURL(url)
+    .setURL(url.loginUri)
     .setEmoji('✅')
 
   const row = new ActionRowBuilder<ButtonBuilder>()
@@ -81,9 +81,12 @@ export const verify = async (client: BotClient, interaction: ButtonInteractionTy
 
 /**
  * @description 인증 링크 생성기
- * @returns {string} redirect url
+ * @returns redirect url, login token
 */
-const verifyGenerator = async (client: BotClient, type: verifyType, guildId: string, userId: string, role: string, deleteRole?: string): Promise<string> => {
+const verifyGenerator = async (client: BotClient, type: verifyType, guildId: string, userId: string, role: string, deleteRole?: string): Promise<{
+  token: string
+  loginUri: string
+}> => {
   const token = anyid()
     .encode('Aa0')
     .bits(48 * 8)
@@ -108,5 +111,8 @@ const verifyGenerator = async (client: BotClient, type: verifyType, guildId: str
     redirect_uri: `/verify?token=${token}`,
   });
 
-  return `https://discord.com/api/oauth2/authorize?client_id=${client.user?.id}&redirect_uri=${config.web?.baseapi}/auth/discord/callback/verify&response_type=code&scope=identify%20email%20guilds%20guilds.join&prompt=none&state=${state}`
+  return {
+    token,
+    loginUri: `https://discord.com/api/oauth2/authorize?client_id=${client.user?.id}&redirect_uri=${config.web?.baseapi}/auth/discord/callback/verify&response_type=code&scope=identify%20email%20guilds%20guilds.join&prompt=none&state=${state}`
+  }
 }
