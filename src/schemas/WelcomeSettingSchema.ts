@@ -5,6 +5,7 @@ const WelcomeSettingSchema = new Schema(
     guild_id: String,
     welcome_message: { type: String, default: '' },
     outting_message: { type: String, default: '' },
+    message_type: { type: String },
     channel_id: String,
     published_date: { type: Date, default: Date.now },
   },

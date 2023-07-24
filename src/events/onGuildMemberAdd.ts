@@ -16,16 +16,20 @@ const log = new Logger('GuildMemberAddEvent');
 
 export default new Event('guildMemberAdd', async (client, member) => {
   WelecomEvent(client, member);
-  WelecomLogEvent(client, member);
   AutoModEvent(client, member);
   AutoModCreateAtEvent(client, member);
   AutoModAutoRoleEvent(client, member);
   // AutoModTokenUserEvent(client, member);
-  AutoModEventV2(client, member);
+  WelecomLogEvent(client, member);
+  WelecomEventV2(client, member);
+  AutoModBlacklistEventV2(client, member);
   AutoModAutoRoleEventV2(client, member);
   AutoModCreateAtEventV2(client, member);
 });
 
+/**
+ * @deprecated {@link AutoModBlacklistEventV2} 환영 메시지 - 8월 15일까지만 지원
+ */
 const WelecomEvent = async (client: BotClient, member: GuildMember) => {
   const WelcomeSettingDB = await WelcomeSetting.findOne({
     guild_id: member.guild.id,
@@ -52,6 +56,45 @@ const WelecomEvent = async (client: BotClient, member: GuildMember) => {
   return await WelcomeChannel.send({ embeds: [embed] });
 };
 
+const WelecomEventV2 = async (client: BotClient, member: GuildMember) => {
+  const WelcomeSettingDB = await WelcomeSetting.findOne({
+    guild_id: member.guild.id,
+  });
+  if (!WelcomeSettingDB) return;
+  if (!WelcomeSettingDB.welcome_message || WelcomeSettingDB.welcome_message == '') return;
+
+  const embed = new Embed(client, 'warn');
+  embed
+    .setAuthor({
+      name: member.user.username,
+      iconURL: member.user.displayAvatarURL(),
+    })
+    .setDescription(
+      new String(WelcomeSettingDB.welcome_message)
+        .replaceAll('${username}', member.user.username)
+        .replaceAll('${discriminator}', member.user.discriminator)
+        .replaceAll('${servername}', member.guild.name)
+        .replaceAll(
+          '${memberCount}',
+          member.guild.memberCount.toString().replaceAll('${줄바꿈}', '\n'),
+        ),
+    );
+
+  try {
+    if (WelcomeSettingDB.message_type === "guild") {
+      const WelcomeChannel = member.guild.channels.cache.get(
+        WelcomeSettingDB.channel_id!,
+      ) as TextChannel;
+      if (!WelcomeChannel) return;
+      return await WelcomeChannel.send({ embeds: [embed] });
+    } else if (WelcomeSettingDB.message_type === "dm") {
+      return await member.send({ embeds: [embed] });
+    }
+  } catch (error) {
+    log.error(error as string);
+  }
+}
+
 const WelecomLogEvent = async (client: BotClient, member: GuildMember) => {
   const LoggerSettingDB = await LoggerSetting.findOne({
     guild_id: member.guild.id,
@@ -64,19 +107,15 @@ const WelecomLogEvent = async (client: BotClient, member: GuildMember) => {
   if (!logChannel) return;
   const embed = new Embed(client, 'success')
     .setTitle('멤버 추가')
-    .setAuthor({
-      name: member.user.username,
-      iconURL: member.user.displayAvatarURL(),
-    })
     .addFields({
       name: '유저',
-      value: `<@${member.user.id}>` + '(`' + member.user.id + '`)',
+      value: `> <@${member.user.id}>` + '(`' + member.user.id + '`)',
     });
   return await logChannel.send({ embeds: [embed] });
 };
 
 /**
- * @description 자동차단 (블랙리스트) - 8월 15일까지만 지원
+ * @deprecated {@link AutoModBlacklistEventV2} 자동차단 (블랙리스트) - 8월 15일까지만 지원
  */
 const AutoModEvent = async (client: BotClient, member: GuildMember) => {
   const automodDB = await Automod.findOne({ guild_id: member.guild.id });
@@ -98,7 +137,7 @@ const AutoModEvent = async (client: BotClient, member: GuildMember) => {
 /**
  * @description 자동차단 이벤트 (블랙리스트) V2
  */
-const AutoModEventV2 = async (client: BotClient, member: GuildMember) => {
+const AutoModBlacklistEventV2 = async (client: BotClient, member: GuildMember) => {
   const automodDB = await Automod.findOne({ guildId: member.guild.id, event: 'blacklist_ban' });
   if (!automodDB) return;
   if (!automodDB.start) return
@@ -107,6 +146,9 @@ const AutoModEventV2 = async (client: BotClient, member: GuildMember) => {
   return await member.ban({ reason: `[배틀이 자동차단] ${banlist.reason}` });
 }
 
+/**
+ * @deprecated {@link AutoModCreateAtEventV2} 유저 생성일 제한 - 8월 15일까지만 지원
+ */
 const AutoModCreateAtEvent = async (client: BotClient, member: GuildMember) => {
   const automodDB = await Automod.findOne({ guild_id: member.guild.id });
   const isPremium = await checkPremium(client, member.guild);
@@ -182,7 +224,7 @@ const AutoModCreateAtEventV2 = async (client: BotClient, member: GuildMember) =>
 }
 
 /**
- * @description 자동역할 - 8월 15일까지만 지원
+ * @deprecated {@link AutoModAutoRoleEventV2} 자동역할 - 8월 15일까지만 지원
  */
 const AutoModAutoRoleEvent = async (client: BotClient, member: GuildMember) => {
   const automodDB = await Automod.findOne({ guild_id: member.guild.id });
