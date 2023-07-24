@@ -13,7 +13,10 @@ import { userWarnAdd } from '../utils/WarnHandler';
 import Embed from '../utils/Embed';
 import MusicSetting from '../schemas/musicSchema';
 import { Player } from 'erela.js';
+import Logger from '../utils/Logger';
+import { AutoModDB } from '../../typings';
 const LevelCooldown = new Map();
+const logger = new Logger('MessageEvent');
 
 export default new Event('messageCreate', async (client, message) => {
   const commandManager = new CommandManager(client);
@@ -22,6 +25,8 @@ export default new Event('messageCreate', async (client, message) => {
   if (message.author.bot) return;
   if (message.channel.type === ChannelType.DM) return;
   profanityFilter(client, message);
+  ProfanityFilterV2(client, message);
+  LinkFilterV2(client, message);
   LevelSystem(client, message);
   musicPlayer(client, message)
   if (!message.content.startsWith(client.config.bot.prefix)) return;
@@ -49,6 +54,9 @@ export default new Event('messageCreate', async (client, message) => {
   }
 });
 
+/**
+ * @deprecated 욕설 필터링 - 8월 15일까지만 지원
+*/
 const profanityFilter = async (client: BotClient, message: Message) => {
   if (!message.content) return;
   const automodDB = await Automod.findOne({ guild_id: message.guild?.id });
@@ -60,6 +68,94 @@ const profanityFilter = async (client: BotClient, message: Message) => {
     findCurse(automodDB, message, client);
   } else {
     return;
+  }
+};
+
+const LinkFilterV2 = async (client: BotClient, message: Message) => {
+  if (!message.content) return;
+  if (!message.guild) return;
+  const automodDB = await Automod.findOne({ guildId: message.guild.id, event: "uselink" });
+  if (!automodDB) return;
+  if (!automodDB.start) return;
+  if (/(http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-/]))?/.test(message.content)) {
+    findCurseV2(automodDB, message, 'link', client);
+  }
+  return
+}
+
+const ProfanityFilterV2 = async (client: BotClient, message: Message) => {
+  if (!message.content) return;
+  if (!message.guild) return;
+  const automodDB = await Automod.findOne({ guildId: message.guild.id, event: "usecurse" });
+  if (!automodDB) return;
+  if (!automodDB.start) return;
+  if (check(message.content)) {
+    findCurseV2(automodDB, message, 'curse', client);
+  }
+  return
+}
+
+const findCurseV2 = async (automodDB: AutoModDB, message: Message, type: "link" | "curse", client: BotClient) => {
+  switch (automodDB.start) {
+    case 'delete':
+      await message.reply(`${type === "curse" ? "욕설" : "링크"} 사용으로 자동 삭제됩니다`).then((m) => {
+        setTimeout(() => {
+          m.delete();
+        }, 5000);
+      });
+      try {
+        message.delete();
+      } catch (error) {
+        logger.error(error as string);
+      }
+      break;
+    case 'warning':
+      await message.reply(`${type === "curse" ? "욕설" : "링크"} 사용으로 자동 삭제 후 경고가 지급됩니다`).then((m) => {
+        setTimeout(() => {
+          m.delete();
+        }, 5000);
+      });
+      try {
+        message.delete();
+        return userWarnAdd(
+          client,
+          message.author.id,
+          message.guild?.id as string,
+          `[배틀이] ${type === "curse" ? "욕설" : "링크"} 사용 자동경고`,
+          client.user?.id as string,
+        );
+      } catch (error) {
+        logger.error(error as string);
+      }
+      break;
+    case 'kick':
+      await message.reply(`${type === "curse" ? "욕설" : "링크"} 사용으로 자동 삭제 후 추방됩니다`).then((m) => {
+        setTimeout(() => {
+          m.delete();
+        }, 5000);
+      });
+      try {
+        message.delete();
+        return message.member?.kick();
+      } catch (error) {
+        logger.error(error as string);
+      }
+      break;
+    case 'ban':
+      await message.reply(`${type === "curse" ? "욕설" : "링크"} 사용으로 자동 삭제 후 차단됩니다`).then((m) => {
+        setTimeout(() => {
+          m.delete();
+        }, 5000);
+      });
+      try {
+        message.delete();
+        return message.member?.ban({ reason: `[배틀이] ${type === "curse" ? "욕설" : "링크"} 사용 자동차단` });
+      } catch (error) {
+        logger.error(error as string);
+      }
+      break;
+    default:
+      break;
   }
 };
 
@@ -168,6 +264,9 @@ const musicPlayer = async (client: BotClient, message: Message) => {
   }
 }
 
+/**
+ * @deprecated 욕설 필터링 - 8월 15일까지만 지원
+*/
 const findCurse = async (automodDB: any, message: Message, client: BotClient) => {
   if (automodDB.useing.useCurseType === 'delete') {
     await message.reply('욕설 사용으로 자동 삭제됩니다').then((m) => {
@@ -225,6 +324,9 @@ const findCurse = async (automodDB: any, message: Message, client: BotClient) =>
   }
 };
 
+/**
+ * @deprecated 레벨 시스템 - 8월 15일까지만 지원
+*/
 const LevelSystem = async (client: BotClient, message: Message) => {
   if (!message.guild) return;
   if (

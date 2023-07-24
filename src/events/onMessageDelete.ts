@@ -2,7 +2,7 @@ import { Event } from '../structures/Event';
 import config from '../../config';
 import LoggerSetting from '../schemas/LogSettingSchema';
 import Embed from '../utils/Embed';
-import { AuditLogEvent, TextChannel, User } from 'discord.js';
+import { AuditLogEvent, Client, Message, TextChannel, User } from 'discord.js';
 import { checkLogFlag, LogFlags } from '../utils/Utils';
 
 export default new Event('messageDelete', async (client, message) => {
@@ -12,6 +12,11 @@ export default new Event('messageDelete', async (client, message) => {
   if (message.author?.id == client.user?.id) return;
   if (!message.guild) return;
   if (!message.content && message.attachments.size == 0 && message.embeds[0]) return;
+  messageDeleteLoggerV2(client, message as Message<true>);
+});
+
+
+const messageDeleteLoggerV2 = async (client: Client, message: Message<true>) => {
   const LoggerSettingDB = await LoggerSetting.findOne({
     guild_id: message.guild.id,
   });
@@ -30,11 +35,11 @@ export default new Event('messageDelete', async (client, message) => {
   embed.addFields(
     {
       name: '채널',
-      value: `<#${message.channel.id}>` + '(`' + message.channel.id + '`)',
+      value: `> <#${message.channel.id}>` + '(`' + message.channel.id + '`)',
     },
     {
       name: '작성자',
-      value: `<@${message.author.id}>` + '(`' + message.author.id + '`)',
+      value: `> <@${message.author.id}>` + '(`' + message.author.id + '`)',
     },
   );
   if (message.content.length > 0) embed.addFields({ name: '내용', value: `${message.content}` });
@@ -44,7 +49,7 @@ export default new Event('messageDelete', async (client, message) => {
       value: message.attachments.map((file) => `[링크](${file.url})`).join('\n'),
     });
   }
-  const fetchedLogs = await message.guild?.fetchAuditLogs({
+  const fetchedLogs = await message.guild.fetchAuditLogs({
     limit: 1,
     type: AuditLogEvent.MessageDelete,
   });
@@ -67,4 +72,4 @@ export default new Event('messageDelete', async (client, message) => {
     return await logChannel.send({ embeds: [embed] });
   }
   return await logChannel.send({ embeds: [embed] });
-});
+}

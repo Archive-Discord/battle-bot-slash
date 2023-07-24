@@ -20,7 +20,10 @@ export default new Event('guildMemberAdd', async (client, member) => {
   AutoModEvent(client, member);
   AutoModCreateAtEvent(client, member);
   AutoModAutoRoleEvent(client, member);
-  AutoModTokenUserEvent(client, member);
+  // AutoModTokenUserEvent(client, member);
+  AutoModEventV2(client, member);
+  AutoModAutoRoleEventV2(client, member);
+  AutoModCreateAtEventV2(client, member);
 });
 
 const WelecomEvent = async (client: BotClient, member: GuildMember) => {
@@ -72,6 +75,9 @@ const WelecomLogEvent = async (client: BotClient, member: GuildMember) => {
   return await logChannel.send({ embeds: [embed] });
 };
 
+/**
+ * @description 자동차단 (블랙리스트) - 8월 15일까지만 지원
+ */
 const AutoModEvent = async (client: BotClient, member: GuildMember) => {
   const automodDB = await Automod.findOne({ guild_id: member.guild.id });
   if (!automodDB) return;
@@ -88,6 +94,18 @@ const AutoModEvent = async (client: BotClient, member: GuildMember) => {
     return;
   }
 };
+
+/**
+ * @description 자동차단 이벤트 (블랙리스트) V2
+ */
+const AutoModEventV2 = async (client: BotClient, member: GuildMember) => {
+  const automodDB = await Automod.findOne({ guildId: member.guild.id, event: 'blacklist_ban' });
+  if (!automodDB) return;
+  if (!automodDB.start) return
+  const banlist = await Blacklist.findOne({ status: 'blocked', user_id: member.id });
+  if (!banlist) return;
+  return await member.ban({ reason: `[배틀이 자동차단] ${banlist.reason}` });
+}
 
 const AutoModCreateAtEvent = async (client: BotClient, member: GuildMember) => {
   const automodDB = await Automod.findOne({ guild_id: member.guild.id });
@@ -126,6 +144,46 @@ const AutoModCreateAtEvent = async (client: BotClient, member: GuildMember) => {
   }
 };
 
+const AutoModCreateAtEventV2 = async (client: BotClient, member: GuildMember) => {
+  const automodDB = await Automod.findOne({ guildId: member.guild.id, event: 'usercreateat' });
+  if (!automodDB) return;
+  if (!automodDB.start) return;
+  const isPremium = await checkPremium(client, member.guild);
+  if (!isPremium) {
+    const LoggerSettingDB = await LoggerSetting.findOne({
+      guild_id: member.guild.id,
+    });
+    if (!LoggerSettingDB) return;
+    const logChannel = member.guild.channels.cache.get(
+      LoggerSettingDB.guild_channel_id,
+    ) as TextChannel;
+    if (!logChannel) return;
+    return logChannel.send('프리미엄 기한 만료로 유저 생성일 제한 기능이 비활성화되었습니다');
+  }
+
+  const now = new Date();
+  const elapsedDate = Math.round(
+    (Number(now) - Number(member.user.createdAt)) / 1000 / 60 / 60 / 24,
+  );
+
+  if (elapsedDate < Number(automodDB.start)) {
+    try {
+      const embed = new Embed(client, 'error')
+        .setTitle('배틀이 자동 시스템')
+        .setDescription(
+          `해당 서버는 계정 생성후 ${automodDB.start}일이 지나야 입장이 가능합니다`,
+        );
+      await member.send({ embeds: [embed] });
+    } catch (e: any) {
+      log.error(e);
+    }
+    return member.kick();
+  }
+}
+
+/**
+ * @description 자동역할 - 8월 15일까지만 지원
+ */
 const AutoModAutoRoleEvent = async (client: BotClient, member: GuildMember) => {
   const automodDB = await Automod.findOne({ guild_id: member.guild.id });
   if (!automodDB) return;
@@ -138,6 +196,22 @@ const AutoModAutoRoleEvent = async (client: BotClient, member: GuildMember) => {
     return;
   }
 };
+
+/**
+ * @description 자동역할 이벤트 V2
+ */
+const AutoModAutoRoleEventV2 = async (client: BotClient, member: GuildMember) => {
+  const automodDB = await Automod.findOne({ guildId: member.guild.id, event: 'autorole' });
+  if (!automodDB) return;
+  if (!automodDB.start) return;
+  const role = member.guild.roles.cache.get(automodDB.start as string);
+  if (!role) return;
+  try {
+    return member.roles.add(role);
+  } catch (e) {
+    return;
+  }
+}
 
 const AutoModTokenUserEvent = async (client: BotClient, member: GuildMember) => {
   if (member.guild.id !== '786153760824492062') return;
