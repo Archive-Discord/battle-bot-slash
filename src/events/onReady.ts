@@ -181,7 +181,7 @@ async function ShardInfo(client: BotClient) {
 }
 
 async function automodResetChannel(client: BotClient) {
-  // 배틀이 V1 - 채널 초기화 7월 30일까지만 지원
+  // 배틀이 V1 - 채널 초기화 8월 15일까지만 지원
   try {
     const automod = await Automod.find();
     automod.forEach(async ({ useing, guild_id }) => {
@@ -196,7 +196,7 @@ async function automodResetChannel(client: BotClient) {
         const newchannel = await channel?.clone() as GuildTextBasedChannel;
         if (!newchannel) return;
         await newchannel?.send({
-          content: `\`\`\`배틀이 대시보드 업데이트로 현제 설정하신 기능은 7월 30일까지만 지원됩니다.\n7월 30일까지 새로운 대시보드를 접속하여 다시 설정해 주시기 바랍니다.\`\`\`\`새로운 대시보드\` - ${config.web.baseurl}/dashboard/${guild_id}`,
+          content: `\`\`\`배틀이 대시보드 업데이트로 현제 설정하신 기능은 8월 15일까지만 지원됩니다.\n8월 15일까지 새로운 대시보드를 접속하여 다시 설정해 주시기 바랍니다.\`\`\`\`새로운 대시보드\` - ${config.web.baseurl}/dashboard/${guild_id}`,
           embeds: [
             new Embed(client, 'info')
               .setTitle('채널 초기화')

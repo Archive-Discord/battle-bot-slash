@@ -7,7 +7,7 @@ import { ActionRowBuilder, ButtonBuilder, ButtonStyle, ChannelType } from 'disco
 import config from '../../../config';
 
 /**
- * @desceiption 배틀이 V1 - 티켓 7월 30일까지만 지원
+ * @desceiption 배틀이 V1 - 티켓 8월 15일까지만 지원
   */
 export default new ButtonInteraction(
   {
@@ -22,7 +22,7 @@ export default new ButtonInteraction(
     interaction.message.edit({
       embeds: interaction.message.embeds,
       components: interaction.message.components,
-      content: `\`\`\`배틀이 대시보드 업데이트로 현제 설정하신 기능은 7월 30일까지만 지원됩니다.\n7월 30일까지 새로운 대시보드를 접속하여 다시 설정해 주시기 바랍니다.\`\`\`\`새로운 대시보드\` - ${config.web.baseurl}/dashboard/${interaction.guild?.id}`,
+      content: `\`\`\`배틀이 대시보드 업데이트로 현제 설정하신 기능은 8월 15일까지만 지원됩니다.\n8월 15일까지 새로운 대시보드를 접속하여 다시 설정해 주시기 바랍니다.\`\`\`\`새로운 대시보드\` - ${config.web.baseurl}/dashboard/${interaction.guild?.id}`,
     })
 
     const guildtickets = await Ticket.find({ guildId: interaction.guild?.id });

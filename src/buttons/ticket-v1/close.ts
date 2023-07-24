@@ -10,7 +10,7 @@ import {
 } from 'discord.js';
 
 /**
- * @desceiption 배틀이 V1 - 티켓 7월 30일까지만 지원
+ * @desceiption 배틀이 V1 - 티켓 8월 15일까지만 지원
   */
 export default new ButtonInteraction(
   {
