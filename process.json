@@ -1,7 +1,7 @@
 {
   "apps": [
     {
-      "name": "battlebot-v14",
+      "name": "battlebot-v2",
       "script": "./src/index.js",
       "node_args": "--enable-source-maps",
       "restart_delay": 5000
