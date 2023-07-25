@@ -41,8 +41,8 @@ const GreetingEvent = async (client: BotClient, member: GuildMember | PartialGui
         .replaceAll('${servername}', member.guild.name)
         .replaceAll(
           '${memberCount}',
-          member.guild.memberCount.toString().replaceAll('${줄바꿈}', '\n'),
-        ),
+          member.guild.memberCount.toString(),
+        ).replaceAll('${줄바꿈}', '\n'),
     );
   return await WelcomeChannel.send({ embeds: [embed] });
 };

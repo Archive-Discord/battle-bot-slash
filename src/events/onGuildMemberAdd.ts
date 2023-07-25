@@ -76,8 +76,9 @@ const WelecomEventV2 = async (client: BotClient, member: GuildMember) => {
         .replaceAll('${servername}', member.guild.name)
         .replaceAll(
           '${memberCount}',
-          member.guild.memberCount.toString().replaceAll('${줄바꿈}', '\n'),
-        ),
+          member.guild.memberCount.toString(),
+        ).replaceAll('${줄바꿈}', '\n')
+      ,
     );
 
   try {
