@@ -25,6 +25,10 @@ export interface IConfig {
     baseurl: string;
     baseapi: string;
   };
+  aws: {
+    accessKeyId: string
+    secrectAccessKey: string
+  },
   updateServer: {
     koreanbots: string;
     archive: string;

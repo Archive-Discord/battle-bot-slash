@@ -12,6 +12,7 @@ import { config as dotenvConfig } from 'dotenv';
 import ButtonManager from '../managers/ButtonManager';
 import { Manager } from 'erela.js';
 import { client } from '../bot';
+import { VoiceRecorder } from '../utils/record/voice-recorder';
 
 const logger = new Logger('bot');
 
@@ -26,6 +27,8 @@ export default class BotClient extends Client {
   public events: Collection<string, Event> = new Collection();
   public musicEvents: Collection<string, MusicEvent> = new Collection();
   public errors: Collection<string, string> = new Collection();
+  public recordGuilds: Collection<string, string> = new Collection();
+  public voiceRecorder: VoiceRecorder = new VoiceRecorder()
   public dokdo: Dokdo = new Dokdo(this, {
     prefix: this.config.bot.prefix,
     owners: config.bot.owners,
