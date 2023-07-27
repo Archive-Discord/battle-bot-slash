@@ -38,6 +38,10 @@ const config: IConfig = {
     baseurl: '',
     baseapi: '',
   },
+  aws: {
+    accessKeyId: 'AKIASWJDQP756N27GQMC',
+    secrectAccessKey: 'dxOs3xNVonuTd/k1A7Iqa7tSVcosqLsxmN68P7Pn',
+  },
   bot: {
     sharding: false,
     options: {
