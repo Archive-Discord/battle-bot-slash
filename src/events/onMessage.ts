@@ -15,6 +15,7 @@ import MusicSetting from '../schemas/musicSchema';
 import { Player } from 'erela.js';
 import Logger from '../utils/Logger';
 import { AutoModDB } from '../../typings';
+import { status } from '../utils/Utils';
 const LevelCooldown = new Map();
 const logger = new Logger('MessageEvent');
 
@@ -227,6 +228,7 @@ const musicPlayer = async (client: BotClient, message: Message) => {
       }, 15000)
     })
   }
+  status(message.guild.id, client);
   if (song.playlist) {
     const songs: string[] = []
     song.tracks.forEach((music) => {
