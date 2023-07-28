@@ -38,54 +38,6 @@ export default new Event(
     const commandManager = new CommandManager(client);
     await commandManager.slashGlobalCommandSetup();
 
-    client.music.init(client.user?.id, {
-      shards: client.ws.shards.size,
-      clientName: `battlebot`,
-      clientId: client.user?.id,
-    })
-    client.on("raw", (data) => {
-      switch (data.t) {
-        case "VOICE_SERVER_UPDATE":
-        case "VOICE_STATE_UPDATE":
-          client.music.updateVoiceState(data.d)
-          break;
-      }
-    });
-    client.music
-      .on('nodeConnect', async (node) => {
-        logger.scope = 'MusicManager';
-        logger.info(`Music client ${node.options.identifier} connected!`);
-      })
-      .on('nodeError', async (_, e) => logger.error(e.message))
-      .on('trackStart', async (player, track) => {
-        if (!player.guild) return;
-        status(player.guild, client)
-        const channel = client.channels.cache.get(player.textChannel!) as TextBasedChannel;
-        const playl = new Embed(client, 'default')
-          .setTitle('🎶 노래를 재생합니다! 🎶')
-          .setURL(`${track.uri}`)
-          .setDescription(`\`${track.title}\`` + `(이)가 지금 재생되고 있습니다!`)
-          .setFields(
-            {
-              name: `길이`,
-              value: `\`${format(track.duration).split(' | ')[0]}\` | \`${format(track.duration).split(' | ')[1]
-                }\``,
-              inline: true,
-            },
-            { name: `게시자`, value: `${track.author}`, inline: true },
-          )
-          .setThumbnail(`${track.thumbnail}`);
-        channel.send({ embeds: [playl] })
-      })
-      .on('queueEnd', async (player, _track) => {
-        stop(player.guild, client)
-        const channel = client.channels.cache.get(player.textChannel!) as TextBasedChannel;
-        await client.music.players.delete(player?.guild);
-        if (!channel) return
-        const playl = new Embed(client, 'info').setTitle('끝!').setDescription(`노래가 끝났어요!`);
-        channel.send({ embeds: [playl] })
-      })
-
     logger.info(`Logged ${client.user?.username}`);
   },
   { once: true },

@@ -30,7 +30,7 @@ export default new BaseCommand(
         return interaction.followUp({
           embeds: [new Embed(client, 'default').setDescription(`음성채널에 먼저 참여해주세요!`)],
         });
-      const queue = client.music.create({
+      const queue = client.musics.create({
         guild: interaction.guild.id,
         voiceChannel: interaction.member.voice.channel.id,
         textChannel: interaction.channel?.id!,
@@ -48,7 +48,7 @@ export default new BaseCommand(
       let res;
 
       try {
-        res = await client.music.search(search, interaction.user);
+        res = await client.musics.search(search, interaction.user);
         if (res.loadType === 'LOAD_FAILED') throw res.exception;
         else if (res.loadType === 'PLAYLIST_LOADED')
           throw { message: '이 명령에서는 재생 목록을 지원하지 않습니다.' };

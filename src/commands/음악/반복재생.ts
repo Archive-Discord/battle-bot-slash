@@ -24,7 +24,7 @@ export default new BaseCommand(
         return interaction.reply({
           embeds: [new Embed(client, 'error').setTitle('❌ 에러 발생').setDescription(`음성채널에 먼저 참여해주세요!`)],
         });
-      const queue = client.music.get(interaction.guild.id);
+      const queue = client.musics.get(interaction.guild.id);
 
       if (!queue || !queue.playing)
         return interaction.reply({

@@ -23,7 +23,7 @@ export default new BaseCommand(
         return interaction.reply({
           embeds: [new Embed(client, 'default').setDescription(`음성채널에 먼저 참여해주세요!`).setColor('#2f3136')],
         });
-      const queue = client.music.get(interaction.guild.id);
+      const queue = client.musics.get(interaction.guild.id);
 
       if (!queue || !queue.playing)
         return interaction.reply({

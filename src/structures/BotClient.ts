@@ -11,7 +11,7 @@ import { Model } from 'mongoose';
 import { config as dotenvConfig } from 'dotenv';
 import ButtonManager from '../managers/ButtonManager';
 import { Manager } from 'erela.js';
-import { client } from '../bot';
+import MusicManager from '../managers/MusicManager';
 
 const logger = new Logger('bot');
 
@@ -39,17 +39,8 @@ export default class BotClient extends Client {
   public event: EventManager = new EventManager(this);
   public error: ErrorManager = new ErrorManager(this);
   public database: DatabaseManager = new DatabaseManager(this);
-  public music = new Manager({
-    nodes: config.music,
-    autoPlay: true,
-    clientName: `Battle Bot`,
-    clientId: this.user?.id,
-    position_update_interval: 100,
-    send(id, payload) {
-      const guild = client.guilds.cache.get(id);
-      if (guild) guild.shard.send(payload);
-    },
-  });
+  public music: MusicManager = new MusicManager(this);
+  public musics = this.music.music;
 
   public constructor(options: ClientOptions) {
     super(options);
@@ -63,7 +54,9 @@ export default class BotClient extends Client {
 
   public async start(token: string = config.bot.token): Promise<void> {
     logger.info('Logging in bot...');
-    await this.login(token);
+    await this.login(token).then(() => {
+      this.music.load();
+    })
   }
 
   public async setStatus(status: 'dev' | 'online' = 'online', name = '점검중...') {

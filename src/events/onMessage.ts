@@ -184,7 +184,7 @@ const musicPlayer = async (client: BotClient, message: Message) => {
       }, 15000)
     })
   }
-  const guildQueue = client.music.players.get(message.guild.id)
+  const guildQueue = client.musics.players.get(message.guild.id)
   if (guildQueue) {
     if (channel.id !== message.guild.members.me?.voice.channelId) {
       errembed.setTitle('❌ 이미 다른 음성 채널에서 재생 중입니다!')
@@ -195,7 +195,7 @@ const musicPlayer = async (client: BotClient, message: Message) => {
       })
     }
   }
-  const song = await client.music.search(message.content, message.author)
+  const song = await client.musics.search(message.content, message.author)
   if (!song || !song.tracks.length) {
     errembed.setTitle(`❌ ${message.content}를 찾지 못했어요!`)
     return message.channel.send({ embeds: [errembed] }).then((m) => {
@@ -208,7 +208,7 @@ const musicPlayer = async (client: BotClient, message: Message) => {
   if (guildQueue) {
     player = guildQueue
   } else {
-    player = await client.music.create({
+    player = await client.musics.create({
       guild: message.guildId!,
       voiceChannel: message.member?.voice.channelId!,
       textChannel: message.channel?.id!,
@@ -219,7 +219,7 @@ const musicPlayer = async (client: BotClient, message: Message) => {
   try {
     if (!player.playing && !player.paused) player.connect()
   } catch (e) {
-    client.music.players.get(message.guild.id)?.destroy()
+    client.musics.players.get(message.guild.id)?.destroy()
     errembed.setTitle(`❌ 음성 채널에 입장할 수 없어요 ${e}`)
     return message.channel.send({ embeds: [errembed] }).then((m) => {
       setTimeout(() => {
