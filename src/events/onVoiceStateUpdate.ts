@@ -66,7 +66,9 @@ async function Music_AutoStop(client: BotClient, oldState: VoiceState, newState:
         ]
       }).then((m) => {
         setTimeout(() => {
-          m.delete()
+          try {
+            m.delete()
+          } catch (e) { /* eslint-disable-next-line no-empty */ }
         }, 15000)
       })
       return true;
@@ -80,7 +82,9 @@ async function Music_AutoStop(client: BotClient, oldState: VoiceState, newState:
     try {
       return await channel.send({ embeds: [voice] }).then((m) => {
         setTimeout(() => {
-          m.delete()
+          try {
+            m.delete()
+          } catch (e) { /* eslint-disable-next-line no-empty */ }
         }, 15000)
       })
     } catch (err) { /* empty */ }

@@ -101,7 +101,9 @@ const findCurseV2 = async (automodDB: AutoModDB, message: Message, type: "link" 
     case 'delete':
       await message.reply(`${type === "curse" ? "욕설" : "링크"} 사용으로 자동 삭제됩니다`).then((m) => {
         setTimeout(() => {
-          m.delete();
+          try {
+            m.delete()
+          } catch (e) { /* eslint-disable-next-line no-empty */ }
         }, 5000);
       });
       try {
@@ -113,7 +115,9 @@ const findCurseV2 = async (automodDB: AutoModDB, message: Message, type: "link" 
     case 'warning':
       await message.reply(`${type === "curse" ? "욕설" : "링크"} 사용으로 자동 삭제 후 경고가 지급됩니다`).then((m) => {
         setTimeout(() => {
-          m.delete();
+          try {
+            m.delete()
+          } catch (e) { /* eslint-disable-next-line no-empty */ }
         }, 5000);
       });
       try {
@@ -132,7 +136,9 @@ const findCurseV2 = async (automodDB: AutoModDB, message: Message, type: "link" 
     case 'kick':
       await message.reply(`${type === "curse" ? "욕설" : "링크"} 사용으로 자동 삭제 후 추방됩니다`).then((m) => {
         setTimeout(() => {
-          m.delete();
+          try {
+            m.delete()
+          } catch (e) { /* eslint-disable-next-line no-empty */ }
         }, 5000);
       });
       try {
@@ -145,7 +151,9 @@ const findCurseV2 = async (automodDB: AutoModDB, message: Message, type: "link" 
     case 'ban':
       await message.reply(`${type === "curse" ? "욕설" : "링크"} 사용으로 자동 삭제 후 차단됩니다`).then((m) => {
         setTimeout(() => {
-          m.delete();
+          try {
+            m.delete()
+          } catch (e) { /* eslint-disable-next-line no-empty */ }
         }, 5000);
       });
       try {
@@ -181,7 +189,9 @@ const musicPlayer = async (client: BotClient, message: Message) => {
     errembed.setTitle('❌ 음성 채널에 먼저 입장해주세요!')
     return message.channel.send({ embeds: [errembed] }).then((m) => {
       setTimeout(() => {
-        m.delete()
+        try {
+          m.delete()
+        } catch (e) { /* eslint-disable-next-line no-empty */ }
       }, 15000)
     })
   }
@@ -191,7 +201,9 @@ const musicPlayer = async (client: BotClient, message: Message) => {
       errembed.setTitle('❌ 이미 다른 음성 채널에서 재생 중입니다!')
       return message.channel.send({ embeds: [errembed] }).then((m) => {
         setTimeout(() => {
-          m.delete()
+          try {
+            m.delete()
+          } catch (e) { /* eslint-disable-next-line no-empty */ }
         }, 15000)
       })
     }
@@ -201,7 +213,9 @@ const musicPlayer = async (client: BotClient, message: Message) => {
     errembed.setTitle(`❌ ${message.content}를 찾지 못했어요!`)
     return message.channel.send({ embeds: [errembed] }).then((m) => {
       setTimeout(() => {
-        m.delete()
+        try {
+          m.delete()
+        } catch (e) { /* eslint-disable-next-line no-empty */ }
       }, 15000)
     })
   }
@@ -224,7 +238,9 @@ const musicPlayer = async (client: BotClient, message: Message) => {
     errembed.setTitle(`❌ 음성 채널에 입장할 수 없어요 ${e}`)
     return message.channel.send({ embeds: [errembed] }).then((m) => {
       setTimeout(() => {
-        m.delete()
+        try {
+          m.delete()
+        } catch (e) { /* eslint-disable-next-line no-empty */ }
       }, 15000)
     })
   }
@@ -244,7 +260,9 @@ const musicPlayer = async (client: BotClient, message: Message) => {
     if (!player.playing) await player.play()
     return message.channel.send({ embeds: [sucessembed] }).then((m) => {
       setTimeout(() => {
-        m.delete()
+        try {
+          m.delete()
+        } catch (e) { /* eslint-disable-next-line no-empty */ }
       }, 15000)
     })
   } else {
@@ -260,7 +278,9 @@ const musicPlayer = async (client: BotClient, message: Message) => {
     if (!player.playing) await player.play()
     return message.channel.send({ embeds: [sucessembed] }).then((m) => {
       setTimeout(() => {
-        m.delete()
+        try {
+          m.delete()
+        } catch (e) { /* eslint-disable-next-line no-empty */ }
       }, 15000)
     })
   }
@@ -273,7 +293,11 @@ const findCurse = async (automodDB: any, message: Message, client: BotClient) =>
   if (automodDB.useing.useCurseType === 'delete') {
     await message.reply('욕설 사용으로 자동 삭제됩니다').then((m) => {
       setTimeout(() => {
-        m.delete();
+        try {
+          try {
+            m.delete()
+          } catch (e) { /* eslint-disable-next-line no-empty */ }
+        } catch (e) { /* eslint-disable-next-line no-empty */ }
       }, 5000);
     });
     try {
@@ -284,7 +308,9 @@ const findCurse = async (automodDB: any, message: Message, client: BotClient) =>
   } else if (automodDB.useing.useCurseType === 'delete_kick') {
     await message.reply('욕설 사용으로 자동 삭제 후 추방됩니다').then((m) => {
       setTimeout(() => {
-        m.delete();
+        try {
+          m.delete()
+        } catch (e) { /* eslint-disable-next-line no-empty */ }
       }, 5000);
     });
     try {
@@ -296,7 +322,9 @@ const findCurse = async (automodDB: any, message: Message, client: BotClient) =>
   } else if (automodDB.useing.useCurseType === 'delete_ban') {
     await message.reply('욕설 사용으로 자동 삭제 후 차단됩니다').then((m) => {
       setTimeout(() => {
-        m.delete();
+        try {
+          m.delete()
+        } catch (e) { /* eslint-disable-next-line no-empty */ }
       }, 5000);
     });
     try {
@@ -308,7 +336,9 @@ const findCurse = async (automodDB: any, message: Message, client: BotClient) =>
   } else if (automodDB.useing.useCurseType === 'delete_warn') {
     await message.reply('욕설 사용으로 자동 삭제 후 경고가 지급됩니다').then((m) => {
       setTimeout(() => {
-        m.delete();
+        try {
+          m.delete()
+        } catch (e) { /* eslint-disable-next-line no-empty */ }
       }, 5000);
     });
     try {

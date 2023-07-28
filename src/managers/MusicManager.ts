@@ -62,9 +62,11 @@ export default class MusicManager extends BaseManager {
             { name: `게시자`, value: `${track.author}`, inline: true },
           )
         if (track?.thumbnail) playl.setThumbnail(`${track?.thumbnail}`)
-        await channel.send({ embeds: [playl] }).then((m) => {
+        channel.send({ embeds: [playl] }).then((m) => {
           setTimeout(() => {
-            m.delete()
+            try {
+              m.delete()
+            } catch (e) { /* eslint-disable-next-line no-empty */ }
           }, 15000)
         })
       })
@@ -83,7 +85,9 @@ export default class MusicManager extends BaseManager {
           ]
         }).then((m) => {
           setTimeout(() => {
-            m.delete()
+            try {
+              m.delete()
+            } catch (e) { /* eslint-disable-next-line no-empty */ }
           }, 15000)
         })
       })
@@ -108,7 +112,9 @@ export default class MusicManager extends BaseManager {
           ]
         }).then((m) => {
           setTimeout(() => {
-            m.delete()
+            try {
+              m.delete()
+            } catch (e) { /* eslint-disable-next-line no-empty */ }
           }, 15000)
         })
         return player?.destroy()
