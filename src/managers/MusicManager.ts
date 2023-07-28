@@ -1,9 +1,9 @@
-import { Manager, Player, Track, TrackDataInfo } from 'erela.js'
+import { Manager } from 'erela.js'
 import BaseManager from './BaseManager'
 import BotClient from '../structures/BotClient'
 import Embed from '../utils/Embed'
 import Logger from '../utils/Logger'
-import { channelMention, Guild, TextChannel, User } from 'discord.js'
+import { channelMention, TextChannel } from 'discord.js'
 import { format, status, stop } from '../utils/Utils'
 
 export default class MusicManager extends BaseManager {

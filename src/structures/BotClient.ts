@@ -10,7 +10,6 @@ import DatabaseManager from '../managers/DatabaseManager';
 import { Model } from 'mongoose';
 import { config as dotenvConfig } from 'dotenv';
 import ButtonManager from '../managers/ButtonManager';
-import { Manager } from 'erela.js';
 import MusicManager from '../managers/MusicManager';
 
 const logger = new Logger('bot');

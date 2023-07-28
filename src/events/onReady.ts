@@ -1,5 +1,4 @@
 import {
-  TextBasedChannel,
   GuildTextBasedChannel,
 } from 'discord.js';
 import Status from '../schemas/statusSchema';
@@ -16,7 +15,6 @@ import axios from 'axios';
 import config from '../../config';
 import CommandManager from '../managers/CommandManager';
 import PremiumUser from '../schemas/premiumUserSchemas';
-import { format, status, stop } from '../utils/Utils';
 
 const logger = new Logger('bot');
 
