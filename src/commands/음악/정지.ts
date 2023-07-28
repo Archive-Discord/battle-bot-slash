@@ -26,7 +26,7 @@ export default new BaseCommand(
           });
         }
       }
-      const queue = client.music.get(interaction.guildId);
+      const queue = client.musics.get(interaction.guildId);
 
       if (!queue)
         return interaction.reply({
@@ -42,7 +42,7 @@ export default new BaseCommand(
         ]
       })
       if (queue) queue.destroy();
-      await client.music.players.delete(interaction?.guild?.id)
+      await client.musics.players.delete(interaction?.guild?.id)
       stop(interaction.guild.id, client)
 
       interaction.reply({

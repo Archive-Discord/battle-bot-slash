@@ -87,7 +87,7 @@ export async function status(guild_id: string, client: BotClient) {
   const gdname = guild.name;
   const gdicon = guild.iconURL();
   if (find) {
-    const player = client.music.players.get(guild.id);
+    const player = client.musics.players.get(guild.id);
     if (!player) return;
     const vaset = new ActionRowBuilder<ButtonBuilder>().addComponents(
       new ButtonBuilder()

@@ -28,7 +28,7 @@ export default new BaseCommand(
             new Embed(client, 'default').setDescription(`음... 재생중인 노래가 없어보이네요`).setColor('#2f3136'),
           ],
         });
-      const queue = client.music.get(interaction.guild.id);
+      const queue = client.musics.get(interaction.guild.id);
       if (interaction.member.voice.channel.id !== interaction.guild.members.me.voice.channel.id) return interaction.reply({
         embeds: [
           new Embed(client, 'default')
