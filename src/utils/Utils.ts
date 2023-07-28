@@ -103,7 +103,8 @@ export async function status(guild_id: string, client: BotClient) {
     const msgid_list = find.messageid_list;
     const msgid_banner = find.messageid_banner;
     const channel = client.channels.cache.get(chid);
-    if (!channel?.isTextBased()) return;
+    if (!channel) return;
+    if (!channel.isTextBased()) return;
     const msg_list = await channel.messages.fetch(msgid_list) as Message;
     const msg_banner = await channel.messages.fetch(msgid_banner) as Message;
     if (!msg_list || !msg_banner) return
