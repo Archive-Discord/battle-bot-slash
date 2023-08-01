@@ -1,9 +1,8 @@
-import { CommandInteraction, EmbedBuilder, TextChannel } from 'discord.js';
-import LoggerSetting from '../schemas/LogSettingSchema';
+import { CommandInteraction } from 'discord.js';
 import Warning from '../schemas/Warning';
 import BotClient from '../structures/BotClient';
 import Embed from './Embed';
-import { checkLogFlag, LogFlags, sendLoggers } from './Utils';
+import { LogFlags, sendLoggers } from './Utils';
 import Logger from './Logger';
 
 const logger = new Logger('WarnHandler');
