@@ -15,7 +15,7 @@ import MusicSetting from '../schemas/musicSchema';
 import { Player } from 'erela.js';
 import Logger from '../utils/Logger';
 import { AutoModDB } from '../../typings';
-import { status } from '../utils/Utils';
+import { SOCKET_ACTIONS, status } from '../utils/Utils';
 const LevelCooldown = new Map();
 const logger = new Logger('MessageEvent');
 
@@ -25,6 +25,7 @@ export default new Event('messageCreate', async (client, message) => {
 
   if (message.author.bot) return;
   if (message.channel.type === ChannelType.DM) return;
+
   profanityFilter(client, message);
   ProfanityFilterV2(client, message);
   LinkFilterV2(client, message);

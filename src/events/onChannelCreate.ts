@@ -2,7 +2,8 @@ import { AuditLogEvent, GuildAuditLogsEntry, GuildChannel, TextChannel, User } f
 import LoggerSetting from '../schemas/LogSettingSchema';
 import Embed from '../utils/Embed';
 import { Event } from '../structures/Event';
-import { checkLogFlag, LogFlags } from '../utils/Utils';
+import { checkLogFlag, LogFlags, SOCKET_ACTIONS } from '../utils/Utils';
+import custombotSchema from '../schemas/custombotSchema';
 
 export default new Event('channelCreate', async (client, channel) => {
   const LoggerSettingDB = await LoggerSetting.findOne({
@@ -21,7 +22,7 @@ export default new Event('channelCreate', async (client, channel) => {
   const embed = new Embed(client, 'success').setTitle('채널 생성').addFields(
     {
       name: '채널',
-      value: `<#${channel.id}>` + '(`' + channel.id + '`)',
+      value: `> <#${channel.id}>` + '(`' + channel.id + '`)',
     },
     {
       name: '카테고리',
@@ -35,9 +36,22 @@ export default new Event('channelCreate', async (client, channel) => {
   if (target.id === channel.id) {
     embed.addFields({
       name: '생성유저',
-      value: `<@${executor.id}>` + '(`' + executor.id + '`)',
+      value: `> <@${executor.id}>` + '(`' + executor.id + '`)',
     });
-    return await logChannel.send({ embeds: [embed] });
+  }
+
+  const customBot = await custombotSchema.findOne({
+    guildId: channel.guild?.id,
+    useage: true,
+  });
+
+  if (customBot) {
+    client.socket.emit(SOCKET_ACTIONS.SEND_LOG_MESSAGE, {
+      guildId: channel.guild?.id,
+      channelId: logChannel.id,
+      embed: embed.toJSON(),
+    })
+    return
   } else {
     return await logChannel.send({ embeds: [embed] });
   }

@@ -5,6 +5,7 @@ import { ActionRowBuilder, ButtonBuilder, ButtonStyle, Guild, GuildTextBasedChan
 import Embed from './Embed';
 import Logger from './Logger';
 import LoggerSetting from '../schemas/LogSettingSchema';
+import custombotSchema from '../schemas/custombotSchema';
 
 export enum LogFlags {
   SERVER_SETTINGS = 2 << 0,
@@ -31,6 +32,14 @@ export enum LogFlags {
   TICKET_CREATE = 2 << 21,
   TICKET_DELETE = 2 << 22,
   TICKET_SAVE = 2 << 23,
+}
+
+export enum SOCKET_ACTIONS {
+  PING = 'ping',
+  PONG = 'pong',
+  SEND_WELCOME_MESSAGE = 'sendWelcomeMessage',
+  SEND_OUTTING_MESSAGE = 'sendOuttingMessage',
+  SEND_LOG_MESSAGE = 'sendLogMessage',
 }
 
 export function format(millis?: number) {
@@ -242,7 +251,21 @@ export const sendLoggers = async (client: BotClient, guild: Guild, embed: Embed,
     ) as GuildTextBasedChannel;
     if (!logChannel) return;
 
-    await logChannel.send({ embeds: [embed] });
+    const customBot = await custombotSchema.findOne({
+      guildId: logChannel.guild?.id,
+      useage: true,
+    });
+
+    if (customBot) {
+      client.socket.emit(SOCKET_ACTIONS.SEND_LOG_MESSAGE, {
+        guildId: logChannel.guild?.id,
+        channelId: logChannel.id,
+        embed: embed.toJSON(),
+      })
+      return
+    } else {
+      return await logChannel.send({ embeds: [embed] });
+    }
   } catch (e) {
     logging.error(e as any)
   }

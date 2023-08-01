@@ -11,6 +11,7 @@ import { Model } from 'mongoose';
 import { config as dotenvConfig } from 'dotenv';
 import ButtonManager from '../managers/ButtonManager';
 import MusicManager from '../managers/MusicManager';
+import SocketManger from '../managers/SocketManger';
 
 const logger = new Logger('bot');
 
@@ -38,6 +39,7 @@ export default class BotClient extends Client {
   public event: EventManager = new EventManager(this);
   public error: ErrorManager = new ErrorManager(this);
   public database: DatabaseManager = new DatabaseManager(this);
+  public socket: SocketManger = new SocketManger(this);
   public music: MusicManager = new MusicManager(this);
   public musics = this.music.music;
 

@@ -3,10 +3,10 @@ import dateFormat from '../utils/DateFormatting';
 import LoggerSetting from '../schemas/LogSettingSchema';
 import Embed from '../utils/Embed';
 import { AttachmentBuilder, TextChannel } from 'discord.js';
-import { checkLogFlag, LogFlags } from '../utils/Utils';
+import { checkLogFlag, LogFlags, SOCKET_ACTIONS } from '../utils/Utils';
+import custombotSchema from '../schemas/custombotSchema';
 
 export default new Event('messageDeleteBulk', async (client, messages) => {
-  messages.first()?.guild?.id;
   const LoggerSettingDB = await LoggerSetting.findOne({
     guild_id: messages.first()?.guild?.id,
   });
@@ -27,6 +27,7 @@ export default new Event('messageDeleteBulk', async (client, messages) => {
     name: 'DeletedMessages.txt',
   });
   const msg = await logChannel.send({ files: [attachment] });
+
   const embed = new Embed(client, 'error').setTitle('메시지 대량 삭제').addFields(
     { name: '삭제된 메시지', value: `${messages.size}` },
     {
@@ -35,5 +36,20 @@ export default new Event('messageDeleteBulk', async (client, messages) => {
         }/DeletedMessages)`,
     },
   );
-  return await logChannel.send({ embeds: [embed] });
+
+  const customBot = await custombotSchema.findOne({
+    guildId: messages.first()?.guild?.id,
+    useage: true,
+  });
+
+  if (customBot) {
+    client.socket.emit(SOCKET_ACTIONS.SEND_LOG_MESSAGE, {
+      guildId: messages.first()?.guild?.id,
+      channelId: logChannel.id,
+      embed: embed.toJSON(),
+    })
+    return
+  } else {
+    return await logChannel.send({ embeds: [embed] });
+  }
 });

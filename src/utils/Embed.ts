@@ -7,10 +7,6 @@ export default class Embed extends EmbedBuilder {
 
     const EmbedJSON: EmbedData = {
       timestamp: new Date().toISOString(),
-      footer: {
-        iconURL: client.user?.avatarURL() ?? undefined,
-        text: client.user?.username,
-      },
     };
 
     super(EmbedJSON);

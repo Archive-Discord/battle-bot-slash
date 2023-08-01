@@ -8,7 +8,8 @@ import Embed from '../utils/Embed';
 import { Event } from '../structures/Event';
 import Logger from '../utils/Logger';
 import checkPremium from '../utils/checkPremium';
-import { checkLogFlag, LogFlags } from '../utils/Utils';
+import { checkLogFlag, LogFlags, SOCKET_ACTIONS } from '../utils/Utils';
+import custombotSchema from '../schemas/custombotSchema';
 
 const guildLastJoin = new Map<string, Date>();
 const guildLastJoinUser = new Map<string, string>();
@@ -35,7 +36,7 @@ const WelecomEvent = async (client: BotClient, member: GuildMember) => {
     guild_id: member.guild.id,
   });
   if (!WelcomeSettingDB) return;
-  if (!WelcomeSettingDB.welcome_message || WelcomeSettingDB.welcome_message == '') return;
+  if (!WelcomeSettingDB.welcome_message || WelcomeSettingDB.welcome_message == '' || WelcomeSettingDB.message_type) return;
   const WelcomeChannel = member.guild.channels.cache.get(
     WelcomeSettingDB.channel_id!,
   ) as TextChannel;
@@ -61,7 +62,7 @@ const WelecomEventV2 = async (client: BotClient, member: GuildMember) => {
     guild_id: member.guild.id,
   });
   if (!WelcomeSettingDB) return;
-  if (!WelcomeSettingDB.welcome_message || WelcomeSettingDB.welcome_message == '') return;
+  if (!WelcomeSettingDB.welcome_message || WelcomeSettingDB.welcome_message == '' || !WelcomeSettingDB.message_type) return;
 
   const embed = new Embed(client, 'warn');
   embed
@@ -81,18 +82,34 @@ const WelecomEventV2 = async (client: BotClient, member: GuildMember) => {
       ,
     );
 
-  try {
-    if (WelcomeSettingDB.message_type === "guild") {
-      const WelcomeChannel = member.guild.channels.cache.get(
-        WelcomeSettingDB.channel_id!,
-      ) as TextChannel;
-      if (!WelcomeChannel) return;
-      return await WelcomeChannel.send({ embeds: [embed] });
-    } else if (WelcomeSettingDB.message_type === "dm") {
-      return await member.send({ embeds: [embed] });
+  const customBot = await custombotSchema.findOne({
+    guildId: member.guild.id,
+    useage: true,
+  });
+
+  if (customBot) {
+    client.socket.emit(SOCKET_ACTIONS.SEND_WELCOME_MESSAGE, {
+      userId: member.user.id,
+      guildId: member.guild.id,
+      channelId: WelcomeSettingDB.channel_id,
+      embed: embed.toJSON(),
+      type: WelcomeSettingDB.message_type || 'guild',
+    })
+    return
+  } else {
+    try {
+      if (WelcomeSettingDB.message_type === "guild") {
+        const WelcomeChannel = member.guild.channels.cache.get(
+          WelcomeSettingDB.channel_id!,
+        ) as TextChannel;
+        if (!WelcomeChannel) return;
+        return await WelcomeChannel.send({ embeds: [embed] });
+      } else if (WelcomeSettingDB.message_type === "dm") {
+        return await member.send({ embeds: [embed] });
+      }
+    } catch (error) {
+      log.error(error as string);
     }
-  } catch (error) {
-    log.error(error as string);
   }
 }
 
@@ -112,7 +129,22 @@ const WelecomLogEvent = async (client: BotClient, member: GuildMember) => {
       name: '유저',
       value: `> <@${member.user.id}>` + '(`' + member.user.id + '`)',
     });
-  return await logChannel.send({ embeds: [embed] });
+
+  const customBot = await custombotSchema.findOne({
+    guildId: member.guild.id,
+    useage: true,
+  });
+
+  if (customBot) {
+    client.socket.emit(SOCKET_ACTIONS.SEND_LOG_MESSAGE, {
+      guildId: member.guild.id,
+      channelId: logChannel.id,
+      embed: embed.toJSON(),
+    })
+    return
+  } else {
+    return await logChannel.send({ embeds: [embed] });
+  }
 };
 
 /**

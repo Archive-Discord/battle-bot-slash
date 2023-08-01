@@ -9,7 +9,8 @@ import {
 import LoggerSetting from '../schemas/LogSettingSchema';
 import Embed from '../utils/Embed';
 import { Event } from '../structures/Event';
-import { checkLogFlag, LogFlags } from '../utils/Utils';
+import { checkLogFlag, LogFlags, SOCKET_ACTIONS } from '../utils/Utils';
+import custombotSchema from '../schemas/custombotSchema';
 
 export default new Event('channelDelete', async (client, channel) => {
   if (channel.type === ChannelType.DM) return;
@@ -45,7 +46,20 @@ export default new Event('channelDelete', async (client, channel) => {
       name: '삭제유저',
       value: `<@${executor.id}>` + '(`' + executor.id + '`)',
     });
-    return await logChannel.send({ embeds: [embed] });
+  }
+
+  const customBot = await custombotSchema.findOne({
+    guildId: channel.guild?.id,
+    useage: true,
+  });
+
+  if (customBot) {
+    client.socket.emit(SOCKET_ACTIONS.SEND_LOG_MESSAGE, {
+      guildId: channel.guild?.id,
+      channelId: logChannel.id,
+      embed: embed.toJSON(),
+    })
+    return
   } else {
     return await logChannel.send({ embeds: [embed] });
   }

@@ -2,7 +2,8 @@ import { AuditLogEvent, TextChannel, User } from 'discord.js';
 import LoggerSetting from '../schemas/LogSettingSchema';
 import Embed from '../utils/Embed';
 import { Event } from '../structures/Event';
-import { checkLogFlag, LogFlags } from '../utils/Utils';
+import { checkLogFlag, LogFlags, SOCKET_ACTIONS } from '../utils/Utils';
+import custombotSchema from '../schemas/custombotSchema';
 
 export default new Event('guildBanRemove', async (client, ban) => {
   const LoggerSettingDB = await LoggerSetting.findOne({
@@ -25,7 +26,7 @@ export default new Event('guildBanRemove', async (client, ban) => {
     })
     .addFields({
       name: '유저',
-      value: `<@${ban.user.id}>` + '(`' + ban.user.id + '`)',
+      value: `> <@${ban.user.id}>` + '(`' + ban.user.id + '`)',
     });
   if (!deletionLog) return await logChannel.send({ embeds: [embed] });
   const executor = deletionLog.executor as User;
@@ -33,9 +34,22 @@ export default new Event('guildBanRemove', async (client, ban) => {
   if (target.id == ban.user.id) {
     embed.addFields({
       name: '관리자',
-      value: `<@${executor.id}>` + '(`' + executor.id + '`)',
+      value: `> <@${executor.id}>` + '(`' + executor.id + '`)',
     });
-    return await logChannel.send({ embeds: [embed] });
+  }
+
+  const customBot = await custombotSchema.findOne({
+    guildId: ban.guild?.id,
+    useage: true,
+  });
+
+  if (customBot) {
+    client.socket.emit(SOCKET_ACTIONS.SEND_LOG_MESSAGE, {
+      guildId: ban.guild?.id,
+      channelId: logChannel.id,
+      embed: embed.toJSON(),
+    })
+    return
   } else {
     return await logChannel.send({ embeds: [embed] });
   }

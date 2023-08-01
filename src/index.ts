@@ -7,7 +7,6 @@ import { readFileSync } from 'fs';
 import { join } from 'path';
 import { setTimeout } from 'timers/promises';
 
-const loggerWeb = new Logger('web');
 const logger = new Logger('ShardManager');
 
 const main = async () => {
@@ -24,7 +23,7 @@ const main = async () => {
   );
 
   if (!config.bot.sharding) {
-    require('./bot');
+    require('./bot')
   } else {
     try {
       if (!readFileSync(join(__dirname, './bot.ts'))) return;
@@ -36,7 +35,7 @@ const main = async () => {
         console.log(' ');
       }
       await setTimeout(3000);
-      require('./bot');
+      require('./bot')
     } catch (e) {
       const manager = new ShardingManager('./src/bot.js', config.bot.shardingOptions);
 

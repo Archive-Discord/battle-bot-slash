@@ -3,7 +3,9 @@ import config from '../../config';
 import LoggerSetting from '../schemas/LogSettingSchema';
 import Embed from '../utils/Embed';
 import { AuditLogEvent, Client, Message, TextChannel, User } from 'discord.js';
-import { checkLogFlag, LogFlags } from '../utils/Utils';
+import { checkLogFlag, LogFlags, SOCKET_ACTIONS } from '../utils/Utils';
+import custombotSchema from '../schemas/custombotSchema';
+import BotClient from '../structures/BotClient';
 
 export default new Event('messageDelete', async (client, message) => {
   if (!message) return;
@@ -16,7 +18,7 @@ export default new Event('messageDelete', async (client, message) => {
 });
 
 
-const messageDeleteLoggerV2 = async (client: Client, message: Message<true>) => {
+const messageDeleteLoggerV2 = async (client: BotClient, message: Message<true>) => {
   const LoggerSettingDB = await LoggerSetting.findOne({
     guild_id: message.guild.id,
   });
@@ -60,6 +62,7 @@ const messageDeleteLoggerV2 = async (client: Client, message: Message<true>) => 
   const executor = deletionLog.executor as User;
   const extra = deletionLog.extra as any;
   if (!deletionLog) return await logChannel.send({ embeds: [embed] });
+
   if (
     extra.channel.id === message.channel.id &&
     target.id === message.author.id &&
@@ -67,9 +70,23 @@ const messageDeleteLoggerV2 = async (client: Client, message: Message<true>) => 
   ) {
     embed.addFields({
       name: '삭제유저',
-      value: `<@${executor.id}>` + '(`' + executor.id + '`)',
+      value: `> <@${executor.id}>` + '(`' + executor.id + '`)',
     });
+  }
+
+  const customBot = await custombotSchema.findOne({
+    guildId: message.guild.id,
+    useage: true,
+  });
+
+  if (customBot) {
+    client.socket.emit(SOCKET_ACTIONS.SEND_LOG_MESSAGE, {
+      guildId: message.guild.id,
+      channelId: logChannel.id,
+      embed: embed.toJSON(),
+    })
+    return
+  } else {
     return await logChannel.send({ embeds: [embed] });
   }
-  return await logChannel.send({ embeds: [embed] });
 }

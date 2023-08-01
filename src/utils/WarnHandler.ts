@@ -3,7 +3,10 @@ import LoggerSetting from '../schemas/LogSettingSchema';
 import Warning from '../schemas/Warning';
 import BotClient from '../structures/BotClient';
 import Embed from './Embed';
-import { checkLogFlag, LogFlags } from './Utils';
+import { checkLogFlag, LogFlags, sendLoggers } from './Utils';
+import Logger from './Logger';
+
+const logger = new Logger('WarnHandler');
 
 export const userWarnAdd = async (
   client: BotClient,
@@ -34,16 +37,10 @@ export const userWarnAdd = async (
   if (interaction) {
     interaction.editReply({ embeds: [embedAdd] });
   }
-  const logSetting = await LoggerSetting.findOne({ guild_id: guildId });
 
-  if (logSetting) {
-    if (!checkLogFlag(logSetting.loggerFlags, LogFlags.WARNING_CREATE)) return;
-    const guildLogChannel: TextChannel = client.guilds.cache
-      .get(guildId)
-      ?.channels.cache.get(logSetting?.guild_channel_id as string) as TextChannel;
-    if (!guildLogChannel) return;
-    guildLogChannel.send({ embeds: [embedAdd] });
-  }
+  const guild = client.guilds.cache.get(guildId);
+  if (!guild) return;
+  sendLoggers(client, guild, embedAdd, LogFlags.WARNING_CREATE);
 
   try {
     const guildRoles = client.guilds.cache.get(guildId)?.roles.cache;
@@ -60,7 +57,7 @@ export const userWarnAdd = async (
     if (remove_role_id) member.roles.remove(remove_role_id);
     if (role_id) member.roles.add(role_id);
   } catch (e) {
-    console.log(e);
+    logger.error(e as string)
   }
 };
 
@@ -84,7 +81,7 @@ export const userWarnRemove = async (
     _id: warnId,
   });
 
-  const embedRemove = new EmbedBuilder()
+  const embedRemove = new Embed(client, 'error')
     .setColor('#2f3136')
     .setTitle('경고')
     .setDescription('아래와 같이 경고가 삭감되었습니다.')
@@ -101,16 +98,9 @@ export const userWarnRemove = async (
   if (interaction)
     interaction.editReply({ embeds: [embedRemove] });
 
-  const logSetting = await LoggerSetting.findOne({ guild_id: guildId });
-
-  if (logSetting) {
-    if (!checkLogFlag(logSetting.loggerFlags, LogFlags.WARNING_DELETE)) return;
-    const guildLogChannel: TextChannel = client.guilds.cache
-      .get(guildId)
-      ?.channels.cache.get(logSetting?.guild_channel_id as string) as TextChannel;
-    if (!guildLogChannel) return;
-    guildLogChannel.send({ embeds: [embedRemove] });
-  }
+  const guild = client.guilds.cache.get(guildId);
+  if (!guild) return;
+  sendLoggers(client, guild, embedRemove, LogFlags.WARNING_DELETE);
 
   try {
     const guildRoles = client.guilds.cache.get(guildId)?.roles.cache;
@@ -127,6 +117,6 @@ export const userWarnRemove = async (
     if (remove_role_id) member.roles.remove(remove_role_id);
     if (role_id) member.roles.add(role_id);
   } catch (e) {
-    console.log(e);
+    logger.error(e as string);
   }
 };

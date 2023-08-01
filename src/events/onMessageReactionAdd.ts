@@ -2,7 +2,8 @@ import { Event } from '../structures/Event';
 import LoggerSetting from '../schemas/LogSettingSchema';
 import Embed from '../utils/Embed';
 import { TextChannel } from 'discord.js';
-import { checkLogFlag, LogFlags } from '../utils/Utils';
+import { checkLogFlag, LogFlags, SOCKET_ACTIONS } from '../utils/Utils';
+import custombotSchema from '../schemas/custombotSchema';
 
 export default new Event('messageReactionAdd', async (client, messageReaction, user) => {
   const { guild } = messageReaction.message;
@@ -22,20 +23,35 @@ export default new Event('messageReactionAdd', async (client, messageReaction, u
   ) as TextChannel;
   if (!logChannel) return;
   const embed = new Embed(client, 'success').setTitle('반응 추가').addFields(
+    { name: '유저', value: `> <@${user.id}>` + '(`' + user.id + '`)' },
     {
       name: '채널',
       value:
-        `<#${messageReaction.message.channel.id}>` +
+        `> <#${messageReaction.message.channel.id}>` +
         '(`' +
         messageReaction.message.channel.id +
         '`)',
     },
     { name: '메시지', value: `[메시지](${messageReaction.message.url})` },
-    { name: '유저', value: `<@${user.id}>` + '(`' + user.id + '`)' },
     {
       name: '반응 이모지',
       value: messageReaction.emoji.toString(),
     },
   );
-  return await logChannel.send({ embeds: [embed] });
+
+  const customBot = await custombotSchema.findOne({
+    guildId: messageReaction.message.guild?.id,
+    useage: true,
+  });
+
+  if (customBot) {
+    client.socket.emit(SOCKET_ACTIONS.SEND_LOG_MESSAGE, {
+      guildId: messageReaction.message.guild?.id,
+      channelId: logChannel.id,
+      embed: embed.toJSON(),
+    })
+    return
+  } else {
+    return await logChannel.send({ embeds: [embed] });
+  }
 });
