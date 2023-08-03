@@ -45,13 +45,12 @@ export default new BaseCommand(
     });
     embed.addFields({
       name: '시스템정보',
-      value: `\`\`\`diff\n- Discord.js: ${version} \n- Node.js: ${process.version}\n- OS: ${
-        process.platform
-      } - Memory: ${memory()} \`\`\``,
+      value: `\`\`\`diff\n- Discord.js: ${version} \n- Node.js: ${process.version}\n- OS: ${process.platform
+        } - Memory: ${memory()} \`\`\``,
     });
     embed.addFields({
       name: '유용한 링크',
-      value: `[서포트 서버](https://discord.gg/WtGq7D7BZm) | [웹 대시보드](${config.web.baseurl}) | [깃허브](${repository}) | [개인정보처리방침](${config.web.baseurl}/help/privacy) | [상태](${config.web.baseurl}/status)`,
+      value: `[서포트 서버](https://discord.gg/WtGq7D7BZm) | [웹 대시보드](${config.web.baseurl}) | [깃허브](${repository}) | [개인정보처리방침](${config.web.baseurl}/privacy) | [상태](${config.web.baseurl}/status)`,
     });
     return message.reply({ embeds: [embed], components: [row] });
   },
@@ -90,13 +89,12 @@ export default new BaseCommand(
       });
       embed.addFields({
         name: '시스템정보',
-        value: `\`\`\`diff\n- Discord.js: ${version} \n- Node.js: ${process.version}\n- OS: ${
-          process.platform
-        } - Memory: ${memory()} \`\`\``,
+        value: `\`\`\`diff\n- Discord.js: ${version} \n- Node.js: ${process.version}\n- OS: ${process.platform
+          } - Memory: ${memory()} \`\`\``,
       });
       embed.addFields({
         name: '유용한 링크',
-        value: `[서포트 서버](https://discord.gg/WtGq7D7BZm) | [웹 대시보드](${config.web.baseurl}) | [깃허브](${repository}) | [개인정보처리방침](${config.web.baseurl}/help/privacy) | [상태](${config.web.baseurl}/status)`,
+        value: `[서포트 서버](https://discord.gg/WtGq7D7BZm) | [웹 대시보드](${config.web.baseurl}) | [깃허브](${repository}) | [개인정보처리방침](${config.web.baseurl}/privacy) | [상태](${config.web.baseurl}/status)`,
       });
       return interaction.reply({
         embeds: [embed],
