@@ -40,6 +40,7 @@ export enum SOCKET_ACTIONS {
   SEND_WELCOME_MESSAGE = 'sendWelcomeMessage',
   SEND_OUTTING_MESSAGE = 'sendOuttingMessage',
   SEND_LOG_MESSAGE = 'sendLogMessage',
+  SEND_MESSAGE = 'sendMessage',
 }
 
 export function format(millis?: number) {

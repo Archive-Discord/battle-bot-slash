@@ -4,6 +4,7 @@ import BaseManager from "./BaseManager";
 import config from '../../config';
 import { SOCKET_ACTIONS } from '../utils/Utils';
 import BotClient from '../structures/BotClient';
+import { MessageData } from '../../typings/socket';
 
 /**
  * @extends {BaseManager}
@@ -48,6 +49,13 @@ export default class SocketManger extends BaseManager {
 
   public async emit(event: SOCKET_ACTIONS, ...args: any[]) {
     this.socket.emit(event, ...args)
+  }
+
+  public async sendMessage(guildId: string, data: MessageData) {
+    this.socket.emit(SOCKET_ACTIONS.SEND_MESSAGE, {
+      guildId,
+      ...data
+    })
   }
 
   public async reconnect() {
