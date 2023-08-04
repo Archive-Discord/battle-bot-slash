@@ -35,12 +35,31 @@ export interface MessageData {
   type: 'guild' | 'dm'
 }
 
+export interface GenerateVerify {
+  interactionId: string;
+  guildId: string;
+  channelId: string;
+  userId: string;
+  type: string;
+  role: string;
+  deleteRole?: string;
+}
+
+export interface ReplyVerify {
+  guildId: string
+  interactionId: string
+  embed: APIEmbed
+  component: APIActionRowComponent<APIMessageActionRowComponent>
+}
+
 export type SOCKET_ACTIONS_DATA = {
   [SOCKET_ACTIONS.PING]: undefined;
   [SOCKET_ACTIONS.PONG]: undefined;
   [SOCKET_ACTIONS.SEND_WELCOME_MESSAGE]: GreedingData;
   [SOCKET_ACTIONS.SEND_OUTTING_MESSAGE]: GreedingData;
   [SOCKET_ACTIONS.SEND_MESSAGE]: MessageData;
+  [SOCKET_ACTIONS.VERIFY_GENERATE]: GenerateVerify;
+  [SOCKET_ACTIONS.VERIFY_REPLY]: ReplyVerify;
 };
 
 export type SOCKET_ACTION_DATA<T extends keyof SOCKET_ACTIONS_DATA> = SOCKET_ACTIONS_DATA[T];

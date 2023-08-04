@@ -4,7 +4,12 @@ import BaseManager from "./BaseManager";
 import config from '../../config';
 import { SOCKET_ACTIONS } from '../utils/Utils';
 import BotClient from '../structures/BotClient';
-import { MessageData } from '../../typings/socket';
+import { MessageData, SOCKET_ACTION_DATA } from '../../typings/socket';
+import { verifyGenerator } from '../buttons/verify/verify';
+import { verifyType } from '../../typings';
+import Embed from '../utils/Embed';
+import { guildProfileLink } from '../utils/convert';
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js';
 
 /**
  * @extends {BaseManager}
@@ -45,6 +50,8 @@ export default class SocketManger extends BaseManager {
     this.socket.on('disconnect', () => {
       this.onDisconnect()
     })
+
+    this.listener()
   }
 
   public async emit(event: SOCKET_ACTIONS, ...args: any[]) {
@@ -88,5 +95,43 @@ export default class SocketManger extends BaseManager {
     }
 
     this.logger.info('BattleBot Event Gateway 서버에 재연결에 성공했습니다.')
+  }
+
+  private async listener() {
+    this.socket.onAny(async (event: SOCKET_ACTIONS, data) => {
+      this.logger.debug(`${event} ${JSON.stringify(data)}`)
+    })
+
+    this.socket.on(
+      SOCKET_ACTIONS.VERIFY_GENERATE, async (data: SOCKET_ACTION_DATA<SOCKET_ACTIONS.VERIFY_GENERATE>) => {
+        const guild = this.client.guilds.cache.get(data.guildId)
+        const user = this.client.users.cache.get(data.userId)
+        if (!guild || !user) return
+        const url = await verifyGenerator(this.client, data.type as verifyType, data.guildId, data.userId, data.role, data.deleteRole)
+
+        const captchaGuildEmbed = new Embed(this.client, 'info').setColor('#2f3136')
+          .setThumbnail(guildProfileLink(guild))
+          .setTitle(`${guild.name} 서버 인증`)
+          .setDescription(
+            `${guild.name}서버의 인증을 진행하시려면 아래 버튼을 눌러주세요\n\n디스코드가 멈출경우 [여기](${config.web.baseurl}/verify?token=${url.token})를 눌러 진행해주세요`
+          )
+          .setURL(`https://discord.com/channels/${guild.id}/${data.channelId}`);
+
+        const verifyButton = new ButtonBuilder()
+          .setStyle(ButtonStyle.Link)
+          .setLabel('인증하기')
+          .setURL(url.loginUri)
+          .setEmoji('✅')
+
+        const row = new ActionRowBuilder<ButtonBuilder>()
+          .addComponents(verifyButton)
+
+        this.emit(SOCKET_ACTIONS.VERIFY_REPLY, {
+          guildId: data.guildId,
+          interactionId: data.interactionId,
+          component: row.toJSON(),
+          embed: captchaGuildEmbed.toJSON()
+        } as SOCKET_ACTION_DATA<SOCKET_ACTIONS.VERIFY_REPLY>)
+      })
   }
 }

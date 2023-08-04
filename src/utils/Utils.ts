@@ -41,6 +41,8 @@ export enum SOCKET_ACTIONS {
   SEND_OUTTING_MESSAGE = 'sendOuttingMessage',
   SEND_LOG_MESSAGE = 'sendLogMessage',
   SEND_MESSAGE = 'sendMessage',
+  VERIFY_GENERATE = 'generateVerify',
+  VERIFY_REPLY = 'replyVerify',
 }
 
 export function format(millis?: number) {
