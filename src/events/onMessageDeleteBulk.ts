@@ -3,7 +3,7 @@ import dateFormat from '../utils/DateFormatting';
 import LoggerSetting from '../schemas/LogSettingSchema';
 import Embed from '../utils/Embed';
 import { AttachmentBuilder, TextChannel } from 'discord.js';
-import { checkLogFlag, LogFlags, SOCKET_ACTIONS } from '../utils/Utils';
+import { checkLogFlag, LogFlags, sendLoggers, SOCKET_ACTIONS } from '../utils/Utils';
 import custombotSchema from '../schemas/custombotSchema';
 
 export default new Event('messageDeleteBulk', async (client, messages) => {
@@ -37,19 +37,5 @@ export default new Event('messageDeleteBulk', async (client, messages) => {
     },
   );
 
-  const customBot = await custombotSchema.findOne({
-    guildId: messages.first()?.guild?.id,
-    useage: true,
-  });
-
-  if (customBot) {
-    client.socket.emit(SOCKET_ACTIONS.SEND_LOG_MESSAGE, {
-      guildId: messages.first()?.guild?.id,
-      channelId: logChannel.id,
-      embed: embed.toJSON(),
-    })
-    return
-  } else {
-    return await logChannel.send({ embeds: [embed] });
-  }
+  sendLoggers(client, channel.guild, embed, LogFlags.MESSAGE_DELETE)
 });

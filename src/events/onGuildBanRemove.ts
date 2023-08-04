@@ -2,7 +2,7 @@ import { AuditLogEvent, TextChannel, User } from 'discord.js';
 import LoggerSetting from '../schemas/LogSettingSchema';
 import Embed from '../utils/Embed';
 import { Event } from '../structures/Event';
-import { checkLogFlag, LogFlags, SOCKET_ACTIONS } from '../utils/Utils';
+import { checkLogFlag, LogFlags, sendLoggers, SOCKET_ACTIONS } from '../utils/Utils';
 import custombotSchema from '../schemas/custombotSchema';
 
 export default new Event('guildBanRemove', async (client, ban) => {
@@ -38,19 +38,5 @@ export default new Event('guildBanRemove', async (client, ban) => {
     });
   }
 
-  const customBot = await custombotSchema.findOne({
-    guildId: ban.guild?.id,
-    useage: true,
-  });
-
-  if (customBot) {
-    client.socket.emit(SOCKET_ACTIONS.SEND_LOG_MESSAGE, {
-      guildId: ban.guild?.id,
-      channelId: logChannel.id,
-      embed: embed.toJSON(),
-    })
-    return
-  } else {
-    return await logChannel.send({ embeds: [embed] });
-  }
+  sendLoggers(client, ban.guild, embed, LogFlags.USER_BAN)
 });

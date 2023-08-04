@@ -2,7 +2,7 @@ import { Guild, TextChannel, User } from 'discord.js';
 import LoggerSetting from '../schemas/LogSettingSchema';
 import Embed from '../utils/Embed';
 import { Event } from '../structures/Event';
-import { checkLogFlag, LogFlags, SOCKET_ACTIONS } from '../utils/Utils';
+import { checkLogFlag, LogFlags, sendLoggers, SOCKET_ACTIONS } from '../utils/Utils';
 import custombotSchema from '../schemas/custombotSchema';
 
 export default new Event('inviteCreate', async (client, invite) => {
@@ -32,19 +32,5 @@ export default new Event('inviteCreate', async (client, invite) => {
       value: `> ${invite.maxAge != 0 ? invite.maxAge : '무제한'}`,
     }])
 
-  const customBot = await custombotSchema.findOne({
-    guildId: guild.id,
-    useage: true,
-  });
-
-  if (customBot) {
-    client.socket.emit(SOCKET_ACTIONS.SEND_LOG_MESSAGE, {
-      guildId: guild.id,
-      channelId: logChannel.id,
-      embed: embed.toJSON(),
-    })
-    return
-  } else {
-    return await logChannel.send({ embeds: [embed] });
-  }
+  sendLoggers(client, guild, embed, LogFlags.SERVER_INVITE)
 });

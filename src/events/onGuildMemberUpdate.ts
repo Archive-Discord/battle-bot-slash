@@ -2,7 +2,7 @@ import { AuditLogEvent, TextChannel, User } from 'discord.js';
 import LoggerSetting from '../schemas/LogSettingSchema';
 import Embed from '../utils/Embed';
 import { Event } from '../structures/Event';
-import { checkLogFlag, LogFlags, SOCKET_ACTIONS } from '../utils/Utils';
+import { checkLogFlag, LogFlags, sendLoggers, SOCKET_ACTIONS } from '../utils/Utils';
 import custombotSchema from '../schemas/custombotSchema';
 
 export default new Event('guildMemberUpdate', async (client, oldMember, newMember) => {
@@ -99,20 +99,6 @@ export default new Event('guildMemberUpdate', async (client, oldMember, newMembe
   }
 
   if (update) {
-    const customBot = await custombotSchema.findOne({
-      guildId: newMember.guild.id,
-      useage: true,
-    });
-
-    if (customBot) {
-      client.socket.emit(SOCKET_ACTIONS.SEND_LOG_MESSAGE, {
-        guildId: newMember.guild.id,
-        channelId: logChannel.id,
-        embed: embed.toJSON(),
-      })
-      return
-    } else {
-      return await logChannel.send({ embeds: [embed] });
-    }
+    sendLoggers(client, newMember.guild, embed, LogFlags.USER_UPDATE)
   }
 });

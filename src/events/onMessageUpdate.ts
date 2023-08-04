@@ -2,7 +2,7 @@ import { Event } from '../structures/Event';
 import LoggerSetting from '../schemas/LogSettingSchema';
 import Embed from '../utils/Embed';
 import { TextChannel } from 'discord.js';
-import { checkLogFlag, LogFlags, SOCKET_ACTIONS } from '../utils/Utils';
+import { checkLogFlag, LogFlags, sendLoggers, SOCKET_ACTIONS } from '../utils/Utils';
 import custombotSchema from '../schemas/custombotSchema';
 
 export default new Event('messageUpdate', async (client, oldMessage, newMessage) => {
@@ -42,20 +42,6 @@ export default new Event('messageUpdate', async (client, oldMessage, newMessage)
       { name: '수정후', value: `${newContent ? newContent : '없음'}` },
     );
 
-    const customBot = await custombotSchema.findOne({
-      guildId: newMessage.guild?.id,
-      useage: true,
-    });
-
-    if (customBot) {
-      client.socket.emit(SOCKET_ACTIONS.SEND_LOG_MESSAGE, {
-        guildId: newMessage.guild?.id,
-        channelId: logChannel.id,
-        embed: embed.toJSON(),
-      })
-      return
-    } else {
-      return await logChannel.send({ embeds: [embed] });
-    }
+    sendLoggers(client, newMessage.guild!, embed, LogFlags.MESSAGE_UPDATE)
   }
 });

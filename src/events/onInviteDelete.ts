@@ -2,7 +2,7 @@ import { Guild, TextChannel } from 'discord.js';
 import LoggerSetting from '../schemas/LogSettingSchema';
 import Embed from '../utils/Embed';
 import { Event } from '../structures/Event';
-import { checkLogFlag, LogFlags, SOCKET_ACTIONS } from '../utils/Utils';
+import { checkLogFlag, LogFlags, sendLoggers, SOCKET_ACTIONS } from '../utils/Utils';
 import custombotSchema from '../schemas/custombotSchema';
 
 export default new Event('inviteDelete', async (client, invite) => {
@@ -16,19 +16,5 @@ export default new Event('inviteDelete', async (client, invite) => {
     .setTitle('초대코드 삭제')
     .addFields({ name: `초대코드`, value: `> \`${invite.code}\`` });
 
-  const customBot = await custombotSchema.findOne({
-    guildId: guild.id,
-    useage: true,
-  });
-
-  if (customBot) {
-    client.socket.emit(SOCKET_ACTIONS.SEND_LOG_MESSAGE, {
-      guildId: guild.id,
-      channelId: logChannel.id,
-      embed: embed.toJSON(),
-    })
-    return
-  } else {
-    return await logChannel.send({ embeds: [embed] });
-  }
+  sendLoggers(client, guild, embed, LogFlags.SERVER_INVITE)
 });

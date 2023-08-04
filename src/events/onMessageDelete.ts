@@ -3,7 +3,7 @@ import config from '../../config';
 import LoggerSetting from '../schemas/LogSettingSchema';
 import Embed from '../utils/Embed';
 import { AuditLogEvent, Client, Message, TextChannel, User } from 'discord.js';
-import { checkLogFlag, LogFlags, SOCKET_ACTIONS } from '../utils/Utils';
+import { checkLogFlag, LogFlags, sendLoggers, SOCKET_ACTIONS } from '../utils/Utils';
 import custombotSchema from '../schemas/custombotSchema';
 import BotClient from '../structures/BotClient';
 
@@ -74,19 +74,5 @@ const messageDeleteLoggerV2 = async (client: BotClient, message: Message<true>) 
     });
   }
 
-  const customBot = await custombotSchema.findOne({
-    guildId: message.guild.id,
-    useage: true,
-  });
-
-  if (customBot) {
-    client.socket.emit(SOCKET_ACTIONS.SEND_LOG_MESSAGE, {
-      guildId: message.guild.id,
-      channelId: logChannel.id,
-      embed: embed.toJSON(),
-    })
-    return
-  } else {
-    return await logChannel.send({ embeds: [embed] });
-  }
+  sendLoggers(client, message.guild, embed, LogFlags.MESSAGE_DELETE)
 }

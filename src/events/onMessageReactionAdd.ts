@@ -2,7 +2,7 @@ import { Event } from '../structures/Event';
 import LoggerSetting from '../schemas/LogSettingSchema';
 import Embed from '../utils/Embed';
 import { TextChannel } from 'discord.js';
-import { checkLogFlag, LogFlags, SOCKET_ACTIONS } from '../utils/Utils';
+import { checkLogFlag, LogFlags, sendLoggers, SOCKET_ACTIONS } from '../utils/Utils';
 import custombotSchema from '../schemas/custombotSchema';
 
 export default new Event('messageReactionAdd', async (client, messageReaction, user) => {
@@ -39,19 +39,5 @@ export default new Event('messageReactionAdd', async (client, messageReaction, u
     },
   );
 
-  const customBot = await custombotSchema.findOne({
-    guildId: messageReaction.message.guild?.id,
-    useage: true,
-  });
-
-  if (customBot) {
-    client.socket.emit(SOCKET_ACTIONS.SEND_LOG_MESSAGE, {
-      guildId: messageReaction.message.guild?.id,
-      channelId: logChannel.id,
-      embed: embed.toJSON(),
-    })
-    return
-  } else {
-    return await logChannel.send({ embeds: [embed] });
-  }
+  sendLoggers(client, messageReaction.message.guild!, embed, LogFlags.MESSAGE_REACTION_ADD)
 });

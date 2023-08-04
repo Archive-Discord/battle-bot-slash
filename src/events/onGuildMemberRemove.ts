@@ -4,7 +4,7 @@ import WelcomeSetting from '../schemas/WelcomeSettingSchema';
 import BotClient from '../structures/BotClient';
 import Embed from '../utils/Embed';
 import { Event } from '../structures/Event';
-import { checkLogFlag, LogFlags, SOCKET_ACTIONS } from '../utils/Utils';
+import { checkLogFlag, LogFlags, sendLoggers, SOCKET_ACTIONS } from '../utils/Utils';
 import Logger from '../utils/Logger';
 import custombotSchema from '../schemas/custombotSchema';
 import { channel } from 'diagnostics_channel';
@@ -121,19 +121,5 @@ const LoggerEvent = async (client: BotClient, member: GuildMember | PartialGuild
       value: `> <@${member.user.id}>` + '(`' + member.user.id + '`)',
     });
 
-  const customBot = await custombotSchema.findOne({
-    guildId: member.guild.id,
-    useage: true,
-  });
-
-  if (customBot) {
-    client.socket.emit(SOCKET_ACTIONS.SEND_LOG_MESSAGE, {
-      guildId: member.guild.id,
-      channelId: logChannel.id,
-      embed: embed.toJSON(),
-    })
-    return
-  } else {
-    return await logChannel.send({ embeds: [embed] });
-  }
+  sendLoggers(client, member.guild, embed, LogFlags.USER_LEAVE)
 };
