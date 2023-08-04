@@ -1,4 +1,3 @@
-import { Server } from "socket.io"
 import { APIActionRowComponent, APIEmbed, APIMessageActionRowComponent } from 'discord.js';
 import { SOCKET_ACTIONS } from "../src/utils/Utils";
 

@@ -7,7 +7,6 @@ import { Event } from '../structures/Event';
 import { checkLogFlag, LogFlags, sendLoggers, SOCKET_ACTIONS } from '../utils/Utils';
 import Logger from '../utils/Logger';
 import custombotSchema from '../schemas/custombotSchema';
-import { channel } from 'diagnostics_channel';
 
 const logger = new Logger('GuildMemberRemoveEvent');
 

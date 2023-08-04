@@ -3,7 +3,7 @@ import config from '../../config';
 import LoggerSetting from '../schemas/LogSettingSchema';
 import Embed from '../utils/Embed';
 import { AuditLogEvent, Client, Message, TextChannel, User } from 'discord.js';
-import { checkLogFlag, LogFlags, sendLoggers, SOCKET_ACTIONS } from '../utils/Utils';
+import { checkLogFlag, LogFlags, SOCKET_ACTIONS } from '../utils/Utils';
 import custombotSchema from '../schemas/custombotSchema';
 import BotClient from '../structures/BotClient';
 
