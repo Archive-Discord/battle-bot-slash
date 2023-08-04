@@ -2,8 +2,7 @@ import { Event } from '../structures/Event';
 import LoggerSetting from '../schemas/LogSettingSchema';
 import Embed from '../utils/Embed';
 import { TextChannel } from 'discord.js';
-import { checkLogFlag, LogFlags, sendLoggers, SOCKET_ACTIONS } from '../utils/Utils';
-import custombotSchema from '../schemas/custombotSchema';
+import { checkLogFlag, LogFlags, sendLoggers } from '../utils/Utils';
 
 export default new Event('messageReactionAdd', async (client, messageReaction, user) => {
   const { guild } = messageReaction.message;
