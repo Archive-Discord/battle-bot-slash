@@ -34,6 +34,9 @@ const config: IConfig = {
     koreanbots: '', // https://koreanbots.dev
     archive: '', // https://archiver.me
   },
+  websocket: {
+    url: "ws://localhost:3000"
+  },
   web: {
     baseurl: '',
     baseapi: '',
