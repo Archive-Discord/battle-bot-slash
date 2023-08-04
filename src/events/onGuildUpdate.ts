@@ -2,8 +2,7 @@ import { TextChannel } from 'discord.js';
 import LoggerSetting from '../schemas/LogSettingSchema';
 import Embed from '../utils/Embed';
 import { Event } from '../structures/Event';
-import { checkLogFlag, LogFlags, sendLoggers, SOCKET_ACTIONS } from '../utils/Utils';
-import custombotSchema from '../schemas/custombotSchema';
+import { checkLogFlag, LogFlags, sendLoggers } from '../utils/Utils';
 
 export default new Event('guildUpdate', async (client, oldGuild, newGuild) => {
   const LoggerSettingDB = await LoggerSetting.findOne({ guild_id: newGuild.id });

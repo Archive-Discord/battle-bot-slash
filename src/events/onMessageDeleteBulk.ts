@@ -3,8 +3,7 @@ import dateFormat from '../utils/DateFormatting';
 import LoggerSetting from '../schemas/LogSettingSchema';
 import Embed from '../utils/Embed';
 import { AttachmentBuilder, TextChannel } from 'discord.js';
-import { checkLogFlag, LogFlags, sendLoggers, SOCKET_ACTIONS } from '../utils/Utils';
-import custombotSchema from '../schemas/custombotSchema';
+import { checkLogFlag, LogFlags, sendLoggers } from '../utils/Utils';
 
 export default new Event('messageDeleteBulk', async (client, messages) => {
   const LoggerSettingDB = await LoggerSetting.findOne({

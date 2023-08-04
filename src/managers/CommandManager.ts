@@ -56,8 +56,8 @@ export default class CommandManager extends BaseManager {
                 isSlash: (command as Command)?.slash
                   ? true
                   : (command as SlashCommand)?.options?.isSlash
-                  ? true
-                  : false,
+                    ? true
+                    : false,
               });
               this.commands.set(command.data.name ?? command.name, command);
 
@@ -111,8 +111,8 @@ export default class CommandManager extends BaseManager {
     return (command as Command)?.slash
       ? true
       : (command as SlashCommand)?.options?.isSlash
-      ? true
-      : false;
+        ? true
+        : false;
   }
 
   public async slashCommandSetup(
@@ -164,8 +164,6 @@ export default class CommandManager extends BaseManager {
     });
     this.logger.debug(`Trying ${this.client.guilds.cache.size} guild(s)`);
     for (const command of slashCommands) {
-      const commands = await this.client.application?.commands.fetch();
-      const cmd = commands?.find((cmd) => cmd.name === command.name);
       const category = this.categorys.get('dev');
 
       if (category?.find((c) => c.name === command.name)) {
@@ -194,12 +192,11 @@ export default class CommandManager extends BaseManager {
       })
       .then(() =>
         this.logger.info(
-          `Succesfully created command ${
-            slashCommands.length > 3
-              ? slashCommands.slice(0, 3).map((object) => object.name) +
-                /* eslint-disable */
-                `\ and ${slashCommands.length - 3} more command`
-              : slashCommands.map((object) => object.name + ', ')
+          `Succesfully created command ${slashCommands.length > 3
+            ? slashCommands.slice(0, 3).map((object) => object.name) +
+            /* eslint-disable */
+            `\ and ${slashCommands.length - 3} more command`
+            : slashCommands.map((object) => object.name + ', ')
           } at ${this.client.guilds.cache.size} guild`,
         ),
       );
