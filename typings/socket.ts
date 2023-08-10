@@ -51,6 +51,15 @@ export interface ReplyVerify {
   component: APIActionRowComponent<APIMessageActionRowComponent>
 }
 
+export interface BasedMusic {
+  guildId: string
+  excutorId: string
+}
+
+export interface MusicStart extends BasedMusic {
+  url: string
+}
+
 export type SOCKET_ACTIONS_DATA = {
   [SOCKET_ACTIONS.PING]: undefined;
   [SOCKET_ACTIONS.PONG]: undefined;
@@ -59,6 +68,11 @@ export type SOCKET_ACTIONS_DATA = {
   [SOCKET_ACTIONS.SEND_MESSAGE]: MessageData;
   [SOCKET_ACTIONS.VERIFY_GENERATE]: GenerateVerify;
   [SOCKET_ACTIONS.VERIFY_REPLY]: ReplyVerify;
+  [SOCKET_ACTIONS.MUSIC_PAUSE]: BasedMusic;
+  [SOCKET_ACTIONS.MUSIC_PLAY]: MusicStart;
+  [SOCKET_ACTIONS.MUSIC_RESUME]: BasedMusic;
+  [SOCKET_ACTIONS.MUSIC_SKIP]: BasedMusic;
+  [SOCKET_ACTIONS.MUSIC_STOP]: BasedMusic;
 };
 
 export type SOCKET_ACTION_DATA<T extends keyof SOCKET_ACTIONS_DATA> = SOCKET_ACTIONS_DATA[T];

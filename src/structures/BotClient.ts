@@ -11,7 +11,7 @@ import { Model } from 'mongoose';
 import { config as dotenvConfig } from 'dotenv';
 import ButtonManager from '../managers/ButtonManager';
 import MusicManager from '../managers/MusicManager';
-import SocketManger from '../managers/SocketManger';
+import SocketManger from '../managers/EventSocketManger';
 
 const logger = new Logger('bot');
 

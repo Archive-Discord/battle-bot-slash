@@ -43,6 +43,12 @@ export enum SOCKET_ACTIONS {
   SEND_MESSAGE = 'sendMessage',
   VERIFY_GENERATE = 'generateVerify',
   VERIFY_REPLY = 'replyVerify',
+  MUSIC_QUEUE = 'queueMusic',
+  MUSIC_PLAY = 'playMusic',
+  MUSIC_STOP = 'stopMusic',
+  MUSIC_PAUSE = 'pauseMusic',
+  MUSIC_RESUME = 'resumeMusic',
+  MUSIC_SKIP = 'skipMusic',
 }
 
 export function format(millis?: number) {

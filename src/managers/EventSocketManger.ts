@@ -14,8 +14,8 @@ import { ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js';
 /**
  * @extends {BaseManager}
  */
-export default class SocketManger extends BaseManager {
-  private logger = new Logger('SocketManager')
+export default class EventSocketManger extends BaseManager {
+  private logger = new Logger('EventSocketManger')
   public socket!: Socket
   public isConnected = false
 
