@@ -30,7 +30,6 @@ export interface IConfig {
   }
   updateServer: {
     koreanbots: string;
-    archive: string;
   };
   bot: {
     sharding: boolean;

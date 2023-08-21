@@ -11,42 +11,9 @@ import custombotSchema from '../schemas/custombotSchema';
 const logger = new Logger('GuildMemberRemoveEvent');
 
 export default new Event('guildMemberRemove', async (client, member) => {
-  GreetingEvent(client, member);
   LoggerEvent(client, member);
   GreetingEventV2(client, member);
 });
-
-/**
- * @deprecated {@link GreetingEventV2} 유저퇴장 이벤트 - 8월 15일까지만 지원
- */
-const GreetingEvent = async (client: BotClient, member: GuildMember | PartialGuildMember) => {
-  const WelcomeSettingDB = await WelcomeSetting.findOne({
-    guild_id: member.guild.id,
-  });
-  if (!WelcomeSettingDB) return;
-  if (!WelcomeSettingDB.outting_message || WelcomeSettingDB.outting_message == '' || WelcomeSettingDB.message_type) return;
-  const WelcomeChannel = member.guild.channels.cache.get(
-    WelcomeSettingDB.channel_id!,
-  ) as TextChannel;
-  if (!WelcomeChannel) return;
-  const embed = new Embed(client, 'warn');
-  embed
-    .setAuthor({
-      name: member.user.username,
-      iconURL: member.user.displayAvatarURL(),
-    })
-    .setDescription(
-      new String(WelcomeSettingDB.outting_message)
-        .replaceAll('${username}', member.user.username)
-        .replaceAll('${discriminator}', member.user.discriminator)
-        .replaceAll('${servername}', member.guild.name)
-        .replaceAll(
-          '${memberCount}',
-          member.guild.memberCount.toString(),
-        ).replaceAll('${줄바꿈}', '\n'),
-    );
-  return await WelcomeChannel.send({ embeds: [embed] });
-};
 
 const GreetingEventV2 = async (client: BotClient, member: GuildMember | PartialGuildMember) => {
   const WelcomeSettingDB = await WelcomeSetting.findOne({

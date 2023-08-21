@@ -25,8 +25,7 @@ export default new Event('messageCreate', async (client, message) => {
 
   if (message.author.bot) return;
   if (message.channel.type === ChannelType.DM) return;
-
-  profanityFilter(client, message);
+  
   ProfanityFilterV2(client, message);
   LinkFilterV2(client, message);
   LevelSystem(client, message);
@@ -55,23 +54,6 @@ export default new Event('messageCreate', async (client, message) => {
     errorManager.report(error, { executer: message, isSend: true });
   }
 });
-
-/**
- * @deprecated 욕설 필터링 - 8월 15일까지만 지원
-*/
-const profanityFilter = async (client: BotClient, message: Message) => {
-  if (!message.content) return;
-  const automodDB = await Automod.findOne({ guild_id: message.guild?.id });
-  if (!automodDB) return;
-  if (!automodDB.useing.useCurse) return;
-  if (!automodDB.useing.useCurseType) return;
-  if (automodDB.useing.useCurseIgnoreChannel?.includes(message.channel.id)) return;
-  if (check(message.content)) {
-    findCurse(automodDB, message, client);
-  } else {
-    return;
-  }
-};
 
 const LinkFilterV2 = async (client: BotClient, message: Message) => {
   if (!message.content) return;
@@ -288,77 +270,7 @@ const musicPlayer = async (client: BotClient, message: Message) => {
 }
 
 /**
- * @deprecated 욕설 필터링 - 8월 15일까지만 지원
-*/
-const findCurse = async (automodDB: any, message: Message, client: BotClient) => {
-  if (automodDB.useing.useCurseType === 'delete') {
-    await message.reply('욕설 사용으로 자동 삭제됩니다').then((m) => {
-      setTimeout(() => {
-        try {
-          try {
-            m.delete()
-          } catch (e) { /* eslint-disable-next-line no-empty */ }
-        } catch (e) { /* eslint-disable-next-line no-empty */ }
-      }, 5000);
-    });
-    try {
-      message.delete();
-    } catch (error) {
-      console.log(error);
-    }
-  } else if (automodDB.useing.useCurseType === 'delete_kick') {
-    await message.reply('욕설 사용으로 자동 삭제 후 추방됩니다').then((m) => {
-      setTimeout(() => {
-        try {
-          m.delete()
-        } catch (e) { /* eslint-disable-next-line no-empty */ }
-      }, 5000);
-    });
-    try {
-      message.delete();
-      return message.member?.kick();
-    } catch (e) {
-      return;
-    }
-  } else if (automodDB.useing.useCurseType === 'delete_ban') {
-    await message.reply('욕설 사용으로 자동 삭제 후 차단됩니다').then((m) => {
-      setTimeout(() => {
-        try {
-          m.delete()
-        } catch (e) { /* eslint-disable-next-line no-empty */ }
-      }, 5000);
-    });
-    try {
-      message.delete();
-      return message.member?.ban({ reason: '[배틀이] 욕설 사용 자동차단' });
-    } catch (e) {
-      return;
-    }
-  } else if (automodDB.useing.useCurseType === 'delete_warn') {
-    await message.reply('욕설 사용으로 자동 삭제 후 경고가 지급됩니다').then((m) => {
-      setTimeout(() => {
-        try {
-          m.delete()
-        } catch (e) { /* eslint-disable-next-line no-empty */ }
-      }, 5000);
-    });
-    try {
-      message.delete();
-      return userWarnAdd(
-        client,
-        message.author.id,
-        message.guild?.id as string,
-        '[배틀이] 욕설 사용 자동경고',
-        client.user?.id as string,
-      );
-    } catch (e) {
-      return;
-    }
-  }
-};
-
-/**
- * @deprecated 레벨 시스템 - 8월 15일까지만 지원
+ * @deprecated 레벨 시스템 - 기존 서버는 유지되나 새로운 서버는 지원하지 않음
 */
 const LevelSystem = async (client: BotClient, message: Message) => {
   if (!message.guild) return;

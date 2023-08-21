@@ -32,7 +32,6 @@ const config: IConfig = {
   ],
   updateServer: {
     koreanbots: '', // https://koreanbots.dev
-    archive: '', // https://archiver.me
   },
   websocket: {
     url: "ws://localhost:3000"
