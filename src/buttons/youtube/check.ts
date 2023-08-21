@@ -25,7 +25,7 @@ export default new ButtonInteraction(
       );
       return await interaction.editReply({ embeds: [errorEmbed] });
     } else {
-      const chnnel_id = 'UCE9Wv-adygeb6PYcqLeRqbA';
+      const chnnel_id = 'UCUj6rrhMTR9pipbAWBAMvUQ';
       axios
         .get(
           `https://www.googleapis.com/youtube/v3/subscriptions?part=snippet&mine=true&forChannelId=${chnnel_id}`,

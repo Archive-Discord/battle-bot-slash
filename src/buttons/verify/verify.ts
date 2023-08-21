@@ -83,7 +83,7 @@ export const verify = async (client: BotClient, interaction: ButtonInteractionTy
  * @description 인증 링크 생성기
  * @returns redirect url, login token
 */
-const verifyGenerator = async (client: BotClient, type: verifyType, guildId: string, userId: string, role: string, deleteRole?: string): Promise<{
+export const verifyGenerator = async (client: BotClient, type: verifyType, guildId: string, userId: string, role: string, deleteRole?: string): Promise<{
   token: string
   loginUri: string
 }> => {

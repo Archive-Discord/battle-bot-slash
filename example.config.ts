@@ -33,6 +33,9 @@ const config: IConfig = {
   updateServer: {
     koreanbots: '', // https://koreanbots.dev
   },
+  websocket: {
+    url: "ws://localhost:3000"
+  },
   web: {
     baseurl: '',
     baseapi: '',

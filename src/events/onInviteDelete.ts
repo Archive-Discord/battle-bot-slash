@@ -2,7 +2,7 @@ import { Guild, TextChannel } from 'discord.js';
 import LoggerSetting from '../schemas/LogSettingSchema';
 import Embed from '../utils/Embed';
 import { Event } from '../structures/Event';
-import { checkLogFlag, LogFlags } from '../utils/Utils';
+import { checkLogFlag, LogFlags, sendLoggers } from '../utils/Utils';
 
 export default new Event('inviteDelete', async (client, invite) => {
   const guild = invite.guild as Guild;
@@ -13,6 +13,7 @@ export default new Event('inviteDelete', async (client, invite) => {
   if (!logChannel) return;
   const embed = new Embed(client, 'error')
     .setTitle('초대코드 삭제')
-    .addFields({ name: `초대코드`, value: invite.code });
-  return await logChannel.send({ embeds: [embed] });
+    .addFields({ name: `초대코드`, value: `> \`${invite.code}\`` });
+
+  sendLoggers(client, guild, embed, LogFlags.SERVER_INVITE)
 });

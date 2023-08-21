@@ -2,7 +2,7 @@ import { AuditLogEvent, TextChannel, User } from 'discord.js';
 import LoggerSetting from '../schemas/LogSettingSchema';
 import Embed from '../utils/Embed';
 import { Event } from '../structures/Event';
-import { checkLogFlag, LogFlags } from '../utils/Utils';
+import { checkLogFlag, LogFlags, sendLoggers } from '../utils/Utils';
 
 export default new Event('guildMemberUpdate', async (client, oldMember, newMember) => {
   const LoggerSettingDB = await LoggerSetting.findOne({
@@ -17,7 +17,7 @@ export default new Event('guildMemberUpdate', async (client, oldMember, newMembe
   let update = false;
   const embed = new Embed(client, 'warn').setTitle('멤버 수정').addFields({
     name: '유저',
-    value: `<@${newMember.user.id}>` + '(`' + newMember.user.id + '`)',
+    value: `> <@${newMember.user.id}>` + '(`' + newMember.user.id + '`)',
   });
   if (oldMember.nickname !== newMember.nickname) {
     const fetchedLogs = await newMember.guild.fetchAuditLogs({
@@ -96,5 +96,8 @@ export default new Event('guildMemberUpdate', async (client, oldMember, newMembe
       });
     }
   }
-  if (update) return await logChannel.send({ embeds: [embed] });
+
+  if (update) {
+    sendLoggers(client, newMember.guild, embed, LogFlags.USER_UPDATE)
+  }
 });

@@ -25,6 +25,9 @@ export interface IConfig {
     baseurl: string;
     baseapi: string;
   };
+  websocket: {
+    url: string;
+  }
   updateServer: {
     koreanbots: string;
   };

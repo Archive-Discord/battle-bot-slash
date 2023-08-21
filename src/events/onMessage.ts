@@ -25,6 +25,7 @@ export default new Event('messageCreate', async (client, message) => {
 
   if (message.author.bot) return;
   if (message.channel.type === ChannelType.DM) return;
+  
   ProfanityFilterV2(client, message);
   LinkFilterV2(client, message);
   LevelSystem(client, message);

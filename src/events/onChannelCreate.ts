@@ -2,7 +2,7 @@ import { AuditLogEvent, GuildAuditLogsEntry, GuildChannel, TextChannel, User } f
 import LoggerSetting from '../schemas/LogSettingSchema';
 import Embed from '../utils/Embed';
 import { Event } from '../structures/Event';
-import { checkLogFlag, LogFlags } from '../utils/Utils';
+import { checkLogFlag, LogFlags, sendLoggers } from '../utils/Utils';
 
 export default new Event('channelCreate', async (client, channel) => {
   const LoggerSettingDB = await LoggerSetting.findOne({
@@ -21,7 +21,7 @@ export default new Event('channelCreate', async (client, channel) => {
   const embed = new Embed(client, 'success').setTitle('채널 생성').addFields(
     {
       name: '채널',
-      value: `<#${channel.id}>` + '(`' + channel.id + '`)',
+      value: `> <#${channel.id}>` + '(`' + channel.id + '`)',
     },
     {
       name: '카테고리',
@@ -35,10 +35,9 @@ export default new Event('channelCreate', async (client, channel) => {
   if (target.id === channel.id) {
     embed.addFields({
       name: '생성유저',
-      value: `<@${executor.id}>` + '(`' + executor.id + '`)',
+      value: `> <@${executor.id}>` + '(`' + executor.id + '`)',
     });
-    return await logChannel.send({ embeds: [embed] });
-  } else {
-    return await logChannel.send({ embeds: [embed] });
   }
+
+  sendLoggers(client, channel.guild, embed, LogFlags.CHANNEL_CREATE)
 });

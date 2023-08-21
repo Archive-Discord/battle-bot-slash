@@ -2,7 +2,7 @@ import { AuditLogEvent, TextChannel, User } from 'discord.js';
 import LoggerSetting from '../schemas/LogSettingSchema';
 import Embed from '../utils/Embed';
 import { Event } from '../structures/Event';
-import { checkLogFlag, LogFlags } from '../utils/Utils';
+import { checkLogFlag, LogFlags, sendLoggers } from '../utils/Utils';
 
 export default new Event('guildBanRemove', async (client, ban) => {
   const LoggerSettingDB = await LoggerSetting.findOne({
@@ -25,7 +25,7 @@ export default new Event('guildBanRemove', async (client, ban) => {
     })
     .addFields({
       name: '유저',
-      value: `<@${ban.user.id}>` + '(`' + ban.user.id + '`)',
+      value: `> <@${ban.user.id}>` + '(`' + ban.user.id + '`)',
     });
   if (!deletionLog) return await logChannel.send({ embeds: [embed] });
   const executor = deletionLog.executor as User;
@@ -33,10 +33,9 @@ export default new Event('guildBanRemove', async (client, ban) => {
   if (target.id == ban.user.id) {
     embed.addFields({
       name: '관리자',
-      value: `<@${executor.id}>` + '(`' + executor.id + '`)',
+      value: `> <@${executor.id}>` + '(`' + executor.id + '`)',
     });
-    return await logChannel.send({ embeds: [embed] });
-  } else {
-    return await logChannel.send({ embeds: [embed] });
   }
+
+  sendLoggers(client, ban.guild, embed, LogFlags.USER_BAN)
 });

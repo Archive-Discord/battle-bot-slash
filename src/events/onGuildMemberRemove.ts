@@ -4,8 +4,9 @@ import WelcomeSetting from '../schemas/WelcomeSettingSchema';
 import BotClient from '../structures/BotClient';
 import Embed from '../utils/Embed';
 import { Event } from '../structures/Event';
-import { checkLogFlag, LogFlags } from '../utils/Utils';
+import { checkLogFlag, LogFlags, sendLoggers, SOCKET_ACTIONS } from '../utils/Utils';
 import Logger from '../utils/Logger';
+import custombotSchema from '../schemas/custombotSchema';
 
 const logger = new Logger('GuildMemberRemoveEvent');
 
@@ -19,7 +20,7 @@ const GreetingEventV2 = async (client: BotClient, member: GuildMember | PartialG
     guild_id: member.guild.id,
   });
   if (!WelcomeSettingDB) return;
-  if (!WelcomeSettingDB.outting_message || WelcomeSettingDB.outting_message == '') return;
+  if (!WelcomeSettingDB.outting_message || WelcomeSettingDB.outting_message == '' || !WelcomeSettingDB.message_type) return;
 
   const embed = new Embed(client, 'warn');
   embed
@@ -38,18 +39,34 @@ const GreetingEventV2 = async (client: BotClient, member: GuildMember | PartialG
         ),
     );
 
-  try {
-    if (WelcomeSettingDB.message_type === "guild") {
-      const WelcomeChannel = member.guild.channels.cache.get(
-        WelcomeSettingDB.channel_id!,
-      ) as TextChannel;
-      if (!WelcomeChannel) return;
-      return await WelcomeChannel.send({ embeds: [embed] });
-    } else if (WelcomeSettingDB.message_type === "dm") {
-      return await member.send({ embeds: [embed] });
+  const customBot = await custombotSchema.findOne({
+    guildId: member.guild.id,
+    useage: true,
+  });
+
+  if (customBot) {
+    client.socket.emit(SOCKET_ACTIONS.SEND_OUTTING_MESSAGE, {
+      userId: member.user.id,
+      guildId: member.guild.id,
+      channelId: WelcomeSettingDB.channel_id,
+      embed: embed.toJSON(),
+      type: WelcomeSettingDB.message_type || 'guild',
+    })
+    return
+  } else {
+    try {
+      if (WelcomeSettingDB.message_type === "guild") {
+        const WelcomeChannel = member.guild.channels.cache.get(
+          WelcomeSettingDB.channel_id!,
+        ) as TextChannel;
+        if (!WelcomeChannel) return;
+        return await WelcomeChannel.send({ embeds: [embed] });
+      } else if (WelcomeSettingDB.message_type === "dm") {
+        return await member.send({ embeds: [embed] });
+      }
+    } catch (error) {
+      logger.error(error as string);
     }
-  } catch (error) {
-    logger.error(error as string);
   }
 };
 
@@ -65,13 +82,10 @@ const LoggerEvent = async (client: BotClient, member: GuildMember | PartialGuild
   if (!logChannel) return;
   const embed = new Embed(client, 'error')
     .setTitle('멤버 퇴장')
-    .setAuthor({
-      name: member.user.username,
-      iconURL: member.user.displayAvatarURL(),
-    })
     .addFields({
       name: '유저',
-      value: `<@${member.user.id}>` + '(`' + member.user.id + '`)',
+      value: `> <@${member.user.id}>` + '(`' + member.user.id + '`)',
     });
-  return await logChannel.send({ embeds: [embed] });
+
+  sendLoggers(client, member.guild, embed, LogFlags.USER_LEAVE)
 };

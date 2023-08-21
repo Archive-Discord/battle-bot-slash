@@ -9,7 +9,7 @@ import {
 import LoggerSetting from '../schemas/LogSettingSchema';
 import Embed from '../utils/Embed';
 import { Event } from '../structures/Event';
-import { checkLogFlag, LogFlags } from '../utils/Utils';
+import { checkLogFlag, LogFlags, sendLoggers } from '../utils/Utils';
 
 export default new Event('channelDelete', async (client, channel) => {
   if (channel.type === ChannelType.DM) return;
@@ -45,8 +45,7 @@ export default new Event('channelDelete', async (client, channel) => {
       name: '삭제유저',
       value: `<@${executor.id}>` + '(`' + executor.id + '`)',
     });
-    return await logChannel.send({ embeds: [embed] });
-  } else {
-    return await logChannel.send({ embeds: [embed] });
   }
+
+  sendLoggers(client, channel.guild, embed, LogFlags.CHANNEL_DELETE)
 });

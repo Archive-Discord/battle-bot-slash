@@ -2,7 +2,7 @@ import { TextChannel } from 'discord.js';
 import LoggerSetting from '../schemas/LogSettingSchema';
 import Embed from '../utils/Embed';
 import { Event } from '../structures/Event';
-import { checkLogFlag, LogFlags } from '../utils/Utils';
+import { checkLogFlag, LogFlags, sendLoggers } from '../utils/Utils';
 
 export default new Event('guildUpdate', async (client, oldGuild, newGuild) => {
   const LoggerSettingDB = await LoggerSetting.findOne({ guild_id: newGuild.id });
@@ -105,5 +105,7 @@ export default new Event('guildUpdate', async (client, oldGuild, newGuild) => {
     });
     update = true;
   }
-  if (update) return await logChannel.send({ embeds: [embed] });
+  if (update) {
+    sendLoggers(client, newGuild, embed, LogFlags.SERVER_SETTINGS)
+  }
 });

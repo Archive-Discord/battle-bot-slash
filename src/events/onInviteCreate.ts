@@ -2,7 +2,7 @@ import { Guild, TextChannel, User } from 'discord.js';
 import LoggerSetting from '../schemas/LogSettingSchema';
 import Embed from '../utils/Embed';
 import { Event } from '../structures/Event';
-import { checkLogFlag, LogFlags } from '../utils/Utils';
+import { checkLogFlag, LogFlags, sendLoggers } from '../utils/Utils';
 
 export default new Event('inviteCreate', async (client, invite) => {
   const guild = invite.guild as Guild;
@@ -13,15 +13,23 @@ export default new Event('inviteCreate', async (client, invite) => {
   const logChannel = guild.channels.cache.get(LoggerSettingDB.guild_channel_id) as TextChannel;
   if (!logChannel) return;
   const embed = new Embed(client, 'success')
-    .setTitle('초대코드')
-    .setDescription(
-      [
-        `초대코드 생성 ${invite.channel ? `채널: ${invite.channel}` : ''}`,
-        `코드: \`${invite.code}\``,
-        `사용가능 횟수: \`${invite.maxUses === 0 ? '무제한' : invite.maxUses}\``,
-        `사용 가능일: ${invite.maxAge != 0 ? invite.maxAge : '무제한'}`,
-        `생성유저: <@${inviter.id}>(\`${inviter.id}\`)`,
-      ].join('\n'),
-    );
-  return await logChannel.send({ embeds: [embed] });
+    .setTitle('초대코드 생성')
+    .addFields([{
+      name: "유저",
+      value: `> <@${inviter.id}>(\`${inviter.id}\`)`,
+    }, {
+      name: "채널",
+      value: `> ${invite.channel ? `<#${invite.channel.id}>` : '없음'}`,
+    }, {
+      name: "코드",
+      value: `> \`${invite.code}\``,
+    }, {
+      name: "사용가능 횟수",
+      value: `> \`${invite.maxUses === 0 ? '무제한' : invite.maxUses}\``,
+    }, {
+      name: "사용 가능일",
+      value: `> ${invite.maxAge != 0 ? invite.maxAge : '무제한'}`,
+    }])
+
+  sendLoggers(client, guild, embed, LogFlags.SERVER_INVITE)
 });

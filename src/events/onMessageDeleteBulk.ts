@@ -3,10 +3,9 @@ import dateFormat from '../utils/DateFormatting';
 import LoggerSetting from '../schemas/LogSettingSchema';
 import Embed from '../utils/Embed';
 import { AttachmentBuilder, TextChannel } from 'discord.js';
-import { checkLogFlag, LogFlags } from '../utils/Utils';
+import { checkLogFlag, LogFlags, sendLoggers } from '../utils/Utils';
 
 export default new Event('messageDeleteBulk', async (client, messages) => {
-  messages.first()?.guild?.id;
   const LoggerSettingDB = await LoggerSetting.findOne({
     guild_id: messages.first()?.guild?.id,
   });
@@ -27,6 +26,7 @@ export default new Event('messageDeleteBulk', async (client, messages) => {
     name: 'DeletedMessages.txt',
   });
   const msg = await logChannel.send({ files: [attachment] });
+
   const embed = new Embed(client, 'error').setTitle('메시지 대량 삭제').addFields(
     { name: '삭제된 메시지', value: `${messages.size}` },
     {
@@ -35,5 +35,6 @@ export default new Event('messageDeleteBulk', async (client, messages) => {
         }/DeletedMessages)`,
     },
   );
-  return await logChannel.send({ embeds: [embed] });
+
+  sendLoggers(client, channel.guild, embed, LogFlags.MESSAGE_DELETE)
 });

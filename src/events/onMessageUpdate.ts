@@ -2,7 +2,7 @@ import { Event } from '../structures/Event';
 import LoggerSetting from '../schemas/LogSettingSchema';
 import Embed from '../utils/Embed';
 import { TextChannel } from 'discord.js';
-import { checkLogFlag, LogFlags } from '../utils/Utils';
+import { checkLogFlag, LogFlags, sendLoggers } from '../utils/Utils';
 
 export default new Event('messageUpdate', async (client, oldMessage, newMessage) => {
   if (!newMessage.guild) return;
@@ -22,7 +22,7 @@ export default new Event('messageUpdate', async (client, oldMessage, newMessage)
   if (!logChannel) return;
   let oldContent = new String(oldMessage.content);
   let newContent = new String(newMessage.content);
-  if (oldContent !== newContent) {
+  if (oldContent.toLowerCase() !== newContent.toLocaleLowerCase()) {
     if (oldContent.length > 500) {
       const oldContentLength = oldMessage.content.length - 500;
       oldContent = oldContent.slice(0, 500) + `... +${oldContentLength}`;
@@ -34,13 +34,13 @@ export default new Event('messageUpdate', async (client, oldMessage, newMessage)
     const embed = new Embed(client, 'warn').setTitle('메시지 수정').addFields(
       {
         name: '채널',
-        value: `<#${newMessage.channel.id}>` + '(`' + newMessage.channel.id + '`)',
+        value: `> <#${newMessage.channel.id}>` + '(`' + newMessage.channel.id + '`)',
       },
       { name: '메시지', value: `[메시지](${newMessage.url})` },
       { name: '수정전', value: `${oldContent ? oldContent : '없음'}` },
       { name: '수정후', value: `${newContent ? newContent : '없음'}` },
     );
 
-    return await logChannel.send({ embeds: [embed] });
+    sendLoggers(client, newMessage.guild!, embed, LogFlags.MESSAGE_UPDATE)
   }
 });
