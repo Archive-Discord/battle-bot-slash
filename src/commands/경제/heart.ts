@@ -10,7 +10,7 @@ import HeartSchema from '../../schemas/HeartCheck';
 export default new BaseCommand(
   {
     name: '하트인증',
-    description: '한디리, 아카이브 하트를 인증합니다',
+    description: '한디리 하트를 인증합니다',
     aliases: ['하트인증', 'ㅎㅌㅇㅈ', 'heart', 'gkxmdlswmd', 'cncjs'],
   },
   async (client, message, args) => {
@@ -34,12 +34,6 @@ export default new BaseCommand(
               .setStyle(ButtonStyle.Primary)
               .setCustomId('heart.koreanlist'),
           )
-          .addComponents(
-            new Discord.ButtonBuilder()
-              .setLabel(`아카이브 인증`)
-              .setStyle(ButtonStyle.Primary)
-              .setCustomId('heart.archive'),
-          ),
       ],
     });
     const collector = m.createMessageComponentCollector({ time: 10000 });
@@ -135,80 +129,6 @@ export default new BaseCommand(
             });
             return m.edit({ components: [] });
           });
-      } else if (i.customId == 'heart.archive') {
-        axios
-          .get(`https://api.archiver.me/bots/${client.user?.id}/like/${message.author.id}`, {
-            headers: {
-              Authorization: 'Bearer ' + config.updateServer.archive,
-              'Content-Type': 'application/json',
-            },
-          })
-          .then(async (res) => {
-            if (!res.data.data.like) {
-              embed = new Embed(client, 'info')
-                .setTitle('아카이브 봇 하트인증')
-                .setDescription(`아카이브에 있는 배틀이 봇의 하트가 아직 눌려있지 않습니다.`)
-                .setTimestamp()
-              let link = new Discord.ActionRowBuilder<ButtonBuilder>().addComponents(
-                new Discord.ButtonBuilder()
-                  .setURL(`https://archiver.me/bots/${client.user?.id}/like`)
-                  .setLabel(`하트 누르기`)
-                  .setStyle(ButtonStyle.Link),
-              );
-              i.reply({ embeds: [embed], components: [link] });
-              return m.edit({ components: [] });
-            } else {
-              const heartData = await HeartSchema.findOne({
-                userid: message.author.id,
-                platform: 'archive',
-              });
-              if (!heartData) {
-                await Schema.updateOne({ userid: message.author.id }, { $inc: { money: 20000 }, $set: { lastGuild: message.guild ? message.guild.id : money.lastGuild } });
-                await HeartSchema.create({
-                  userid: message.author.id,
-                  platform: 'archive',
-                });
-                let embed = new Embed(client, 'default')
-                  .setTitle('⭕ 하트 인증 성공')
-                  .setDescription(`${message.author.username}님의 아카이브에 있는 배틀이 봇의 하트인증이 완료되었습니다.`)
-                  .setTimestamp()
-                i.reply({ embeds: [embed] });
-                return m.edit({ components: [] });
-              }
-              else {
-                embed = new Embed(client, 'error')
-                  .setTitle('❌ 하트 인증 실패')
-                  .setDescription(`${DateFormatting._format(res.data.data.lastLike + 24 * 60 * 60 * 1000, 'R')} 뒤에 다시 인증해주세요!`)
-                  .setTimestamp()
-                i.reply({ embeds: [embed] });
-                return m.edit({ components: [] });
-              }
-            }
-          })
-          .catch((e) => {
-            if (e.response.status == 404) {
-              embed = new Embed(client, 'error')
-                .setTitle('❌ 에러 발생')
-                .setDescription(`아카이브에 있는 배틀이 봇의 하트가 아직 눌려있지 않습니다.`)
-                .setFooter({ text: `${message.author.tag}` })
-                .setTimestamp()
-              let link = new Discord.ActionRowBuilder<ButtonBuilder>().addComponents(
-                new Discord.ButtonBuilder()
-                  .setURL(`https://archiver.me/bots/${client.user?.id}/like`)
-                  .setLabel(`하트 누르기`)
-                  .setStyle(ButtonStyle.Link),
-              );
-              i.reply({ embeds: [embed], components: [link] });
-              return m.edit({ components: [] });
-            }
-            embed = new Embed(client, 'error')
-              .setTitle('❌ 에러 발생')
-              .setDescription(`하트 인증중 오류가 발생했어요! ${e.message}`)
-              .setFooter({ text: `${message.author.tag}` })
-              .setTimestamp()
-            i.reply({ embeds: [embed] });
-            return m.edit({ components: [] });
-          });
       }
     });
     collector.on('end', (collected) => {
@@ -224,13 +144,6 @@ export default new BaseCommand(
                 .setCustomId('heart.koreanlist')
                 .setDisabled(true),
             )
-            .addComponents(
-              new Discord.ButtonBuilder()
-                .setLabel(`아카이브 인증`)
-                .setStyle(ButtonStyle.Primary)
-                .setCustomId('heart.archive')
-                .setDisabled(true),
-            ),
         ],
       });
     });
