@@ -9,7 +9,7 @@ export default class Embed extends EmbedBuilder {
       timestamp: new Date().toISOString(),
       footer: {
         iconURL: client.user?.avatarURL() ?? undefined,
-        text: client.user?.username,
+        text: client.user?.username ?? "배틀이",
       },
     };
 

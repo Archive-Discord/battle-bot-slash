@@ -131,42 +131,6 @@ async function ShardInfo(client: BotClient) {
 }
 
 async function automodResetChannel(client: BotClient) {
-  // 배틀이 V1 - 채널 초기화 8월 15일까지만 지원
-  try {
-    const automod = await Automod.find();
-    automod.forEach(async ({ useing, guild_id }) => {
-      if (!useing.useResetChannel) return;
-      if (!useing.useResetChannels || useing.useResetChannels.length === 0) return;
-      const guild = client.guilds.cache.get(guild_id);
-      if (!guild) return;
-      const newChannels: string[] = [];
-      for await (const resetchannel of useing.useResetChannels) {
-        const channel = guild?.channels.cache.get(resetchannel) as GuildChannel;
-        if (!channel) return;
-        const newchannel = await channel?.clone() as GuildTextBasedChannel;
-        if (!newchannel) return;
-        await newchannel?.send({
-          content: `\`\`\`배틀이 대시보드 업데이트로 현제 설정하신 기능은 8월 15일까지만 지원됩니다.\n8월 15일까지 새로운 대시보드를 접속하여 다시 설정해 주시기 바랍니다.\`\`\`\`새로운 대시보드\` - ${config.web.baseurl}/dashboard/${guild_id}`,
-          embeds: [
-            new Embed(client, 'info')
-              .setTitle('채널 초기화')
-              .setDescription(`채널 초기화가 완료되었습니다.`),
-          ],
-        });
-        await channel.delete();
-        newChannels.push(newchannel.id);
-      }
-      return await Automod.updateOne(
-        { guild_id: guild_id },
-        { $set: { 'useing.useResetChannels': newChannels } },
-      );
-    });
-
-    logger.info('배틀이 V1 - 채널 초기화 완료');
-  } catch (e) {
-    logger.error(e as unknown as string);
-  }
-
   try {
     const automodListv2 = await Automod.find({ event: "resetchannel" })
     for await (const automod of automodListv2) {
@@ -204,22 +168,6 @@ async function automodResetChannel(client: BotClient) {
 
 async function ServerCountUpdate(client: BotClient) {
   const res = await client.shard?.fetchClientValues('guilds.cache.size');
-  axios
-    .post(
-      `https://api.archiver.me/bots/${client.user?.id}/server`,
-      {
-        servers: res?.reduce((acc, guilds) => Number(acc) + Number(guilds), 0),
-      },
-      {
-        headers: { Authorization: 'Bearer ' + config.updateServer.archive },
-      },
-    )
-    .then(() => {
-      logger.info('아카이브: 서버 수 업데이트 완료');
-    })
-    .catch((e: any) => {
-      logger.error(`아카이브: 서버 수 업데이트 오류: ${e.response?.data.message}`);
-    });
 
   axios
     .post(
