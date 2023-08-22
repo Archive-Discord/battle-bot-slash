@@ -223,6 +223,8 @@ export async function stop(guild_Id: string, client: BotClient) {
     const msgid_list = find.messageid_list;
     const msgid_banner = find.messageid_banner;
     const channel = client.channels.cache.get(chid) as TextBasedChannel;
+    if (!channel) return;
+    if (!channel.isTextBased()) return;
     const msg_list = await channel.messages.fetch(msgid_list) as Message;
     const msg_banner = await channel.messages.fetch(msgid_banner) as Message;
     const ss = new Embed(client, 'default')
