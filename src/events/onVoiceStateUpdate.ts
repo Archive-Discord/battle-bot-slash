@@ -49,7 +49,7 @@ export default new Event('voiceStateUpdate', async (client, oldState, newState) 
     updated = true;
   }
 
-  if (oldState.channel != newState.channel) {
+  if ((oldState.channel && newState.channel) && oldState.channel != newState.channel) {
     if (!checkLogFlag(LoggerSettingDB.loggerFlags, LogFlags.VOICE_CHANNEL_JOIN)) return;
     embed
       .setTitle('음성채널 이동')
