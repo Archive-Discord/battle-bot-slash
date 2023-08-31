@@ -104,10 +104,9 @@ export default class EventSocketManger extends BaseManager {
 
     this.socket.on(
       SOCKET_ACTIONS.VERIFY_GENERATE, async (data: SOCKET_ACTION_DATA<SOCKET_ACTIONS.VERIFY_GENERATE>) => {
-        let guild = this.client.guilds.cache.get(data.guildId)
+        const guild = this.client.guilds.cache.get(data.guildId)
         let user = this.client.users.cache.get(data.userId)
         if (!guild || !user) {
-          guild = await this.client.guilds.fetch(data.guildId)
           user = await this.client.users.fetch(data.userId)
         }
         if (!guild || !user) return
