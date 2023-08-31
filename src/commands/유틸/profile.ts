@@ -43,17 +43,17 @@ export default new BaseCommand(
       })
       .addFields({
         name: `서버 가입일`,
-        value: DateFormatting._format(user.joinedAt as Date, ''),
+        value: DateFormatting.format(user.joinedAt as Date, ''),
         inline: true,
       })
       .addFields({
         name: `계정 생성일`,
-        value: DateFormatting._format(user.user.createdAt as Date, ''),
+        value: DateFormatting.format(user.user.createdAt as Date, ''),
         inline: true,
       })
       .addFields({
         name: `${client.user?.username} 웹 가입일`,
-        value: userdb ? DateFormatting._format(userdb.published_date, '') : '미가입',
+        value: userdb ? DateFormatting.format(userdb.published_date, '') : '미가입',
       })
     return message.reply({ embeds: [embed] });
   },
@@ -104,17 +104,17 @@ export default new BaseCommand(
         })
         .addFields({
           name: `서버 가입일`,
-          value: DateFormatting._format(user.joinedAt as Date, ''),
+          value: DateFormatting.format(user.joinedAt as Date, ''),
           inline: true,
         })
         .addFields({
           name: `계정 생성일`,
-          value: DateFormatting._format(user.user.createdAt as Date, ''),
+          value: DateFormatting.format(user.user.createdAt as Date, ''),
           inline: true,
         })
         .addFields({
           name: `${client.user?.username} 웹 가입일`,
-          value: userdb ? DateFormatting._format(userdb.published_date, '') : '미가입',
+          value: userdb ? DateFormatting.format(userdb.published_date, '') : '미가입',
         })
       return interaction.reply({ embeds: [embed] });
     },

@@ -37,7 +37,7 @@ export default new BaseCommand(
     } else {
       let embed = new Embed(client, 'error')
         .setTitle('❌ 에러 발생')
-        .setDescription(`이미 오늘은 출석을 하셨어요 ${DateFormatting._format(dayjs(dayjs().add(1, "day").toDate()).set('hour', 0).set('minute', 0).toDate(), 'R')}에 다시 와주세요!`)
+        .setDescription(`이미 오늘은 출석을 하셨어요 ${DateFormatting.format(dayjs(dayjs().add(1, "day").toDate()).set('hour', 0).set('minute', 0).toDate(), 'R')}에 다시 와주세요!`)
         .addFields([
           {
             name: `하트인증`,
@@ -79,7 +79,7 @@ export default new BaseCommand(
       } else {
         const embed = new Embed(client, 'error')
           .setTitle('❌ 에러 발생')
-          .setDescription(`이미 오늘은 출석을 하셨어요 ${DateFormatting._format(dayjs(dayjs().add(1, "day").toDate()).set('hour', 0).set('minute', 0).toDate(), 'R')}에 다시 와주세요!`)
+          .setDescription(`이미 오늘은 출석을 하셨어요 ${DateFormatting.format(dayjs(dayjs().add(1, "day").toDate()).set('hour', 0).set('minute', 0).toDate(), 'R')}에 다시 와주세요!`)
           .addFields([
             {
               name: `하트인증`,

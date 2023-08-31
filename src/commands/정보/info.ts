@@ -40,7 +40,7 @@ export default new BaseCommand(
     });
     embed.addFields({
       name: '업타임',
-      value: `${DateFormatting.relative(new Date(Date.now() - process.uptime() * 1000))}`,
+      value: `${DateFormatting.format(new Date(Date.now() - process.uptime() * 1000), 'R')}`,
       inline: true,
     });
     embed.addFields({
@@ -84,7 +84,7 @@ export default new BaseCommand(
       });
       embed.addFields({
         name: '업타임',
-        value: `${DateFormatting.relative(new Date(Date.now() - process.uptime() * 1000))}`,
+        value: `${DateFormatting.format(new Date(Date.now() - process.uptime() * 1000), 'R')}`,
         inline: true,
       });
       embed.addFields({
@@ -94,7 +94,7 @@ export default new BaseCommand(
       });
       embed.addFields({
         name: '유용한 링크',
-        value: `[서포트 서버](https://discord.gg/WtGq7D7BZm) | [웹 대시보드](${config.web.baseurl}) | [깃허브](${repository}) | [개인정보처리방침](${config.web.baseurl}/privacy) | [상태](${config.web.baseurl}/status)`,
+        value: `[서포트 서버](https://discord.gg/WtGq7D7BZm) | [웹 대시보드](${config.web.baseurl}) | [깃허브](${repository}) | [개인정보처리방침](${config.web.baseurl}/privacy) | [상태](https://status.battlebot.kr)`,
       });
       return interaction.reply({
         embeds: [embed],

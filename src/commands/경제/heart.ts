@@ -94,7 +94,7 @@ export default new BaseCommand(
                 embed = new Embed(client, 'warn')
                   .setTitle('❌ 하트 인증 실패')
                   .setDescription(
-                    `${DateFormatting._format(
+                    `${DateFormatting.format(
                       res.data.data.lastVote + 12 * 60 * 60 * 1000,
                       'R',
                     )} 뒤에 다시 인증해주세요!`,

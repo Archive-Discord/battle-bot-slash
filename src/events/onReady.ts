@@ -66,11 +66,11 @@ async function PremiumAlert(client: BotClient) {
     const now = new Date();
     const lastDate = Math.round((Number(guild.nextpay_date) - Number(now)) / 1000 / 60 / 60 / 24);
     if (lastDate === 7) {
-      embed.setDescription(`${premiumguild.name} 서버의 프리미엄 만료일이 7일 (${DateFormatting._format(guild.nextpay_date)}) 남았습니다`);
+      embed.setDescription(`${premiumguild.name} 서버의 프리미엄 만료일이 7일 (${DateFormatting.format(guild.nextpay_date)}) 남았습니다`);
       return user.send({ embeds: [embed] });
     }
     if (lastDate === 1) {
-      embed.setDescription(`${premiumguild.name} 서버의 프리미엄 만료일이 1일 (${DateFormatting._format(guild.nextpay_date)}) 남았습니다`);
+      embed.setDescription(`${premiumguild.name} 서버의 프리미엄 만료일이 1일 (${DateFormatting.format(guild.nextpay_date)}) 남았습니다`);
       return user.send({ embeds: [embed] });
     }
     if (lastDate === 0) {
@@ -91,11 +91,11 @@ async function PremiumPersonAlert(client: BotClient) {
     const lastDate = Math.round((Number(user.nextpay_date) - Number(now)) / 1000 / 60 / 60 / 24);
     try {
       if (lastDate === 7) {
-        embed.setDescription(`${users.username}님의 프리미엄 만료일이 7일 (${DateFormatting._format(user.nextpay_date)}) 남았습니다`);
+        embed.setDescription(`${users.username}님의 프리미엄 만료일이 7일 (${DateFormatting.format(user.nextpay_date)}) 남았습니다`);
         return users.send({ embeds: [embed] });
       }
       if (lastDate === 1) {
-        embed.setDescription(`${users.username} 서버의 프리미엄 만료일이 1일 (${DateFormatting._format(user.nextpay_date)}) 남았습니다`);
+        embed.setDescription(`${users.username} 서버의 프리미엄 만료일이 1일 (${DateFormatting.format(user.nextpay_date)}) 남았습니다`);
         return users.send({ embeds: [embed] });
       }
       if (lastDate === 0) {
