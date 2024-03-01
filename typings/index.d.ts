@@ -6,6 +6,7 @@ import {
   ShardingManagerOptions,
 } from 'discord.js';
 import { NodeOptions } from 'erela.js';
+import { Interface } from 'readline';
 
 export type LevelType = 'fatal' | 'error' | 'warn' | 'info' | 'verbose' | 'debug' | 'chat';
 
@@ -388,10 +389,19 @@ export interface LevelGuildDB {
   published_date: Date;
 }
 
+export interface DiceDB {
+  _id: string;
+  userId: string;
+  betted: number;
+  winType: DiceGameWinType;
+  published_date: Date;
+}
+
 export type verifyType = "phone" | "email" | "kakao" | "default"
 export type verifyStatusType = 'success' | 'pending';
 export type useCurseType = 'delete' | 'delete_kick' | 'delete_ban';
 export type pubgPlatformeType = 'steam' | 'kakao';
+export type DiceGameWinType = 'WIN' | 'LOSE' | 'DRAWN'
 export type voteStatus = 'open' | 'close';
 export type automodEvents =
   | "resetchannel"
