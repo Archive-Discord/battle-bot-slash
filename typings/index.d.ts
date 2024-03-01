@@ -6,7 +6,6 @@ import {
   ShardingManagerOptions,
 } from 'discord.js';
 import { NodeOptions } from 'erela.js';
-import { Interface } from 'readline';
 
 export type LevelType = 'fatal' | 'error' | 'warn' | 'info' | 'verbose' | 'debug' | 'chat';
 
