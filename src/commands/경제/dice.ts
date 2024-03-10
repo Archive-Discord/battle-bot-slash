@@ -152,7 +152,7 @@ export default new BaseCommand(
           { userid: interaction.user.id },
           {
             $set: {
-              money: user.money + betting
+              money: user.money + Math.round(betting / 1.5)
             }
           }
         )
