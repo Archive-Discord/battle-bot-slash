@@ -35,27 +35,32 @@ export default new BaseCommand(
       if (type === '전체') {
         let i = 0;
         const moneyLeaderboard = await Schema.find({}).sort({ money: -1, date: -1 }).limit(10);
-        moneyLeaderboard.forEach((moneyLeader) => {
-          let searchuser = client.users.cache.get(moneyLeader.userid);
-          if (!searchuser) return;
+        await Promise.all(moneyLeaderboard.map(async (moneyLeader) => {
+          let searchuser = await client.users.fetch(moneyLeader.userid);
+          if (!searchuser) return
           i = i + 1;
           embed.addFields({
             name: `${i}. ${searchuser.username} ${searchuser.id === interaction.user.id ? '(나)' : ''}`,
             value: `> ${comma(moneyLeader.money)}원`,
           });
-        })
+
+          return;
+        }));
       } else if (type === '서버') {
         let i = 0;
         const moneyLeaderboard = await Schema.find({ lastGuild: interaction.guild.id }).sort({ money: -1, date: -1 }).limit(10);
-        moneyLeaderboard.forEach((moneyLeader) => {
-          let searchuser = client.users.cache.get(moneyLeader.userid);
-          if (!searchuser) return;
+
+        await Promise.all(moneyLeaderboard.map(async (moneyLeader) => {
+          let searchuser = await client.users.fetch(moneyLeader.userid);
+          if (!searchuser) return
           i = i + 1;
           embed.addFields({
             name: `${i}. ${searchuser.username} ${searchuser.id === interaction.user.id ? '(나)' : ''}`,
             value: `> ${comma(moneyLeader.money)}원`,
           });
-        })
+
+          return;
+        }));
       }
       interaction.editReply({ embeds: [embed] });
     },
