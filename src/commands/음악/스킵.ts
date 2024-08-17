@@ -22,7 +22,7 @@ export default new BaseCommand(
         return interaction.reply({
           embeds: [new Embed(client, 'default').setDescription(`음성채널에 먼저 참여해주세요!`).setColor('#2f3136')],
         });
-      const queue = client.musics.get(interaction.guild.id);
+      const queue = client.lavalink.getPlayer(interaction.guild.id);
 
       if (!queue || !queue.playing)
         return interaction.reply({
@@ -38,8 +38,8 @@ export default new BaseCommand(
         ]
       })
 
-      const currentTrack = queue.queue.current?.title;
-      const success = queue.stop();
+      const currentTrack = queue.queue.current?.info.title;
+      const success = queue.skip();
 
       return interaction.reply({
         embeds: [

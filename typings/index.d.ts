@@ -5,7 +5,7 @@ import {
   Role,
   ShardingManagerOptions,
 } from 'discord.js';
-import { NodeOptions } from 'erela.js';
+import { LavalinkNodeOptions } from 'lavalink-client';
 
 export type LevelType = 'fatal' | 'error' | 'warn' | 'info' | 'verbose' | 'debug' | 'chat';
 
@@ -51,7 +51,7 @@ export interface IConfig {
     };
   };
 
-  music: NodeOptions[];
+  music: LavalinkNodeOptions[];
 
   guildAddAlert: {
     guildID: string;
@@ -65,6 +65,9 @@ export interface IConfig {
     type: 'mongodb' | 'sqlite';
     url: string;
     options: any;
+  };
+  redis: {
+    url: string;
   };
   logger: {
     level: LevelType;

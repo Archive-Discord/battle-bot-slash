@@ -3,7 +3,6 @@ import { PermissionsBitField, ChannelType } from 'discord.js';
 import { BaseCommand } from '../../structures/Command';
 import Schema from '../../schemas/musicSchema';
 import Embed from '../../utils/Embed';
-import e from 'express';
 
 export default new BaseCommand(
   {

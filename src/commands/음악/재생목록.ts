@@ -1,8 +1,9 @@
 import { SlashCommandBuilder } from '@discordjs/builders';
-import { CommandInteraction, Message, EmbedBuilder } from 'discord.js';
+import { CommandInteraction, Message } from 'discord.js';
 import { BaseCommand } from '../../structures/Command';
 import Embed from '../../utils/Embed';
-import { format } from '../../utils/Utils';
+import { timeFormat } from '../../utils/music/channel.music';
+import { MusicRequester } from '../../utils/music/utils.music';
 
 export default new BaseCommand(
   {
@@ -11,78 +12,88 @@ export default new BaseCommand(
     aliases: ['재생목록', 'playlist', 'wotodahrfhr'],
   },
   async (client, message, args) => {
-    let embed = new Embed(client, 'error')
-      .setTitle(`❌ 에러 발생`)
+    const embed = new Embed(client, 'error')
+      .setTitle('❌ 에러 발생')
       .setDescription('해당 명령어는 슬래쉬 커맨드 ( / )로만 사용이 가능합니다.');
     return message.reply({ embeds: [embed] });
   },
   {
     data: new SlashCommandBuilder().setName('재생목록').setDescription('재생목록을 표시해요.'),
     async execute(client, interaction) {
-      if (!interaction.member || !interaction.member.voice.channel)
-        return interaction.reply({
-          embeds: [new Embed(client, 'default').setDescription(`음성채널에 먼저 참여해주세요!`).setColor('#2f3136')],
-        });
-      const queue = client.musics.get(interaction.guild.id);
+      const { member, guild } = interaction;
 
-      if (!queue || !queue.playing)
+      if (!member?.voice.channel) {
         return interaction.reply({
           embeds: [
-            new Embed(client, 'default').setDescription(`현재 재생되고 있는 음악이 없습니다.`).setColor('#2f3136'),
+            new Embed(client, 'default')
+              .setDescription('음성채널에 먼저 참여해주세요!')
+              .setColor('#2f3136'),
           ],
         });
-      if (interaction.member.voice.channel.id !== interaction.guild.members.me?.voice.channel?.id) return interaction.reply({
-        embeds: [
-          new Embed(client, 'default')
-            .setDescription(`명령어를 사용하시려면 ${client.user} 봇이랑 같은 음성채널에 참여해야됩니다!`)
-        ]
-      })
-      const tracks = queue.queue;
-      var maxTracks = 10; //tracks / Queue Page
-      var songs = tracks.slice(0, maxTracks);
+      }
+
+      const queue = client.lavalink.getPlayer(guild.id);
+
+      if (!queue?.playing) {
+        return interaction.reply({
+          embeds: [
+            new Embed(client, 'default')
+              .setDescription('현재 재생되고 있는 음악이 없습니다.')
+              .setColor('#2f3136'),
+          ],
+        });
+      }
+
+      if (member.voice.channel.id !== guild.members.me?.voice.channel?.id) {
+        return interaction.reply({
+          embeds: [
+            new Embed(client, 'default')
+              .setDescription(`명령어를 사용하시려면 ${client.user} 봇이랑 같은 음성채널에 참여해야됩니다!`)
+              .setColor('#2f3136'),
+          ],
+        });
+      }
+
+      const tracks = queue.queue.tracks;
+      const maxTracks = 10;
+      const songs = tracks.slice(0, maxTracks);
+
+      const currentTrack = queue.queue.current;
+      const currentTrackTitle = currentTrack?.info.title || 'Unknown';
+      const currentTrackUrl = currentTrack?.info.uri || '';
+      const currentTrackFormatted = currentTrackUrl
+        ? `[${currentTrackTitle.substring(0, 60).replace(/\[/g, '\\[').replace(/\]/g, '\\]')}](${currentTrackUrl})`
+        : currentTrackTitle;
+      const currentTrackDuration = currentTrack?.info.isStream
+        ? 'LIVE STREAM'
+        : timeFormat(currentTrack?.info.duration).split(' | ')[0];
+
+      const songList = songs.map((track, index) => {
+        const title = track.info.title.substring(0, 60).replace(/\[/g, '\\[').replace(/\]/g, '\\]');
+        const url = track.info.uri ? `[${title}](${track.info.uri})` : title;
+        const duration = track.info.isStream ? 'LIVE STREAM' : timeFormat(track.info.duration).split(' | ')[0];
+        const requester = track.requester as MusicRequester
+        return `**\` ${index + 1}. \` ${url}** - \`${duration}\`\n> 신청자: __${requester.username}__`;
+      }).join('\n');
+
+      const description = songList.length > 2000 ? songList.substring(0, 2000) : songList;
 
       const embed = new Embed(client, 'info')
-        .setTitle(`재생목록 \`${interaction.guild.name}\``)
+        .setTitle(`재생목록 \`${guild.name}\``)
         .setColor('#2f3136')
         .addFields(
           {
-            name: `**\` N. \` *${queue.queue.length > maxTracks ? queue.queue.length - maxTracks : queue.queue.length
-              } 개의 노래가 대기중 ...***`,
-            value: `\u200b`,
+            name: `**\` N. \` *${tracks.length > maxTracks ? tracks.length - maxTracks : tracks.length} 개의 노래가 대기중 ...***`,
+            value: '\u200b',
           },
           {
-            name: `**\` 0. \` __재생중인 노래__**`,
-            value: `**${queue.queue.current?.uri
-              ? `[${queue.queue.current.title
-                .substring(0, 60)
-                .replace(/\[/giu, '\\[')
-                .replace(/\]/giu, '\\]')}](${queue.queue.current.uri})`
-              : queue.queue.current?.title
-              }** - \`${queue.queue.current?.isStream
-                ? `LIVE STREAM`
-                : format(queue.queue.current?.duration).split(` | `)[0]
-              // @ts-ignore
-              }\`\n> 신청자: __${queue.queue.current.requester.tag}__`,
-          },
+            name: '**\` 0. \` __재생중인 노래__**',
+            value: `**${currentTrackFormatted}** - \`${currentTrackDuration}\`\n> 신청자: __${(currentTrack?.requester as any).tag}__`,
+          }
         )
-        .setDescription(
-          String(
-            songs
-              .map(
-                (track, index) =>
-                  `**\` ${++index}. \` ${track.uri
-                    ? `[${track.title
-                      .substring(0, 60)
-                      .replace(/\[/giu, '\\[')
-                      .replace(/\]/giu, '\\]')}](${track.uri})`
-                    : track.title
-                  }** - \`${track.isStream ? `LIVE STREAM` : format(track.duration).split(` | `)[0]
-                  }\`\n> 신청자: __${(track.requester as any).tag}__`,
-              )
-              .join(`\n`),
-          ).substring(0, 2000),
-        );
+        .setDescription(description);
+
       return void interaction.reply({ embeds: [embed] });
     },
-  },
+  }
 );

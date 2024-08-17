@@ -47,7 +47,8 @@ export default class CommandManager extends BaseManager {
 
               const command =
                 // eslint-disable-next-line @typescript-eslint/no-var-requires
-                require(`../commands/${folder}/${commandFile}`).default;
+                require(`../commands/${folder}/${commandFile}`).default
+              // @ts-ignore
               if (!command.data.name ?? !command.name)
                 return this.logger.debug(`Command ${commandFile} has no name. Skipping.`);
               this.categorys.get(folder)?.push({

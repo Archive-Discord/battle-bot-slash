@@ -8,7 +8,6 @@ import custombotSchema from '../schemas/custombotSchema';
 
 export default new Event('voiceStateUpdate', async (client, oldState, newState) => {
   if (!newState.guild) return;
-  Music_AutoStop(client, oldState, newState);
   const LoggerSettingDB = await LoggerSetting.findOne({
     guild_id: newState.guild.id,
   });
@@ -89,51 +88,3 @@ export default new Event('voiceStateUpdate', async (client, oldState, newState) 
     }
   }
 });
-
-async function Music_AutoStop(client: BotClient, oldState: VoiceState, newState: VoiceState) { // 셋업뮤직 자동 퇴장
-  const musicbase = await client.musics.get(newState.guild.id)
-  if (!musicbase) return
-  const channel = await client.channels.cache.get(musicbase?.textChannel || '0000') as TextChannel;
-  async function clear() {
-    if (!musicbase?.paused && !musicbase?.playing) {
-      await musicbase?.destroy()
-      if (channel) await channel?.send({
-        embeds: [
-          new Embed(client, 'info')
-            .setDescription(`음성채널에 아무도 없어 음성채널에서 나갔습니다!`)
-        ]
-      }).then((m) => {
-        setTimeout(() => {
-          try {
-            m.delete()
-          } catch (e) { /* eslint-disable-next-line no-empty */ }
-        }, 15000)
-      })
-      return true;
-    }
-  }
-  async function stop() {
-    await musicbase?.queue.clear()
-    await musicbase?.stop()
-    const voice = new Embed(client, 'default')
-      .setDescription("음성채널이 일정시간동안 비어 플레이어를 종료했어요!")
-    try {
-      return await channel.send({ embeds: [voice] }).then((m) => {
-        setTimeout(() => {
-          try {
-            m.delete()
-          } catch (e) { /* eslint-disable-next-line no-empty */ }
-        }, 15000)
-      })
-    } catch (err) { /* empty */ }
-  }
-  const mem = await newState.channel?.members.size || 0;
-  const guild = await client.guilds.cache.get(newState.guild.id)
-  if (newState.channel?.id !== musicbase?.voiceChannel) {
-    if (guild?.members?.me?.voice?.channel?.members?.size !== 1) return
-    if (mem < 2) {
-      if (await clear()) return
-      return await stop()
-    }
-  }
-}

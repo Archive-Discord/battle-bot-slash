@@ -74,7 +74,7 @@ export interface MusicEvent {
   execute: (client: BotClient, ...args: PlayerEvents[keyof PlayerEvents]) => Awaitable<void>;
 }
 
-export type EventFunction<E extends keyof ClientEvents> = (
+export type EventFunction<E extends keyof Events> = (
   client: BotClient,
   ...args: ClientEvents[E]
 ) => Promise<any>;

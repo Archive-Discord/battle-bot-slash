@@ -15,6 +15,7 @@ import axios from 'axios';
 import config from '../../config';
 import CommandManager from '../managers/CommandManager';
 import PremiumUser from '../schemas/premiumUserSchemas';
+import MusicManager from '../managers/MusicManager';
 
 const logger = new Logger('bot');
 
@@ -27,6 +28,7 @@ export default new Event(
     setInterval(async () => {
       ServerCountUpdate(client);
     }, 60 * 1000 * 10);
+
     schedule.scheduleJob('0 0 0 * * *', () => {
       PremiumAlert(client);
       automodResetChannel(client);
@@ -35,6 +37,9 @@ export default new Event(
 
     const commandManager = new CommandManager(client);
     await commandManager.slashGlobalCommandSetup();
+
+    const musicManager = new MusicManager(client);
+    await musicManager.init();
 
     logger.info(`Logged ${client.user?.username}`);
   },
