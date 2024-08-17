@@ -7,7 +7,6 @@ import EventManager from './managers/EventManager';
 import DatabaseManager from './managers/DatabaseManager';
 import ButtonManager from './managers/ButtonManager';
 import RedisManager from './managers/RedisManager';
-import MusicManager from './managers/MusicManager';
 
 const logger = new Logger('main');
 

@@ -1,9 +1,8 @@
 import { Event } from '../structures/Event';
 import LoggerSetting from '../schemas/LogSettingSchema';
 import Embed from '../utils/Embed';
-import { TextChannel, VoiceState } from 'discord.js';
+import { TextChannel } from 'discord.js';
 import { checkLogFlag, LogFlags, SOCKET_ACTIONS } from '../utils/Utils';
-import BotClient from '../structures/BotClient';
 import custombotSchema from '../schemas/custombotSchema';
 
 export default new Event('voiceStateUpdate', async (client, oldState, newState) => {
