@@ -44,7 +44,6 @@ export function PlayerEvents(client: BotClient) {
   }).on('playerDisconnect', (player, oldChannel) => {
     currentStatusDisconnected(player, oldChannel, client)
   }).on('playerDestroy', (player, destroyReason) => {
-    musicSession.delete(player.guildId)
     switch (destroyReason) {
       case DestroyReasons.Disconnected:
       case DestroyReasons.ChannelDeleted:

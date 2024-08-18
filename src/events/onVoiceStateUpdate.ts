@@ -1,11 +1,18 @@
 import { Event } from '../structures/Event';
 import LoggerSetting from '../schemas/LogSettingSchema';
 import Embed from '../utils/Embed';
-import { TextChannel } from 'discord.js';
+import { TextChannel, VoiceState } from 'discord.js';
 import { checkLogFlag, LogFlags, SOCKET_ACTIONS } from '../utils/Utils';
 import custombotSchema from '../schemas/custombotSchema';
+import BotClient from '../structures/BotClient';
+import { MusicSessionStore } from '../utils/redis/music.store';
 
 export default new Event('voiceStateUpdate', async (client, oldState, newState) => {
+  voiceLogger(client, oldState, newState);
+  musicSessionHandler(client, oldState, newState);
+});
+
+const voiceLogger = async (client: BotClient, oldState: VoiceState, newState: VoiceState) => {
   if (!newState.guild) return;
   const LoggerSettingDB = await LoggerSetting.findOne({
     guild_id: newState.guild.id,
@@ -86,4 +93,12 @@ export default new Event('voiceStateUpdate', async (client, oldState, newState) 
       return await logChannel.send({ embeds: [embed] });
     }
   }
-});
+}
+
+const musicSessionHandler = async (client: BotClient, oldState: VoiceState, newState: VoiceState) => {
+  const musicSessionStore = new MusicSessionStore(client.redisClient);
+
+  if (!oldState.channel && newState.channel) {
+    await musicSessionStore.set(newState.guild.id, client.lavalink.nodeManager.leastUsedNodes('memory')[0].sessionId as string);
+  }
+}
