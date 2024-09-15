@@ -23,11 +23,12 @@ const config: IConfig = {
   githubToken: '',
   pubgapikey: '',
   music: [
-    // If you pass a object like so the "host" property is required
     {
-      host: 'localhost', // Optional if Lavalink is local
-      port: 2333, // Optional if Lavalink is set to default
-      password: 'youshallnotpass', // Optional if Lavalink is set to default
+      id: "test",
+      secure: false,
+      host: "localhost",
+      authorization: "youshallnotpass",
+      port: 2333,
     },
   ],
   updateServer: {
@@ -82,6 +83,9 @@ const config: IConfig = {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     },
+  },
+  redis: {
+    url: 'redis://localhost:6379'
   },
   logger: {
     level: 'chat',
