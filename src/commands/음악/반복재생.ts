@@ -24,7 +24,7 @@ export default new BaseCommand(
         return interaction.reply({
           embeds: [new Embed(client, 'error').setTitle('❌ 에러 발생').setDescription(`음성채널에 먼저 참여해주세요!`)],
         });
-      const queue = client.musics.get(interaction.guild.id);
+      const queue = client.lavalink.getPlayer(interaction.guild.id);
 
       if (!queue || !queue.playing)
         return interaction.reply({
@@ -39,8 +39,8 @@ export default new BaseCommand(
             .setDescription(`명령어를 사용하시려면 ${client.user} 봇이랑 같은 음성채널에 참여해야됩니다!`)
         ]
       })
-      if (queue.queueRepeat === false) {
-        queue.setQueueRepeat(true);
+      if (queue.repeatMode === 'off') {
+        queue.setRepeatMode('queue');
 
         const embed = new Embed(client, 'default')
           .setTitle('🔁 반복재생 🔁')
@@ -52,8 +52,8 @@ export default new BaseCommand(
           });
 
         interaction.reply({ embeds: [embed] });
-      } else if (queue.queueRepeat === true) {
-        queue.setQueueRepeat(false);
+      } else if (queue.repeatMode === 'queue') {
+        queue.setRepeatMode('off');
 
         const embed = new Embed(client, 'default')
           .setTitle('🔁 반복재생 🔁')

@@ -1,8 +1,7 @@
 import { SlashCommandBuilder } from '@discordjs/builders';
-import { CommandInteraction, Message, EmbedBuilder } from 'discord.js';
 import { BaseCommand } from '../../structures/Command';
 import Embed from '../../utils/Embed';
-import { stop } from '../../utils/Utils';
+import { liveStatusDelete } from '../../utils/music/channel.music';
 
 export default new BaseCommand(
   {
@@ -26,7 +25,7 @@ export default new BaseCommand(
           });
         }
       }
-      const queue = client.musics.get(interaction.guildId);
+      const queue = client.lavalink.getPlayer(interaction.guildId);
 
       if (!queue)
         return interaction.reply({
@@ -42,8 +41,8 @@ export default new BaseCommand(
         ]
       })
       if (queue) queue.destroy();
-      await client.musics.players.delete(interaction?.guild?.id)
-      stop(interaction.guild.id, client)
+      client.lavalink.deletePlayer(interaction?.guild?.id)
+      liveStatusDelete(interaction.guild.id, client)
 
       interaction.reply({
         embeds: [

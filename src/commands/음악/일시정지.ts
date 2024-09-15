@@ -22,7 +22,7 @@ export default new BaseCommand(
         return interaction.reply({
           embeds: [new Embed(client, 'default').setDescription(`음성채널에 먼저 참여해주세요!`).setColor('#2f3136')],
         });
-      const queue = client.musics.get(interaction.guild.id);
+      const queue = client.lavalink.getPlayer(interaction.guild.id);
 
       if (!queue || !queue.playing)
         return interaction.reply({
@@ -37,10 +37,10 @@ export default new BaseCommand(
             .setDescription(`명령어를 사용하시려면 ${client.user} 봇이랑 같은 음성채널에 참여해야됩니다!`)
         ]
       })
-      queue.pause(true);
+      if (queue && !queue.paused) queue.pause();
       let pausedembed = new Embed(client, 'success')
         .setTitle('⏸️ 일시정지 ⏸️')
-        .setDescription(`\`${queue.queue.current?.title}\`(이)가 일시정지 되었습니다`)
+        .setDescription(`\`${queue.queue.current?.info.title}\`(이)가 일시정지 되었습니다`)
         .addFields({
           name: `요청자`,
           value: `${interaction.member.user}`,

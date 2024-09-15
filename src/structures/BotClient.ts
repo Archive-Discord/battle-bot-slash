@@ -10,8 +10,10 @@ import DatabaseManager from '../managers/DatabaseManager';
 import { Model } from 'mongoose';
 import { config as dotenvConfig } from 'dotenv';
 import ButtonManager from '../managers/ButtonManager';
-import MusicManager from '../managers/MusicManager';
 import SocketManger from '../managers/EventSocketManger';
+import RedisManager from '../managers/RedisManager';
+import { RedisClientType } from 'redis';
+import { LavalinkManager } from 'lavalink-client';
 
 const logger = new Logger('bot');
 
@@ -32,16 +34,16 @@ export default class BotClient extends Client {
     noPerm: (message) => message.reply('당신은 Dokdo 를 이용할수 없습니다.'),
   });
   public db: any;
+  public redisClient!: RedisClientType
   public schemas: Collection<string, Model<any>> = new Collection();
-
   public command: CommandManager = new CommandManager(this);
   public button: ButtonManager = new ButtonManager(this);
   public event: EventManager = new EventManager(this);
   public error: ErrorManager = new ErrorManager(this);
   public database: DatabaseManager = new DatabaseManager(this);
+  public redis: RedisManager = new RedisManager(this);
   public socket: SocketManger = new SocketManger(this);
-  public music: MusicManager = new MusicManager(this);
-  public musics = this.music.music;
+  public lavalink!: LavalinkManager
 
   public constructor(options: ClientOptions) {
     super(options);
@@ -55,9 +57,7 @@ export default class BotClient extends Client {
 
   public async start(token: string = config.bot.token): Promise<void> {
     logger.info('Logging in bot...');
-    await this.login(token).then(() => {
-      this.music.load();
-    })
+    await this.login(token)
   }
 
   public async setStatus(status: 'dev' | 'online' = 'online', name = '점검중...') {

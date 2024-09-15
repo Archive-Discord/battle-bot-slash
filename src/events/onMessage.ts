@@ -3,19 +3,20 @@ import CommandManager from '../managers/CommandManager';
 import ErrorManager from '../managers/ErrorManager';
 import { MessageCommand } from '../structures/Command';
 import BotClient from '../structures/BotClient';
-import { ChannelType, Message, RESTJSONErrorCodes } from 'discord.js';
+import { ChannelType, Message, RESTJSONErrorCodes, userMention } from 'discord.js';
 import Automod from '../schemas/autoModSchema';
 import Level from '../schemas/levelSchema';
 import LevelSetting from '../schemas/levelSettingSchema';
 import { check } from 'korcen';
 import { checkUserPremium } from '../utils/checkPremium';
 import { userWarnAdd } from '../utils/WarnHandler';
-import Embed from '../utils/Embed';
 import MusicSetting from '../schemas/musicSchema';
-import { Player } from 'erela.js';
 import Logger from '../utils/Logger';
 import { AutoModDB } from '../../typings';
-import { status } from '../utils/Utils';
+import { Player } from 'lavalink-client';
+import { liveStatus, createPlayer, playIfNotPlaying } from '../utils/music/channel.music';
+import { sendError, sendSuccess } from '../utils/Utils';
+import { MusicRequester } from '../utils/music/utils.music';
 const LevelCooldown = new Map();
 const logger = new Logger('MessageEvent');
 
@@ -25,7 +26,7 @@ export default new Event('messageCreate', async (client, message) => {
 
   if (message.author.bot) return;
   if (message.channel.type === ChannelType.DM) return;
-  
+
   ProfanityFilterV2(client, message);
   LinkFilterV2(client, message);
   LevelSystem(client, message);
@@ -152,122 +153,60 @@ const findCurseV2 = async (automodDB: AutoModDB, message: Message, type: "link" 
 };
 
 const musicPlayer = async (client: BotClient, message: Message) => {
-  if (!message.guild) return
-  if (!message.content) return
+  if (!message.guild || !message.content) return;
+
   const musicDB = await MusicSetting.findOne({
     channel_id: message.channel.id,
     guild_id: message.guild.id
-  })
-  if (!musicDB) return
-  const prefix = [client.config.bot.prefix, '!', '.', '$', '%', '&', '=']
-  for (const i in prefix) {
-    if (message.content.startsWith(prefix[i])) return message.delete()
+  });
+  if (!musicDB) return;
+
+  const prefixList = [client.config.bot.prefix, '!', '.', '$', '%', '&', '='];
+  if (prefixList.some(prefix => message.content.startsWith(prefix))) {
+    return message.delete();
   }
-  await message.delete()
-  const errembed = new Embed(client, 'error')
-  const sucessembed = new Embed(client, 'success').setColor('#2f3136')
-  const user = message.guild?.members.cache.get(message.author.id)
-  const channel = user?.voice.channel
+
+  await message.delete();
+
+  const user = message.guild.members.cache.get(message.author.id);
+  const channel = user?.voice.channel;
   if (!channel) {
-    errembed.setTitle('❌ 음성 채널에 먼저 입장해주세요!')
-    return message.channel.send({ embeds: [errembed] }).then((m) => {
-      setTimeout(() => {
-        try {
-          m.delete()
-        } catch (e) { /* eslint-disable-next-line no-empty */ }
-      }, 15000)
-    })
+    return sendError(message, '❌ 음성 채널에 먼저 입장해주세요!');
   }
-  const guildQueue = client.musics.players.get(message.guild.id)
-  if (guildQueue) {
-    if (channel.id !== message.guild.members.me?.voice.channelId) {
-      errembed.setTitle('❌ 이미 다른 음성 채널에서 재생 중입니다!')
-      return message.channel.send({ embeds: [errembed] }).then((m) => {
-        setTimeout(() => {
-          try {
-            m.delete()
-          } catch (e) { /* eslint-disable-next-line no-empty */ }
-        }, 15000)
-      })
+
+  let player: Player | null = client.lavalink.getPlayer(message.guild.id)
+  if (player && channel.id !== message.guild.members.me?.voice.channelId) {
+    return sendError(message, '❌ 이미 다른 음성 채널에서 재생 중입니다!');
+  }
+
+  if (!player) {
+    player = await createPlayer(client, message);
+    if (!player) {
+      return sendError(message, '❌ 음성 채널에 입장할 수 없어요');
     }
   }
-  const song = await client.musics.search(message.content, message.author)
-  if (!song || !song.tracks.length) {
-    errembed.setTitle(`❌ ${message.content}를 찾지 못했어요!`)
-    return message.channel.send({ embeds: [errembed] }).then((m) => {
-      setTimeout(() => {
-        try {
-          m.delete()
-        } catch (e) { /* eslint-disable-next-line no-empty */ }
-      }, 15000)
-    })
-  }
-  let player: Player
-  if (guildQueue) {
-    player = guildQueue
-  } else {
-    player = await client.musics.create({
-      guild: message.guildId!,
-      voiceChannel: message.member?.voice.channelId!,
-      textChannel: message.channel?.id!,
-      region: message?.member?.voice.channel?.rtcRegion || undefined,
-      instaUpdateFiltersFix: true,
-    })
-  }
-  try {
-    if (!player.playing && !player.paused) player.connect()
-  } catch (e) {
-    client.musics.players.get(message.guild.id)?.destroy()
-    errembed.setTitle(`❌ 음성 채널에 입장할 수 없어요 ${e}`)
-    return message.channel.send({ embeds: [errembed] }).then((m) => {
-      setTimeout(() => {
-        try {
-          m.delete()
-        } catch (e) { /* eslint-disable-next-line no-empty */ }
-      }, 15000)
-    })
-  }
-  status(message.guild.id, client);
-  if (song.playlist) {
-    const songs: string[] = []
-    song.tracks.forEach((music) => {
-      songs.push(music.title)
-    })
-    sucessembed.setAuthor({
-      name: '재생목록에 아래 노래들을 추가했어요!'
-    })
-    sucessembed.setDescription(songs.join(', '))
-    sucessembed.setColor('#2f3136')
 
-    player.queue.add(song.tracks)
-    if (!player.playing) await player.play()
-    return message.channel.send({ embeds: [sucessembed] }).then((m) => {
-      setTimeout(() => {
-        try {
-          m.delete()
-        } catch (e) { /* eslint-disable-next-line no-empty */ }
-      }, 15000)
-    })
+
+  const song = await player.search(message.content, message.author);
+  if (!song || !song.tracks.length) {
+    return sendError(message, `❌ ${message.content}를 찾지 못했어요!`);
+  }
+
+  liveStatus(message.guild.id, client);
+
+  if (song.playlist) {
+    const songTitles = song.tracks.map(track => track.info.title);
+    player.queue.add(song.tracks);
+    await playIfNotPlaying(player);
+    return sendSuccess(message, '재생목록에 아래 노래들을 추가했어요!', songTitles.join(', '));
   } else {
-    player.queue.add(song.tracks[0])
-    sucessembed.setAuthor({
-      name: `재생목록에 노래를 추가했어요!`,
-    })
-    sucessembed.setDescription(
-      `[${song.tracks[0].title}](${song.tracks[0].uri}) ${song.tracks[0].duration} - ${song.tracks[0].requester}`
-    )
-    sucessembed.setThumbnail(song.tracks[0].thumbnail)
-    sucessembed.setColor('#2f3136')
-    if (!player.playing) await player.play()
-    return message.channel.send({ embeds: [sucessembed] }).then((m) => {
-      setTimeout(() => {
-        try {
-          m.delete()
-        } catch (e) { /* eslint-disable-next-line no-empty */ }
-      }, 15000)
-    })
+    player.queue.add(song.tracks[0]);
+    await playIfNotPlaying(player);
+    const requester = song.tracks[0].requester as MusicRequester
+    return sendSuccess(message, '재생목록에 노래를 추가했어요!', `[${song.tracks[0].info.title}](${song.tracks[0].info.uri}) ${song.tracks[0].info.duration} - ${userMention(requester.id)}`, song.tracks[0].info.artworkUrl || undefined);
   }
 }
+
 
 /**
  * @deprecated 레벨 시스템 - 기존 서버는 유지되나 새로운 서버는 지원하지 않음

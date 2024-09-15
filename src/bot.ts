@@ -6,6 +6,7 @@ import CommandManager from './managers/CommandManager';
 import EventManager from './managers/EventManager';
 import DatabaseManager from './managers/DatabaseManager';
 import ButtonManager from './managers/ButtonManager';
+import RedisManager from './managers/RedisManager';
 
 const logger = new Logger('main');
 
@@ -16,12 +17,14 @@ const client = new BotClient(config.bot.options);
 const command = new CommandManager(client);
 const event = new EventManager(client);
 const database = new DatabaseManager(client);
+const redis = new RedisManager(client);
 const button = new ButtonManager(client);
 
 command.load(path.join(__dirname, 'commands'));
 event.load(path.join(__dirname, 'events'));
 button.load(path.join(__dirname, 'buttons'));
 database.load();
+redis.load();
 
 client.start(config.bot.token);
 process.on('uncaughtException', (e) => logger.error(e.stack as string));

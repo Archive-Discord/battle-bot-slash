@@ -1,8 +1,8 @@
 import { SlashCommandBuilder } from '@discordjs/builders';
-import { CommandInteraction, Message, EmbedBuilder } from 'discord.js';
 import { BaseCommand } from '../../structures/Command';
 import Embed from '../../utils/Embed';
-import { createBar, format } from '../../utils/Utils';
+import { createBar, MusicRequester } from '../../utils/music/utils.music';
+import { timeFormat } from '../../utils/music/channel.music';
 
 export default new BaseCommand(
   {
@@ -25,7 +25,7 @@ export default new BaseCommand(
         return interaction.reply({
           embeds: [new Embed(client, 'default').setDescription(`음성채널에 먼저 참여해주세요!`).setColor('#2f3136')],
         });
-      const queue = client.musics.get(interaction.guild.id);
+      const queue = client.lavalink.getPlayer(interaction.guild.id);
 
       if (!queue || !queue.playing)
         return interaction.reply({
@@ -63,33 +63,31 @@ export default new BaseCommand(
           name: `${client.user?.tag}`,
           iconURL: interaction.guild.iconURL()!,
         })
-        .setThumbnail(`https://img.youtube.com/vi/${queue.queue.current?.identifier}/mqdefault.jpg`)
-        .setURL(queue.queue.current?.uri!)
-        .setTitle(`${queue.queue.current?.title}`)
+        .setThumbnail(queue.queue.current?.info.artworkUrl || null)
+        .setURL(queue.queue.current?.info.uri!)
+        .setTitle(`${queue.queue.current?.info.title}`)
         .addFields(
           { name: `재생률`, value: `${createBar(queue)}` },
           {
             name: `노래시간`,
-            value: `\`${format(queue.queue.current?.duration).split(' | ')[0]}\` | \`${format(queue.queue.current?.duration).split(' | ')[1]
+            value: `\`${timeFormat(queue.queue.current?.info.duration).split(' | ')[0]}\` | \`${timeFormat(queue.queue.current?.info.duration).split(' | ')[1]
               }\``,
             inline: true,
           },
           {
             name: `제작자`,
-            value: `\`${queue.queue.current?.author}\``,
+            value: `\`${queue.queue.current?.info.author}\``,
             inline: true,
           },
           {
             name: `남은 노래`,
-            value: `\`${queue.queue.length} 개\``,
+            value: `\`${queue.queue.tracks.length} 개\``,
             inline: true,
           },
         )
         .setFooter({
-          text: `${(queue.queue.current?.requester as any).tag}`,
-          iconURL: (queue.queue.current?.requester as any).displayAvatarURL({
-            dynamic: true,
-          }),
+          text: `${(queue.queue.current?.requester as MusicRequester).username}`,
+          iconURL: (queue.queue.current?.requester as MusicRequester).avatar,
         })
         .setColor('#2f3136');
 

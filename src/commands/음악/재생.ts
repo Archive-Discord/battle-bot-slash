@@ -1,8 +1,7 @@
 import { SlashCommandBuilder } from '@discordjs/builders';
-import { CommandInteraction, Message, EmbedBuilder, GuildChannel } from 'discord.js';
 import { BaseCommand } from '../../structures/Command';
 import Embed from '../../utils/Embed';
-import { format, status } from '../../utils/Utils';
+import { createPlayer, liveStatus, playIfNotPlaying, timeFormat } from '../../utils/music/channel.music';
 
 export default new BaseCommand(
   {
@@ -30,13 +29,8 @@ export default new BaseCommand(
         return interaction.followUp({
           embeds: [new Embed(client, 'default').setDescription(`음성채널에 먼저 참여해주세요!`)],
         });
-      const queue = client.musics.create({
-        guild: interaction.guild.id,
-        voiceChannel: interaction.member.voice.channel.id,
-        textChannel: interaction.channel?.id!,
-        region: interaction.member.voice.channel?.rtcRegion || undefined,
-        instaUpdateFiltersFix: true,
-      });
+      const player = await createPlayer(client, interaction);
+
       if (!search)
         return interaction.followUp({
           embeds: [
@@ -45,40 +39,56 @@ export default new BaseCommand(
             ),
           ],
         });
-      let res;
+      let song;
+
+      if (!player) return interaction.followUp(`노래를 재생할 수 없습니다.`);
 
       try {
-        res = await client.musics.search(search, interaction.user);
-        if (res.loadType === 'LOAD_FAILED') throw res.exception;
-        else if (res.loadType === 'PLAYLIST_LOADED')
-          throw { message: '이 명령에서는 재생 목록을 지원하지 않습니다.' };
+        song = await player.search(search, interaction.user);
+        if (song.loadType == 'error') {
+          if (!player.queue.current) player.destroy();
+          throw new Error(song.exception?.message);
+        }
       } catch (err: any) {
         return interaction.followUp(`검색중 오류가 발생했습니다.: ${err.message}`);
       }
-      if (!queue?.connected) {
-        await queue?.connect();
-        await queue?.stop();
+      if (!player.connected) {
+        await player.connect();
+        await player.stopPlaying();
       }
-      queue.queue.add(res.tracks[0]);
 
-      if (!queue.playing && !queue.paused && !queue.queue.size) queue.play();
+      if (song.playlist) {
+        player.queue.add(song.tracks);
+        const songTitles = song.tracks.map(track => track.info.title);
+        const embed = new Embed(client, 'info')
+          .setTitle('🎶 재생목록에 추가합니다! 🎶')
+          .setDescription(`\`${songTitles.join(', ')}\` (이)가 재생목록에 추가되었습니다!`)
+          .setColor('#2f3136');
 
-      const embed = new Embed(client, 'info')
-        .setTitle('🎶 노래를 재생목록에 추가합니다! 🎶')
-        .setURL(`${res.tracks[0].uri}`)
-        .setDescription(`\`${res.tracks[0].title}\` (이)가 재생목록에 추가되었습니다!`)
-        .addFields(
-          {
-            name: `길이`,
-            value: `\`${format(res.tracks[0].duration).split(' | ')[0]}\``,
-            inline: true,
-          },
-          { name: `게시자`, value: `${res.tracks[0].author}`, inline: true },
-        )
-        .setThumbnail(`${res.tracks[0].thumbnail}`)
-        .setColor('#2f3136');
-      interaction.followUp({ embeds: [embed] });
-      status(interaction.guild.id, client)
+        interaction.followUp({ embeds: [embed] });
+      } else {
+        player.queue.add(song.tracks[0]);
+        const embed = new Embed(client, 'info')
+          .setTitle('🎶 노래를 재생목록에 추가합니다! 🎶')
+          .setURL(`${song.tracks[0].info.uri}`)
+          .setDescription(`\`${song.tracks[0].info.title}\` (이)가 재생목록에 추가되었습니다!`)
+          .addFields(
+            {
+              name: `길이`,
+              value: `\`${timeFormat(song.tracks[0].info.duration).split(' | ')[0]}\``,
+              inline: true,
+            },
+            { name: `게시자`, value: `${song.tracks[0].info.author}`, inline: true },
+          )
+          .setThumbnail(`${song.tracks[0].info.artworkUrl}`)
+          .setColor('#2f3136');
+
+        interaction.followUp({ embeds: [embed] });
+      }
+
+      await playIfNotPlaying(player);
+
+      liveStatus(interaction.guild.id, client)
     },
   },
 );
