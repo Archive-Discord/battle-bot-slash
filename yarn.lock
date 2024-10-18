@@ -855,25 +855,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@mapbox/node-pre-gyp@npm:^1.0.9":
-  version: 1.0.11
-  resolution: "@mapbox/node-pre-gyp@npm:1.0.11"
-  dependencies:
-    detect-libc: ^2.0.0
-    https-proxy-agent: ^5.0.0
-    make-dir: ^3.1.0
-    node-fetch: ^2.6.7
-    nopt: ^5.0.0
-    npmlog: ^5.0.1
-    rimraf: ^3.0.2
-    semver: ^7.3.5
-    tar: ^6.1.11
-  bin:
-    node-pre-gyp: bin/node-pre-gyp
-  checksum: b848f6abc531a11961d780db813cc510ca5a5b6bf3184d72134089c6875a91c44d571ba6c1879470020803f7803609e7b2e6e429651c026fe202facd11d444b8
-  languageName: node
-  linkType: hard
-
 "@mongodb-js/saslprep@npm:^1.1.0":
   version: 1.1.8
   resolution: "@mongodb-js/saslprep@npm:1.1.8"
@@ -2311,7 +2292,6 @@ __metadata:
     anyid: ^1.0.7
     archive-pubg-ts: ^1.0.0
     axios: ^0.27.2
-    captcha-canvas: ^3.2.1
     chalk: ^3.0.0
     cheerio: ^1.0.0-rc.12
     comma-number: ^2.1.0
@@ -2522,24 +2502,6 @@ __metadata:
   version: 3.1.0
   resolution: "callsites@npm:3.1.0"
   checksum: 072d17b6abb459c2ba96598918b55868af677154bec7e73d222ef95a8fdb9bbf7dae96a8421085cdad8cd190d86653b5b6dc55a4484f2e5b2e27d5e0c3fc15b3
-  languageName: node
-  linkType: hard
-
-"captcha-canvas@npm:^3.2.1":
-  version: 3.2.2
-  resolution: "captcha-canvas@npm:3.2.2"
-  dependencies:
-    skia-canvas: ^1.0.0
-  checksum: 5889974b3a8c5d8411177e7b6134be97f11b674044c2ac652f0d16a4fa9a938ee87bee6afdffa835a3f83d8a30493390f844ecd6c198995d5ab1758a4bdbd3c3
-  languageName: node
-  linkType: hard
-
-"cargo-cp-artifact@npm:^0.1":
-  version: 0.1.9
-  resolution: "cargo-cp-artifact@npm:0.1.9"
-  bin:
-    cargo-cp-artifact: bin/cargo-cp-artifact.js
-  checksum: 934bf620377b4013d2199eff93c88ed9c0543ff04d6d21f965a7dcb1162dbad54424914e1fbc1a6bd9a81534f41d631f0065eb39d1b90c8a535f269486410ca8
   languageName: node
   linkType: hard
 
@@ -2917,15 +2879,6 @@ __metadata:
     supports-color:
       optional: true
   checksum: 1630b748dea3c581295e02137a9f5cbe2c1d85fea35c1e6597a65ca2b16a6fce68cec61b299d480787ef310ba927dc8c92d3061faba0ad06c6a724672f66be7f
-  languageName: node
-  linkType: hard
-
-"decompress-response@npm:^6.0.0":
-  version: 6.0.0
-  resolution: "decompress-response@npm:6.0.0"
-  dependencies:
-    mimic-response: ^3.1.0
-  checksum: d377cf47e02d805e283866c3f50d3d21578b779731e8c5072d6ce8c13cc31493db1c2f6784da9d1d5250822120cefa44f1deab112d5981015f2e17444b763812
   languageName: node
   linkType: hard
 
@@ -3969,19 +3922,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"glob@npm:^8.0.3":
-  version: 8.1.0
-  resolution: "glob@npm:8.1.0"
-  dependencies:
-    fs.realpath: ^1.0.0
-    inflight: ^1.0.4
-    inherits: 2
-    minimatch: ^5.0.1
-    once: ^1.3.0
-  checksum: 92fbea3221a7d12075f26f0227abac435de868dd0736a17170663783296d0dd8d3d532a5672b4488a439bf5d7fb85cdd07c11185d6cd39184f0385cbdfb86a47
-  languageName: node
-  linkType: hard
-
 "globals@npm:^13.19.0":
   version: 13.24.0
   resolution: "globals@npm:13.24.0"
@@ -4830,28 +4770,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mimic-response@npm:^3.1.0":
-  version: 3.1.0
-  resolution: "mimic-response@npm:3.1.0"
-  checksum: 25739fee32c17f433626bf19f016df9036b75b3d84a3046c7d156e72ec963dd29d7fc8a302f55a3d6c5a4ff24259676b15d915aad6480815a969ff2ec0836867
-  languageName: node
-  linkType: hard
-
 "minimatch@npm:^3.0.5, minimatch@npm:^3.1.1, minimatch@npm:^3.1.2":
   version: 3.1.2
   resolution: "minimatch@npm:3.1.2"
   dependencies:
     brace-expansion: ^1.1.7
   checksum: c154e566406683e7bcb746e000b84d74465b3a832c45d59912b9b55cd50dee66e5c4b1e5566dba26154040e51672f9aa450a9aef0c97cfc7336b78b7afb9540a
-  languageName: node
-  linkType: hard
-
-"minimatch@npm:^5.0.1":
-  version: 5.1.6
-  resolution: "minimatch@npm:5.1.6"
-  dependencies:
-    brace-expansion: ^2.0.1
-  checksum: 7564208ef81d7065a370f788d337cd80a689e981042cb9a1d0e6580b6c6a8c9279eba80010516e258835a988363f99f54a6f711a315089b8b42694f5da9d0d77
   languageName: node
   linkType: hard
 
@@ -5222,7 +5146,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"once@npm:^1.3.0, once@npm:^1.3.1":
+"once@npm:^1.3.0":
   version: 1.4.0
   resolution: "once@npm:1.4.0"
   dependencies:
@@ -5304,13 +5228,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"parenthesis@npm:^3.1.5":
-  version: 3.1.8
-  resolution: "parenthesis@npm:3.1.8"
-  checksum: 47d86bb7d9d7d50cfa89c1766a8d4a1223c054ac6d3d2e5baad64cb5c680a2d5d51c26008f2e192300f6111e378f7ca78f6d6ef9732788db059b14815ce05706
-  languageName: node
-  linkType: hard
-
 "parse5-htmlparser2-tree-adapter@npm:^7.0.0":
   version: 7.0.0
   resolution: "parse5-htmlparser2-tree-adapter@npm:7.0.0"
@@ -5343,13 +5260,6 @@ __metadata:
   version: 1.3.3
   resolution: "parseurl@npm:1.3.3"
   checksum: 407cee8e0a3a4c5cd472559bca8b6a45b82c124e9a4703302326e9ab60fc1081442ada4e02628efef1eb16197ddc7f8822f5a91fd7d7c86b51f530aedb17dfa2
-  languageName: node
-  linkType: hard
-
-"path-browserify@npm:^1.0.1":
-  version: 1.0.1
-  resolution: "path-browserify@npm:1.0.1"
-  checksum: c6d7fa376423fe35b95b2d67990060c3ee304fc815ff0a2dc1c6c3cfaff2bd0d572ee67e18f19d0ea3bbe32e8add2a05021132ac40509416459fffee35200699
   languageName: node
   linkType: hard
 
@@ -5935,24 +5845,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"simple-concat@npm:^1.0.0":
-  version: 1.0.1
-  resolution: "simple-concat@npm:1.0.1"
-  checksum: 4d211042cc3d73a718c21ac6c4e7d7a0363e184be6a5ad25c8a1502e49df6d0a0253979e3d50dbdd3f60ef6c6c58d756b5d66ac1e05cda9cacd2e9fc59e3876a
-  languageName: node
-  linkType: hard
-
-"simple-get@npm:^4.0.1":
-  version: 4.0.1
-  resolution: "simple-get@npm:4.0.1"
-  dependencies:
-    decompress-response: ^6.0.0
-    once: ^1.3.1
-    simple-concat: ^1.0.0
-  checksum: e4132fd27cf7af230d853fa45c1b8ce900cb430dd0a3c6d3829649fe4f2b26574c803698076c4006450efb0fad2ba8c5455fbb5755d4b0a5ec42d4f12b31d27e
-  languageName: node
-  linkType: hard
-
 "simple-markdown@npm:^0.7.3":
   version: 0.7.3
   resolution: "simple-markdown@npm:0.7.3"
@@ -5968,20 +5860,6 @@ __metadata:
   dependencies:
     is-arrayish: ^0.3.1
   checksum: a7f3f2ab5c76c4472d5c578df892e857323e452d9f392e1b5cf74b74db66e6294a1e1b8b390b519fa1b96b5b613f2a37db6cffef52c3f1f8f3c5ea64eb2d54c0
-  languageName: node
-  linkType: hard
-
-"skia-canvas@npm:^1.0.0":
-  version: 1.0.1
-  resolution: "skia-canvas@npm:1.0.1"
-  dependencies:
-    "@mapbox/node-pre-gyp": ^1.0.9
-    cargo-cp-artifact: ^0.1
-    glob: ^8.0.3
-    path-browserify: ^1.0.1
-    simple-get: ^4.0.1
-    string-split-by: ^1.0.0
-  checksum: c2f6a5dd6e672fa8552f52512174c2561a1e66df42d887c98118a22d6919c8a8a06692b3074c786b11beaab9ab265bbbec1c333b4a30f5ea2d619d7c27e3f5df
   languageName: node
   linkType: hard
 
@@ -6162,15 +6040,6 @@ __metadata:
   version: 1.0.4
   resolution: "string-progressbar@npm:1.0.4"
   checksum: 3c1bd3adcb109d4f52daf4cf20cd12ae1dc6d91885a599447cb8768b23ea353b9c529566bf6e4d8403170e77f7455e1d5ff1391b0cb13b8a62ae4862e64db5b2
-  languageName: node
-  linkType: hard
-
-"string-split-by@npm:^1.0.0":
-  version: 1.0.0
-  resolution: "string-split-by@npm:1.0.0"
-  dependencies:
-    parenthesis: ^3.1.5
-  checksum: bd38cf3b3d365ec3c418eefedd8130e3b2ebaf8ea381fd49a3fa903a927e8858db05563d9b14bd0d11f1b2eb27677fc17c3f91637b11f9dab40fa6c8fcf2e8c8
   languageName: node
   linkType: hard
 
