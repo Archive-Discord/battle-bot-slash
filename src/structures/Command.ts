@@ -1,4 +1,4 @@
-import { SlashCommandBuilder } from '@discordjs/builders';
+import { SlashCommandBuilder, SlashCommandOptionsOnlyBuilder } from '@discordjs/builders';
 import {
   MessageCommandFuntion,
   MessageCommandOptions,
@@ -10,14 +10,14 @@ import {
 
 export class SlashCommand {
   constructor(
-    public data: SlashCommandBuilder,
+    public data: SlashCommandBuilder | SlashCommandOptionsOnlyBuilder,
     public execute: SlashCommandFunction,
     public options?: SlashCommandOptions,
-  ) {}
+  ) { }
 }
 
 export class MessageCommand {
-  constructor(public data: MessageCommandOptions, public execute: MessageCommandFuntion) {}
+  constructor(public data: MessageCommandOptions, public execute: MessageCommandFuntion) { }
 }
 
 export class BaseCommand extends MessageCommand {
@@ -31,5 +31,5 @@ export class BaseCommand extends MessageCommand {
 }
 
 export class ButtonInteraction {
-  constructor(public data: ButtonInteractionOptions, public execute: ButtonInteractionFunction) {}
+  constructor(public data: ButtonInteractionOptions, public execute: ButtonInteractionFunction) { }
 }
