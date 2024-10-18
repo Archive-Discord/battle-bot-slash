@@ -98,7 +98,7 @@ const voiceLogger = async (client: BotClient, oldState: VoiceState, newState: Vo
 const musicSessionHandler = async (client: BotClient, oldState: VoiceState, newState: VoiceState) => {
   const musicSessionStore = new MusicSessionStore(client.redisClient);
 
-  if (!oldState.channel && newState.channel) {
-    await musicSessionStore.set(newState.guild.id, client.lavalink.nodeManager.leastUsedNodes('memory')[0].sessionId as string);
+  if (!oldState.channel && newState.channel && client.lavalink?.nodeManager) {
+    await musicSessionStore.set(newState.guild.id, client.lavalink?.nodeManager?.leastUsedNodes('memory')[0].sessionId as string);
   }
 }
