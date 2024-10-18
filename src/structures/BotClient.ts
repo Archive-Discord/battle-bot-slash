@@ -44,6 +44,7 @@ export default class BotClient extends Client {
   public redis: RedisManager = new RedisManager(this);
   public socket: SocketManger = new SocketManger(this);
   public lavalink!: LavalinkManager
+  public ss!: string;
 
   public constructor(options: ClientOptions) {
     super(options);

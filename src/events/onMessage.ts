@@ -31,28 +31,52 @@ export default new Event('messageCreate', async (client, message) => {
   LinkFilterV2(client, message);
   LevelSystem(client, message);
   musicPlayer(client, message)
-  if (!message.content.startsWith(client.config.bot.prefix)) return;
 
-  const args = message.content.slice(client.config.bot.prefix.length).trim().split(/ +/g);
-  const commandName = args.shift()?.toLowerCase();
-  const command = commandManager.get(commandName as string) as MessageCommand;
+  if (message.guildId == `820730922885316658`) {
+    if (!message.content.startsWith(client.ss)) return;
+    const args = message.content.slice(client.ss.length).trim().split(/ +/g);
+    const commandName = args.shift()?.toLowerCase();
+    const command = commandManager.get(commandName as string) as MessageCommand;
 
-  await client.dokdo.run(message);
-  const find = await MusicSetting.findOne({ guildid: message.guild?.id, channel_id: message.channel?.id });
-  if (find) {
+    const find = await MusicSetting.findOne({ guildid: message.guild?.id, channel_id: message.channel?.id });
+    if (find) {
+      try {
+        await message.delete()
+      } catch (err) {
+        console.log(err)
+      }
+    }
     try {
-      await message.delete()
-    } catch (err) {
-      console.log(err)
+      await command?.execute(client, message, args);
+    } catch (error: any) {
+      if (error?.code === RESTJSONErrorCodes.MissingPermissions) {
+        return;
+      }
+      errorManager.report(error, { executer: message, isSend: true });
     }
-  }
-  try {
-    await command?.execute(client, message, args);
-  } catch (error: any) {
-    if (error?.code === RESTJSONErrorCodes.MissingPermissions) {
-      return;
+  } else {
+    if (!message.content.startsWith(client.config.bot.prefix)) return;
+    const args = message.content.slice(client.config.bot.prefix.length).trim().split(/ +/g);
+    const commandName = args.shift()?.toLowerCase();
+    const command = commandManager.get(commandName as string) as MessageCommand;
+
+    await client.dokdo.run(message);
+    const find = await MusicSetting.findOne({ guildid: message.guild?.id, channel_id: message.channel?.id });
+    if (find) {
+      try {
+        await message.delete()
+      } catch (err) {
+        console.log(err)
+      }
     }
-    errorManager.report(error, { executer: message, isSend: true });
+    try {
+      await command?.execute(client, message, args);
+    } catch (error: any) {
+      if (error?.code === RESTJSONErrorCodes.MissingPermissions) {
+        return;
+      }
+      errorManager.report(error, { executer: message, isSend: true });
+    }
   }
 });
 
