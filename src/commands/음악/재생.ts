@@ -67,6 +67,8 @@ export default new BaseCommand(
 
         interaction.followUp({ embeds: [embed] });
       } else {
+        if (!song.tracks[0]) return interaction.followUp(`노래를 찾을 수 없습니다.`);
+
         player.queue.add(song.tracks[0]);
         const embed = new Embed(client, 'info')
           .setTitle('🎶 노래를 재생목록에 추가합니다! 🎶')
