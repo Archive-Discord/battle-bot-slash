@@ -24,7 +24,7 @@ export default new ButtonInteraction(
       await interaction.guild?.channels
         .create({
           type: ChannelType.GuildText,
-          name: `ticket-${count}-${interaction.user.discriminator}`,
+          name: `ticket-${count}-${interaction.user.globalName}`,
           permissionOverwrites: [
             {
               id: interaction.guild?.roles.everyone,
@@ -39,6 +39,9 @@ export default new ButtonInteraction(
           topic: `<@!${interaction.user.id}> 님의 티켓`,
         })
         .then((channel) => {
+          channel.lockPermissions().catch((err) => {
+            return console.error(err);
+          });
           const ticket = new Ticket();
           ticket.status = 'open';
           ticket.guildId = interaction.guild?.id as string;
@@ -62,7 +65,7 @@ export default new ButtonInteraction(
           const buttonDelete = new ButtonBuilder()
             .setLabel('삭제')
             .setStyle(ButtonStyle.Danger)
-            .setEmoji('❌')
+            .setEmoji('🗑️')
             .setCustomId('ticket:delete');
           const buttonClose = new ButtonBuilder()
             .setLabel('닫기')
